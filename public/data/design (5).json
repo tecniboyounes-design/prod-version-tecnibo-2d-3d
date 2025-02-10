@@ -1,0 +1,25 @@
+{
+  "floorplanner": {
+    "version": "2.0.1a",
+    "corners": {},
+    "walls": [],
+    "rooms": {},
+    "wallTextures": [],
+    "floorTextures": {},
+    "newFloorTextures": {},
+    "carbonSheet": {},
+    "boundary": {
+      "points": [],
+      "style": {
+        "type": "color",
+        "color": "#00FF00",
+        "repeat": 50,
+        "colormap": null
+      }
+    },
+    "units": "cm",
+    "measurement": true,
+    "magnetic_snap": true
+  },
+  "items": []
+}

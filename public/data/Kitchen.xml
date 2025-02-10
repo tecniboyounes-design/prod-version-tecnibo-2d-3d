@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Catalog name="handle_kitchen" label="Kitchen" info="Kitchen"
+         image="img/new_img/catalog/kitchen/Kitchen_section_01.jpg">
+    <global file="KICA_GLOBAL_SETTING"/>
+    <!--    <global_change file="KICA_GLOBAL_CHANGE"/>-->
+    <tooltip file="KICA_TOOLTIP"/>
+    <translate file="2017_1.xlf"/>
+
+    <category name="HANDLELESS_KITCHEN" label="Handleless Kitchen" image="img/new_img/catalog/kitchen/Kitchen_section_01.jpg">
+        <category name="HLKI_RAIL_CAT" label="Handleless profiles" image="img/new_img/catalog/kitchen/Front_Left_Right.jpg">
+            <object model="HLKI_RAIL_L" name="HLKI_RAIL_L" label="RAIL L " info="Kitchen handleless rail L" image="img/new_img/catalog/kitchen/HLKI_RAIL_L.png"/>
+            <object model="HLKI_RAIL_C" name="HLKI_RAIL_C" label="RAIL C " info="Kitchen handleless rail C" image="img/new_img/catalog/kitchen/HLKI_RAIL_C.png"/>
+        </category>
+        <category name="HLKIBC" label="Base cabinets" image="img/new_img/catalog/kitchen/Base.jpg" sizez="780" sizex="600" sizey="575">
+            <category name="HLKIBC" label="{translate:Base units standard|Base units standard}" image="img/new_img/catalog/kitchen/BUSD.png">
+                <object model="HLKIBC_SD" name="HLKIBC_SD" label="HLKIBC_SD " info="" image="img/new_img/catalog/kitchen/HLKIBC_SD.png"/>
+                <object model="HLKIBC_DD" name="HLKIBC_DD" label="HLKIBC_DD " info="" image="img/new_img/catalog/kitchen/HLKIBC_DD.png"/>
+            </category>
+            <category name="{translate:Base units for corners|Base units for corners}" image="img/new_img/catalog/kitchen/BUCO.jpg">
+                <object model="HLKIBCC_SDL" name="HLKIBCC_SDL" info="{translate:Base blind corner unit one door, left (1100mm)|Base blind corner unit one door, left (1100mm)}" image="img/new_img/catalog/kitchen/HLKIBCC_SDL.png"/>
+                <object model="HLKIBCCUS_SDL" name="HLKIBCCUS_SDL" info="{translate:Base blind corner unit one door, left (1100mm)|Base blind corner unit one door, left (1100mm)}" image="img/new_img/catalog/kitchen/HLKIBCC_SDL.png"/>
+            </category>
+            <category name="{translate:Base units for sinks|Base units for sinks}" image="img/new_img/catalog/kitchen/BUS.jpg">
+                <object model="HLKIBCUS_SD" name="HLKIBCUS_SD" label="HLKIBCUS_SD " info="" image="img/new_img/catalog/kitchen/HLKIBCUS_SD.png"/>
+                <object model="HLKIBCUS_DD" name="HLKIBCUS_DD" label="HLKIBCUS_DD " info="" image="img/new_img/catalog/kitchen/HLKIBCUS_DD.png"/>
+            </category>
+            <category name="{translate:Base units with drawers|Base units with drawers}" image="img/new_img/catalog/kitchen/BUD.jpg">
+                <object model="HLKIBC_DR2_DR2" name="HLKIBC_DR2_DR2" label="HLKIBC_DR2_DR2 " info="" image="img/new_img/catalog/kitchen/HLKIBC_DR2_DR2.png"/>
+                <object model="HLKIBC_DR4" name="HLKIBC_DR4" label="HLKIBC_DR4 " info="" image="img/new_img/catalog/kitchen/HLKIBC_DR4.png"/>
+                <object model="HLKIBC_DR2_DR1_DR1" name="HLKIBC_DR2_DR1_DR1" label="HLKIBC_DR2_DR1_DR1 " info="" image="img/new_img/catalog/kitchen/HLKIBC_DR2_DR1_DR1.png"/>
+                <object model="SHLKIBC_DR2_DR2_DR1" name="SHLKIBC_DR2_DR2_DR1" label="HLKIBC_DR2_DR2_DR1 " info="" image="img/new_img/catalog/kitchen/HLKIBC_DR2_DR1_DR1.png"/>
+            </category>
+            <category name="{translate:Base units for appliances|Base units for appliances}" image="img/new_img/catalog/kitchen/BUA.jpg">
+                <object model="HLKIBC_DW" name="HLKIBC_DW" info="{translate:Door full integrated for dishwasher |Door full integrated for dishwasher }" image="img/new_img/catalog/kitchen/HLKIBC_DW.png"/>
+                <object model="HLKIBC_FR" name="HLKIBC_FR" info="{translate:Door full integrated for fridge |Door full integrated for fridge }" image="img/new_img/catalog/kitchen/HLKIBC_FR.png"/>
+                <object model="HLKIBC_TR" name="HLKIBC_TR" info="{translate:Door full integrated for trash |Door full integrated for trash }" image="img/new_img/catalog/kitchen/HLKIBC_TR.png"/>
+            </category>
+        </category>
+        <category name="HLKITC" label="Tall cabinets" image="img/new_img/catalog/kitchen/Tall.jpg" sizez="2320" sizex="600" sizey="560">
+            <category name="{translate:Tall units with drawers|Tall units units with drawers}">
+                <object model="HLKITC_DR2_DR1_DR1_OV1_OV2_SD" name="HLKITC_DR2_DR1_DR1_OV1_OV2_SD" info="{translate:}" image="img/new_img/catalog/kitchen/HLKITC_DR2_DR1_DR1_OV1_OV2_SD.png"/>
+                <object model="HLKITC_DR2_DR1_DR1_OV1_SD" name="HLKITC_DR2_DR1_DR1_OV1_SD" info="{translate:}" image="img/new_img/catalog/kitchen/HLKITC_DR2_DR1_DR1_OV1_SD.png"/>
+                <object model="HLKITC_DR2_DR2_OV1_OV2_SD" name="HLKITC_DR2_DR2_OV1_OV2_SD" info="{translate:}" image="img/new_img/catalog/kitchen/HLKITC_DR2_DR2_OV1_OV2_SD.png"/>
+                <object model="HLKITC_DR4_OV1_OV2_SD" name="HLKITC_DR4_OV1_OV2_SD" info="{translate:}" image="img/new_img/catalog/kitchen/HLKITC_DR4_OV1_OV2_SD.png"/>
+            </category>
+            <category name="{translate:Tall units for appliances |Tall units for appliances }">
+                <object model="HLKITC_SD_OV1_OV2_SD" name="HLKITC_SD_OV1_OV2_SD" info="{translate:Tall unit ,one door, oven 1 oven 2 ,one door|Tall unit ,one door, oven 1 oven 2 ,one door}" image="img/new_img/catalog/kitchen/HLKITC_SD_OV1_OV2_SD.png"/>
+                <object model="HLKITC_SD_OV1_SD" name="HLKITC_SD_OV1_SD" info="{translate:Tall unit ,one door, oven 1 ,one door|Tall unit ,one door, oven 1 ,one door}" image="img/new_img/catalog/kitchen/HLKITC_SD_OV1_SD.png"/>
+                <object model="HLKITC_SD_OV1" name="HLKITC_SD_OV1" info="{translate:Tall unit ,one door, oven 1 |Tall unit ,one door, oven 1 }" image="img/new_img/catalog/kitchen/HLKITC_SD_OV1.png"/>
+                <object model="HLKITC_FR" name="HLKITC_FR" info="{translate:Tall unit full integrated for fridge|Tall unit full integrated for fridge}" image="img/new_img/catalog/kitchen/HLKITC_SD.png"/>
+            </category>
+        </category>
+        <category name="KIWC" label="Wall cabinets" image="img/new_img/catalog/kitchen/Wall.jpg" sizez="650" sizex="600" sizey="350">
+            <object model="HLKIWCC_SDL" name="HLKIWCC_SDL" label="HLKIWCC_SDL " info="" image="img/new_img/catalog/kitchen/HLKIWCC_SDL.png"/>
+            <object model="HLKIWC_SD" name="HLKIWC_SD" info="{translate:Wall unit one door |Wall unit one door}" image="img/new_img/catalog/kitchen/HLKIWC_SD.png"/>
+            <object model="HLKIWC_DD" name="HLKIWC_DD" info="{translate:Wall unit two doors |Wall unit two doors}" image="img/new_img/catalog/kitchen/HLKIWC_DD.png"/>
+        </category>
+    </category>
+
+    <category name="HANDLE_KITCHEN" label="Handle kitchen" image="img/new_img/catalog/kitchen/Kitchen_section_01.jpg" sizez="780" sizex="600" sizey="575">
+        <category name="KIBC" label="Base cabinets" image="img/new_img/catalog/kitchen/Base.jpg" sizez="780" sizex="600" sizey="575">
+
+            <category name="{translate:Base units standard|Base units standard}" image="img/new_img/catalog/kitchen/BUSD.jpg">
+                <object model="KIBC_SD" name="KIBC_SD" info="{translate:Base unit one door |Base unit one door}" image="img/new_img/catalog/kitchen/KIBC_SD.png"/>
+                <object model="KIBC_DD" name="KIBC_DD" info="{translate:Base unit double door,|Base unit double door}" image="img/new_img/catalog/kitchen/KIBC_DD.png"/>
+                <object model="KIBC_SD_DR1" name="KIBC_SD_DR1" info="{translate:Base unit one door, one drawer |Base unit one door, one drawer }" image="img/new_img/catalog/kitchen/KIBC_SD_DR1.png"/>
+            </category>
+            <category name="{translate:Base units for corners|Base units for corners}" image="img/new_img/catalog/kitchen/BUCO.jpg">
+                <object model="KIBCC_SDL" name="KIBCC_SDL" info="{translate:Base blind corner unit one door, left (1100mm)|Base blind corner unit one door, left (1100mm)}" image="img/new_img/catalog/kitchen/KIBCC_SDL.png"/>
+            </category>
+            <category name="{translate:Base units for sinks|Base units for sinks}" image="img/new_img/catalog/kitchen/BUS.jpg">
+                <object model="KIBCUS_SD" name="KIBCUS_SD" info="Kitchen base cabinet under sink, single door01" image="img/new_img/catalog/kitchen/KIBCUS_SD.png"/>
+                <object model="KIBCUS_DD" name="KIBCUS_DD" info="Kitchen base cabinet under sink, double door" image="img/new_img/catalog/kitchen/KIBCUS_DD.png"/>
+            </category>
+            <category name="{translate:Base units for appliances|Base units for appliances}" image="img/new_img/catalog/kitchen/BUA.jpg">
+                <object model="KIBC_DWFI" name="KIBC_DWFI" info="{translate:Door full integrated for dishwasher |Door full integrated for dishwasher }" image="img/new_img/catalog/kitchen/KIBC_DWFI.png"/>
+                <object model="KIBC_FR" name="KIBC_FR" info="{translate:Door full integrated for fridge |Door full integrated for fridge }" image="img/new_img/catalog/kitchen/KIBC_FR.png"/>
+                <object model="KIBC_DR1_OV" name="KIBC_DR1_OV" info="{translate:Base unit one drawer with oven |Base unit one drawer with oven }" image="img/new_img/catalog/kitchen/KIBC_DR1_OV.png"/>
+            </category>
+            <category name="{translate:Base units with drawers|Base units with drawers}" image="img/new_img/catalog/kitchen/BUD.jpg">
+                <object model="KIBC_DR1_DR1_DR1_DR1_DR1_DR1" name="KIBC_DR1_DR1_DR1_DR1_DR1_DR1" info="{translate:Base unit five drawers|Base unit five drawers}" image="img/new_img/catalog/kitchen/KIBC_DR1_DR1_DR1_DR1_DR1_DR1.png"/>
+                <object model="KIBC_DR1_DR1_DR1_DR2_DR1" name="KIBC_DR1_DR1_DR1_DR2_DR1" info="{translate:Base unit five drawers|Base unit five drawers}" image="img/new_img/catalog/kitchen/KIBC_DR1_DR1_DR1_DR2_DR1.png"/>
+                <object model="KIBC_DR1_DR1_DR1_DR1_DR2" name="KIBC_DR1_DR1_DR1_DR1_DR2" info="{translate:Base unit five drawers|Base unit five drawers}" image="img/new_img/catalog/kitchen/KIBC_DR1_DR1_DR1_DR1_DR2.png"/>
+                <object model="KIBC_DR1_DR1_DR2_DR1_DR1" name="KIBC_DR1_DR1_DR2_DR1_DR1" info="{translate:Base unit five drawers|Base unit five drawers}" image="img/new_img/catalog/kitchen/KIBC_DR1_DR1_DR2_DR1_DR1.png"/>
+                <object model="KIBC_DR1_DR2_DR2_DR1" name="KIBC_DR1_DR2_DR2_DR1" info="{translate:Base unit five drawers|Base unit five drawers}" image="img/new_img/catalog/kitchen/KIBC_DR1_DR2_DR2_DR1.png"/>
+                <object model="KIBC_DR2_DR1_DR1_DR1_DR1" name="KIBC_DR2_DR1_DR1_DR1_DR1" info="{translate:Base unit two drawers |Base unit two drawers }" image="img/new_img/catalog/kitchen/KIBC_DR2_DR1_DR1_DR1_DR1.png"/>
+                <object model="KIBC_DR2_DR1_DR1_DR2" name="KIBC_DR2_DR1_DR1_DR2" info="{translate:Base unit two drawers |Base unit two drawers }" image="img/new_img/catalog/kitchen/KIBC_DR2_DR1_DR1_DR2.png"/>
+                <object model="KIBC_DR2_DR2_DR1_DR1" name="KIBC_DR2_DR2_DR1_DR1" info="{translate:Base unit three drawers |Base unit three drawers }" image="img/new_img/catalog/kitchen/KIBC_DR2_DR2_DR1_DR1.png"/>
+                <object model="KIBC_DR2_DR2_DR2" name="KIBC_DR2_DR2_DR2" info="{translate:Base unit three drawers |Base unit three drawers }" image="img/new_img/catalog/kitchen/KIBC_DR2_DR2_DR2.png"/>
+                <object model="KIBC_DR3_DR1_DR1_DR1" name="KIBC_DR3_DR1_DR1_DR1" info="{translate:Base unit two drawers |Base unit two drawers }" image="img/new_img/catalog/kitchen/KIBC_DR3_DR1_DR1_DR1.png"/>
+                <object model="KIBC_DR3_DR2_DR1" name="KIBC_DR3_DR2_DR1" info="{translate:Base unit two drawers |Base unit two drawers }" image="img/new_img/catalog/kitchen/KIBC_DR3_DR2_DR1.png"/>
+                <object model="KIBC_DR3_DR3" name="KIBC_DR3_DR3" info="{translate:Base unit two drawers |Base unit two drawers }" image="img/new_img/catalog/kitchen/KIBC_DR3_DR3.png"/>
+                <object model="KIBC_DR4_DR1_DR1" name="KIBC_DR4_DR1_DR1" info="{translate:Base unit two drawers |Base unit two drawers }" image="img/new_img/catalog/kitchen/KIBC_DR4_DR1_DR1.png"/>
+                <object model="KIBC_DR5_DR1" name="KIBC_DR5_DR1" info="{translate:Base unit two drawers |Base unit two drawers }" image="img/new_img/catalog/kitchen/KIBC_DR5_DR1.png"/>
+                <object model="KIBC_DRTR_DR1" name="KIBC_DRTR_DR1" info="{translate:Base unit one integrated drawer for waste bin, one drawer|Base unit one integrated drawer for waste bin, one drawer}" image="img/new_img/catalog/kitchen/KIBC_DRTR_DR1.png"/>
+                <object model="KIBC_TR_DR1" name="KIBC_TR_DR1" info="{translate:Base unit one drawer for waste bin, one drawer|Base unit one drawer for waste bin, one drawer}" image="img/new_img/catalog/kitchen/KIBC_TR_DR1.png"/>
+            </category>
+            <category name="{translate:Base units with shelves|Base units with shelves}" image="img/new_img/catalog/kitchen/BUSH.jpg">
+                <object model="KIBC_FS" name="KIBC_FS" info="{translate:Base unit two open fixed shelves |Base unit two open fixed shelves }" image="img/new_img/catalog/kitchen/KIBC_FS.png"/>
+                <object model="KIBC_AS" name="KIBC_AS" info="{translate:Base unit open adjustable shelves|Base uni open adjustable shelves}" image="img/new_img/catalog/kitchen/KIBC_AS.png"/>
+                <object model="KIBC_FSL" name="KIBC_FSL" info="{translate:Base unit two open shelves left |Base unit two open shelves left }" image="img/new_img/catalog/kitchen/KIBC_FSL.png"/>
+                <object model="KIBC_FSR" name="KIBC_FSR" info="{translate:Base unit two open shelves right |Base unit two open shelves right }" image="img/new_img/catalog/kitchen/KIBC_FSR.png"/>
+                <object model="KIBC_DFS" name="KIBC_DFS" info="{translate:Base unit four open shelves |Base unit four open shelves }" image="img/new_img/catalog/kitchen/KIBC_DFS.png"/>
+            </category>
+            <category name="{translate:Base units fillers|Base units fillers}" image="img/new_img/catalog/kitchen/" >
+                <object model="KIBC_FLL" name="KIBC_FLL" info="{translate:Front filler left for Base cabinets |Front filler left for Base cabinets}" image="img/new_img/catalog/kitchen/KIBC_FLL.png"/>
+                <object model="KIBC_FLR" name="KIBC_FLR" info="{translate:Front filler right for Base cabinets |Front filler right for Base cabinets}" image="img/new_img/catalog/kitchen/KIBC_FLR.png"/>
+                <object model="KIBCLEL" name="KIBCLEL" info="{translate:L End unite left for Base cabinets |L End unite left for Base cabinets}" image="img/new_img/catalog/kitchen/KIBCLEL.png"/>
+                <object model="KIBCLER" name="KIBCLER" info="{translate:L End unite Right for Base cabinets |L End unite Right for Base cabinets}" image="img/new_img/catalog/kitchen/KIBCLEL.png"/>
+
+                <object model="KIBCCEL" name="KIBCCEL" info="{translate:C End unite Left for Base cabinets |L End unite Left for Base cabinets}" image="img/new_img/catalog/kitchen/KIBCLEL.png"/>
+                <object model="KIBCCER" name="KIBCCER" info="{translate:R End unite Right for Base cabinets |C End unite Right for Base cabinets}" image="img/new_img/catalog/kitchen/KIBCLEL.png"/>
+                <object model="KIBCCEL_2xY" name="KIBCCEL_2xY" info="{translate:Double depth C End unite Left for Base cabinets |Double depth C End unite Left for Base cabinets}" image="img/new_img/catalog/kitchen/KIBCLEL.png"/>
+                <object model="KIBCCER_2xY" name="KIBCCER_2xY" info="{translate:Double depth C End unite Right for Base cabinets |Double depth C End unite Right for Base cabinets}" image="img/new_img/catalog/kitchen/KIBCLEL.png"/>
+
+                <object model="HLKI_VRAIL_C" name="HLKI_VRAIL_C" info="{translate:Vertical panel for Base cabinets |Vertical panel for Base cabinets}" image="img/new_img/catalog/kitchen/HLKI_VRAIL_C.png"/>
+            </category>
+        </category>
+        <category name="KITC" label="Tall cabinets" image="img/new_img/catalog/kitchen/Tall.jpg" sizez="2320" sizex="600" sizey="560">
+            <category name="{translate:Tall units standard|Tall units standard}">
+                <object model="KITC_SD" name="KITC_SD" info="{translate:Tall unit one door (1625mm)|Tall unit one door (1625mm)}" image="img/new_img/catalog/kitchen/KITC_SD.png"/>
+                <object model="KITC_SD_SD" name="KITC_SD_SD" info="{translate:Tall unit one door (1625mm)|Tall unit one door (1625mm)}" image="img/new_img/catalog/kitchen/KITC_SD_SD.png"/>
+                <object model="KITC_SD_FLH" name="KITC_SD_FLH" info="{translate:Tall unit one door, one lift flap door |Tall unit one door one lift flap door}" image="img/new_img/catalog/kitchen/KITC_SD_FLH.png"/>
+                <object model="KITC_DD" name="KITC_DD" info="{translate:Tall unit double door (1625mm)|Tall unit double door (1625mm)}" image="img/new_img/catalog/kitchen/KITC_DD.png"/>
+                <object model="KITC_DD_DD" name="KITC_DD_DD" info="{translate:Tall unit double door (1625mm)|Tall unit double door (1625mm)}" image="img/new_img/catalog/kitchen/KITC_DD_DD.png"/>
+            </category>
+            <category name="{translate:Tall units with shelves|Tall units with shelves}" image="img/new_img/catalog/kitchen/BUSH.jpg">
+                <object model="KITC_FS" name="KITC_FS" info="{translate:Tall unit two open fixed shelves |Tall unit two open fixed shelves }" image="img/new_img/catalog/kitchen/KITC_FS.png"/>
+                <object model="KITC_AS" name="KITC_AS" info="{translate:Tall unit open adjustable shelves|Tall uni open adjustable shelves}" image="img/new_img/catalog/kitchen/KITC_AS.png"/>
+            </category>
+            <category name="{translate:Tall units with drawers|Tall units units with drawers}">
+                <object model="KITC_DR2_DR2_DR2_SD" name="KITC_DR2_DR2_DR2_SD" info="{translate:}" image="img/new_img/catalog/kitchen/KITC_DR2_DR2_DR2_SD.png"/>
+                <object model="KITC_DR3_DR2_DR1_SD" name="KITC_DR3_DR2_DR1_SD" info="{translate:}" image="img/new_img/catalog/kitchen/KITC_DR3_DR2_DR1_SD.png"/>
+            </category>
+            <category name="{translate:Tall units for appliances with flap door |Tall units for appliances with flap door}">
+                <object model="KITC_SD_FR_FLH" name="KITC_SD_FR_FLH" info="{translate:Tall unit one door, fridge appliance, one flap door (1885mm)|Tall unit one door, fridge appliance, one flap door (1885mm)}" image="img/new_img/catalog/kitchen/KITC_SD_FR_FLH.png"/>
+                <object model="KITC_FR_FLH" name="KITC_FR_FLH" info="{translate:Tall unit fridge appliance, one lift flap door (1625mm)|Tall unit fridge appliance, one lift flap door (1625mm)}" image="img/new_img/catalog/kitchen/KITC_FR_FLH.png"/>
+                <object model="KITC_FRSD_FRDD" name="KITC_FRSD_FRDD" info="{translate:Tall unit fridge appliance,  |Tall unit fridge appliance}" image="img/new_img/catalog/kitchen/KITC_FR_FLH.png"/>
+                <object model="KITC_DR2_DR2_DR2_SD_FLLU" name="KITC_DR2_DR2_DR2_SD_FLLU" info="{translate:}" image="img/new_img/catalog/kitchen/KITC_DR2_DR2_DR2_SD_FLLU.png"/>
+            </category>
+            <category name="{translate:Tall units for appliances |Tall units for appliances}" visible="true">
+                <object model="KITC_DR2_DR1_DR1_SD_OV1_SD" name="KITC_DR2_DR1_DR1_SD_OV1_SD" info="{translate:|}" image="img/new_img/catalog/kitchen/KITC_DR2_DR1_DR1_SD_OV1_SD.png"/>
+                <object model="KITC_DR2_DR2_DR2_FR" name="KITC_DR2_DR2_DR2_FR" info="{translate:|}" image="img/new_img/catalog/kitchen/KITC_DR2_DR2_DR2_FR.png"/>
+                <object model="KITC_DR3_DR2_DR1_FR" name="KITC_DR3_DR2_DR1_FR" info="{translate:|}" image="img/new_img/catalog/kitchen/KITC_DR3_DR2_DR1_FR.png"/>
+                <object model="KITC_FR_SD" name="KITC_FR_SD" info="{translate:Tall unit fridge appliance, one door |Tall unit fridge appliance, one door }" image="img/new_img/catalog/kitchen/KITC_FR_SD.png"/>
+                <object model="KITC_FR" name="KITC_FR" info="{translate:Tall unit fridge appliance|Tall unit fridge appliance}" image="img/new_img/catalog/kitchen/KITC_FR.png"/>
+                <object model="KITC_FR_OV45_SD" name="KITC_FR_OV45_SD" info="{translate:Tall unit fridge appliance, oven appliance, one door |Tall unit fridge appliance, oven appliance, one door}" image="img/new_img/catalog/kitchen/KITC_FR_OV45_SD.png"/>
+                <object model="KITC_SD_OV1_OV2_SD" name="KITC_SD_OV1_OV2_SD" info="{translate:Tall unit one door, oven appliance, oven appliance, one door |Tall unit one door, oven appliance, oven appliance, one door}" image="img/new_img/catalog/kitchen/KITC_SD_OV1_OV2_SD.png"/>
+                <object model="KITC_SD_OV1_SD" name="KITC_SD_OV1_SD" info="{translate:Tall unit one door, oven appliance, one door |Tall unit one door, oven appliance, one door}" image="img/new_img/catalog/kitchen/KITC_SD_OV1_SD.png"/>
+            </category>
+            <category name="{translate:Tall units fillers|Tall units fillers}" image="img/new_img/catalog/kitchen/" >
+                <object model="KITC_FLL" name="KITC_FLL" info="{translate:Front filler left for Base cabinets |Front filler left for Base cabinets}" image="img/new_img/catalog/kitchen/KITC_FLL.png"/>
+                <object model="KITC_FLR" name="KITC_FLR" info="{translate:Front filler right for Base cabinets |Front filler right for Base cabinets}" image="img/new_img/catalog/kitchen/KITC_FLR.png"/>
+            </category>
+        </category>
+        <category name="KIWC" label="Wall cabinets" image="img/new_img/catalog/kitchen/Wall.jpg" sizez="650" sizex="600" sizey="350">
+            <category name="{translate:Wall units standard|Wall units standard}" image="img/new_img/catalog/kitchen/WUSD.jpg">
+                <object model="KIWC_SD" name="KIWC_SD" info="{translate:Wall unit one door (650mm)|Wall unit one door (650mm)}" image="img/new_img/catalog/kitchen/KIWC_SD.png"/>
+                <object model="KIWC_OV45_SD" name="KIWC_OV45_SD" info="{translate:Wall unit oven one door (650mm)|Wall unit oven one door (650mm)}" image="img/new_img/catalog/kitchen/KIWC_OV45_SD.png"/>
+                <object model="KIWC_DD" name="KIWC_DD" info="{translate:Wall unit two doors (650mm)|Wall unit two doors (650mm)}" image="img/new_img/catalog/kitchen/KIWC_DD.png"/>
+                <object model="KIWC_FSL" name="KIWC_FSL" info="{translate:Wall unit open shelf left (650mm)|Wall unit open shelf left (650mm)}" image="img/new_img/catalog/kitchen/KIWC_FSL.png"/>
+                <object model="KIWC_FSR" name="KIWC_FSR" info="{translate:Wall unit open shelf right (650mm)|Wall unit open shelf right (650mm)}" image="img/new_img/catalog/kitchen/KIWC_FSR.png"/>
+            </category>
+            <category name="{translate:Wall units with shelves|Wall units with shelves}" image="img/new_img/catalog/kitchen/BUSH.jpg">
+                <object model="KIWC_FS" name="KIWC_FS" info="{translate:Wall unit two open fixed shelves |Wall unit two open fixed shelves }" image="img/new_img/catalog/kitchen/KIWC_FS.png"/>
+                <object model="KIWC_AS" name="KIWC_AS" info="{translate:Wall unit open adjustable shelves|Wall uni open adjustable shelves}" image="img/new_img/catalog/kitchen/KIWC_AS.png"/>
+            </category>
+            <category name="{translate:Wall units for corners|Wall units for corners}" image="img/new_img/catalog/kitchen/W2DC_91.jpg">
+                <object model="KIWCC_SDL" name="KIWCC_SDL" info="{translate:Wall unit blind corner unit one door, left|Wall unit blind corner unit one door, left}" image="img/new_img/catalog/kitchen/KIWCC_SDL.png"/>
+            </category>
+            <category name="{translate:Wall units with flap door|Wall units with flap door}" image="img/new_img/catalog/kitchen/WUFD.jpg">
+                <object model="KIWC_FLH" name="KIWC_FLH" info="{translate:Wall unit one lift flap door (650mm)|Wall unit one lift flap door (650mm)}" image="img/new_img/catalog/kitchen/KIWC_FLH.png"/>
+            </category>
+            <category name="{translate:Wall units fillers|Wall units fillers}" image="img/new_img/catalog/kitchen/" >
+                <object model="KIWC_FLL" name="KIWC_FLL" info="{translate:Front filler left for Wall cabinets |Front filler left for Wall cabinets}" image="img/new_img/catalog/kitchen/KITC_FLL.png"/>
+                <object model="KIWC_FLR" name="KIWC_FLR" info="{translate:Front filler right for Wall cabinets |Front filler right for Wall cabinets}" image="img/new_img/catalog/kitchen/KITC_FLR.png"/>
+            </category>
+        </category>
+    </category>
+
+    <category name="{translate:Panels|Panels}" image="img/new_img/catalog/kitchen/Panels.jpg" visible="true">
+        <category name="{translate:Base Unit Vertical Panles|Base Unit Vertical Panles}">
+            <category name="{translate:Base units|Base units}">
+                <object model="KIBC_VP" name="KIBC_VP" info="{translate:Vertical panel for Base cabinets |Vertical panel for Base cabinets }" image="img/new_img/catalog/kitchen/KIBC_VP.png"/>
+            </category>
+            <category name="{translate:Tall units|Tall units}">
+                <object model="KITC_VP" name="KITC_VP" info="{translate:Vertical panel for Tall cabinets |Vertical panel for Tall cabinets }" image="img/new_img/catalog/kitchen/KITC_VP.png"/>
+            </category>
+            <category name="{translate:Wall units|Wall units}">
+                <object model="KIWC_VP" name="KIWC_VP" info="{translate:Vertical panel for Wall cabinets|Vertical panel for Wall cabinets}" image="img/new_img/catalog/kitchen/KIWC_VP.png"/>
+            </category>
+        </category>
+    </category>
+
+    <category name="CONTIGUOUS_PART" label="Contiguous parts" image="img/new_img/catalog/kitchen/KI_CONTIGUOUS_PART.PNG">
+        <category name="KI_WS" label="Work surfaces" image="img/new_img/catalog/kitchen/Worksurface.jpg">
+            <object model="KI_WS_VAR_VAR" name="KI_WS_VAR_VAR" label="{translate:Work surface|Work surface}" info="Work surface" image="img/new_img/catalog/kitchen/KI_WS_VAR_VAR.png"/>
+        </category>
+        <category name="KI_BASE" label="Bases" image="img/new_img/catalog/kitchen/Plinth.jpg">
+            <object model="KI_BA_S1000_P0000_VAR" name="KI_BA_S1000_P0000_VAR" label="{translate:Base S1000 P0000|Base S1000 P0000}" info="Base S1000 P0000" image="img/new_img/catalog/kitchen/KI_BA_S1000_P0000_VAR.png"/>
+            <object model="KI_BA_S1010_P0000_VAR" name="KI_BA_S1010_P0000_VAR" label="{translate:Base S1010 P0000|Base S1010 P0000}" info="Base S1010 P0000" image="img/new_img/catalog/kitchen/KI_BA_S1010_P0000_VAR.png"/>
+            <object model="KI_BA_S1111_PXXXX_VAR" name="KI_BA_S1111_PXXXX_VAR" label="{translate:Base S1111 PXXXX|Base S1111 PXXXX}" info="Base S1111 PXXXX" image="img/new_img/catalog/kitchen/KI_BA_S1111_PXXXX_VAR.png"/>
+            <object model="KI_BA_S1011_PX00X_VAR" name="KI_BA_S1011_PX00X_VAR" label="{translate:Base S1011 PX00X|Base S1011 PX00X}" info="Base S1011 PX00X" image="img/new_img/catalog/kitchen/KI_BA_S1011_PX00X_VAR.png"/>
+            <object model="KI_BA_S1001_PX000_VAR" name="KI_BA_S1001_PX000_VAR" label="{translate:Base S1001 PX000|Base S1001 PX000}" info="Base S1001 PX000" image="img/new_img/catalog/kitchen/KI_BA_S1001_PX000_VAR.png"/>
+            <object model="KI_BA_S1110_P0XX0_VAR" name="KI_BA_S1110_P0XX0_VAR" label="{translate:Base S1110 P0XX0|Base S1110 P0XX0}" info="Base S1110 P0XX0" image="img/new_img/catalog/kitchen/KI_BA_S1110_P0XX0_VAR.png"/>
+            <object model="KI_BA_S1100_P0X00_VAR" name="KI_BA_S1100_P0X00_VAR" label="{translate:Base S1100 P0X00|Base S1100 P0X00}" info="Base S1100 P0X00" image="img/new_img/catalog/kitchen/KI_BA_S1100_P0X00_VAR.png"/>
+            <object model="KI_BA_S1101_PXX00_VAR" name="KI_BA_S1101_PXX00_VAR" label="{translate:Base S1101 PXX00|Base S1101 PXX00}" info="Base S1101 PXX00" image="img/new_img/catalog/kitchen/KI_BA_S1101_PXX00_VAR.png"/>
+        </category>
+        <category name="KI_LIGHT_VALENCE" label="Light valence" image="img/new_img/catalog/kitchen/">
+            <object model="KI_LV_VAR_VAR" name="KI_LV_VAR_VAR" label="{translate:Light valence|Light valence}" info="Light valence" image="img/new_img/catalog/kitchen/KI_LV_VAR_VAR.png"/>
+        </category>
+        <category name="KI_CROWN" label="Crown" image="img/new_img/catalog/kitchen/Plinth.jpg">
+            <object model="KI_CR_S1000_P0000_VAR" name="KI_CR_S1000_P0000_VAR" label="{translate:Crown S1000 P0000|Crown S1000 P0000}" info="Crown S1000 P0000" image="img/new_img/catalog/kitchen/KI_BA_S1000_P0000_VAR.png"/>
+            <object model="KI_CR_S1001_PX000_VAR" name="KI_CR_S1001_PX000_VAR" label="{translate:Crown S1001 PX000|Crown S1001 PX000}" info="Crown S1001 PX000" image="img/new_img/catalog/kitchen/KI_BA_S1001_PX000_VAR.png"/>
+            <object model="KI_CR_S1100_P0X00_VAR" name="KI_CR_S1100_P0X00_VAR" label="{translate:Crown S1100 P0X00|Crown S1100 P0X00}" info="Crown S1100 P0X00" image="img/new_img/catalog/kitchen/KI_BA_S1100_P0X00_VAR.png"/>
+        </category>
+    </category>
+
+</Catalog>

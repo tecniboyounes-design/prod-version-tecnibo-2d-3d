@@ -1,0 +1,8 @@
+{
+    "jira-plugin.workingProject": "",
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#28275C",
+        "titleBar.activeBackground": "#383781",
+        "titleBar.activeForeground": "#F9F9FD"
+    }
+}

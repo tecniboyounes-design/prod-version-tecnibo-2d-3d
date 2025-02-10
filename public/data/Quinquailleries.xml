@@ -1,0 +1,1062 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<Catalog name="door_catalog" label="Office Catalog" info="Office Catalog" image="img/new_img/catalog\DOOR\doors.jpg">
+	<tooltip file="DOOR_TOOLTIP" />
+    <tooltip file="EXTERNAL_TOOLTIP" />
+	<GLOBAL file="P_GLOBAL_SETTING"/>
+    <!-- catalouge Fourniture chantier-->
+	    <category name="np_partition_conn" label="Quincailleries" image="img\new_img\catalog\webshop\np_partition_conn.png">
+            <category name="CON_WS_CAB" label="Mobilier" image="BITMAPS/295.1012.jpg">
+                <category name="WS_CAB_BASE" label="Cabinet/Base" image="BITMAPS/321.9032.jpg">
+                    <object name="OS_HOOK_HOLLY_x3_4261027" model="OS_HOOK_HOLLY_x3_4261027" image="BITMAPS/426.1027.jpg" label="Crochet de porte-manteau Holly, triple, rotatif, (T): 75 mm, avec vis visibles"/>
+                    <object name="OS_Base_H150_Cov_90_Ext" model="OS_Base_H150_Cov_90_Ext" image="BITMAPS/321.9032.jpg" label="Profilé terminal / angle extérieur 90°, pour cache pour plinthe 150 mm, alu brossé" info="plinthe"/>
+                    <object name="OS_Base_H150_Ang_90_Int_Ext" model="OS_Base_H150_Ang_90_Int_Ext" image="BITMAPS/321.9044.jpg" label="Angle intérieur /extérieur 90°, pour cache pour plinthe 150 mm, alu brossé" info="plinthe"/>
+                    <object name="OS_Base_H150_Ang_135_Int_Ext" model="OS_Base_H150_Ang_135_Int_Ext" image="BITMAPS/321.9050.jpg" label="Angle intérieur /extérieur, 135°, pour cache pour plinthe 150 mm, alu brossé" info="plinthe"/>
+                    <object name="OS_SPP_Base_PVC_Alu_BR_H100" model="OS_SPP_Base_PVC_Alu_BR_H100" image="img\new_img\spp_img\OS_SPP_Base_PVC_Alu_BR_H150.jpg" label="Cache pour plinthe 100 mm, alu brossé" info="plinthe"/>
+                    <object name="OS_SPP_Base_PVC_Alu_BR_H150" model="OS_SPP_Base_PVC_Alu_BR_H150" image="img\new_img\spp_img\OS_SPP_Base_PVC_Alu_BR_H150.jpg" label="Cache pour plinthe 150 mm, alu brossé" info="plinthe"/>
+                </category>
+                <category name="WS_CAB_ELECTRO" label="Electro" image="BITMAPS/SIEMENS_KI51FAD30.png">
+                    <object name="SI_ST_ET375FFP1E" model="SI_ST_ET375FFP1E" image="BITMAPS/ET375FFP1E_dim.jpg" label="Siemens ET375FFP1E iQ300, Table de cuisson vitrocéramique HighSpeed avec design à facettes de 30 cm" info="Electro"/>
+                    <object name="BO_HO_DBB66AF50" model="BO_HO_DBB66AF50" image="BITMAPS/DBB66AF50.jpg" label="Bosch DBB66AF50 Serie 4 Hotte design intégré 60cm clear glass" info="Electro"/>
+                    <object name="SI_DW_SN63EX02CE" model="SI_DW_SN63EX02CE" image="BITMAPS/SN63EX02AE.JPG" label="iQ300 lave-vaisselle entièrement intégrable, 60cm" info="Electro,Frigo,Lave-vaisselle,lave vaisselle"/>
+	                <object name="LI_FR_FRFCvg_5511" model="LI_FR_FRFCvg_5511" image="BITMAPS/LIEBHERR_FRFCVG5511.JPG" label="Réfrigérateur Liebherr FRFCvg 5511, avec refroidissement par ventilation" info="Electro,Frigo,Refrigerateur"/>
+                    <object name="SI_FR_KU21RADE0" model="SI_FR_KU21RADE0" image="BITMAPS/KU21RADE0_dim.jpg" label="Siemens KU21RADE0 iQ500, réfrigérateur sous-encastrable, 82 x 60 cm, charnières plates SoftClose" info="Electro,Frigo,Refrigerateur"/>
+                    <object name="BO_DW_SMV6YCX00E" model="BO_DW_SMV6YCX00E" image="BITMAPS/SMV6YCX00E_dim.jpg" label="Bosch SMV6YCX00E Serie 6, Lave-vaisselle entièrement intégrable, 60cm" info="Electro,Frigo,Lave-vaisselle,lave vaisselle"/>
+                    <object name="SI_FR_KU21RADE0" model="SI_FR_KU21RADE0" image="BITMAPS/KU21RADE0_dim.jpg" label="Siemens KU21RADE0 iQ500, réfrigérateur sous-encastrable, 82 x 60 cm, charnières plates SoftClose" info="Electro,Frigo,Refrigerateur"/>
+                    <object name="SI_DW_SN75YX00CE" model="SI_DW_SN75YX00CE" image="BITMAPS/SN75YX00CE_dim.jpg" label="Siemens SN75YX00CE, iQ500 Lave-vaisselle tout intégrable 60 cm" info="Electro,Lave-vaisselle,lave vaisselle"/>
+                    <object name="SI_FR_KI41R2FE0" model="SI_FR_KI41R2FE0" image="BITMAPS/KI41R2FE0_dim.JPG" label="Siemens KI41R2FE0 iQ300, réfrigérateur intégrable 122.5x56cm, Charnières plates" info="Electro,Frigo,Refrigerateur"/>
+                    <object name="BO_MW_FFL023MS2" model="BO_MW_FFL023MS2" image="BITMAPS/FFL023MS2.jpg" label="Bosch FFL023MS2 Serie 2, Four micro-ondes pose libre" info="Electro,Micro-onde"/>
+                    <object name="BO_FR_KIR21VFE0" model="BO_FR_KIR21VFE0" image="BITMAPS/KIR21VFE0_dim.jpg" label="Bosch KIR21VFE0 Série 4, Réfrigérateur intégrable, 88x56cm, flat hinges" info="Electro,Frigo,Refrigerateur"/>
+                    <object name="SI_MW_BE732L1B1" model="SI_MW_BE732L1B1" image="BITMAPS/BE732L1B1_dim.jpg" label="Siemens BE732L1B1 iQ700, Micro-onde encastrable, noir, HT=382mm " info="Electro,Micro-onde"/>
+                    <object name="SI_DW_SR63EX24ME" model="SI_DW_SR63EX24ME" image="BITMAPS/SR63EX24ME_Dim.JPG" label="iQ300 Lave-vaisselle SR63EX24ME entièrement intégrable 45cm" info="Electro,Lave-vaisselle,Lave vaisselle"/>
+                    <object name="SI_DW_SN55TS00CE" model="SI_DW_SN55TS00CE" image="BITMAPS/SN55TS00CE_Dim.jpg" label="Siemens SN55TS00CE iQ500, lave-vaisselle intégrable, 60 cm, acier inox" info="Electro,Lave-vaisselle,lave vaisselle"/>
+                    <object name="MI_OV_H7440BPXOBSW" model="MI_OV_H7440BPXOBSW" image="BITMAPS/H7440BPXOBSW.jpg" label="Four encastrable sans poignée Miele H7440BPXOBSW Noir obsid HT=450mm" info="Electro,Four"/>
+                    <object name="SI_OV_HB675GBS1" model="SI_OV_HB675GBS1" image="BITMAPS/HB675GBS1.jpg" label="Siemens HB675GBS1 iQ700 Four encastrable, 60x60 cm, Inox" info="Electro,Four"/>
+                    <object name="SI_FR_KI21RADD1" model="SI_FR_KI21RADD1" image="BITMAPS/KI21RADD1.jpg" label="Siemens KI21RADD1 - iQ500 Réfrigérateur intégrable 88x56cm, sof close flat hinge" info="Electro,Frigo"/>
+                    <object name="SI_FR_KI51FADE0" model="SI_FR_KI51FADE0" image="BITMAPS/SIEMENS_KI51FAD30.png" label="Réfrigérateur intégrable Siemens KI51FADE0 HT=1397mm" info="Electro,Frigo"/>
+                    <object name="SI_FR_KU15RA65" model="SI_FR_KU15RA65" image="BITMAPS/SIEMENS_KU15RA65.png" label="Réfrigérateur intégrable sous-plan Siemens KU15RA65" info="Electro,Frigo"/>
+                    <object name="SI_FR_KU15RADF0" model="SI_FR_KU15RADF0" image="BITMAPS/KU15RADF0.JPG" label="Siemens KU15RADF0, iQ500, réfrigérateur sous-encastrable, 82 x 60 cm" info="Electro,Frigo"/>
+
+                    <object name="MI_OV_DGM7845OBSW" model="MI_OV_DGM7845OBSW" image="BITMAPS/DGM7845OBSW.jpg" label="Four vapeur avec micro-onde Miele DGM7845OBSW Noir obsid HT=450mm" info="Electro,Four,micro"/>
+                    <object name="MI_VC_EVS7010OBSW" model="MI_VC_EVS7010OBSW" image="BITMAPS/EVS7010OBSW.jpg" label="Tiroir sous vide Miele EVS7010OBSW Noir obsid H=140mm" info="Electro,Frigo"/>
+                    <object name="MI_OV_DGD7635OBSW" model="MI_OV_DGD7635OBSW" image="BITMAPS/DGD7635OBSW.JPG" label="Four vapeur sous pression Miele DGD7635OBSW Noir obsid HT=380mm" info="Electro,Four"/>
+                </category>
+                <category name="WS_CAB_SINK" label="Sink" image="BITMAPS/BLANCO_JANDORA_S_526614.jpg">
+                    <object name="OS_SI_BLANCO_SUPRA_500_U_INOX" model="OS_SI_BLANCO_SUPRA_500_U_INOX" image="BITMAPS/280.518205.jpg" label="Evier Blanco Supra 500-U, acier inoxydable finition brossée" info="Sink"/>
+                    <object name="BLA_SI_SUP_450_U_INOX" model="BLA_SI_SUP_450_U_INOX" image="BITMAPS/518203_dim.jpg" label="Evier Blanco Supra 450-U, acier inoxydable" info="Sink"/>
+                    <object name="FR_SI_MA_MRX_210_500" model="FR_SI_MA_MRX_210_500" image="BITMAPS/MRX2105001_dim.png" label="Evier Franke Maris MRX 210 500, 1 cuve, Inox, 530x510mm, Slimtop-à affleurer" info="Sink"/>
+                    <object name="FR_SI_AZX_611" model="FR_SI_AZX_611" image="BITMAPS/AZX6111.PNG" label="Evier Franke Antea AZX611, 1 cuve, Inox, 860x500mm, à encastrer" info="Sink"/>
+                    <object name="OS_SI_BLANCO_DINAS_6_S_INOX_B" model="OS_SI_BLANCO_DINAS_6_S_INOX_B" image="BITMAPS/523379_Dim.jpg" label="Evier Blanco Dinas 6 S, acier inoxydable satiné, avec bouton-tournant" info="Sink"/>
+                </category>
+                <category name="WS_CAB_TAP" label="Tap" image="BITMAPS/BLANCO_JANDORA_S_526614.jpg">
+                    <object name="BL_TAP_BLANCO_LINUS_BLACK" model="BL_TAP_BLANCO_LINUS_BLACK" image="BITMAPS/280.526676.jpg" label="Mitigeur de cuisine Blanco Linus, noir mat, basse pression, sans douchette"/>
+                    <object name="BL_TAP_MILA_519414" model="BL_TAP_MILA_519414" image="BITMAPS/519414.jpg" label="Mitigeur Blanco Mila, chrome, HP, sans douchette"/>
+                    <object name="BL_TAP_LANORA_523122" model="BL_TAP_LANORA_523122" image="BITMAPS/523122.jpg" label="Mitigeur Blanco Lanora, acier inoxydable brossé, HP, sans douchette"/>
+                    <object name="BL_TAP_LANORA_S_525126" model="BL_TAP_LANORA_S_525126" image="BITMAPS/525126.jpg" label="Mitigeur Blanco Lanora-S, acier inoxydable brossée, BP, avec douchette"/>
+                    <object name="TES_TAPE_PERFECT_30mm" model="TES_TAPE_PERFECT_30mm" image="BITMAPS/TES_TAPE_PERFECT_30mm.jpg" label="Ruban de peinture 30mm, longueur 50m"/>
+                    <object name="TES_TAPE_PERFECT_38mm" model="TES_TAPE_PERFECT_38mm" image="BITMAPS/TES_TAPE_PERFECT_30mm.jpg" label="Ruban de peinture 38mm, longueur 50m"/>
+                    <object name="FR_TAP_LINA_L_CHRO" model="FR_TAP_LINA_L_CHRO" image="BITMAPS/115.0712.420.jpg" label="Mitigeur Franke Lina L, chrome, HP" info="Tap,Sanitaire"/>
+                    <object name="FR_TAP_ATLAS_NEO_BL_IND_Shower" model="FR_TAP_ATLAS_NEO_BL_IND_Shower" image="BITMAPS/115.0550.427.jpg" label="Mitigeur Franke Atlas Neo, acier inox noir industriel, HP, avec douchette" info="Tap,Sanitaire"/>
+                    <object name="BL_TAP_JANDORA_S_526614" model="BL_TAP_JANDORA_S_526614" image="BITMAPS/BLANCO_JANDORA_S_526614.jpg" label="Mitigeur Blanco Jandora-S, acier inoxydable brossé, HP, avec douchette" info="Tap,Sanitaire"/>
+                    <object name="FR_TAP_URBAN_CHRO" model="FR_TAP_URBAN_CHRO" image="BITMAPS/115.0595.062.jpg" label="Mitigeur Franke Urban, chrome, HP, sans douchette" info="Tap,Sanitaire"/>
+                    <object name="FR_TAP_MARIS_CHRO" model="FR_TAP_MARIS_CHRO" image="BITMAPS/115.0392.332.jpg" label="Mitigeur Franke Maris, chrome, HP, sans douchette" info="Tap,Sanitaire"/>
+                    <object name="FR_TAP_ACTIVE_J_CHRO" model="FR_TAP_ACTIVE_J_CHRO" image="BITMAPS/115.0653.395.jpg" label="Mitigeur Franke Active J, chrome, HP, sans douchette" info="Tap,Sanitaire"/>
+                    <object name="FR_TAP_ATLAS_NEO_1150521435" model="FR_TAP_ATLAS_NEO_1150521435" image="BITMAPS/115.0521.435.jpg" label="Mitigeur Franke Atlas Neo, sans douchette, acier inox" info="Tap,Sanitaire"/>
+                </category>
+                <category name="WS_CAB_MAT_ELEC" label="Material Electrique" image="BITMAPS/D_DC_SQ_SET_GSR_BG_64470001.jpg">
+                    <object name="HA_Led_VI_Mini_120_3000K_5M" model="HA_Led_VI_Mini_120_3000K_5M" image="BITMAPS/5588613.jpg" label="Strips LED Halemeier Versa Inside Mini 120, 12V, 11W/m, blanc chaud, (L) = 5000 mm, 2 câbles de 1800 mm, système de connexion à enficher M1"/>
+                    <object name="HA_Led_VI_120_3000K_5M" model="HA_Led_VI_120_3000K_5M" image="BITMAPS/5600213.jpg" label="Strips LED Halemeier Versa Inside 120, 12V, 7,2W/m, blanc chaud, (L) = 5000 mm, 2 câbles de 1800 mm, connexion M1" info="Material Electrique"/>
+                    <!--06.01.2025 NAL -->
+                    <object name="HA_Led_VI_120_4000K_3M" model="HA_Led_VI_120_4000K_3M" image="BITMAPS/5604403.jpg" label="Strips LED Halemeier Versa Inside 120, 12V, 4W/m, blanc neutre, (L) = 3000 mm, 2 câbles de 1800 mm, connexion M1" info="Material Electrique"/>
+
+                    <object name="EVO_BackFlip_STD_FR_USB_C_Inox" model="EVO_BackFlip_STD_FR_USB_C_Inox" image="BITMAPS/EVO_BackFlip_Inox.jpg" label="Prise escamotable pivotante Evoline BackFlip Standard, 2 prises FR/BE, 1 chargeur USB-C, couleur acier inoxydable brossé"/>
+                    <object name="SI_FH_00492680" model="SI_FH_00492680" image="BITMAPS/00492680.jpg" label="Charnière Siemens pour réfrigérateur encastrable"/>
+	                <object name="SI_FH_00481147" model="SI_FH_00481147" image="BITMAPS/00481147.jpg" label="Set de 2 charnières pour réfrigérateur et congélateur"/>
+                    <object name="LXP_PL_6060_CCT_UGR_3000K" model="LXP_PL_6060_CCT_UGR_3000K" image="BITMAPS/4719986.jpg" label="Luxproof panel LED PL-6060 CCT UGR 3000/4000K" info="Material Electrique"/>
+                    <object name="OS_Led_EcoSlim_3000K_5M" model="OS_Led_EcoSlim_3000K_5M" image="BITMAPS/508.2321.jpg" label="Strip Led ecoSLIM 5 mètres 3000K largeur 5mm" info="Material Electrique"/>
+                    <object name="HF_PIE_D102_3xPO_2xRJ45_Silv" model="HF_PIE_D102_3xPO_2xRJ45_Silv" image="BITMAPS/822.74.955.jpg" label="Élément de prises de courant, escamotable, 230 V, épaisseur de plan de travail max. 50 mm, 3 prises femelles à contact de protection et 2 douilles RJ-45, couvercle basculant : plastique aspect argent" info="Material Electrique"/>
+                    <object name="VEN_Lift_TV_Elec_TS700A" model="VEN_Lift_TV_Elec_TS700A" image="BITMAPS/TS700A_7BXX1.jpg" label="Venset TV lift - 60-130 cm/100 kg, Electric Flat Lift, black" info="Material Electrique"/>
+                    <object name="OS_Charging_Phone_Ø80_Black" model="OS_Charging_Phone_Ø80_Black" image="BITMAPS/295.2129.jpg" label="Station de recharge pour téléphone portable sans câble, Ø 80 mm, plastique noir" info="Material Electrique"/>
+                </category>
+                <category name="WS_CAB_EQUIP_CAB" label="Equipement" image="BITMAPS/295.1012.jpg">
+                    <object name="EE_MC_10295610" model="EE_MC_10295610" image="BITMAPS/10295-6------10.jpg" label="Contact magnétique avec bride" info="Equipement"/>
+                    <object name="MA_TO_HC_MAKITA_SDS_1940807" model="MA_TO_HC_MAKITA_SDS_1940807" image="BITMAPS/194080-7.jpg" label="Mandrin Makita 194080-7, SDS+ serrage rapide - convient pour modèles HR2450FT/HR2470FT/HR2811FT" info="Equipement"/>
+                    <object name="HA_HOOK_D50_84261397" model="HA_HOOK_D50_84261397" image="BITMAPS/842.61.397.jpg" label="Crochet de vestiaire, en polyamide, rosace ronde, profondeur 65mm, gris clair brillant" info="Equipement"/>
+                    <object name="MA_TO_BOX_POW_MAKITA_BL1840" model="MA_TO_BOX_POW_MAKITA_BL1840" image="BITMAPS/BL1840_Box.jpg" label="Power Pack Makita 2 accus BL1840 18V Li-ion - 4Ah + chargeur en coffret" info="Equipement"/>
+                    <object name="MA_TO_POW_MAKITA_BL1840" model="MA_TO_POW_MAKITA_BL1840" image="BITMAPS/BL1840.jpg" label="Accu Makita BL1840 18V Li-ion - 4Ah" info="Equipement"/>
+                    <object name="PA_TO_VEN_2T_50kg" model="PA_TO_VEN_2T_50kg" image="BITMAPS/3649790.jpg" label="Ventouse à levier 2 têtes, charge 50kg" info="Equipement"/>
+                    <object name="PA_TO_BOX_VEN_2T" model="PA_TO_BOX_VEN_2T" image="BITMAPS/3649828.jpg" label="Pack de 2 ventouses à levier 2 têtes" info="Equipement"/>
+                    
+                    <object name="BE_PC_80_noir_plastique" model="BE_PC_80_noir_plastique" image="BITMAPS/6292-5380.jpg" label="Passe-câble dia 80mm plastique noir" info="Equipement"/>
+                    <object name="BE_SQ_RP_40x40x15mm" model="BE_SQ_RP_40x40x15mm" image="BITMAPS/3080-2040.jpg" label="Equerre de chaise en fer 40x40x15mm" info="Equipement"/>
+                    <object name="BE_Tube_Pend_Alu_Mat_2000" model="BE_Tube_Pend_Alu_Mat_2000" image="BITMAPS/4101-3610_1.png" label="Tube de penderie Alu Mat 30x14x2mm ; 2000mm" info="Equipement"/>
+                    <object name="HA_CC_AL_RAL_9006_63103221" model="HA_CC_AL_RAL_9006_63103221" image="BITMAPS/631.03.221.jpg" label="Chemin de câbles, pour recevoir blocs multiprises et câbles - longueur : 1024 mm, aluminium blanc, RAL 9006" info="Equipement"/>
+                    <object name="HA_CC_AL_RAL_9006_63103225" model="HA_CC_AL_RAL_9006_63103225" image="BITMAPS/631.03.221.jpg" label="Chemin de câbles, pour recevoir blocs multiprises et câbles - longueur : 1824 mm, aluminium blanc, RAL 9006" info="Equipement"/>
+                    <object name="HA_Pass_Cable_diam_80mm" model="HA_Pass_Cable_diam_80mm" image="BITMAPS/631.31.714.jpg" label="Passage de câbles, diamètre de perçage ou 80 mm" info="Equipement"/>
+                    <object name="HA_TAQUET_REG_L175mm" model="HA_TAQUET_REG_L175mm" image="BITMAPS/283.32.971.JPG" label="Taquet pour étagère 30mm, diamètre 14mm, acier" info="Equipement"/>
+                    <object name="OS_PC_60_blanc_zamac_h23" model="OS_PC_60_blanc_zamac_h23" image="BITMAPS/295_1004.jpg" label="Passe-câble dia 60mm zamac blanc vernis" info="Equipement"/>
+                    <object name="OS_PC_60_inox_zamac_h23" model="OS_PC_60_inox_zamac_h23" image="BITMAPS/OS_PC_80_inox_zamac_h23.jpg" label="Passe-câble dia 60mm zamac inox h23mm" info="Equipement"/>
+                    <object name="OS_PC_60_noir_zamac_h23" model="OS_PC_60_noir_zamac_h23" image="BITMAPS/295_1002.jpg" label="Passe-câble dia 60mm zamac noir vernie h23mm" info="Equipement"/>
+                    <object name="OS_PC_80_noir_zamac_h23" model="OS_PC_80_noir_zamac_h23" image="BITMAPS/295.1012.jpg" label="Passe-câbles zamac, 80 mm verni noir, Ø extérieur 88 mm, hauteur 23 mm" info="Equipement"/>
+                    <object name="w_SupPend_SFixe_70668" model="w_SupPend_SFixe_70668" image="BITMAPS/ta_0070668_TA.jpg" label="Support de barre penderie, D 786, ovale, nickelé" info="Equipement"/>
+                    <object name="OS_PC_60_gris_plastique" model="OS_PC_60_gris_plastique" image="BITMAPS/999.058588.jpg" label="Passe-câble dia 60mm gris " info="Equipement"/>
+                    <object name="D_DC_SQ_SET_GSR_BG_64470001" model="D_DC_SQ_SET_GSR_BG_64470001" image="BITMAPS/D_DC_SQ_SET_GSR_BG_64470001.jpg" label="Garniture de linteau " info="Equipement"/>
+                    <object name="AC_Block_100x250x625" model="AC_Block_100x250x625" image="BITMAPS/AC_Block.jpg" label="Bloc béton cellulaire 100x250x625mm" info="Equipement"/>
+                    <object name="AC_Glue_GK60B_EN_25kg" model="AC_Glue_GK60B_EN_25kg" image="BITMAPS/AC_Glue_GK60B.jpg" label="Colle pour bloc béton cellulaire GK60B E N 25kg" info="Equipement"/>
+                    <object name="AC_Saw_70930" model="AC_Saw_70930" image="BITMAPS/AC_Saw_70930.jpg" label="Scie pour béton cellulaire RUBI 70930" info="Equipement"/>
+                </category>
+                <category name="WS_CAB_TRASH" label="Trash" image="BITMAPS/6202-3015.jpg">
+                    <object name="RU_VB_76013436_75L_GREY" model="RU_VB_76013436_75L_GREY" image="BITMAPS/VB-76013436-1.jpg" label="Collecteur Brute 75,7 L, Rubbermaid VB-76013436"/>
+                    <object name="LMC_TC_8L" model="LMC_TC_8L" image="BITMAPS/POU108.png" label="Poubelle encastrable 8 L" info="Trash,poubelle"/>
+                    <object name="HF_TC_DR_2x11L_45cm_50191400" model="HF_TC_DR_2x11L_45cm_50191400" image="BITMAPS/501.91.400.jpg" label="Poubelle double, 2 x 11 litres, Häfele, pour largeur de corps: 450 mm, hauteur installation: 267 mm, tablette coulissante Basic : rail de guidage extension partielle" info="Trash,poubelle"/>
+                    <object name="HA_TC_25L" model="HA_TC_25L" image="BITMAPS/502.90.498.jpg" label="Seau de remplacement XL, Blum Tandembox, 25 litres" info="Trash,poubelle"/>
+                    <object name="AX_8909E" model="AX_8909E" image="BITMAPS/AX8909E.jpg" label="Clapet poubelle en inox a encastrer" info="Trash,poubelle"/>
+                    <object name="BE_ANNEAU_ROND_POUBELLE" model="BE_ANNEAU_ROND_POUBELLE" image="BITMAPS/6202-3015.jpg" label="Anneau rond profond inox pour poubelle encastrée - Diam. 146mm" info="Trash,poubelle"/>
+                    <object name="HA_TC_Easy_cargo_50cm" model="HA_TC_Easy_cargo_50cm" image="BITMAPS/3668501.jpg" label="HAILO AS Easy Cargo 30/19" info="Trash,poubelle"/>
+                </category>
+                <category name="WS_CAB_HANDLES" label="Handles" image="BITMAPS/155.01.486.jpg">
+                    <object name="SPP_HL_Ballett_Black" model="SPP_HL_Ballett_Black" image="BITMAPS/108.66.XXX_Black.jpg" label="Poignée alu Ballett, couleur noir, mat, 2500 mm"/>
+                    <object name="HF_PHFC_10866044" model="HF_PHFC_10866044" image="BITMAPS/108.66.XXX_Black.jpg" label="Poignée de meuble, Poignée traverse en aluminium, noir mat, dim. A 500 mm, dim. C 416 mm"/>
+                    <object name="OS_KN_Lorena_WH_Ø40" model="OS_KN_Lorena_WH_Ø40" image="BITMAPS/226.505149X.jpg" label="Bouton design Lorena, Ø = 40 mm, hauteur (H) = 30 mm, blanc brillant" info="Handles"/>
+                    <object name="HA_HN_15501485" model="HA_HN_15501485" image="BITMAPS/155.01.486.jpg" label="Poignée de Meuble, en acier inox, cylindrique, avec poignée encastrée - dimension A : 12 mm, dimension B : 25 mm" info="Handles"/>
+                    <object name="LO_KN_50108210375" model="LO_KN_50108210375" image="BITMAPS/50.108.JPG" label="Bouton de meuble, poignée coudée en cuir cognac, pastille laiton" info="Handles"/>
+                    <object name="OS_HL_POLKA1_5000_Black" model="OS_HL_POLKA1_5000_Black" image="BITMAPS/2250832_Polka1_intl_ipic1.jpg" label="Poignée encastrée alu Polka 1, revêtement poudre noire (RAL 9005), brillant, lisse, 5000 mm" info="Handles"/>
+                    <object name="OS_HL_POLKA1_5000_White" model="OS_HL_POLKA1_5000_White" image="BITMAPS/2250832_Polka1_intl_ipic1.jpg" label="Poignée encastrée alu Polka 1, revêtement poudre blanche (RAL 9010), brillant, lisse, 5000 mm" info="Handles"/>
+                </category>
+                <category name="WS_CAB_LOCK" label="Serrure" image="BITMAPS/232.27.600.jpg">
+                    <object name="AA_Cable_10m" model="AA_Cable_10m" image="BITMAPS/033000201.jpg" label="CABLE DE RACCORDEMENT POUR ABLOY 10 METRES" info="Serrure Mobilier"/>
+                    <object name="HA_LK_Door_T_Idem_Close" model="HA_LK_Door_T_Idem_Close" image="BITMAPS/232.27.600.jpg" label="Serrure pène dormant en applique" info="Serrure Mobilier"/>
+                    <object name="LEH_DL_MK_Z0001" model="LEH_DL_MK_Z0001" image="BITMAPS/LEH_DL_MK_Z0001.jpg" label="Lehmann Dial Lock master key Z0001" info="Serrure Mobilier"/>
+                </category>
+                <category name="WS_CAB_HINGES" label="Charnières" image="BITMAPS/BLUM_71T7540N01.jpg">
+                    <object name="BL_Clip_CH_BM_INS_155" model="BL_Clip_CH_BM_INS_155" image="BITMAPS/BLUM_71T7540N01.jpg" label="CLIP top BLUMOTION 155° pour porte en applique, avec ressort et BLUMOTION, montage du boitier: INSERTA, Nickelé" info="Charnières Mobilier, Charnieres Mobilier"/>
+                    <object name="BL_CLIP_CH_BM_INS_155" model="BL_CLIP_CH_BM_INS_155" image="BITMAPS/BLUM_71T7540N01.jpg" label="CLIP top Wide angle hinge 155°, Overlay application, Boss: INSERTA" info="Charnières Mobilier, Charnieres Mobilier"/>
+                    <object name="BL_Clip_CH_BM_INS_155_SC" model="BL_Clip_CH_BM_INS_155_SC" image="BITMAPS/71B7690.jpg" label="CLIP top BLUMOTION 155° pour portes jumelées, avec ressort et BLUMOTION, montage du boitier: INSERTA, Nickelé" info="Charnières Mobilier, Charnieres Mobilier"/>
+                    <object name="BL_Clip_CH_INS_110_UNSP" model="BL_Clip_CH_INS_110_UNSP" image="BITMAPS/BLUM_70T3590_TL.jpg" label="Blum CLIP top Charnière 110°, droite, sans ressort, INSERTA" info="Charnières Mobilier, Charnieres Mobilier"/>
+                    <object name="BL_Clip_CH_INS_155" model="BL_Clip_CH_INS_155" image="BITMAPS/BLUM_71T7540N01.jpg" label="CLIP top Wide angle hinge 155°, Overlay application, Boss: INSERTA" info="Charnières Mobilier, Charnieres Mobilier"/>
+                    <object name="BL_Clip_CH_INS_155_UNSP" model="BL_Clip_CH_INS_155_UNSP" image="BITMAPS/70T7590.TL.jpg" label="CLIP top 155° pour porte en applique, sans ressort, montage du boitier: INSERTA, Nickelé" info="Charnières Mobilier, Charnieres Mobilier"/>
+                    <object name="BL_Clip_CH_Onyx_BM_INS_110" model="BL_Clip_CH_Onyx_BM_INS_110" image="BITMAPS/BLUM_71B3590.jpg" label="Blum CLIP top Charnière BLUMOTION 110°, droite, avec ressort, INSERTA, Onyx" info="Charnières Mobilier, Charnieres Mobilier"/>
+                    <object name="BL_TIP_ON_fd_no_hole" model="BL_TIP_ON_fd_no_hole" image="BITMAPS/BLUM_955A1004.jpg" label="Piston Tip-on pour porte sup à 1300mm" info="Charnières Mobilier, Charnieres Mobilier"/>
+                    <object name="HE_CH_72134_ET_582_FRIGO" model="HE_CH_72134_ET_582_FRIGO" image="BITMAPS/72134.jpg" label="Hettich charnière speciale 72134 ET 582 angle ouverture 95°, Porte de Réfrigérateur" info="Charnières Mobilier, Charnieres Mobilier"/>
+                </category>
+                <category name="WS_CAB_FIX" label="Fixation" image="BITMAPS/BERMA_3150-1320.png">
+                    <object name="w_lamello_20mm" model="w_lamello_20mm" image="BITMAPS/BERMA_3150-1320.png" label="Lamello bois taille 20" info="Fixation Mobilier"/>
+                    <object name="Wood_TE_20x20" model="Wood_TE_20x20" image="BITMAPS/tasseaux_20x20.jpg" label="tasseaux de 20x20 mm raboté" info="Fixation Mobilier"/><!--_WS_CAB_-->
+                    <object name="w_loqueteau_keku_e_p_TEsT" model="w_loqueteau_keku_e_p_TEsT" image="BITMAPS/00012118_0.jpg" label="Loquetaux keku AS type enfilage partie porte, ferrure à enfiler" info="Fixation Mobilier"/>
+                    <object name="w_loqueteau_keku_enfilage_TEsT" model="w_loqueteau_keku_enfilage_TEsT" image="BITMAPS/00012122_0.jpg" label="Loquetaux keku AS type enfilage partie panneau/cadre" info="Fixation Mobilier" />
+                    <object name="SQ_27x27x80mm" model="SQ_27x27x80mm" image="BITMAPS/SQ_27x27x80mm.jpg" label="Équerre, 27x27x80mm" info="Fixation Mobilier"/>
+                </category>
+                <category name="WS_CAB_SLIDES" label="Slides" image="BITMAPS/BLUM_760H2700B.jpg">
+                    <object name="BL_MOV_TOBM_FE_40kg_NL_500" model="BL_MOV_TOBM_FE_40kg_NL_500" image="BITMAPS/BLUM_760H2700B.jpg" label="Blum MOVENTO TIP ON BLUMOTION, 40 kg, NL=500, G+D"/>
+                    <object name="BL_TIP_ON_FD_955_plate_no_hole" model="BL_TIP_ON_FD_955_plate_no_hole" image="BITMAPS/BLUM_955_1201.jpg" label="Embase pour amortisseur tip-on à visser"/>
+                    <object name="BL_TIP_ON_for_drs_set_04683908" model="BL_TIP_ON_for_drs_set_04683908" image="BITMAPS/BLUM_956.1004.jpg" label="TIP-ON for doors (set), short version, with magnet, white"/>
+                </category>
+     <!--			<object name="Telescopic_Barrier_RWH_1_3_5m" model="Telescopic_Barrier_RWH_1_3_5m" image="BITMAPS/Telescopic_Barrier_1_3_5m.jpg" label="Barrière extensible RG/BL Hauteur: 1m - Telescopique jusque 3.5m"/>-->
+            
+            
+            
+            
+            </category>
+            <category name="CON_WS_D" label="Porte" image="BITMAPS/TL0206.jpg">
+                <category name="LOCK_WS_D" label="Serrure" image="BITMAPS/qz50.gif">
+                    <category name="LOCK_D_SD" label="Simple Porte" image="BITMAPS/qz50.gif">
+                        <category name="LOCK_D_SD_40" label="Porte 40" image="BITMAPS/qz50.gif">
+                            <object name="ACCS_PORT_CY01_30X30_INOX" model="ACCS_PORT_CY01_30X30_INOX" image="BITMAPS/qz50.gif" label="Cylindre 30/30 Duo (3 clés)" info="serrure simple porte 40"/>
+                            <object name="ACCS_PORT_CY01_30X40_INOX" model="ACCS_PORT_CY01_30X40_INOX" image="BITMAPS/qz50.gif" label="Cylindre 30/40 Duo (3 clés)" info="serrure simple porte 40"/>
+                            <object name="ACCS_PORT_GE03_L" model="ACCS_PORT_GE03_L" image="BITMAPS/EFF-EFF_ProFix2_12V DC_118.13-A71.jpg" label="Gache electrique effeff 118.13------A71, 10-24V, Pêne radial, FaFix®, réglable de 3 mm, Compatible avec les gâches ProFix® 2" info="serrure simple porte 40"/>
+                            <object name="BMH_LC_1013_PZW_55_20_R_40" model="BMH_LC_1013_PZW_55_20_R_40" image="BITMAPS/BMH_1013.jpg" label="Serrure à mortaiser, pour issues de secours et anti-panique, Panic E, 1013 PZW, cylindre profil européen, BMH, axe 55 mm, DIN gauche" info="serrure simple porte 40"/>
+                            <object name="D_CYL_DUO_35x35_SC_M5x60" model="D_CYL_DUO_35x35_SC_M5x60" image="BITMAPS/Cylindre.jpg" label="Set cylindre duo 35/35 + vis M5x60" info="serrure simple porte 40"/>
+                            <object name="D_CYL_AV_35_154_SC_M5x60_40" model="D_CYL_AV_35_154_SC_M5x60_40" image="BITMAPS/916.99.045.jpg" label="Set cylindre aveugle universel 35-154mm + vis M5x60" info="serrure simple porte 40"/>
+                            <object name="D_CYL_DUO_30x30_SC_M5x60" model="D_CYL_DUO_30x30_SC_M5x60" image="BITMAPS/Cylindre.jpg" label="Set cylindre duo 30/30 + vis M5x60" info="serrure simple porte 40"/>
+                            <object name="D_CYL_DUO_30x40_SC_M5x60" model="D_CYL_DUO_30x40_SC_M5x60" image="BITMAPS/Cylindre.jpg" label="Set cylindre duo 30/40 + vis M5x60" info="serrure simple porte 40"/>
+                            <object name="DOR_ES_BASIC_448_LS_RR_40_R" model="DOR_ES_BASIC_448_LS_RR_40_R" image="BITMAPS/DOR_ES_BASIC_448_LS.jpg" label="Gache electrique Dormakaba 448 Lucky Strike RR, 12-24V" info="serrure simple porte 40"/>
+                            <object name="HA_CYL_AV_35_154_40" model="HA_CYL_AV_35_154_40" image="BITMAPS/916.99.045.jpg" label="Cylindre aveugle universel 35-154mm" info="serrure simple porte 40"/>
+                            <object name="JNF_LC_47662_55_INOX_L_40" model="JNF_LC_47662_55_INOX_L_40" image="BITMAPS/47.662.JPG" label="Serrure à encastrer réversible JNF 47.662 - Inox brossé - entrée 55mm, axe 72mm, têtière 20mm, bords arrondis - Gache plate 170x24 incluse" info="serrure simple porte 40"/>
+                            <object name="JNF_LC_47662_55_INOX_L_AC40" model="JNF_LC_47662_55_INOX_L_AC40" image="BITMAPS/47.662.JPG" label="Serrure à encastrer réversible JNF 47.662 - Inox brossé - entrée 55mm, axe 72mm, têtière 20mm, bords arrondis - Gache plate 170x24 incluse" info="serrure simple porte 40"/>
+                            <object name="BMH_LC_1013_PZW_55_20_L_40" model="BMH_LC_1013_PZW_55_20_L_40" image="BITMAPS/BMH_1013.jpg" label="Serrure à mortaiser, pour issues de secours et anti-panique, Panic E, 1013 PZW, cylindre profil européen, BMH, axe 55 mm, DIN droite" info="serrure simple porte 40"/>
+                        </category>
+                        <category name="LOCK_D_SD_50" label="Porte 50" image="BITMAPS/qz50.gif">
+                            <object name="ACCS_PORT_CY01_30X40_INOX" model="ACCS_PORT_CY01_30X40_INOX" image="BITMAPS/qz50.gif" label="Cylindre 30/40 Duo (3 clés)" info="Serrure simple porte 50"/>
+                            <object name="ACCS_PORT_GE03_L" model="ACCS_PORT_GE03_L" image="BITMAPS/EFF-EFF_ProFix2_12V DC_118.13-A71.jpg" label="Gache electrique effeff 118.13------A71, 10-24V, Pêne radial, FaFix®, réglable de 3 mm, Compatible avec les gâches ProFix® 2" info="Serrure simple porte 50"/>
+                            <object name="D_CYL_DUO_30x40_SC_M5x60" model="D_CYL_DUO_30x40_SC_M5x60" image="BITMAPS/Cylindre.jpg" label="Set cylindre duo 30/40 + vis M5x60" info="Serrure simple porte 50"/>
+                            <object name="D_CYL_DUO_35x35_SC_M5x60" model="D_CYL_DUO_35x35_SC_M5x60" image="BITMAPS/Cylindre.jpg" label="Set cylindre duo 35/35 + vis M5x60" info="Serrure simple porte 50"/>
+                            <object name="ACCS_PORT_CY01_35x35_INOX" model="ACCS_PORT_CY01_35x35_INOX" image="BITMAPS/qz50.gif" label="Cylindre 35/35 Duo (3 clés)" info="Serrure simple porte 50"/>
+                            <object name="GU_LC_3P_SB2_55_72_1885_700_L" model="GU_LC_3P_SB2_55_72_1885_700_L" image="BITMAPS/GU_LC_3P_LIFT_SB2_55_72.jpg" label="Serrure multi-points actionnée par poignée - GU SB2 Lift 55-72, F16-2285, 700/790. Hauteur béquille 1050mm" info="Serrure simple porte 50"/>
+                            <object name="GU_LC_3P_SB2_55_72_2285_1030_L" model="GU_LC_3P_SB2_55_72_2285_1030_L" image="BITMAPS/GU_LC_3P_LIFT_SB2_55_72.jpg" label="Serrure multi-points actionnée par poignée - GU SB2 Lift 55-72, F16-2285, 1030/790. Hauteur béquille 1050mm" info="Serrure simple porte 50"/>
+                            <object name="JNF_LC_47662_55_INOX_L_50" model="JNF_LC_47662_55_INOX_L_50" image="BITMAPS/47.662.JPG" label="Serrure à encastrer réversible JNF 47.662 - Inox brossé - entrée 55mm, axe 72mm, têtière 20mm, bords arrondis - Gache plate 170x24 incluse" info="Serrure simple porte 50"/>
+                            <object name="JNF_LC_47662_55_INOX_L_50_NC" model="JNF_LC_47662_55_INOX_L_50_NC" image="BITMAPS/47.662.JPG" label="Serrure à encastrer réversible JNF 47.662 - Inox brossé - entrée 55mm, axe 72mm, têtière 20mm, bords arrondis - Gache plate 170x24 incluse" info="Serrure simple porte 50"/>
+                            <object name="LI_WC_50_LEFT" model="LI_WC_50_LEFT" image="BITMAPS/47.663.JPG" label="Serrure WC entreaxe 78mm, entrée 55mm" info="Serrure simple porte 50"/>
+                        </category>
+                        <category name="LOCK_D_SD_CL" label="Porte Clarit" image="BITMAPS/qz50.gif">
+                            <object name="ACCS_PORT_GE03_L" model="ACCS_PORT_GE03_L" image="BITMAPS/EFF-EFF_ProFix2_12V DC_118.13-A71.jpg" label="Gache electrique effeff 118.13------A71, 10-24V, Pêne radial, FaFix®, réglable de 3 mm, Compatible avec les gâches ProFix® 2" info="serrure simple porte clarit"/>
+                            <object name="ACCS_PORT_CY03_28x33_INOX" model="ACCS_PORT_CY03_28x33_INOX" image="BITMAPS/CQ70.gif" label="Cylindre 28/33 Duo (3 clés)" info="serrure simple porte clarit"/>
+                            <object name="EE_ES_118_13_A71_CL_L" model="EE_ES_118_13_A71_CL_L" image="BITMAPS/EFF-EFF_ProFix2_12V DC_118.13-A71.jpg" label="Gache electrique effeff 118.13------A71, 10-24V, Pêne radial, FaFix®, réglable de 3 mm, Compatible avec les gâches ProFix® 2" info="serrure simple porte clarit"/>
+                            <object name="HA_CYL_AV_35_154_CL" model="HA_CYL_AV_35_154_CL" image="BITMAPS/916.99.045.jpg" label="Cylindre aveugle universel 35-154mm" info="serrure simple porte clarit"/>
+                            <object name="LOC_AA_DG_V360_9005" model="LOC_AA_DG_V360_9005" image="BITMAPS/V360.png" label="Serrure de milieu V360 RAL 9005 Lisse pour cylindre Européen sans béquille, DIN droite, pour vitrage 8-12mm" info="serrure simple porte clarit"/>
+                            <object name="LOC_AA_DG_V360_INOX_BR" model="LOC_AA_DG_V360_INOX_BR" image="BITMAPS/V360.png" label="Serrure de milieu V360.15 Inox brossé pour cylindre Européen sans béquille, DIN droite, pour vitrage 8-12mm" info="serrure simple porte clarit"/>
+                            <object name="LOC_AA_DG_V370_9005" model="LOC_AA_DG_V370_9005" image="BITMAPS/V370.png" label="Serrure de milieu V370 RAL 9005 Lisse pour cylindre Européen sans béquille, DIN gauche, pour vitrage 8-12mm" info="serrure simple porte clarit"/>
+                            <object name="LOC_AA_DG_V370_INOX_BR" model="LOC_AA_DG_V370_INOX_BR" image="BITMAPS/V370.png" label="Serrure de milieu V370.15 Inox brossé pour cylindre Européen sans béquille, DIN gauche, pour vitrage 8-12mm" info="serrure simple porte clarit"/>
+                        </category>
+                        <category name="LOCK_D_SD_BT" label="Porte Beatle" image="BITMAPS/qz50.gif">
+                            <object name="ACCS_PORT_CY02_55x65_INOX" model="ACCS_PORT_CY02_55x65_INOX" image="BITMAPS/Cylindre.jpg" label="Cylindre 55/65 Duo (3 clés)" info="serrure simple porte BT"/>
+                            <object name="ACCS_PORT_GE03_L" model="ACCS_PORT_GE03_L" image="BITMAPS/EFF-EFF_ProFix2_12V DC_118.13-A71.jpg" label="Gache electrique effeff 118.13------A71, 10-24V, Pêne radial, FaFix®, réglable de 3 mm, Compatible avec les gâches ProFix® 2" info="serrure simple porte BT"/>
+                            <object name="AA_LC_ELEC_EL560_BT_L" model="AA_LC_ELEC_EL560_BT_L" image="BITMAPS/EL560.jpg" label="Assa Abloy EL560, entraxe 72mm, entrée 55mm. Serrure à controle de béquille et sortie libre, Menuiserie bois et métal, coffre standard " info="serrure simple porte BT"/>
+                            <object name="D_CYL_DUO_55x65_SC_M5x60" model="D_CYL_DUO_55x65_SC_M5x60" image="BITMAPS/Cylindre.jpg" label="Set cylindre duo 55/65 + vis M5x60" info="serrure simple porte BT"/>
+                            <object name="JNF_LC_47662_55_INOX_L_BT" model="JNF_LC_47662_55_INOX_L_BT" image="BITMAPS/47.662.JPG" label="Serrure à encastrer réversible JNF 47.662 - Inox brossé - entrée 55mm, axe 72mm, têtière 20mm, bords arrondis - Gache plate 170x24 incluse" info="serrure simple porte BT"/>
+                        </category>
+                        <category name="LOCK_D_SD_BTG" label="Porte Beatle Glass" image="BITMAPS/qz50.gif">
+                            <object name="LI_Standard_100_BEATLE_GLAS_L" model="LI_Standard_100_BEATLE_GLAS_L" image="BITMAPS/BKS_1314.jpg" label="Serrure à mortaiser PZ, entrée 45 mm, entraxe 92mm, têtière carrée 245x24x3mm, Inox - Distance axe PZ-bas têtière : 60mm" info="serrure simple porte BTG"/>
+                            <object name="LI_wo_Cyl_BEATLE_GLAS_L" model="LI_wo_Cyl_BEATLE_GLAS_L" image="BITMAPS/BKS_1314.jpg" label="Serrure à mortaiser PZ, entrée 45 mm, entraxe 92mm, têtière carrée 245x24x3mm, Inox - Distance axe PZ-bas têtière : 60mm" info="serrure simple porte BTG"/>
+                            <object name="BKS_LC_1314_BTG_R_TAC23" model="BKS_LC_1314_BTG_R_TAC23" image="BITMAPS/BKS_1314.jpg" label="Serrure à mortaiser PZ, entrée 45 mm, entraxe 92mm, têtière carrée 245x24x3mm, Inox - Distance axe PZ-bas têtière : 60mm" info="serrure simple porte BTG"/>
+                            <object name="ACCS_PORT_SER02_BEATLE_INOX" model="ACCS_PORT_SER02_BEATLE_INOX" image="BITMAPS/BKS_1314.jpg" label="Serrure à mortaiser PZ, entrée 45 mm, entraxe 92mm, têtière carrée 245x24x3mm, Inox - Distance axe PZ-bas têtière : 60mm" info="serrure simple porte BTG"/>
+                            <object name="BKS_LC_1314_BTG_R" model="BKS_LC_1314_BTG_R" image="BITMAPS/BKS_1314.jpg" label="Serrure à mortaiser PZ, entrée 45 mm, entraxe 92mm, têtière carrée 245x24x3mm, Inox - Distance axe PZ-bas têtière : 60mm" info="serrure simple porte BTG"/>
+                            <object name="ACCS_PORT_GE03_L" model="ACCS_PORT_GE03_L" image="BITMAPS/EFF-EFF_ProFix2_12V DC_118.13-A71.jpg" label="Gache electrique effeff 118.13------A71, 10-24V, Pêne radial, FaFix®, réglable de 3 mm, Compatible avec les gâches ProFix® 2" info="serrure simple porte BTG"/>
+                            <object name="BKS_LC_1316_45_APE_BTG_L" model="BKS_LC_1316_45_APE_BTG_L" image="BITMAPS/BKS_1316.png" label="Serrure à mortaiser, BKS, 1316, axe 45 mm (entrée), anti panique type E, 245mm DIN droite" info="serrure simple porte BTG"/>
+                            <object name="AA_LC_ELEC_EL460_45_BTG_L" model="AA_LC_ELEC_EL460_45_BTG_L" image="BITMAPS/EL460.jpg" label="Assa Abloy EL460, entrée 45mm, entraxe 92m, têtière carrée 300x24x3mm, Inox. Serrure à controle de béquille et sortie libre. Menuiserie bois et métal" info="serrure simple porte BTG"/>
+                            <object name="ACCS_PORT_CY02_60x60_INOX" model="ACCS_PORT_CY02_60x60_INOX" image="BITMAPS/Cylindre.jpg" label="Cylindre 60/60 Duo (3 clés)" info="serrure simple porte BTG"/>
+                            <object name="ACCS_PORT_CY02_65x65_INOX" model="ACCS_PORT_CY02_65x65_INOX" image="BITMAPS/Cylindre.jpg" label="Cylindre 65/65 Duo (3 clés)" info="serrure simple porte BTG"/>
+                            <object name="BKS_LC_1314_BTG_L" model="BKS_LC_1314_BTG_L" image="BITMAPS/BKS_1314.jpg" label="Serrure à mortaiser PZ, entrée 45 mm, entraxe 92mm, têtière carrée 245x24x3mm, Inox - Distance axe PZ-bas têtière : 60mm" info="serrure simple porte BTG"/>
+                            <object name="D_CYL_AV_35_154_SC_M5x50_BTG" model="D_CYL_AV_35_154_SC_M5x50_BTG" image="BITMAPS/916.99.045.jpg" label="Set cylindre aveugle universel 35-154mm + vis M5x50" info="serrure simple porte BTG"/>
+                            <object name="D_CYL_DUO_65x65_SC_M5x50" model="D_CYL_DUO_65x65_SC_M5x50" image="BITMAPS/Cylindre.jpg" label="Set cylindre duo 65/65 + vis M5x50" info="serrure simple porte BTG"/>
+                            <object name="DOR_ES_BASIC_448_LS_RR_BTG_L" model="DOR_ES_BASIC_448_LS_RR_BTG_L" image="BITMAPS/DOR_ES_BASIC_448_LS.jpg" label="Gache electrique Dormakaba 448 Lucky Strike RR, 12-24V" info="serrure simple porte BTG"/>
+                            <object name="EE_ES_118_13_A71_BTG_L" model="EE_ES_118_13_A71_BTG_L" image="BITMAPS/EFF-EFF_ProFix2_12V DC_118.13-A71.jpg" label="Gache electrique effeff 118.13------A71, 10-24V, Pêne radial, FaFix®, réglable de 3 mm, Compatible avec les gâches ProFix® 2" info="serrure simple porte BTG"/>
+                            <object name="HA_CYL_AV_35_154_BTG" model="HA_CYL_AV_35_154_BTG" image="BITMAPS/916.99.045.jpg" label="Cylindre aveugle universel 35-154mm" info="serrure simple porte BTG"/>
+                            <object name="LI_CYL_S_PLUS_DUO_60x60" model="LI_CYL_S_PLUS_DUO_60x60" image="BITMAPS/K4800.jpg" label="Cylindre double Litto S Plus - 60/60 - Duo = ouverture simultanée - livré avec 3 clés standard" info="serrure simple porte BTG"/>
+                            <object name="BKS_LC_1316_45_APE_BTG_R" model="BKS_LC_1316_45_APE_BTG_R" image="BITMAPS/BKS_1316.png" label="Serrure à mortaiser, BKS, 1316, axe 45 mm (entrée), anti panique type E, 245mm DIN gauche" info="serrure simple porte BTG"/>
+                            <object name="BKS_LC_1820_45_APB_BTG_L" model="BKS_LC_1820_45_APB_BTG_L" image="BITMAPS/BKS_1820.jpg" label="Serrure à mortaiser, BKS 1820, axe 45 mm (entrée), anti panique type B, 270mm" info="serrure simple porte BTG"/>
+                            <object name="BKS_LC_1824_45_APD_BTG_L" model="BKS_LC_1824_45_APD_BTG_L" image="BITMAPS/BKS_1824.jpg" label="Serrure à mortaiser, BKS 1824, axe 45 mm (entrée), anti panique type D, 270mm" info="serrure simple porte BTG"/>
+                        </category>
+                        <category name="LOCK_OTHER" label="Autres" image="BITMAPS/qz50.gif" visible="false">
+                            <object name="AB_CYL_D6XNP_40x45" model="AB_CYL_D6XNP_40x45" image="BITMAPS/D6XNP.jpg" label="Cylindre profilé D6XNP Abus 40/45 mm cylindre s entrouvrant"/>
+                            <object name="AB_CYL_D6XNP_40x40" model="AB_CYL_D6XNP_40x40" image="BITMAPS/D6XNP.jpg" label="Cylindre profilé D6XNP Abus 40/40 mm cylindre s entrouvrant"/>
+                            <object name="AB_CYL_B5LT_30x40" model="AB_CYL_B5LT_30x40" image="BITMAPS/B5LT.jpg" label="Cylindre profilé B5LT Abus 30/40 mm verrouillage simple"/>
+                            <object name="ACCS_PORT_CY01_30x50_INOX" model="ACCS_PORT_CY01_30x50_INOX" image="BITMAPS/qz50.gif" label="Cylindre 30/50 Duo (3 clés)"/>
+                            <object name="ACCS_PORT_CY01_35X40_INOX" model="ACCS_PORT_CY01_35X40_INOX" image="BITMAPS/qz50.gif" label="Cylindre 35/40 Duo (3 clés)"/>
+                            <object name="ACCS_PORT_CY01_40X40_INOX" model="ACCS_PORT_CY01_40X40_INOX" image="BITMAPS/qz50.gif" label="Cylindre 40/40 Duo (3 clés)"/>
+                            <object name="ACCS_PORT_GE09" model="ACCS_PORT_GE09" image="BITMAPS/118_13------xxx.jpg" label="Gache electrique effeff 118.13------B71, 22-42V, Pêne radial, FaFix®, réglable de 3 mm, Compatible avec les gâches ProFix® 2"/>
+                            <object name="BR_ES_LP_250x34x2_DD_R" model="BR_ES_LP_250x34x2_DD_R" image="BITMAPS/BR_ES_LP_250x34x2.JPG" label="Tetiere droite 250x34mm avec 4 trous fraisés - 1 coté - Inox Meulé G320 - Ep. 20/10"/>
+                            <object name="BR_ES_LP_250x34x2_L" model="BR_ES_LP_250x34x2_L" image="BITMAPS/BR_ES_LP_250x34x2.JPG" label="Tetiere gauche 250x34mm avec 4 trous fraisés - 1 coté - Inox Meulé G320 - Ep. 20/10"/>
+                            <object name="CISA_CYL_DUO_C2000_SEC_30x50" model="CISA_CYL_DUO_C2000_SEC_30x50" image="BITMAPS/Cisa_KA_C2000.JPG" label="Cylindre Cisa KA C2000 Duo 30/50 Duo (sans clé), à même clé + carte sécurité"/>
+                            <object name="D_CYL_DUO_30x35" model="D_CYL_DUO_30x35" image="BITMAPS/qz50.gif" label="Cylindre 30/35 Duo (3 clés)"/>
+                            <object name="D_CYL_DUO_30x45" model="D_CYL_DUO_30x45" image="BITMAPS/qz50.gif" label="Cylindre 30/45 Duo (3 clés)"/>
+                            <object name="D_CYL_DUO_30x60" model="D_CYL_DUO_30x60" image="BITMAPS/qz50.gif" label="Cylindre 30/60 Duo (3 clés)"/>
+                            <object name="D_CYL_DUO_35x45" model="D_CYL_DUO_35x45" image="BITMAPS/qz50.gif" label="Cylindre 35/45 Duo (3 clés)"/>
+                            <object name="D_CYL_DUO_50x50" model="D_CYL_DUO_50x50" image="BITMAPS/qz50.gif" label="Cylindre 50/50 Duo (3 clés)"/>
+                            <object name="DOR_CYL_DUO_PXTRA_SEC_30x35" model="DOR_CYL_DUO_PXTRA_SEC_30x35" image="BITMAPS/Dormakaba_pExtra+.jpg" label="Cylindre Dormakaba pExtra+ Duo SKG2 30/35 Duo (3 clés), inclus 1 allonge cylindre 5mm + carte sécurité"/>
+                            <object name="DOR_CYL_DUO_PXTRA_SEC_50x50" model="DOR_CYL_DUO_PXTRA_SEC_50x50" image="BITMAPS/Dormakaba_pExtra+.jpg" label="Cylindre Dormakaba pExtra+ Duo SKG2 50/50 Duo (3 clés), inclus 8 allonges cylindre 5mm + carte sécurité"/>
+                            <object name="DOR_KEY_PASS_ESP" model="DOR_KEY_PASS_ESP" image="BITMAPS/" label="Clé pass E-SP commandé avec cylindre"/>
+                            <object name="ECO_RO_PZ_OGL_INOX" model="ECO_RO_PZ_OGL_INOX" image="BITMAPS/5030012574.jpg" label="Rose set with PZ-hole"/>
+                        </category>
+                    </category>
+                    <category name="LOCK_D_DD" label="Double Porte" image="BITMAPS/qz50.gif">
+                        <category name="LOCK_D_DD_40" label="Porte 40" image="BITMAPS/qz50.gif">
+                            <object name="ACCS_PORT_CY01_30X30_INOX" model="ACCS_PORT_CY01_30X30_INOX" image="BITMAPS/qz50.gif" label="Cylindre 30/30 Duo (3 clés)" info="serrure double porte 40"/>
+                            <object name="ACCS_PORT_GE03_L" model="ACCS_PORT_GE03_L" image="BITMAPS/EFF-EFF_ProFix2_12V DC_118.13-A71.jpg" label="Gache electrique effeff 118.13------A71, 10-24V, Pêne radial, FaFix®, réglable de 3 mm, Compatible avec les gâches ProFix® 2" info="serrure double porte 40"/>
+                            <object name="D_CYL_DUO_30x30_SC_M5x60" model="D_CYL_DUO_30x30_SC_M5x60" image="BITMAPS/Cylindre.jpg" label="Set cylindre duo 30/30 + vis M5x60" info="serrure double porte 40"/>
+                            <object name="JNF_LC_47662_55_INOX_L_DD_40" model="JNF_LC_47662_55_INOX_L_DD_40" image="BITMAPS/47.662.JPG" label="Serrure à encastrer réversible JNF 47.662 - Inox brossé - entrée 55mm, axe 72mm, têtière 20mm, bords arrondis - Gache plate 170x24 incluse" info="serrure double porte 40"/>
+                        </category>
+                        <category name="LOCK_D_DD_50" label="Porte 50" image="BITMAPS/qz50.gif">
+                            <object name="D_CYL_DUO_30x40_SC_M5x60" model="D_CYL_DUO_30x40_SC_M5x60" image="BITMAPS/Cylindre.jpg" label="Set cylindre duo 30/40 + vis M5x60" info="serrure double porte 50"/>
+                            <object name="D_CYL_DUO_35x35_SC_M5x60" model="D_CYL_DUO_35x35_SC_M5x60" image="BITMAPS/Cylindre.jpg" label="Set cylindre duo 35/35 + vis M5x60" info="serrure double porte 50"/>
+                        </category>
+                        <category name="LOCK_D_DD_BT" label="Porte Beatle" image="BITMAPS/qz50.gif">
+                            <object name="JNF_LP_170_24_INOX_R_BT_DD_WO" model="JNF_LP_170_24_INOX_R_BT_DD_WO" image="BITMAPS/VBH_313550.gif" label="Gache plate réversible - 170x24m, épaisseur 1.4mm, lèvre 40mm, inox brossé + vis agglo 3x20" info="serrure double porte Beatle pleine"/>
+                            <object name="JNF_LC_47662_55_INOX_L_DD_BT" model="JNF_LC_47662_55_INOX_L_DD_BT" image="BITMAPS/47.662.JPG" label="Serrure à encastrer réversible JNF 47.662 - Inox brossé - entrée 55mm, axe 72mm, têtière 20mm, bords arrondis - Gache plate 170x24 incluse" info="serrure double porte Beatle pleine"/>
+                            <object name="AA_LC_ELEC_EL560_BT_L" model="AA_LC_ELEC_EL560_BT_L" image="BITMAPS/EL560.jpg" label="Assa Abloy EL560, entraxe 72mm, entrée 55mm. Serrure à controle de béquille et sortie libre, Menuiserie bois et métal, coffre standard " info="serrure double porte Beatle pleine"/>
+                            <object name="D_CYL_DUO_55x65_SC_M5x60" model="D_CYL_DUO_55x65_SC_M5x60" image="BITMAPS/Cylindre.jpg" label="Set cylindre duo 55/65 + vis M5x60" info="serrure double porte Beatle pleine"/>
+                        </category>
+                        <category name="LOCK_D_SD_BTG" label="Porte Beatle Glass" image="BITMAPS/qz50.gif">
+                            <object name="ACCS_PORT_CY02_60x60_INOX" model="ACCS_PORT_CY02_60x60_INOX" image="BITMAPS/Cylindre.jpg" label="Cylindre 60/60 Duo (3 clés)" info="serrure double porte Beatle glass"/>
+                            <object name="LI_CYL_S_PLUS_DUO_60x60" model="LI_CYL_S_PLUS_DUO_60x60" image="BITMAPS/K4800.jpg" label="Cylindre double Litto S Plus - 60/60 - Duo = ouverture simultanée - livré avec 3 clés standard" info="serrure double porte Beatle glass"/>
+                            <object name="BKS_LC_1314_BTG_DD_L" model="BKS_LC_1314_BTG_DD_L" image="BITMAPS/BKS_1314.jpg" label="Serrure à mortaiser PZ, entrée 45 mm, entraxe 92mm, têtière carrée 245x24x3mm, Inox - Distance axe PZ-bas têtière : 60mm" info="serrure double porte Beatle glass"/>
+                            <object name="BOLT_TL0801_160_16_BTL_G_BOT_L" model="BOLT_TL0801_160_16_BTL_G_BOT_L" image="BITMAPS/LX47.gif" label="Verrou à bascule, 160x16mm, pêne rond : dia. 9mm - TL0801.160" info="serrure double porte Beatle glass"/>
+                            <object name="BOLT_TL0802_450_20_BTL_G_TOP_L" model="BOLT_TL0802_450_20_BTL_G_TOP_L" image="BITMAPS/LX51.gif" label="Verrou à bascule, 450x20mm, pêne rond : dia. 9mm - TL0802.450" info="serrure double porte Beatle glass"/>
+                            <object name="DX_LB_836_L400_INOX_BTG_TOP_L" model="DX_LB_836_L400_INOX_BTG_TOP_L" image="BITMAPS/0734.017.2025.jpg" label="Verrou à bascule Dulimex DX, Type 836, 400x17mm, pêne rond : dia. 7.5mm" info="serrure double porte Beatle glass"/>
+                        </category>
+                    </category>
+                </category>
+                <category name="LOCK_WS_GE_D" label="Gache Electrique" image="BITMAPS/118_63------xxx.jpg">
+                    <category name="CON_BDO_S118" label="Emission de courant" image="BITMAPS/118_63------xxx.jpg">
+                        <object name="EE_ES_118_63_B71_40_DD_L" model="EE_ES_118_63_B71_40_DD_L" image="BITMAPS/118_63------xxx.jpg" label="Gache electrique effeff 118.63------B71, 22-42V, Pêne radial, FaFix®, réglable de 3 mm, Compatible avec les gâches ProFix® 2" info="Emission de courant"/>
+                        <object name="EE_ES_118_63_B71_BTG_L" model="EE_ES_118_63_B71_BTG_L" image="BITMAPS/118_63------xxx.jpg" label="Gache electrique effeff 118.63------B71, 22-42V, Pêne radial, FaFix®, réglable de 3 mm, Compatible avec les gâches ProFix® 2" info="Emission de courant"/>
+                        <object name="EE_ES_118_63_B71_BTG_R" model="EE_ES_118_63_B71_BTG_R" image="BITMAPS/118_63------xxx.jpg" label="Gache electrique effeff 118.63------B71, 22-42V, Pêne radial, FaFix®, réglable de 3 mm, Compatible avec les gâches ProFix® 2" info="Emission de courant"/>
+                        <object name="EE_ES_118_63_B71_40_L" model="EE_ES_118_63_B71_40_L" image="BITMAPS/118_63------xxx.jpg" label="Gache electrique effeff 118.63------B71, 22-42V, Pêne radial, FaFix®, réglable de 3 mm, Compatible avec les gâches ProFix® 2" info="Emission de courant"/>
+                        <object name="EE_ES_118_63_B71_BT_L" model="EE_ES_118_63_B71_BT_L" image="BITMAPS/118_63------xxx.jpg" label="Gache electrique effeff 118.63------B71, 22-42V, Pêne radial, FaFix®, réglable de 3 mm, Compatible avec les gâches ProFix® 2" info="Emission de courant"/>
+                        <object name="EE_ES_118_63_B71_BT_R" model="EE_ES_118_63_B71_BT_R" image="BITMAPS/118_63------xxx.jpg" label="Gache electrique effeff 118.63------B71, 22-42V, Pêne radial, FaFix®, réglable de 3 mm, Compatible avec les gâches ProFix® 2" info="Emission de courant"/>
+                        <object name="EE_ES_118_63_B71_40_R" model="EE_ES_118_63_B71_40_R" image="BITMAPS/118_63------xxx.jpg" label="Gache electrique effeff 118.63------B71, 22-42V, Pêne radial, FaFix®, réglable de 3 mm, Compatible avec les gâches ProFix® 2" info="Emission de courant"/>
+                        <object name="EE_ES_118_63_B71_50_L" model="EE_ES_118_63_B71_50_L" image="BITMAPS/118_63------xxx.jpg" label="Gache electrique effeff 118.63------B71, 22-42V, Pêne radial, FaFix®, réglable de 3 mm, Compatible avec les gâches ProFix® 2" info="Emission de courant"/>
+                        <object name="EE_ES_118_63_B71_50_R" model="EE_ES_118_63_B71_50_R" image="BITMAPS/118_63------xxx.jpg" label="Gache electrique effeff 118.63------B71, 22-42V, Pêne radial, FaFix®, réglable de 3 mm, Compatible avec les gâches ProFix® 2" info="Emission de courant"/>
+                        <object name="EE_ES_118_63_B71_40_DD_R" model="EE_ES_118_63_B71_40_DD_R" image="BITMAPS/118_63------xxx.jpg" label="Gache electrique effeff 118.63------B71, 22-42V, Pêne radial, FaFix®, réglable de 3 mm, Compatible avec les gâches ProFix® 2" info="Emission de courant"/>
+                        <object name="EE_ES_118_63_B71_50_DD_L" model="EE_ES_118_63_B71_50_DD_L" image="BITMAPS/118_63------xxx.jpg" label="Gache electrique effeff 118.63------B71, 22-42V, Pêne radial, FaFix®, réglable de 3 mm, Compatible avec les gâches ProFix® 2" info="Emission de courant"/>
+                        <object name="EE_ES_118_63_B71_50_DD_R" model="EE_ES_118_63_B71_50_DD_R" image="BITMAPS/118_63------xxx.jpg" label="Gache electrique effeff 118.63------B71, 22-42V, Pêne radial, FaFix®, réglable de 3 mm, Compatible avec les gâches ProFix® 2" info="Emission de courant"/>
+                        <object name="EE_ES_118_63_B71_BT_DD_L" model="EE_ES_118_63_B71_BT_DD_L" image="BITMAPS/118_63------xxx.jpg" label="Gache electrique effeff 118.63------B71, 22-42V, Pêne radial, FaFix®, réglable de 3 mm, Compatible avec les gâches ProFix® 2" info="Emission de courant"/>
+                        <object name="EE_ES_118_63_B71_BT_DD_R" model="EE_ES_118_63_B71_BT_DD_R" image="BITMAPS/118_63------xxx.jpg" label="Gache electrique effeff 118.63------B71, 22-42V, Pêne radial, FaFix®, réglable de 3 mm, Compatible avec les gâches ProFix® 2" info="Emission de courant"/>
+                    </category>
+                </category>
+
+                <category name="LOCK_RO" label="Rosace" image="BITMAPS/qz50.gif">
+                    <category name="RO_D_SD_40" label="Porte 40" image="BITMAPS/qz50.gif">
+                        <object name="AR_RO_PZ_9005" model="AR_RO_PZ_9005" image="BITMAPS/2R12.WCX-BL.png" label="Rosace ronde Ø52mm, épaisseur 11mm, entrée de cylindre PZ, acier inox, finition noire" info="Rosace porte 40"/>
+                        <object name="D_RO_AV_TL0152_INOX" model="D_RO_AV_TL0152_INOX" image="BITMAPS/TL0152.JPG" label="Rosace ronde Ø53mm aveugle TL0152 Inox mat" info="Rosace porte 40"/>
+                        <object name="D_RO_AV_TL0152_NOIR" model="D_RO_AV_TL0152_NOIR" image="BITMAPS/TL0152.JPG" label="Rosace ronde Ø53mm aveugle TL0152 Noir" info="Rosace porte 40"/>
+                        <object name="D_RO_CYL_OV_TL0251_INOX" model="D_RO_CYL_OV_TL0251_INOX" image="BITMAPS/TL0251.gif" label="Rosace ovale TL0251 (PZ), Ep. 10mm, 70x32mm, Inox" info="Rosace porte 40"/>
+                        <object name="D_RO_CYL_TL0151_INOX" model="D_RO_CYL_TL0151_INOX" image="BITMAPS/TL0151.jpg" label="Rosace ronde Ø53mm entrée de cylindre TL0151 Inox mat" info="Rosace porte 40"/>
+                        <object name="D_RO_CYL_TL0151_NOIR" model="D_RO_CYL_TL0151_NOIR" image="BITMAPS/100366.jpg" label="Rosace ronde Ø53mm entrée de cylindre TL0151 Noir" info="Rosace porte 40"/>
+                        <object name="D_RO_WC_EXT_TL0155_INOX" model="D_RO_WC_EXT_TL0155_INOX" image="BITMAPS/Tonic-Line-TL0155.jpg" label="Rosace ronde Ø53mm WC TL0155 Inox mat" info="Rosace porte 40"/>
+                        <object name="D_RO_WC_INT_TL0155_INOX" model="D_RO_WC_INT_TL0155_INOX" image="BITMAPS/Tonic-Line-TL0155.jpg" label="Rosace ronde Ø53mm WC TL0155 Inox mat" info="Rosace porte 40"/>
+                        <object name="ECO_RO_PZ_OGL_INOX" model="ECO_RO_PZ_OGL_INOX" image="BITMAPS/5030012574.jpg" label="Rose set with PZ-hole" info="Rosace porte 40"/>
+                    </category>
+                    <category name="RO_D_SD_50" label="Porte 50" image="BITMAPS/qz50.gif">
+                        <object name="AR_RO_PZ_9005" model="AR_RO_PZ_9005" image="BITMAPS/2R12.WCX-BL.png" label="Rosace ronde Ø52mm, épaisseur 11mm, entrée de cylindre PZ, acier inox, finition noire" info="Rosace porte 50"/>
+                        <object name="D_RO_AV_TL0152_INOX" model="D_RO_AV_TL0152_INOX" image="BITMAPS/TL0152.JPG" label="Rosace ronde Ø53mm aveugle TL0152 Inox mat" info="Rosace porte 50"/>
+                        <object name="D_RO_AV_TL0152_NOIR" model="D_RO_AV_TL0152_NOIR" image="BITMAPS/TL0152.JPG" label="Rosace ronde Ø53mm aveugle TL0152 Noir" info="Rosace porte 50"/>
+                        <object name="D_RO_CYL_TL0151_INOX" model="D_RO_CYL_TL0151_INOX" image="BITMAPS/TL0151.jpg" label="Rosace ronde Ø53mm entrée de cylindre TL0151 Inox mat" info="Rosace porte 50"/>
+                        <object name="D_RO_WC_EXT_TL0155_INOX" model="D_RO_WC_EXT_TL0155_INOX" image="BITMAPS/Tonic-Line-TL0155.jpg" label="Rosace ronde Ø53mm WC TL0155 Inox mat" info="Rosace porte 50"/>
+                        <object name="D_RO_WC_INT_TL0155_INOX" model="D_RO_WC_INT_TL0155_INOX" image="BITMAPS/Tonic-Line-TL0155.jpg" label="Rosace ronde Ø53mm WC TL0155 Inox mat" info="Rosace porte 50"/>
+                    </category>
+                    <category name="RO_D_SD_CL" label="Porte Clarit" image="BITMAPS/qz50.gif">
+                        <object name="D_RO_AV_TL0152_INOX" model="D_RO_AV_TL0152_INOX" image="BITMAPS/TL0152.JPG" label="Rosace ronde Ø53mm aveugle TL0152 Inox mat" info="Rosace porte Clarit"/>
+                    </category>
+                    <category name="RO_D_SD_BT" label="Porte Beatle" image="BITMAPS/qz50.gif">
+                        <object name="D_RO_AV_TL0152_INOX" model="D_RO_AV_TL0152_INOX" image="BITMAPS/TL0152.JPG" label="Rosace ronde Ø53mm aveugle TL0152 Inox mat" info="Rosace porte Beatle"/>
+                        <object name="D_RO_CYL_TL0151_INOX" model="D_RO_CYL_TL0151_INOX" image="BITMAPS/TL0151.jpg" label="Rosace ronde Ø53mm entrée de cylindre TL0151 Inox mat" info="Rosace porte Beatle"/>
+                    </category>
+                    <category name="RO_D_SD_BTG" label="Porte Beatle Glass" image="BITMAPS/qz50.gif">
+                        <object name="AR_RO_PZ_OV_9005" model="AR_RO_PZ_OV_9005" image="BITMAPS/05008-BL.jpg" label="Rosace ovale Artitec PZ, Ep. 11mm, 70x30mm, Noire" info="Rosace porte Beatle Glass"/>
+                        <object name="D_RO_AV_OV_FSB1757_INOX" model="D_RO_AV_OV_FSB1757_INOX" image="BITMAPS/FSB1757_AV.jpg" label="Rosace ovale FS1757 aveugle, Ep. 7mm, 70x32.5mm, Inox" info="Rosace porte Beatle Glass"/>
+                        <object name="D_RO_AV_OV_TL0252_INOX" model="D_RO_AV_OV_TL0252_INOX" image="BITMAPS/TL0252.gif" label="Rosace ovale TL0252 (aveugle), Ep. 10mm, 70x32mm, Inox" info="Rosace porte Beatle Glass"/>
+                        <object name="D_RO_CYL_OV_FSB1757_INOX" model="D_RO_CYL_OV_FSB1757_INOX" image="BITMAPS/FSB1757.jpg" label="Rosace ovale FS1757 PZ, Ep. 7mm, 70x32.5mm, Inox" info="Rosace porte Beatle Glass"/>
+                        <object name="D_RO_CYL_OV_TL0251_INOX" model="D_RO_CYL_OV_TL0251_INOX" image="BITMAPS/TL0251.gif" label="Rosace ovale TL0251 (PZ), Ep. 10mm, 70x32mm, Inox" info="Rosace porte Beatle Glass"/>
+                    </category>
+                </category>
+
+                <category name="LOCK_LP" label="Tetiere" image="BITMAPS/qz50.gif">
+                    <category name="LP_D_SD" label="Simple Porte" image="BITMAPS/qz50.gif">
+                        <category name="LP_D_SD_40" label="Porte 40" image="BITMAPS/qz50.gif">
+                            <object name="BR_ES_LP_250x44x2_40_L" model="BR_ES_LP_250x44x2_40_L" image="BITMAPS/BR_ES_LP_250x44x2.JPG" label="Tetiere DIN droite 250x43.85mm avec 6 trous fraisés - 1 coté - Inox Meulé G320 - Ep. 20/10" info="Tetiere Simple porte 40"/>
+                            <object name="BR_ES_LP_250x44x2_40_R" model="BR_ES_LP_250x44x2_40_R" image="BITMAPS/BR_ES_LP_250x44x2.JPG" label="Tetiere DIN gauche 250x43.85mm avec 6 trous fraisés - 1 coté - Inox Meulé G320 - Ep. 20/10" info="Tetiere Simple porte 40"/>
+                            <object name="EE_LP_52A3501_R_40" model="EE_LP_52A3501_R_40" image="BITMAPS/-------52axx01.jpg" label="Têtiere eff-eff 52A35-01" info="Tetiere Simple porte 40"/>
+                            <object name="EE_LP_67B3501_L_40" model="EE_LP_67B3501_L_40" image="BITMAPS/-------67bxx01.jpg" label="Têtiere eff-eff 67B35-01" info="Tetiere Simple porte 40"/>
+                            <object name="EE_LP_67B3501_L_40ML" model="EE_LP_67B3501_L_40ML" image="BITMAPS/-------67bxx01.jpg" label="Têtiere eff-eff 67B35-01" info="Tetiere Simple porte 40"/>
+                            <object name="EE_LP_67B3501_L_40ML_AL" model="EE_LP_67B3501_L_40ML_AL" image="BITMAPS/-------67bxx01.jpg" label="Têtiere eff-eff 67B35-01 + vis inox M4x8" info="Tetiere Simple porte 40"/>
+                            <object name="EE_LP_67B3501_L_40SL_AL" model="EE_LP_67B3501_L_40SL_AL" image="BITMAPS/-------67bxx01.jpg" label="Têtiere eff-eff 67B35-01 + vis inox M4x8" info="Tetiere Simple porte 40"/>
+                            <object name="EE_LP_67B3501_R_40" model="EE_LP_67B3501_R_40" image="BITMAPS/-------67bxx01.jpg" label="Têtiere eff-eff 67B35-01" info="Tetiere Simple porte 40"/>
+                            <object name="EE_LP_67B3501_R_40ML" model="EE_LP_67B3501_R_40ML" image="BITMAPS/-------67bxx01.jpg" label="Têtiere eff-eff 67B35-01" info="Tetiere Simple porte 40"/>
+                            <object name="EE_LP_67B3501_R_40ML_WO" model="EE_LP_67B3501_R_40ML_WO" image="BITMAPS/-------67bxx01.jpg" label="Têtiere eff-eff 67B35-01 + vis agglo 3x20" info="Tetiere Simple porte 40"/>
+                        </category>
+                        <category name="LP_D_SD_50" label="Porte 50" image="BITMAPS/qz50.gif">
+                            <object name="BR_ES_LP_250x44x2_50_L" model="BR_ES_LP_250x44x2_50_L" image="BITMAPS/BR_ES_LP_250x44x2.JPG" label="Tetiere DIN droite 250x43.85mm avec 6 trous fraisés - 1 coté - Inox Meulé G320 - Ep. 20/10" info="Tetiere Simple porte 50"/>
+                            <object name="EE_LP_67B3501_L_50" model="EE_LP_67B3501_L_50" image="BITMAPS/-------67bxx01.jpg" label="Têtiere eff-eff 67B35-01" info="Tetiere Simple porte 50"/>
+                            <object name="EE_LP_67B3501_L_50ML" model="EE_LP_67B3501_L_50ML" image="BITMAPS/-------67bxx01.jpg" label="Têtiere eff-eff 67B35-01" info="Tetiere Simple porte 50"/>
+                            <object name="HA_LP_91139317_L" model="HA_LP_91139317_L" image="BITMAPS/911.39.317.jpg" label="Gache a lame, pour porte à recouvrement, 85mm, droite, inox" info="Tetiere Simple porte 50"/>
+                            <object name="HA_LP_91139317_R" model="HA_LP_91139317_R" image="BITMAPS/911.39.317.jpg" label="Gache a lame, pour porte à recouvrement, 85mm, droite, inox" info="Tetiere Simple porte 50"/>
+                            <object name="JNF_LP_170_24_INOX_L_AC50" model="JNF_LP_170_24_INOX_L_AC50" image="BITMAPS/VBH_313550.gif" label="Gache plate réversible - 170x24m, épaisseur 1.4mm, lèvre 40mm, inox brossé" info="Tetiere Simple porte 50"/>
+                            <object name="JNF_LP_170_24_INOX_R_AC50" model="JNF_LP_170_24_INOX_R_AC50" image="BITMAPS/VBH_313550.gif" label="Gache plate réversible - 170x24m, épaisseur 1.4mm, lèvre 40mm, inox brossé" info="Tetiere Simple porte 50"/>
+                        </category>
+                        <category name="LP_D_SD_CL" label="Porte Clarit" image="BITMAPS/qz50.gif">
+                            <object name="BR_ES_LP_250x44x2_CL12_L" model="BR_ES_LP_250x44x2_CL12_L" image="BITMAPS/BR_ES_LP_250x44x2.JPG" label="Tetiere DIN droite 250x43.85mm avec 6 trous fraisés - 1 coté - Inox Meulé G320 - Ep. 20/10" info="Tetiere Simple porte clarit"/>
+                            <object name="EE_LP_52A3501_L_CL" model="EE_LP_52A3501_L_CL" image="BITMAPS/-------52axx01.jpg" label="Têtiere eff-eff 52A35-01" info="Tetiere Simple porte clarit"/>
+                            <object name="EE_LP_52A3501_L_CL_AL" model="EE_LP_52A3501_L_CL_AL" image="BITMAPS/-------52axx01.jpg" label="Têtiere eff-eff 52A35-01 + vis inox M4x8" info="Tetiere Simple porte clarit"/>
+                            <object name="EE_LP_52A3501_R_CL" model="EE_LP_52A3501_R_CL" image="BITMAPS/-------52axx01.jpg" label="Têtiere eff-eff 52A35-01" info="Tetiere Simple porte clarit"/>
+                            <object name="EE_LP_52A3501_R_CL_AL" model="EE_LP_52A3501_R_CL_AL" image="BITMAPS/-------52axx01.jpg" label="Têtiere eff-eff 52A35-01 + vis inox M4x8" info="Tetiere Simple porte clarit"/>
+                            <object name="JNF_LP_170_24_INOX_L_CL" model="JNF_LP_170_24_INOX_L_CL" image="BITMAPS/JNF_LP_170_24_INOX.JPG" label="Gache plate réversible - 170x24m, épaisseur 1.4mm, lèvre 40mm, inox brossé" info="Tetiere Simple porte clarit"/>
+                            <object name="JNF_LP_170_24_INOX_L_CL_AL" model="JNF_LP_170_24_INOX_L_CL_AL" image="BITMAPS/JNF_LP_170_24_INOX.JPG" label="Gache plate réversible - 170x24m, épaisseur 1.4mm, lèvre 40mm, inox brossé + vis inox M4x8" info="Tetiere Simple porte clarit"/>
+                            <object name="JNF_LP_170_24_INOX_R_CL" model="JNF_LP_170_24_INOX_R_CL" image="BITMAPS/VBH_313550.gif" label="Gache plate réversible - 170x24m, épaisseur 1.4mm, lèvre 40mm, inox brossé" info="Tetiere Simple porte clarit"/>
+                            <object name="JNF_LP_170_24_INOX_R_CL_AL" model="JNF_LP_170_24_INOX_R_CL_AL" image="BITMAPS/VBH_313550.gif" label="Gache plate réversible - 170x24m, épaisseur 1.4mm, lèvre 40mm, inox brossé + vis inox M4x8" info="Tetiere Simple porte clarit"/>
+                        </category>
+                        <category name="LP_D_SD_BT" label="Porte Beatle" image="BITMAPS/qz50.gif">
+                            <object name="AA_LP_EA324_BT_L" model="AA_LP_EA324_BT_L" image="BITMAPS/EA324.jpg" label="Assa Abloy Gache EA324" info="Tetiere Simple porte BT , Tetiere Simple porte Beatle"/>
+                            <object name="AA_LP_EA324_BT_R" model="AA_LP_EA324_BT_R" image="BITMAPS/EA324.jpg" label="Assa Abloy Gache EA324" info="Tetiere Simple porte BT , Tetiere Simple porte Beatle"/>
+                            <object name="EE_LP_52A3501_L_BT" model="EE_LP_52A3501_L_BT" image="BITMAPS/-------52axx01.jpg" label="Têtiere eff-eff 52A35-01" info="Tetiere Simple porte BT , Tetiere Simple porte Beatle"/>
+                            <object name="EE_LP_67B3501_L_BT" model="EE_LP_67B3501_L_BT" image="BITMAPS/-------67bxx01.jpg" label="Têtiere eff-eff 67B35-01" info="Tetiere Simple porte BT , Tetiere Simple porte Beatle"/>
+                        </category>
+                        <category name="LP_D_SD_BTG" label="Porte Beatle Glass" image="BITMAPS/qz50.gif">
+                            <object name="AA_LP_EA325_BTG_L" model="AA_LP_EA325_BTG_L" image="BITMAPS/EA325.png" label="Assa Abloy Gache EA325" info="Tetiere porte Simple BTG , Tetiere porte Simple Beatle Glass"/>
+                            <object name="BR_ES_LP_250x44x2_BTG_R" model="BR_ES_LP_250x44x2_BTG_R" image="BITMAPS/BR_ES_LP_250x44x2.JPG" label="Tetiere DIN gauche 250x43.85mm avec 6 trous fraisés - 1 coté - Inox Meulé G320 - Ep. 20/10" info="Tetiere porte Simple BTG , Tetiere porte Simple Beatle Glass"/>
+                            <object name="EE_LP_52A3501_L_BTG" model="EE_LP_52A3501_L_BTG" image="BITMAPS/-------52axx01.jpg" label="Têtiere eff-eff 52A35-01" info="Tetiere porte Simple BTG , Tetiere porte Simple Beatle Glass"/>
+                            <object name="EE_LP_52A3501_R_BTG" model="EE_LP_52A3501_R_BTG" image="BITMAPS/-------52axx01.jpg" label="Têtiere eff-eff 52A35-01" info="Tetiere porte Simple BTG , Tetiere porte Simple Beatle Glass"/>
+                            <object name="EE_LP_67B3501_L_BTG" model="EE_LP_67B3501_L_BTG" image="BITMAPS/-------67bxx01.jpg" label="Têtiere eff-eff 67B35-01" info="Tetiere porte Simple BTG , Tetiere porte Simple Beatle Glass"/>
+                            <object name="EE_LP_67B3501_L_BTG_WO" model="EE_LP_67B3501_L_BTG_WO" image="BITMAPS/-------67bxx01.jpg" label="Têtiere eff-eff 67B35-01 + vis agglo 3x20" info="Tetiere porte Simple BTG , Tetiere porte Simple Beatle Glass"/>
+                            <object name="EE_LP_67B3501_R_BTG" model="EE_LP_67B3501_R_BTG" image="BITMAPS/-------67bxx01.jpg" label="Têtiere eff-eff 67B35-01" info="Tetiere porte Simple BTG , Tetiere porte Simple Beatle Glass"/>
+                            <object name="EE_LP_67B3501_R_BTG_WO" model="EE_LP_67B3501_R_BTG_WO" image="BITMAPS/-------67bxx01.jpg" label="Têtiere eff-eff 67B35-01 + vis agglo 3x20" info="Tetiere porte Simple BTG , Tetiere porte Simple Beatle Glass"/>
+                            <object name="HA_LP_91176011_L_BTG_WO" model="HA_LP_91176011_L_BTG_WO" image="BITMAPS/911.76.011.jpg" label="Gâche plate, pour serrure à mortaiser pour menuiserie métallique, pour pêne dormant/pêne demi-tour - mat + vis agglo 3x20" info="Tetiere porte Simple BTG , Tetiere porte Simple Beatle Glass"/>
+                            <object name="HA_LP_91176011_R_BTG_WO" model="HA_LP_91176011_R_BTG_WO" image="BITMAPS/911.76.011.jpg" label="Gâche plate, pour serrure à mortaiser pour menuiserie métallique, pour pêne dormant/pêne demi-tour - mat + vis agglo 3x20" info="Tetiere porte Simple BTG , Tetiere porte Simple Beatle Glass"/>
+                        </category>
+                    </category>
+
+                    <category name="LP_D_DD" label="Double Porte" image="BITMAPS/qz50.gif">
+                        <category name="LP_D_DD_40" label="Porte 40" image="BITMAPS/qz50.gif">
+                            <object name="BR_ES_LP_250x44x2_DD_40_L" model="BR_ES_LP_250x44x2_DD_40_L" image="BITMAPS/BR_ES_LP_250x44x2.JPG" label="Tetiere DIN droite 250x43.85mm avec 6 trous fraisés - 1 coté - Inox Meulé G320 - Ep. 20/10" info="Tetiere Double porte 40"/>
+                            <object name="JNF_LP_170_24_INOX_L_DD_40" model="JNF_LP_170_24_INOX_L_DD_40" image="BITMAPS/VBH_313550.gif" label="Gache plate réversible - 170x24m, épaisseur 1.4mm, lèvre 40mm, inox brossé" info="Tetiere Double porte 40"/>
+                        </category>
+                        <category name="LP_D_DD_50" label="Porte 50" image="BITMAPS/qz50.gif">
+                            <object name="JNF_LP_170_24_INOX_L_DD_50" model="JNF_LP_170_24_INOX_L_DD_50" image="BITMAPS/VBH_313550.gif" label="Gache plate réversible - 170x24m, épaisseur 1.4mm, lèvre 40mm, inox brossé" info="Tetiere Double porte 50"/>
+                        </category>
+                        <category name="LP_D_DD_BT" label="Porte Beatle" image="BITMAPS/qz50.gif">
+                            <object name="AA_LP_EA324_BT_DD_L" model="AA_LP_EA324_BT_DD_L" image="BITMAPS/EA324.jpg" label="Assa Abloy Gache EA324" info="Tetiere Double porte Beatle"/>
+                            <object name="AA_LP_EA324_BT_DD_R" model="AA_LP_EA324_BT_DD_R" image="BITMAPS/EA324.jpg" label="Assa Abloy Gache EA324" info="Tetiere Double porte Beatle"/>
+                            <object name="JNF_LP_170_24_INOX_R_BT_DD_WO" model="JNF_LP_170_24_INOX_R_BT_DD_WO" image="BITMAPS/VBH_313550.gif" label="Gache plate réversible - 170x24m, épaisseur 1.4mm, lèvre 40mm, inox brossé + vis agglo 3x20" info="Tetiere Double porte Beatle"/>
+                            <object name="JNF_LP_170_24_INOX_R_DD_BT" model="JNF_LP_170_24_INOX_R_DD_BT" image="BITMAPS/VBH_313550.gif" label="Gache plate réversible - 170x24m, épaisseur 1.4mm, lèvre 40mm, inox brossé" info="Tetiere Double porte Beatle"/>
+                        </category>
+                    </category>
+                </category>
+
+                <category name="HANDLES_WS_D" label="Bequille" image="BITMAPS/TL0206.jpg">
+                    <category name="HANDLES_D_SD_40" label="Porte 40" image="BITMAPS/TL0204.gif">
+                        <object name="ACCS_PORT_BE02_LD_RO_OV_INOX" model="ACCS_PORT_BE02_LD_RO_OV_INOX" image="BITMAPS/TL0204.gif" label="Bequille TL0204, rosace ovale épaisseur 10mm, Inox mat" info="Bequille porte 40"/>
+                        <object name="ACCS_PORT_BE03_LD_RO_CY_INOX" model="ACCS_PORT_BE03_LD_RO_CY_INOX" image="BITMAPS/BE_TL0104.JPG" label="Béquille L19 sur rosace ronde TL0104 Inox mat" info="Bequille porte 40"/>
+                        <object name="ACCS_PORT_BO01_INOX" model="ACCS_PORT_BO01_INOX" image="BITMAPS/TL0402.gif" label="Bouton fixe rond Tonic Line TL0402 - Inox" info="Bequille porte 40"/>
+                        <object name="ACCS_PORT_BO04_NOIR_ROND_MAT" model="ACCS_PORT_BO04_NOIR_ROND_MAT" image="BITMAPS/TL0402.gif" label="Bouton fixe rond Tonic Line TL0402 - laqué RAL 9005 mat" info="Bequille porte 40"/>
+                        <object name="AR_HAN_TIPO_OV_9005" model="AR_HAN_TIPO_OV_9005" image="BITMAPS/05020U-BL.PNG" label="Béquille Artitec Tipo (paire) L-90°, diamètre 19mm, avec rosace ovale 70x30x10mm inox noir mat" info="Bequille porte 40"/>
+                        <object name="AR_HAN_TIPO_RO_9005" model="AR_HAN_TIPO_RO_9005" image="BITMAPS/00126-WCX-BL.PNG" label="Béquille Artitec Tipo (paire) L-90°, diamètre 19mm, avec rosace ronde 52x11mm inox noir mat" info="Bequille porte 40"/>
+                        <object name="HAN_AA_ELEC_L140_L_INOX" model="HAN_AA_ELEC_L140_L_INOX" image="BITMAPS/226000030.PNG" label="Assa Abloy béquille intelligente avec clavier à code intégré inox L90° sur rosace, modèle A (DIN droite), 226000030" info="Bequille porte 40"/>
+                        <object name="XI_HAN_XA_A004_BLACK" model="XI_HAN_XA_A004_BLACK" image="BITMAPS/XA_A004_B.PNG" label="Béquille Xinnix XA-A004.B Noir" info="Bequille porte 40"/>
+                        <object name="CISA_PB_Fast_Touch_Inox_845_L" model="CISA_PB_Fast_Touch_Inox_845_L" image="BITMAPS/Fast_Touch_Inox.jpg" label="Barre anti-panique Cisa Fast Touch acier inoxydable - Largeur maxi 1200mm - Fonctionne avec serrure encastrée (compatible seulement avec serrure anti-panique)" info="Bequille porte 40"/>
+
+                        <!--OTHERS-->
+                        <object name="ACCS_PORT_BE01_LA_RO_CY_INOX_5" model="ACCS_PORT_BE01_LA_RO_CY_INOX_5" image="BITMAPS/BLUM_ZR7.1080U.jpg" label="Béquille L coin arrondi rosace ronde"/>
+                        <object name="HAN_HDD_PRO_NOIR" model="HAN_HDD_PRO_NOIR" image="BITMAPS/6492091.jpg" label="Béquille HDD Pro X-treme Zwart 6492093 avec rosace pour cylindre"/>
+                        <object name="TL_HAN_0206_INOX" model="TL_HAN_0206_INOX" image="BITMAPS/TL0206.jpg" label="Béquille Tonic Line TL0206 U-arrondie, Inox - Ø19x140mm - rosace ovale 70x32x10mm - carré 8mm"/>
+                        <object name="HA_HAN_SET_PZ_PDH4102_37_52" model="HA_HAN_SET_PZ_PDH4102_37_52" image="BITMAPS/903.92.574.jpg" label="Garniture de béquilles de porte, acier inox, Startec, PDH4102, rosace Ø5mm, épaisseur 8mm, garniture cylindre profilé (clé I)"/>
+                        <object name="VA_HAN_TEC_M192_BRO_PZ" model="VA_HAN_TEC_M192_BRO_PZ" image="BITMAPS/VA_HAN_TEC_M192_BRO.JPG" label="Béquille Varano Tecno M192 (paire) L-90°, avec rosace ronde Ø47x10mm + rosaces clé I (cylindre euro), superbronze satiné"/>
+                        <object name="CISA_PB_Fast_Touch_Inox_1200_L" model="CISA_PB_Fast_Touch_Inox_1200_L" image="BITMAPS/Fast_Touch_Inox.jpg" label="Barre anti-panique Cisa Fast Touch acier inoxydable - Largeur maxi 1200mm - Fonctionne avec serrure encastrée (compatible seulement avec serrure anti-panique)"/>
+                        <object name="ECO_PB_EPN_2000_II_Inox_1000_L" model="ECO_PB_EPN_2000_II_Inox_1000_L" image="BITMAPS/EPN_2000_II.jpg" label="Barre anti-panique Guardian EPN 2000 II acier inoxydable - BA = 1000mm - Fixation traversante"/>
+                        <object name="ECO_PB_EPN_2000_II_Inox_821_L" model="ECO_PB_EPN_2000_II_Inox_821_L" image="BITMAPS/EPN_2000_II.jpg" label="Barre anti-panique Guardian EPN 2000 II acier inoxydable - BA = 1000mm - Fixation traversante"/>
+                        <object name="HA_PB_KIT_911_30_152" model="HA_PB_KIT_911_30_152" image="BITMAPS/HAFELE_911.30.152.jpg" label="Kit fermeture anti-panique, Startec, coupe-feu, avec barre actionnement, serrure et poignée extérieure, se composant des art: 901.02.463; 901.02.359; 911.52.112; 909.09.909; 911.39.287; 901.02.343; 911.52.126"/>
+                    </category>
+                    <category name="HANDLES_D_SD_50" label="Porte 50" image="BITMAPS/BE_TL0104.JPG">
+                        <object name="ACCS_PORT_BE03_LD_RO_CY_INOX" model="ACCS_PORT_BE03_LD_RO_CY_INOX" image="BITMAPS/BE_TL0104.JPG" label="Béquille L19 sur rosace ronde TL0104 Inox mat"/>
+                        <object name="ACCS_PORT_BO01_INOX" model="ACCS_PORT_BO01_INOX" image="BITMAPS/TL0402.gif" label="Bouton fixe rond Tonic Line TL0402 - Inox"/>
+                        <object name="ACCS_PORT_BO04_NOIR_ROND_MAT" model="ACCS_PORT_BO04_NOIR_ROND_MAT" image="BITMAPS/TL0402.gif" label="Bouton fixe rond Tonic Line TL0402 - laqué RAL 9005 mat"/>
+                        <object name="AR_HAN_TAV_PF3_MODL_BL" model="AR_HAN_TAV_PF3_MODL_BL" image="BITMAPS/A51053334.jpg" label="Béquille Artitec Tavira PF3 (paire) mod.-L avec rosace à beq. 54x8mm inox noir mat"/>
+                        <object name="AR_HAN_TAV_PF3_MODL_IN" model="AR_HAN_TAV_PF3_MODL_IN" image="BITMAPS/A51038302.jpg" label="Béquille Artitec Tavira PF3 (paire) mod.-L avec rosace à beq. 54x8mm inox mat"/>
+                        <object name="AR_HAN_TIPO_RO_9005" model="AR_HAN_TIPO_RO_9005" image="BITMAPS/00126-WCX-BL.PNG" label="Béquille Artitec Tipo (paire) L-90°, diamètre 19mm, avec rosace ronde 52x11mm inox noir mat"/>
+                        <object name="HAN_AA_ELEC_L140_L_INOX" model="HAN_AA_ELEC_L140_L_INOX" image="BITMAPS/226000030.PNG" label="Assa Abloy béquille intelligente avec clavier à code intégré inox L90° sur rosace, modèle A (DIN droite), 226000030"/>
+                        <object name="XI_HAN_XA_A004_WHITE" model="XI_HAN_XA_A004_WHITE" image="BITMAPS/XA_A004_W.PNG" label="Béquille Xinnix XA-A004.W Blanc"/>
+
+                        <!--OTHERS-->
+                        <object name="ACCS_PORT_BE01_LA_RO_CY_INOX_5" model="ACCS_PORT_BE01_LA_RO_CY_INOX_5" image="BITMAPS/BLUM_ZR7.1080U.jpg" label="Béquille L coin arrondi rosace ronde"/>
+                        <object name="HAN_HDD_PRO_NOIR" model="HAN_HDD_PRO_NOIR" image="BITMAPS/6492091.jpg" label="Béquille HDD Pro X-treme Zwart 6492093 avec rosace pour cylindre"/>
+                        <object name="TL_HAN_0206_INOX" model="TL_HAN_0206_INOX" image="BITMAPS/TL0206.jpg" label="Béquille Tonic Line TL0206 U-arrondie, Inox - Ø19x140mm - rosace ovale 70x32x10mm - carré 8mm"/>
+                        <object name="HA_HAN_SET_PZ_PDH4102_37_52" model="HA_HAN_SET_PZ_PDH4102_37_52" image="BITMAPS/903.92.574.jpg" label="Garniture de béquilles de porte, acier inox, Startec, PDH4102, rosace Ø5mm, épaisseur 8mm, garniture cylindre profilé (clé I)"/>
+                        <object name="VA_HAN_TEC_M192_BRO_PZ" model="VA_HAN_TEC_M192_BRO_PZ" image="BITMAPS/VA_HAN_TEC_M192_BRO.JPG" label="Béquille Varano Tecno M192 (paire) L-90°, avec rosace ronde Ø47x10mm + rosaces clé I (cylindre euro), superbronze satiné"/>
+                        <object name="CISA_PB_Fast_Touch_Inox_1200_L" model="CISA_PB_Fast_Touch_Inox_1200_L" image="BITMAPS/Fast_Touch_Inox.jpg" label="Barre anti-panique Cisa Fast Touch acier inoxydable - Largeur maxi 1200mm - Fonctionne avec serrure encastrée (compatible seulement avec serrure anti-panique)"/>
+                        <object name="ECO_PB_EPN_2000_II_Inox_1000_L" model="ECO_PB_EPN_2000_II_Inox_1000_L" image="BITMAPS/EPN_2000_II.jpg" label="Barre anti-panique Guardian EPN 2000 II acier inoxydable - BA = 1000mm - Fixation traversante"/>
+                        <object name="ECO_PB_EPN_2000_II_Inox_821_L" model="ECO_PB_EPN_2000_II_Inox_821_L" image="BITMAPS/EPN_2000_II.jpg" label="Barre anti-panique Guardian EPN 2000 II acier inoxydable - BA = 1000mm - Fixation traversante"/>
+                        <object name="HA_PB_KIT_911_30_152" model="HA_PB_KIT_911_30_152" image="BITMAPS/HAFELE_911.30.152.jpg" label="Kit fermeture anti-panique, Startec, coupe-feu, avec barre actionnement, serrure et poignée extérieure, se composant des art: 901.02.463; 901.02.359; 911.52.112; 909.09.909; 911.39.287; 901.02.343; 911.52.126"/>
+                    </category>
+                    <category name="HANDLES_D_SD_CL" label="Porte Clarit" image="BITMAPS/BE_TL0104.JPG">
+                        <object name="ACCS_PORT_BE03_LD_RO_CY_INOX" model="ACCS_PORT_BE03_LD_RO_CY_INOX" image="BITMAPS/BE_TL0104.JPG" label="Béquille L19 sur rosace ronde TL0104 Inox mat" info="Bequille porte clarit"/>
+                        <object name="ACCS_PORT_BO01_INOX" model="ACCS_PORT_BO01_INOX" image="BITMAPS/TL0402.gif" label="Bouton fixe rond Tonic Line TL0402 - Inox" info="Bequille porte clarit"/>
+                        <object name="AR_HAN_TIPO_RO_9005" model="AR_HAN_TIPO_RO_9005" image="BITMAPS/00126-WCX-BL.PNG" label="Béquille Artitec Tipo (paire) L-90°, diamètre 19mm, avec rosace ronde 52x11mm inox noir mat" info="Bequille porte clarit"/>
+                        <object name="HF_PULL_ST_PH2121_1000_30_INOX" model="HF_PULL_ST_PH2121_1000_30_INOX" image="BITMAPS/903.00.605.jpg" label="Poignée de porte, acier inox, Startec, modèle PH 2121 - Ø 30 mm, dimension A : 1000 mm" info="Bequille porte clarit"/>
+                        <object name="LO_HN_29071P3018000885" model="LO_HN_29071P3018000885" image="BITMAPS/LOCOMOSON_29071P303000885.PNG" label="Tirant de porte inox 1800mm Ø30mm (par paire)" info="Bequille porte clarit"/>
+                        <object name="STA_CON_DO_FIX_HAN_GL_8_12" model="STA_CON_DO_FIX_HAN_GL_8_12" image="BITMAPS/909.03.900.jpg" label="Kit de montage, Startec, pour portes en verre 8-12mm, montage par paires, supports droits - pour poignée de tirage Startec PH212" info="Bequille porte clarit"/>
+
+                        <!--OTHERS-->
+                        <object name="ACCS_PORT_BE01_LA_RO_CY_INOX_5" model="ACCS_PORT_BE01_LA_RO_CY_INOX_5" image="BITMAPS/BLUM_ZR7.1080U.jpg" label="Béquille L coin arrondi rosace ronde"/>
+                        <object name="HAN_HDD_PRO_NOIR" model="HAN_HDD_PRO_NOIR" image="BITMAPS/6492091.jpg" label="Béquille HDD Pro X-treme Zwart 6492093 avec rosace pour cylindre"/>
+                        <object name="TL_HAN_0206_INOX" model="TL_HAN_0206_INOX" image="BITMAPS/TL0206.jpg" label="Béquille Tonic Line TL0206 U-arrondie, Inox - Ø19x140mm - rosace ovale 70x32x10mm - carré 8mm"/>
+                        <object name="HA_HAN_SET_PZ_PDH4102_37_52" model="HA_HAN_SET_PZ_PDH4102_37_52" image="BITMAPS/903.92.574.jpg" label="Garniture de béquilles de porte, acier inox, Startec, PDH4102, rosace Ø5mm, épaisseur 8mm, garniture cylindre profilé (clé I)"/>
+                        <object name="VA_HAN_TEC_M192_BRO_PZ" model="VA_HAN_TEC_M192_BRO_PZ" image="BITMAPS/VA_HAN_TEC_M192_BRO.JPG" label="Béquille Varano Tecno M192 (paire) L-90°, avec rosace ronde Ø47x10mm + rosaces clé I (cylindre euro), superbronze satiné"/>
+                        <object name="CISA_PB_Fast_Touch_Inox_1200_L" model="CISA_PB_Fast_Touch_Inox_1200_L" image="BITMAPS/Fast_Touch_Inox.jpg" label="Barre anti-panique Cisa Fast Touch acier inoxydable - Largeur maxi 1200mm - Fonctionne avec serrure encastrée (compatible seulement avec serrure anti-panique)"/>
+                        <object name="ECO_PB_EPN_2000_II_Inox_1000_L" model="ECO_PB_EPN_2000_II_Inox_1000_L" image="BITMAPS/EPN_2000_II.jpg" label="Barre anti-panique Guardian EPN 2000 II acier inoxydable - BA = 1000mm - Fixation traversante"/>
+                        <object name="ECO_PB_EPN_2000_II_Inox_821_L" model="ECO_PB_EPN_2000_II_Inox_821_L" image="BITMAPS/EPN_2000_II.jpg" label="Barre anti-panique Guardian EPN 2000 II acier inoxydable - BA = 1000mm - Fixation traversante"/>
+                        <object name="HA_PB_KIT_911_30_152" model="HA_PB_KIT_911_30_152" image="BITMAPS/HAFELE_911.30.152.jpg" label="Kit fermeture anti-panique, Startec, coupe-feu, avec barre actionnement, serrure et poignée extérieure, se composant des art: 901.02.463; 901.02.359; 911.52.112; 909.09.909; 911.39.287; 901.02.343; 911.52.126"/>
+                    </category>
+                    <category name="HANDLES_D_SD_BT" label="Porte Beatle" image="BITMAPS/TL0102.gif">
+                        <object name="AA_HAN_TL0204_OV_INOX_TAC23" model="AA_HAN_TL0204_OV_INOX_TAC23" image="BITMAPS/TL0204.gif" label="Bequille TL0204, rosace ovale épaisseur 10mm, Inox mat" info="Bequille porte BT"/>
+                        <object name="ACCS_PORT_BE01_LA_RO_CY_INOX" model="ACCS_PORT_BE01_LA_RO_CY_INOX" image="BITMAPS/TL0102.gif" label="Béquille L19 coin arrondi rosace ronde TL0102 Inox mat" info="Bequille porte BT"/>
+                        <object name="ACCS_PORT_BE03_LD_RO_CY_INOX" model="ACCS_PORT_BE03_LD_RO_CY_INOX" image="BITMAPS/BE_TL0104.JPG" label="Béquille L19 sur rosace ronde TL0104 Inox mat" info="Bequille porte BT"/>
+                        <object name="ACCS_PORT_BEATLE_AXE_BEQ" model="ACCS_PORT_BEATLE_AXE_BEQ" image="BITMAPS/Carre_EN.gif" label="Carre plein axe béquille 8x8mm, longueur 160mm" info="Bequille porte BT"/>
+                        <object name="ACCS_PORT_BO01_INOX" model="ACCS_PORT_BO01_INOX" image="BITMAPS/TL0402.gif" label="Bouton fixe rond Tonic Line TL0402 - Inox" info="Bequille porte BT"/>
+                        <object name="ACCS_PORT_BO05_DEP_INOX" model="ACCS_PORT_BO05_DEP_INOX" image="BITMAPS/96163.png" label="Bouton plat déporté - carré inclus 52/h55/50" info="Bequille porte BT"/>
+                        <object name="ACCS_PORT_CAR_8_FIX_BO_L155" model="ACCS_PORT_CAR_8_FIX_BO_L155" image="BITMAPS/FSB_05_0117.JPG" label="Tige carré 8mm avec fixation bouton, longueur 155mm " info="Bequille porte BT"/>
+                        <object name="ACCS_PORT_VIS_TRAV_BEQ" model="ACCS_PORT_VIS_TRAV_BEQ" image="BITMAPS/Douille+Vis.jpg" label="Douille pour tige filetée traversante pour béquille" info="Bequille porte BT"/>
+                        <object name="D_SQ_SP_x2_898_150_75_75" model="D_SQ_SP_x2_898_150_75_75" image="BITMAPS/Carré dédoublé 8-9-8.JPG" label="Tige carré dédoublée 8/9/8, longueur 150mm (75/75)" info="Bequille porte BT"/>
+
+                        <!--OTHERS-->
+                        <object name="ACCS_PORT_BE01_LA_RO_CY_INOX_5" model="ACCS_PORT_BE01_LA_RO_CY_INOX_5" image="BITMAPS/BLUM_ZR7.1080U.jpg" label="Béquille L coin arrondi rosace ronde"/>
+                        <object name="HAN_HDD_PRO_NOIR" model="HAN_HDD_PRO_NOIR" image="BITMAPS/6492091.jpg" label="Béquille HDD Pro X-treme Zwart 6492093 avec rosace pour cylindre"/>
+                        <object name="TL_HAN_0206_INOX" model="TL_HAN_0206_INOX" image="BITMAPS/TL0206.jpg" label="Béquille Tonic Line TL0206 U-arrondie, Inox - Ø19x140mm - rosace ovale 70x32x10mm - carré 8mm"/>
+                        <object name="HA_HAN_SET_PZ_PDH4102_37_52" model="HA_HAN_SET_PZ_PDH4102_37_52" image="BITMAPS/903.92.574.jpg" label="Garniture de béquilles de porte, acier inox, Startec, PDH4102, rosace Ø5mm, épaisseur 8mm, garniture cylindre profilé (clé I)"/>
+                        <object name="VA_HAN_TEC_M192_BRO_PZ" model="VA_HAN_TEC_M192_BRO_PZ" image="BITMAPS/VA_HAN_TEC_M192_BRO.JPG" label="Béquille Varano Tecno M192 (paire) L-90°, avec rosace ronde Ø47x10mm + rosaces clé I (cylindre euro), superbronze satiné"/>
+                        <object name="CISA_PB_Fast_Touch_Inox_1200_L" model="CISA_PB_Fast_Touch_Inox_1200_L" image="BITMAPS/Fast_Touch_Inox.jpg" label="Barre anti-panique Cisa Fast Touch acier inoxydable - Largeur maxi 1200mm - Fonctionne avec serrure encastrée (compatible seulement avec serrure anti-panique)"/>
+                        <object name="ECO_PB_EPN_2000_II_Inox_1000_L" model="ECO_PB_EPN_2000_II_Inox_1000_L" image="BITMAPS/EPN_2000_II.jpg" label="Barre anti-panique Guardian EPN 2000 II acier inoxydable - BA = 1000mm - Fixation traversante"/>
+                        <object name="ECO_PB_EPN_2000_II_Inox_821_L" model="ECO_PB_EPN_2000_II_Inox_821_L" image="BITMAPS/EPN_2000_II.jpg" label="Barre anti-panique Guardian EPN 2000 II acier inoxydable - BA = 1000mm - Fixation traversante"/>
+                        <object name="HA_PB_KIT_911_30_152" model="HA_PB_KIT_911_30_152" image="BITMAPS/HAFELE_911.30.152.jpg" label="Kit fermeture anti-panique, Startec, coupe-feu, avec barre actionnement, serrure et poignée extérieure, se composant des art: 901.02.463; 901.02.359; 911.52.112; 909.09.909; 911.39.287; 901.02.343; 911.52.126"/>
+                    </category>
+                    <category name="HANDLES_D_SD_BTG" label="Porte Beatle Glass" image="BITMAPS/TL0204.gif">
+                        <object name="AA_HAN_TL0204_OV_INOX_TAC23" model="AA_HAN_TL0204_OV_INOX_TAC23" image="BITMAPS/TL0204.gif" label="Bequille TL0204, rosace ovale épaisseur 10mm, Inox mat" info="Bequille porte BTG"/>
+                        <object name="AA_HAN_TL3204SS_INOX" model="AA_HAN_TL3204SS_INOX" image="BITMAPS/TL0204.gif" label="Bequille L19 Tonic Line TL3204SS sur rosace ovale épaisseur 7mm, Inox mat" info="Bequille porte BTG"/>
+                        <object name="ACCS_PORT_BE02_LD_RO_OV_INOX" model="ACCS_PORT_BE02_LD_RO_OV_INOX" image="BITMAPS/TL0204.gif" label="Bequille TL0204, rosace ovale épaisseur 10mm, Inox mat" info="Bequille porte BTG"/>
+                        <object name="ACCS_PORT_BEATLE_AXE_BEQ" model="ACCS_PORT_BEATLE_AXE_BEQ" image="BITMAPS/Carre_EN.gif" label="Carre plein axe béquille 8x8mm, longueur 160mm" info="Bequille porte BTG"/>
+                        <object name="ACCS_PORT_BO01_INOX" model="ACCS_PORT_BO01_INOX" image="BITMAPS/TL0402.gif" label="Bouton fixe rond Tonic Line TL0402 - Inox" info="Bequille porte BTG"/>
+                        <object name="ACCS_PORT_BO05_DEP_INOX" model="ACCS_PORT_BO05_DEP_INOX" image="BITMAPS/96163.png" label="Bouton plat déporté - carré inclus 52/h55/50" info="Bequille porte BTG"/>
+                        <object name="ACCS_PORT_CAR_8_FIX_BO_L155" model="ACCS_PORT_CAR_8_FIX_BO_L155" image="BITMAPS/FSB_05_0117.JPG" label="Tige carré 8mm avec fixation bouton, longueur 155mm " info="Bequille porte BTG"/>
+                        <object name="ACCS_PORT_VIS_TRAV_BEQ" model="ACCS_PORT_VIS_TRAV_BEQ" image="BITMAPS/Douille+Vis.jpg" label="Douille pour tige filetée traversante pour béquille" info="Bequille porte BTG"/>
+                        <object name="AR_HAN_TIPO_OV_9005" model="AR_HAN_TIPO_OV_9005" image="BITMAPS/05020U-BL.PNG" label="Béquille Artitec Tipo (paire) L-90°, diamètre 19mm, avec rosace ovale 70x30x10mm inox noir mat" info="Bequille porte BTG"/>
+                        <object name="TL_KN_TL0408_INOX" model="TL_KN_TL0408_INOX" image="BITMAPS/TL0408SS.gif" label="Bouton fixe déporté TL0408 sur rosace ovale 70x32mm, ep. 10mm, Inox - livré avec tige ajustage rue type Heso" info="Bequille porte BTG"/>
+
+                        <!--OTHERS-->
+                        <object name="ACCS_PORT_BE01_LA_RO_CY_INOX_5" model="ACCS_PORT_BE01_LA_RO_CY_INOX_5" image="BITMAPS/BLUM_ZR7.1080U.jpg" label="Béquille L coin arrondi rosace ronde"/>
+                        <object name="HAN_HDD_PRO_NOIR" model="HAN_HDD_PRO_NOIR" image="BITMAPS/6492091.jpg" label="Béquille HDD Pro X-treme Zwart 6492093 avec rosace pour cylindre"/>
+                        <object name="TL_HAN_0206_INOX" model="TL_HAN_0206_INOX" image="BITMAPS/TL0206.jpg" label="Béquille Tonic Line TL0206 U-arrondie, Inox - Ø19x140mm - rosace ovale 70x32x10mm - carré 8mm"/>
+                        <object name="HA_HAN_SET_PZ_PDH4102_37_52" model="HA_HAN_SET_PZ_PDH4102_37_52" image="BITMAPS/903.92.574.jpg" label="Garniture de béquilles de porte, acier inox, Startec, PDH4102, rosace Ø5mm, épaisseur 8mm, garniture cylindre profilé (clé I)"/>
+                        <object name="VA_HAN_TEC_M192_BRO_PZ" model="VA_HAN_TEC_M192_BRO_PZ" image="BITMAPS/VA_HAN_TEC_M192_BRO.JPG" label="Béquille Varano Tecno M192 (paire) L-90°, avec rosace ronde Ø47x10mm + rosaces clé I (cylindre euro), superbronze satiné"/>
+                        <object name="CISA_PB_Fast_Touch_Inox_1200_L" model="CISA_PB_Fast_Touch_Inox_1200_L" image="BITMAPS/Fast_Touch_Inox.jpg" label="Barre anti-panique Cisa Fast Touch acier inoxydable - Largeur maxi 1200mm - Fonctionne avec serrure encastrée (compatible seulement avec serrure anti-panique)"/>
+                        <object name="ECO_PB_EPN_2000_II_Inox_1000_L" model="ECO_PB_EPN_2000_II_Inox_1000_L" image="BITMAPS/EPN_2000_II.jpg" label="Barre anti-panique Guardian EPN 2000 II acier inoxydable - BA = 1000mm - Fixation traversante"/>
+                        <object name="ECO_PB_EPN_2000_II_Inox_821_L" model="ECO_PB_EPN_2000_II_Inox_821_L" image="BITMAPS/EPN_2000_II.jpg" label="Barre anti-panique Guardian EPN 2000 II acier inoxydable - BA = 1000mm - Fixation traversante"/>
+                        <object name="HA_PB_KIT_911_30_152" model="HA_PB_KIT_911_30_152" image="BITMAPS/HAFELE_911.30.152.jpg" label="Kit fermeture anti-panique, Startec, coupe-feu, avec barre actionnement, serrure et poignée extérieure, se composant des art: 901.02.463; 901.02.359; 911.52.112; 909.09.909; 911.39.287; 901.02.343; 911.52.126"/>
+                    </category>
+
+                    <category name="CONN_OTHERS" label="Autres" image="BITMAPS/TL3102.jpg">
+                        <object name="HF_PULL_ST_PH2122_800_30_INOX" model="HF_PULL_ST_PH2122_800_30_INOX" image="BITMAPS/Pull_Startec_2122_dim.jpg" label="Poignée de tirage, acier inox, Startec, modèle PH 2122, Ø 30 mm, dimension A : 800 mm - supports inclinés (60°)" info="Bequille"/>
+                        <object name="HF_PULL_ST_PH2122_500_30_INOX" model="HF_PULL_ST_PH2122_500_30_INOX" image="BITMAPS/Pull_Startec_2122_dim.jpg" label="Poignée de tirage, acier inox, Startec, modèle PH 2122, Ø 30 mm, dimension A : 500 mm - supports inclinés (60°)" info="Bequille"/>
+                        <object name="AA_HAN_TL3102_RO_INOX" model="AA_HAN_TL3102_RO_INOX" image="BITMAPS/TL3102.jpg" label="Béquille L19 coin arrondi rosace ronde TL3102 Inox mat"/>
+                        <object name="D_RO_CYL_TL4151_INOX" model="D_RO_CYL_TL4151_INOX" image="BITMAPS/TL4151.jpg" label="Rosace ronde Ø53mm entrée de cylindre TL4151 Inox mat"/>
+                        <object name="CON_SQ_SHAFT_8_L150" model="CON_SQ_SHAFT_8_L150" image="BITMAPS/909.35.025.jpg" label="Tige carrée 8mm, longueur 150mm - Pour épaisseur de porte 83-102mm"/>
+                        <object name="ACCS_PORT_AR03_INOX" model="ACCS_PORT_AR03_INOX" image="BITMAPS/TL0701.gif" label="Rehausse inox brossé pour arret de porte demi-lune TL0701"/>
+                        <object name="TL0704_Inox_L25_C10" model="TL0704_Inox_L25_C10" image="BITMAPS/TL0704_Inox.jpg" label="Butoir mural TL0704 Ø30mm, inox brossé, Longueur 25mm, caoutchouc 10mm"/>
+                        <object name="GTQ_KN_122647_INOX" model="GTQ_KN_122647_INOX" image="BITMAPS/GTQ_KN_122647_INOX.jpg" label="Bouton GreenteQ Fixe (diam. 55mm) déporté, H107mm sur rosace ovale stand alone 74x33x14mm, Inox"/>
+                    </category>
+
+                </category>
+
+                <category name="EQUIP_DOOR_WS_DC" label="Ferme Porte" image="BITMAPS/TS93G.jpg" visible="false">
+                    <object name="D_DC_TS93_B_EN25_9005_L" model="D_DC_TS93_B_EN25_9005_L" image="BITMAPS/TS93B.jpg" label="Ferme-porte de base Dormakaba TS 93 B, EN 2-5, Fintion noir RAL 9005 " info="Ferme-portes, Ferme porte, Ferme de porte"/>
+                    <object name="D_DC_TS93_B_EN25_9016_L" model="D_DC_TS93_B_EN25_9016_L" image="BITMAPS/TS93B.jpg" label="Ferme-porte de base Dormakaba TS 93 B, EN 2-5, Fintion blanc RAL 9016" info="Ferme-portes, Ferme porte, Ferme de porte"/>
+                    <object name="D_DC_TS93_B_EN25_INOX_L" model="D_DC_TS93_B_EN25_INOX_L" image="BITMAPS/TS93B.jpg" label="Ferme-porte de base Dormakaba TS 93 B, EN 2-5, Fintion Look Inox" info="Ferme-portes, Ferme porte, Ferme de porte"/>
+                    <object name="D_DC_TS93_B_EN25_SILVER_L" model="D_DC_TS93_B_EN25_SILVER_L" image="BITMAPS/TS93B.jpg" label="Ferme-porte de base Dormakaba TS 93 B, EN 2-5, Fintion Argent" info="Ferme-portes, Ferme porte, Ferme de porte"/>
+                    <object name="D_DC_TS93_B_EN57_9016_L" model="D_DC_TS93_B_EN57_9016_L" image="BITMAPS/TS93B.jpg" label="Ferme-porte de base Dormakaba TS 93 B, EN 5–7, Fintion blanc RAL 9016" info="Ferme-portes, Ferme porte, Ferme de porte"/>
+                    <object name="D_DC_TS93_B_EN57_INOX_L" model="D_DC_TS93_B_EN57_INOX_L" image="BITMAPS/TS93B.jpg" label="Ferme-porte de base Dormakaba TS 93 B, EN 5–7, Fintion Look Inox" info="Ferme-portes, Ferme porte, Ferme de porte"/>
+                    <object name="D_DC_TS93_B_EN57_SILVER_L" model="D_DC_TS93_B_EN57_SILVER_L" image="BITMAPS/TS93B.jpg" label="Ferme-porte de base Dormakaba TS 93 B, EN 5–7, Fintion Argent" info="Ferme-portes, Ferme porte, Ferme de porte"/>
+
+                    <object name="D_DC_ITS96_EN24_ARM_L" model="D_DC_ITS96_EN24_ARM_L" image="BITMAPS/ITS96N20_Arm.jpg" label="Bras à coulisse, ITS 96 N20, Dorma, Pose : DIN à droite, argenté" info="Ferme porte BTG"/>
+                    <object name="D_DC_ITS96_EN24_ARM_R" model="D_DC_ITS96_EN24_ARM_R" image="BITMAPS/ITS96N20_Arm.jpg" label="Bras à coulisse, ITS 96 N20, Dorma, Pose : DIN à gauche, argenté" info="Ferme porte BTG"/>
+                    <object name="D_DC_ITS96_EN24_ARM_BT_R" model="D_DC_ITS96_EN24_ARM_BT_R" image="BITMAPS/ITS96N20_Arm.jpg" label="Bras à coulisse, ITS 96 N20, Dorma, Pose : DIN à gauche, argenté" info="Ferme porte BTG"/>
+                    <object name="D_DC_ITS96N20_24_ARM_SILV_R" model="D_DC_ITS96N20_24_ARM_SILV_R" image="BITMAPS/ITS96N20_Arm.jpg" label="Bras à coulisse, ITS 96 N20, Dorma, Pose : DIN à gauche, argenté" info="Ferme porte BTG"/>
+                    <object name="D_DC_ITS96N20_24_ARM_SILV_BT_R" model="D_DC_ITS96N20_24_ARM_SILV_BT_R" image="BITMAPS/ITS96N20_Arm.jpg" label="Bras à coulisse, ITS 96 N20, Dorma, Pose : DIN à gauche, argenté" info="Ferme porte BTG"/>
+                    <object name="D_DC_TS98_XEA_EN16_SILV_Set" model="D_DC_TS98_XEA_EN16_SILV_Set" image="BITMAPS/TS98_XEA_Set.jpg" label="Ferme-porte Dormakaba TS 98 XEA, avec bras à coulisse et dispositif arrêt électro-mécanique, EN 1-6, Fintion Argent"  info="Ferme porte"/>
+                    <object name="D_DC_ITS96_EN36_BASE_L" model="D_DC_ITS96_EN36_BASE_L" image="BITMAPS/FP_ITS96.jpg" label="Ferme-porte de base, ITS 96 N/N20 (P)/EMF/GSR/GSR-EMF 2, EN 3-6, Dorma, butée: à gauche/à droite" info="Ferme porte"/>
+                    <object name="D_DC_TS92_B_9005_L" model="D_DC_TS92_B_9005_L" image="BITMAPS/TS92B.jpeg" label="Ferme-porte de base Dormakaba TS 92 B, EN 1-4, Fintion blanc RAL 9005" info="Ferme-portes, Ferme porte, Ferme de porte"/>
+                    <object name="D_DC_TS92_B_9016_L" model="D_DC_TS92_B_9016_L" image="BITMAPS/TS92B.jpeg" label="Ferme-porte de base Dormakaba TS 92 B, EN 1-4, Fintion blanc RAL 9016" info="Ferme-portes, Ferme porte, Ferme de porte"/>
+                    <object name="D_DC_TS92_B_INOX_L" model="D_DC_TS92_B_INOX_L" image="BITMAPS/TS92B.jpeg" label="Ferme-porte de base Dormakaba TS 92 B, EN 1-4, Fintion Look Inox" info="Ferme-portes, Ferme porte, Ferme de porte"/>
+                    <object name="D_DC_TS92_B_SILVER_CL_L" model="D_DC_TS92_B_SILVER_CL_L" image="BITMAPS/TS92B.jpeg" label="Ferme-porte de base Dormakaba TS 92 B, EN 1-4, Fintion Argent" info="Ferme-portes, Ferme porte, Ferme de porte"/>
+                    <object name="D_DC_TS92_B_SILVER_L" model="D_DC_TS92_B_SILVER_L" image="BITMAPS/TS92B.jpeg" label="Ferme-porte de base Dormakaba TS 92 B, EN 1-4, Fintion Argent" info="Ferme-portes, Ferme porte, Ferme de porte"/>
+                    <object name="D_DC_TS93_G_EN25_9005_L" model="D_DC_TS93_G_EN25_9005_L" image="BITMAPS/TS93G.jpg" label="Ferme-porte de base Dormakaba TS 93 G, EN 2-5, Fintion noir RAL 9005" info="Ferme-portes, Ferme porte, Ferme de porte"/>
+                    <object name="D_DC_TS93_G_EN25_9016_L" model="D_DC_TS93_G_EN25_9016_L" image="BITMAPS/TS93G.jpg" label="Ferme-porte de base Dormakaba TS 93 G, EN 2-5, Fintion blanc RAL 9016" info="Ferme-portes, Ferme porte, Ferme de porte"/>
+                    <object name="D_DC_TS93_G_EN25_INOX_L" model="D_DC_TS93_G_EN25_INOX_L" image="BITMAPS/TS93G.jpg" label="Ferme-porte de base Dormakaba TS 93 G, EN 2-5, Fintion Look Inox" info="Ferme-portes, Ferme porte, Ferme de porte"/>
+                    <object name="D_DC_TS93_G_EN25_SILVER_L" model="D_DC_TS93_G_EN25_SILVER_L" image="BITMAPS/TS93G.jpg" label="Ferme-porte de base Dormakaba TS 93 G, EN 2-5, Fintion Argent" info="Ferme-portes, Ferme porte, Ferme de porte"/>
+                    <object name="D_DC_TS93_G_EN57_INOX_L" model="D_DC_TS93_G_EN57_INOX_L" image="BITMAPS/TS93G.jpg" label="Ferme-porte de base Dormakaba TS 93 G, EN 5-7, Fintion Look Inox" info="Ferme-portes, Ferme porte, Ferme de porte"/>
+                    <object name="D_DC_TS93_G_EN57_SILVER_L" model="D_DC_TS93_G_EN57_SILVER_L" image="BITMAPS/TS93G.jpg" label="Ferme-porte de base Dormakaba TS 93 G, EN 5-7, Fintion Argent" info="Ferme-portes, Ferme porte, Ferme de porte"/>
+                    <object name="D_DC_TS93_G_SILVER_L" model="D_DC_TS93_G_SILVER_L" image="BITMAPS/TS93G.jpg" label="Ferme-porte de base Dormakaba TS 93 G, EN 2-5, Fintion Argent" info="Ferme-portes, Ferme porte, Ferme de porte"/>
+                </category>
+
+                <category name="EQUIP_DOOR_WS_D" label="Equipement Porte" image="BITMAPS/TL0701.gif" visible="false">
+                    <object name="ACCS_PORT_AR02_INOX" model="ACCS_PORT_AR02_INOX" image="BITMAPS/TL0701.gif" label="Arrêt porte demi lune TL0701, hauteur 8mm, Ø56mm" info="Equipement Porte"/>
+                    <object name="CISA_Cov_Cyl_Fast_Touch_Inox" model="CISA_Cov_Cyl_Fast_Touch_Inox" image="BITMAPS/Fast_Touch_Inox.jpg" label="Cache cylindre PZ 72mm pour Cisa Fast Touch - Inox" info="Equipement Porte"/>
+                    <object name="ACCS_PORT_RO01_WC_INOX" model="ACCS_PORT_RO01_WC_INOX" image="BITMAPS/" label="Rosace ronde Ø53mm WC TL0155 Inox mat" info="Equipement Porte"/>
+                    <object name="D_SQ_SP_x2_9_150_75_75" model="D_SQ_SP_x2_9_150_75_75" image="BITMAPS/Carre_dedouble_9.jpg" label="Tige carré dédoublée 9mm, longueur 150mm (75/75)" info="Equipement Porte"/>
+                    <object name="ACCS_PORT_GFP02_ALU" model="ACCS_PORT_GFP02_ALU" image="BITMAPS/MF03.gif" label="GLISSIERE pour Ferme porte à came et contre piston G-N finition ALU ARGENT pour boitier TS 91, 92, 93" info="Equipement Porte"/>
+                    <object name="D_DC_TS92_G_RAIL_ARGENT_L" model="D_DC_TS92_G_RAIL_ARGENT_L" image="BITMAPS/RAIL_TS91_92_93.jpg" label="Rail normal, TS, Dorma, pour ferme porte TS91/92/93, argent" info="Equipement Porte"/>
+                    <object name="D_DOP_ED_ARM_225_SILVER_L" model="D_DOP_ED_ARM_225_SILVER_L" image="BITMAPS/29271021.PNG" label="ED Bras compas 225 - Argent" info="Equipement Porte"/>
+                    <object name="D_DOP_ED_ARM_225_SILVER_R" model="D_DOP_ED_ARM_225_SILVER_R" image="BITMAPS/29271021.PNG" label="ED Bras compas 225 - Argent" info="Equipement Porte"/>
+                    <object name="D_DOP_ED_ARM_3030_SILVER_L" model="D_DOP_ED_ARM_3030_SILVER_L" image="BITMAPS/29275021.PNG" label="Bras à glissière, profondeur linteau +/- 30mm - Argent" info="Equipement Porte"/>
+                    <object name="D_DOP_ED_ARM_3030_SILVER_L_40" model="D_DOP_ED_ARM_3030_SILVER_L_40" image="BITMAPS/29275021.PNG" label="Bras à glissière, profondeur linteau +/- 30mm - Argent" info="Equipement Porte"/>
+                    <object name="D_DOP_ED_ARM_3030_SILVER_L_BTG" model="D_DOP_ED_ARM_3030_SILVER_L_BTG" image="BITMAPS/29275021.PNG" label="Bras à glissière, profondeur linteau +/- 30mm - Argent" info="Equipement Porte"/>
+                    <object name="D_DOP_ED_ARM_3030_SILVER_R" model="D_DOP_ED_ARM_3030_SILVER_R" image="BITMAPS/29275021.PNG" label="Bras à glissière, profondeur linteau +/- 30mm - Argent" info="Equipement Porte"/>
+                    <object name="D_DOP_ED_ARM_3030_SILVER_R_40" model="D_DOP_ED_ARM_3030_SILVER_R_40" image="BITMAPS/29275021.PNG" label="Bras à glissière, profondeur linteau +/- 30mm - Argent" info="Equipement Porte"/>
+                    <object name="D_DOP_ED_ARM_3030_SILVER_R_BTG" model="D_DOP_ED_ARM_3030_SILVER_R_BTG" image="BITMAPS/29275021.PNG" label="Bras à glissière, profondeur linteau +/- 30mm - Argent" info="Equipement Porte"/>
+                    <object name="D_DOP_ED_ARM_500_SILVER_L" model="D_DOP_ED_ARM_500_SILVER_L" image="BITMAPS/29272021.PNG" label="ED Bras compas 500 - Argent" info="Equipement Porte"/>
+                    <object name="D_DOP_ED_ARM_500_SILVER_R" model="D_DOP_ED_ARM_500_SILVER_R" image="BITMAPS/29272021.PNG" label="ED Bras compas 500 - Argent" info="Equipement Porte"/>
+                    <object name="D_DOP_ED_COV_SILVER_L" model="D_DOP_ED_COV_SILVER_L" image="BITMAPS/29241001.PNG" label="Capot ED Standard - Argent" info="Equipement Porte"/>
+                    <object name="D_DOP_ED_COV_SILVER_L_40" model="D_DOP_ED_COV_SILVER_L_40" image="BITMAPS/29241001.PNG" label="Capot ED Standard - Argent" info="Equipement Porte"/>
+                    <object name="D_DOP_ED_COV_SILVER_R" model="D_DOP_ED_COV_SILVER_R" image="BITMAPS/29241001.PNG" label="Capot ED Standard - Argent" info="Equipement Porte"/>
+                    <object name="D_DOP_ED_COV_SILVER_R_40" model="D_DOP_ED_COV_SILVER_R_40" image="BITMAPS/29241001.PNG" label="Capot ED Standard - Argent" info="Equipement Porte"/>
+                    <object name="D_DOP_ED_SEN_OS700_BL" model="D_DOP_ED_SEN_OS700_BL" image="BITMAPS/86501070.jpg" label="Prosecure Opti Safe 700 noir - 2 barettes de capteurs avec chacune 1 module émetteur - 1 module récepteur, longueur 700mm" info="Equipement Porte"/>
+                    <object name="D_DOP_ED100_230V_EN24_L" model="D_DOP_ED100_230V_EN24_L" image="BITMAPS/ED250.jpg" label="ED 100 Mécanisme pour portes vantaux - EN 2-4 poussant, protection incendie, EN 2-4 tirant, protection incendie" info="Equipement Porte"/>
+                    <object name="D_DOP_ED100_230V_EN24_L_40" model="D_DOP_ED100_230V_EN24_L_40" image="BITMAPS/ED250.jpg" label="ED 100 Mécanisme pour portes vantaux - EN 2-4 poussant, protection incendie, EN 2-4 tirant, protection incendie" info="Equipement Porte"/>
+                    <object name="D_DOP_ED100_Silver_SL_OH_Man_L" model="D_DOP_ED100_Silver_SL_OH_Man_L" image="BITMAPS/ED250.jpg" label="Set fourniture et pose opérateur ED 100 argent, bras glissière, pose coté opposé aux charnières, bouton poussoir, DIN droite" info="Equipement Porte"/>
+                    <object name="D_DOP_ED250_230V_EN46_L" model="D_DOP_ED250_230V_EN46_L" image="BITMAPS/ED250.jpg" label="ED 250 Mécanisme pour portes vantaux - EN 4-7 poussant, protection incendie, EN 4-6 tirant, protection incendie" info="Equipement Porte"/>
+                    <object name="D_DOP_ED250_CARD_BLUE" model="D_DOP_ED250_CARD_BLUE" image="BITMAPS/ED250.jpg" label="Carte additionnelle Full Energy pour ED 250" info="Equipement Porte"/>
+                    <object name="D_DOP_ED250_L_Mach" model="D_DOP_ED250_L_Mach" image="BITMAPS/ED250.jpg" label="Machining verre pour ED 250" info="Equipement Porte"/>
+                    <object name="D_DOP_ED250_Silver_SL_OH_Man_L" model="D_DOP_ED250_Silver_SL_OH_Man_L" image="BITMAPS/ED250.jpg" label="Set fourniture et pose opérateur ED 250 argent, bras glissière, pose coté opposé aux charnières, bouton poussoir, DIN droite" info="Equipement Porte"/>
+                </category>
+            </category>
+            <category name="CON_WS_P" label="Cloison" image="BITMAPS/ADJ_SOL_VP6030.JPG">
+                <object name="KI_TG_TS230_800" model="KI_TG_TS230_800" image="BITMAPS/KI_TG_TS230.JPG" label="Transfer grille - Kiefer TS 230 - Nominal length 800mm" info="Cloison , Partition"/>
+                <object name="KI_TG_SG300_500" model="KI_TG_SG300_500" image="BITMAPS/KI_TG_SG300.JPG" label="Transfer grille - Kiefer SG 300 - Nominal length 500mm" info="Cloison , Partition"/>
+
+                <object name="ACCS_DM_DR_GD_Z" model="ACCS_DM_DR_GD_Z" image="BITMAPS/BLUM_ZR7.1080U.jpg" label="Grand crochet Z ancien système" info="Cloison , Partition"/>
+                <object name="ACCS_DM_DR_PT_Z" model="ACCS_DM_DR_PT_Z" image="BITMAPS/BLUM_ZR7.1080U.jpg" label="Petit crochet Z ancien système" info="Cloison , Partition"/>
+                <object name="ACCS_DM_TUB_SIL_D10xL15xE2" model="ACCS_DM_TUB_SIL_D10xL15xE2" image="BITMAPS/BLUM_ZR7.1080U.jpg" label="Caoutcouc isolant ancien système 10396" info="Cloison , Partition"/>
+                <object name="ACCS_VP6030_VC_CROCH_PAN" model="ACCS_VP6030_VC_CROCH_PAN" image="BITMAPS/VP6030_VC_CROCH_PAN.JPG" label="Crochet VC accrochage panneau" info="Cloison , Partition"/>
+                <object name="PARTITION_EI30" model="PARTITION_EI30" image="BITMAPS/" label="Cloison coupe-feu EI30 (à compléter pour commande)" info="Cloison , Partition"/>
+                <object name="PARTITION_EI60" model="PARTITION_EI60" image="BITMAPS/" label="Cloison coupe-feu EI60 (à compléter pour commande)" info="Cloison , Partition"/>
+                <object name="PARTITION_GLASS_EI30" model="PARTITION_GLASS_EI30" image="BITMAPS/" label="Cloison vitrée coupe-feu EI30 (à compléter pour commande)" info="Cloison , Partition"/>
+                <object name="PARTITION_GLASS_EI60" model="PARTITION_GLASS_EI60" image="BITMAPS/" label="Cloison vitrée coupe-feu EI60 (à compléter pour commande)" info="Cloison , Partition"/>
+                <object name="ACCS_DM_DR_GD_Z" model="ACCS_DM_DR_GD_Z" image="BITMAPS/BLUM_ZR7.1080U.jpg" label="Grand crochet Z ancien système" info="Cloison , Partition"/>
+                <object name="ACCS_DM_DR_PT_Z" model="ACCS_DM_DR_PT_Z" image="BITMAPS/BLUM_ZR7.1080U.jpg" label="Petit crochet Z ancien système" info="Cloison , Partition"/>
+                <object name="ACCS_DM_TUB_SIL_D10xL15xE2" model="ACCS_DM_TUB_SIL_D10xL15xE2" image="BITMAPS/BLUM_ZR7.1080U.jpg" label="Caoutcouc isolant ancien système 10396" info="Cloison , Partition"/>
+                <object name="ACCS_VP6030_FA_AJUST_SOL" model="ACCS_VP6030_FA_AJUST_SOL" image="BITMAPS/ADJ_SOL_VP6030.JPG" label="Vérin de mise a niveau sol poteau" info="Cloison , Partition"/>
+                <object name="ACCS_VP6030_FIX_SOL_H050" model="ACCS_VP6030_FIX_SOL_H050" image="BITMAPS/" label="Support pour poteau de cloison autoportante - hauteur 50mm - plaque acier 500x250x10mm - tige pleine non filetée, soudée sur plaque diamètre 8mm" info="Cloison , Partition"/>
+                <object name="ACCS_VP6030_FIX_SOL_H100" model="ACCS_VP6030_FIX_SOL_H100" image="BITMAPS/" label="Support pour poteau de cloison autoportante - hauteur 100mm - plaque acier 500x250x10mm - tige pleine non filetée, soudée sur plaque diamètre 8mm" info="Cloison , Partition"/>
+                <object name="ACCS_VP6030_FIX_SOL_H150" model="ACCS_VP6030_FIX_SOL_H150" image="BITMAPS/" label="Support pour poteau de cloison autoportante - hauteur 150mm - plaque acier 500x250x10mm - tige pleine non filetée, soudée sur plaque diamètre 8mm" info="Cloison , Partition"/>
+                <object name="ACCS_VP6030_FIX_SOL_H200" model="ACCS_VP6030_FIX_SOL_H200" image="BITMAPS/" label="Support pour poteau de cloison autoportante - hauteur 200mm - plaque acier 500x250x10mm - tige pleine non filetée, soudée sur plaque diamètre 8mm" info="Cloison , Partition"/>
+            </category>
+            <category name="CON_WS_DW" label="Desk window" image="BITMAPS/295.1012.jpg">
+                <category name="WS_DW_EQUIP" label="Equipement" image="BITMAPS/295.1012.jpg">
+                    <object name="HF_SL_Doc_Cash_Tray" model="HF_SL_Doc_Cash_Tray" image="BITMAPS/835.03.310.jpg" label="Bac plat coulissant, passage net 37 mm, dimensions (l x P x H) : 428 x 534 x 57 mm, matériau : bord : acier inox, bac : Skinplate, cuvette et support de bac : tôle acier"/>
+                </category>
+            </category>
+            <category name="CON_WS_WALL" label="Equipement Wall" image="BITMAPS/7403000.jpg">
+                <object name="PLA_GALV_M_48_2790" model="PLA_GALV_M_48_2790" image="BITMAPS/PLA_GALV_M_48.jpg" label="Montant Placo Stil M48; longueur 2790mm"/>
+                <object name="PLA_GALV_M_70_3590" model="PLA_GALV_M_70_3590" image="BITMAPS/PLA_GALV_M_48.jpg" label="Montant Placo Stil M70; longueur 3590mm"/>
+                <object name="PLA_GALV_R_48_3000" model="PLA_GALV_R_48_3000" image="BITMAPS/PLA_GALV_R_48.jpg" label="Rail Placo Stil R48; longueur 3000mm"/>
+                <object name="PLA_GALV_R_70_3000" model="PLA_GALV_R_70_3000" image="BITMAPS/PLA_GALV_R_48.jpg" label="Rail Placo Stil R70; longueur 3000mm"/>
+                <object name="PLA_GALV_R_90_3000" model="PLA_GALV_R_90_3000" image="BITMAPS/PLA_GALV_R_48.jpg" label="Rail Placo Stil R90; longueur 3000mm"/>
+                <object name="KNA_PRI_UNIFLOTT" model="KNA_PRI_UNIFLOTT" image="BITMAPS/KNA_UNIFLOTT.jpg" label="Enduit KNAUF Uniflott - Sac de 25kg"/>
+            </category>
+            <category name="CON_WS_FIX" label="Fixation" image="BITMAPS/7403000.jpg">
+                <object name="HA_Slido_Rail_3000_Alu_Anod" model="HA_Slido_Rail_3000_Alu_Anod" label="Rail de roulement percé alu anodisé 3000mm"/>
+                <object name="PR_CITRUS_CLEANER_SOFT" model="PR_CITRUS_CLEANER_SOFT" image="BITMAPS/CITRUS_CLEANER_SOFT.jpg" label="Spray nettoyant Promanté Citrus Cleaner Soft 500ml"/>
+                <object name="HF_CA_52mm_670_06_910" model="HF_CA_52mm_670_06_910" image="BITMAPS/" label="Roulette orientable avec plaque à visser, H:52mm Ø:35mm"/>
+                <object name="CHEV_FRAP_06x35" model="CHEV_FRAP_06x35" image="BITMAPS/CHEV_FRAP.jpg" label="Chevilles a frapper 6x35" info="Fixation"/>
+                <object name="SPP_FIX_MTX_RAIL_PANEL" model="SPP_FIX_MTX_RAIL_PANEL" image="img\new_img\catalog\webshop\SPP_FIX_MTX_RAIL_PANEL.jpg" label="Rail accroche Multiplex 18mm, largeur 50mm (partie panneau) avec pente 45°" info="Fixation"/>
+                <object name="SPP_FIX_MTX_RAIL_WALL" model="SPP_FIX_MTX_RAIL_WALL" image="img\new_img\catalog\webshop\SPP_FIX_MTX_RAIL_WALL.jpg" label="Rail accroche Multiplex 18mm, largeur 50mm (partie mur) avec pente 45°" info="Fixation"/>
+                <object name="SOU_ACRYRUB_SWS_310" model="SOU_ACRYRUB_SWS_310" image="BITMAPS/Acryrub_SWS.jpg" label="Mastic de remplissage silanisé Soudal Acryrub SWS - 310ml p/ cartouche" info="Fixation"/>
+                <object name="SOU_SOUDAGRAPH_FR_310" model="SOU_SOUDAGRAPH_FR_310" image="BITMAPS/Soudagraphite_FR.jpg" label="Mastic silicone ignifuge Soudal Soudagraphite FR - 310ml p/ cartouche - agit comme siolant acoustique" info="Fixation"/>
+                <object name="SOU_FM_FLEXIFOAM_GUN" model="SOU_FM_FLEXIFOAM_GUN" image="BITMAPS/SOU_FM_FLEXIFOAM_GUN.jpg" label="Mousse PU Soudal Flexifoam Gun 750ml" info="Fixation"/>
+                <object name="SOU_GUN_CLICK_N_FIX" model="SOU_GUN_CLICK_N_FIX" image="BITMAPS/SOU_GUN_CLICK_N_FIX.jpg" label="Pistolet pour mousse PU Soudal Compact Foam Gun Click and Fix" info="Fixation"/>
+                <object name="PSPP_ALU_EQU_100x40x4_9005" model="PSPP_ALU_EQU_100x40x4_9005" image="BITMAPS/" label="Equerre alu 100x40x4, Long: 6m, RAL 9005" info="Fixation"/>
+                <object name="COL_CONTACT_RECTA_160_5L" model="COL_CONTACT_RECTA_160_5L" image="BITMAPS/COL_CONTACT_RECTA_160_5L.jpg" label="Pot de Colle contact RECTA-TIX 160 en 5L" info="Fixation"/>
+                <object name="COL_CONTACT_RECTA_160_750ML" model="COL_CONTACT_RECTA_160_750ML" image="BITMAPS/COL_CONTACT_RECTA_160_5L.jpg" label="Pot de Colle contact RECTA-TIX 160 en 0.75 l" info="Fixation"/>
+                <object name="COL_CONTACT_WURTH_EXTRA_730ML" model="COL_CONTACT_WURTH_EXTRA_730ML" image="BITMAPS/0893100023.jpg" label="Colle de contact Wurth Uni-Klebstoff Extra, pot de 730 ml" info="Fixation"/>
+                <object name="TUB_COL_BOIS_BLANC_B300" model="TUB_COL_BOIS_BLANC_B300" image="BITMAPS/7403000.jpg" label="Colle a bois blanche 740.3000" info="Fixation"/>
+                <object name="TUB_COL_MOUSSE_PARAFOAM_PANELG" model="TUB_COL_MOUSSE_PARAFOAM_PANELG" image="BITMAPS/Parafoam-Panelglue-NBS.png" label="Parafoam Panelglue 750ML pour pistolet" info="Fixation"/>
+
+                <object name="KRA_TO_Socket_Set_38" model="KRA_TO_Socket_Set_38" image="BITMAPS/KRA_TO_Socket_Set_38.jpg" label="Coffret 38 pièces 1/4 Kraftwerk"/>
+                <object name="Flat_Ring_Spanner_13mm" model="Flat_Ring_Spanner_13mm" image="BITMAPS/Flat_Ring_Spanner.jpg" label="Clé mixte à cliquet métrique 13mm"/>
+            </category>
+            <category name="CON_WS_CONS" label="Consumable" image="BITMAPS/FEB44.jpg">
+                <object name="TAJ_TO_BLA_10_FS_25MM" model="TAJ_TO_BLA_10_FS_25MM" image="BITMAPS/3082942.jpg" label="Tajima - Blister 10 lames sécable ULTRA FINE &amp; SHARP, noire 25 mm" info="Consumable"/>
+                <object name="SAND_PAP_P100_230x280mm" model="SAND_PAP_P100_230x280mm" image="BITMAPS/SAND_PAP_P100_230x280mm.png" label="Papier abrasif P100 - 230x280mm" info="Consumable"/>
+                <object name="ROAD_SALT_10kg" model="ROAD_SALT_10kg" image="BITMAPS/ROAD_SALT_10kg.jpg" label="Sel de déneigement - 10kg" info="Consumable"/>
+
+                <object name="PSPP_ALU_EQU_100x40x4_9005" model="PSPP_ALU_EQU_100x40x4_9005" image="BITMAPS/" label="Equerre alu 100x40x4, Long: 6m, RAL 9005" info="Consumable"/>
+
+                <object name="BE_Alu_Chevalet_Modif_20231317" model="BE_Alu_Chevalet_Modif_20231317" image="BITMAPS/" label="Modification de chevalet alu" info="Consumable"/>
+                <object name="FE_TO_SANDPAPER_150_D225" model="FE_TO_SANDPAPER_150_D225" image="BITMAPS/FE_TO_SANDPAPER_180_D250.jpg" label="Papier de verre Festool - grain 150 - diamètre 225mm" info="Consumable"/>
+                <object name="FE_TO_SANDPAPER_180_D225" model="FE_TO_SANDPAPER_180_D225" image="BITMAPS/FE_TO_SANDPAPER_180_D250.jpg" label="Papier de verre Festool - grain 180 - diamètre 225mm" info="Consumable"/>
+
+                <object name="COR_PROTEC_CB_35x35x3mm_1200mm" model="COR_PROTEC_CB_35x35x3mm_1200mm" image="BITMAPS/COR_PROTEC_CB.png" label="Cornière de protection en carton recyclé brun - 35x35mm, épaisseur 3mm, longueur 1200mm" info="Consumable"/>
+                <object name="COR_PROTEC_CB_35x35x3mm_950mm" model="COR_PROTEC_CB_35x35x3mm_950mm" image="BITMAPS/COR_PROTEC_CB.png" label="Cornière de protection en carton recyclé brun - 35x35mm, épaisseur 3mm, longueur 950mm" info="Consumable"/>
+                <object name="COR_PROTEC_CB_55x55x4mm_1800mm" model="COR_PROTEC_CB_55x55x4mm_1800mm" image="BITMAPS/COR_PROTEC_CB.png" label="Cornière de protection en carton recyclé brun - 55x55mm, épaisseur 4mm, longueur 1800mm" info="Consumable"/>
+                <object name="COR_PROTEC_PP19R_50x30x30mm" model="COR_PROTEC_PP19R_50x30x30mm" image="BITMAPS/COR_PROTEC_PP19.png" label="Coins de protection PP 19 R" info="Consumable"/>
+                <object name="EU_Douille_E27_Black_FMT177NBE" model="EU_Douille_E27_Black_FMT177NBE" image="BITMAPS/FMT177NBE.jpg" label="Famatel douille droite raccord à vis E27 noire 177NBE" info="Consumable"/>
+                <object name="FILM_PLAST_ET_125" model="FILM_PLAST_ET_125" image="BITMAPS/BLUM_ZR7.1080U.jpg" label="Film de étirable 23 microns, 125mm" info="Consumable"/>
+                <object name="FILM_PLAST_ET_500" model="FILM_PLAST_ET_500" image="BITMAPS/BLUM_ZR7.1080U.jpg" label="Film de étirable 20 microns, 500mm" info="Consumable"/>
+                <object name="FILM_PLAST_PROTECT_VISQUEEN" model="FILM_PLAST_PROTECT_VISQUEEN" image="BITMAPS/FEB44.jpg" label="Film FEB44 de protection transparent sol, rouleau de 95m, largeur 400cm" info="Consumable"/>
+                <object name="FILM_PROTEC_TRSP_4x94m" model="FILM_PROTEC_TRSP_4x94m" image="BITMAPS/" label="Film de protection transparent 4x94m, épaisseur 100 microns" info="Consumable"/>
+                <object name="SS_SO_White_cartouch" model="SS_SO_White_cartouch" image="BITMAPS/imos_000_000.jpg" label="Cartouche Silicone sanitaire blanc SOUDAL 300ml" info="Consumable"/>
+                <object name="TO_DISC_STEEL_INOX_D125mm" model="TO_DISC_STEEL_INOX_D125mm" image="BITMAPS/TO_DISC_STEEL_INOX_D125mm.jpg" label="Disque à tronçonner acier/inox diam. 125mm" info="Consumable"/>
+                <object name="TO_JIGSAW_BLADE_WOOD_80mm" model="TO_JIGSAW_BLADE_WOOD_80mm" image="BITMAPS/TO_JIGSAW_BLADE_WOOD_80mm.jpg" label="Lame de scie sauteuse pour bois. Epaisseur matériau 80mm" info="Consumable"/>
+
+                <object name="FE_TO_SUC_HOSE_27_32_AS_CTR" model="FE_TO_SUC_HOSE_27_32_AS_CTR" image="BITMAPS/FE_TO_SUC_HOSE_27_32_AS_CTR.jpg" label="Festool D 27/32x3,5m-AS/CTR - Tuyau aspiration"/>
+            </category>
+            <category name="CON_WS_VIS" label="Visserie" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg">
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4x80" model="VIS_AGGLO_ZG_TF_PZ2_4x80" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4X80"/>
+                <object name="VIS_AUTOF_ZG_TF_PH2_4,2X50" model="VIS_AUTOF_ZG_TF_PH2_4,2X50" image="BITMAPS/VIS_AUTOF_TETE_FRAISEE_PH2.jpg" label="Vis Autoforante zing tete fraisée PH2 4.2x50" info="Visserie"/>
+                <object name="VIS_AUTOF_ZG_TF_PH2_4,2X63" model="VIS_AUTOF_ZG_TF_PH2_4,2X63" image="BITMAPS/VIS_AUTOF_TETE_FRAISEE_PH2.jpg" label="Vis Autoforante zing tete fraisée PH2 4.2x63" info="Visserie"/>
+                <object name="VIS_GYP_PHOSP_PH2_3.9x25_Strip" model="VIS_GYP_PHOSP_PH2_3.9x25_Strip" image="BITMAPS/VIS_GYP_PHOSP_Strip.jpg" label="Vis en bande pour plaque de plâtre phosp. tete fraisée PH2 3,9x25mm. Qté 1000" info="Visserie"/>
+                <object name="VIS_GYP_PHOSP_PH2_3_9x35_Strip" model="VIS_GYP_PHOSP_PH2_3_9x35_Strip" image="BITMAPS/VIS_GYP_PHOSP_Strip.jpg" label="Vis en bande pour plaque de plâtre phosp. tete fraisée PH2 3,9x35mm. Qté 1000" info="Visserie"/>
+                <object name="VIS_GYP_PHOSP_PH2_3_9x41_Strip" model="VIS_GYP_PHOSP_PH2_3_9x41_Strip" image="BITMAPS/VIS_GYP_PHOSP_Strip.jpg" label="Vis en bande pour plaque de plâtre phosp. tete fraisée PH2 3,9x41mm. Qté 1000" info="Visserie"/>
+                <object name="VIS_AGGLO_BR_TF_TX20_3x25" model="VIS_AGGLO_BR_TF_TX20_3x25" image="BITMAPS/VIS_AGGLO_AC_TF_TX20.jpg" label="Vis agglo acier laitonné tete fraisée TX20 3x25" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_3_5X16" model="VIS_AGGLO_ZG_TF_PZ2_3_5X16" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 3.5X16" info="Visserie"/>
+                <object name="VIS_AUTOF_ZG_TF_PH2_4,2X25" model="VIS_AUTOF_ZG_TF_PH2_4,2X25" image="BITMAPS/VIS_AUTOF_TETE_FRAISEE_PH2.jpg" label="Vis Autoforante zing tete fraisée PH2 4,2x25" info="Visserie"/>
+                <object name="VIS_GYP_PHOSP_PH2_3,5X45" model="VIS_GYP_PHOSP_PH2_3,5X45" image="BITMAPS/VIS_GYP.jpg" label="Vis GYPROC phosp. tete fraisée PH2 3,5x45" info="Visserie"/>
+                <object name="VIS_GYP_AUTOF_PHOSP_PH2_3,5X25" model="VIS_GYP_AUTOF_PHOSP_PH2_3,5X25" image="BITMAPS/VIS_GYP_AUTOF.jpg" label="Vis GYPROC autoforante phosp. tete fraisée PH2 3,5x25" info="Visserie"/>
+                <object name="VIS_GYP_AUTOF_PHOSP_PH2_3,5X35" model="VIS_GYP_AUTOF_PHOSP_PH2_3,5X35" image="BITMAPS/VIS_GYP_AUTOF.jpg" label="Vis GYPROC autoforante phosp. tete fraisée PH2 3,5x35" info="Visserie"/>
+                <object name="VIS_GYP_AUTOF_PHOSP_PH2_3,5X45" model="VIS_GYP_AUTOF_PHOSP_PH2_3,5X45" image="BITMAPS/VIS_GYP_AUTOF.jpg" label="Vis GYPROC autoforante phosp. tete fraisée PH2 3,5x45" info="Visserie"/>
+                <object name="VIS_GYP_PHOSP_PH2_3,5X55" model="VIS_GYP_PHOSP_PH2_3,5X55" image="BITMAPS/VIS_GYP.jpg" label="Vis GYPROC phosp. tete fraisée PH2 3,5x55" info="Visserie"/>
+                <object name="VIS_GYP_PHOSP_PH2_3,5X75" model="VIS_GYP_PHOSP_PH2_3,5X75" image="BITMAPS/VIS_GYP.jpg" label="Vis GYPROC phosp. tete fraisée PH2 3,5x75" info="Visserie"/>
+                <object name="VIS_GYP_PHOSP_PH2_3,5X90" model="VIS_GYP_PHOSP_PH2_3,5X90" image="BITMAPS/VIS_GYP.jpg" label="Vis GYPROC phosp. tete fraisée PH2 3,5x90" info="Visserie"/>
+                <object name="VIS_GYP_PHOSP_PH2_3,9X25" model="VIS_GYP_PHOSP_PH2_3,9X25" image="BITMAPS/VIS_GYP.jpg" label="Vis GYPROC phosp. tete fraisée PH2 3,9x25" info="Visserie"/>
+                <object name="VIS_GYP_PHOSP_PH2_3,9X35" model="VIS_GYP_PHOSP_PH2_3,9X35" image="BITMAPS/VIS_GYP.jpg" label="Vis GYPROC phosp. tete fraisée PH2 3,9x35" info="Visserie"/>
+                <object name="VIS_GYP_PHOSP_PH2_3,9X45" model="VIS_GYP_PHOSP_PH2_3,9X45" image="BITMAPS/VIS_GYP.jpg" label="Vis GYPROC phosp. tete fraisée PH2 3,9x45" info="Visserie"/>
+                <object name="VIS_GYP_PHOSP_PH2_3,9X55" model="VIS_GYP_PHOSP_PH2_3,9X55" image="BITMAPS/VIS_GYP.jpg" label="Vis GYPROC phosp. tete fraisée PH2 3,9x55" info="Visserie"/>
+                <object name="VIS_GYP_PHOSP_PH2_3,9X65" model="VIS_GYP_PHOSP_PH2_3,9X65" image="BITMAPS/VIS_GYP.jpg" label="Vis GYPROC phosp. tete fraisée PH2 3,9x65" info="Visserie"/>
+                <object name="VIS_GYP_PHOSP_PH2_3,9X75" model="VIS_GYP_PHOSP_PH2_3,9X75" image="BITMAPS/VIS_GYP.jpg" label="Vis GYPROC phosp. tete fraisée PH2 3,9x75" info="Visserie"/>
+                <object name="VIS_AUTOF_ZG_TB_PH2_3,5x13" model="VIS_AUTOF_ZG_TB_PH2_3,5x13" image="BITMAPS/VIS_AUTOF_ZG_TB_PH2.jpg" label="Vis Autoforante zing tete bombée PH2 3.5x13" info="Visserie"/>
+                <object name="VIS_WF_TF_TX30_7,5x82" model="VIS_WF_TF_TX30_7,5x82" image="BITMAPS/532928.jpg" label="Vis Window Frame Tête plate TX30 7,5x82" info="Visserie"/>
+                <object name="VIS_AUTOF_AC_TH_6,3X120" model="VIS_AUTOF_AC_TH_6,3X120" image="BITMAPS/VIS_AUTOF_AC_TH.jpg" label="Vis Autoforante acier tête hexagonale 6,3x120" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TB_PZ2_5x50" model="VIS_AGGLO_ZG_TB_PZ2_5x50" image="BITMAPS/VIS_AGGLO_INOX_TB_PZ2.jpg" label="Vis agglo zing Tête bombée PZ2 5x50" info="Visserie"/>
+                <object name="CHEV_GYP_VIS_NYL_ 6X35" model="CHEV_GYP_VIS_NYL_ 6X35" image="BITMAPS/BLUM_ZR7.1080U.jpg" label="Cheville gyproc Nylon 6 x 35 mm 843500" info="Visserie"/>
+                <object name="WE_TO_6_SCREWDRIVERS_SET" model="WE_TO_6_SCREWDRIVERS_SET" image="BITMAPS/319602.jpg" label="Jeu de 6 tournevis Wera plats / PH / PZ " info="Visserie"/>
+                <object name="VIS_AUTOF_ZG_TB_PH2_4,8X25" model="VIS_AUTOF_ZG_TB_PH2_4,8X25" image="BITMAPS/VIS_AUTOF_TETE_BOMBEE_PH2.jpg" label="Vis Autoforante zing tête bombée PH2 4,8x25" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_BL_TF_PZ2_4x35" model="VIS_AGGLO_ZG_BL_TF_PZ2_4x35" image="BITMAPS/VIS_AGGLO_ZG_BL_TF.jpg" label="Vis agglo Zingue noir tete fraisée PZ2 4X35" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TFB_PZ2_4,2x20" model="VIS_AGGLO_ZG_TFB_PZ2_4,2x20" image="BITMAPS/VIS_AGGLO_ZG_TFB_PZ2.jpg" label="Vis agglo zing Tete fraisée bombée PZ2 4,2x20" info="Visserie"/>
+                <object name="VIS_TOLE_ZG_TB_PH2_4,2X25" model="VIS_TOLE_ZG_TB_PH2_4,2X25" image="BITMAPS/VIS_TOLE_ZG_TB_PH2.jpg" label="Vis a tôle tête bombée PH2 4,2x25" info="Visserie"/>
+                <object name="VIS_AUTOF_ZG_TF_PH2_4,2X25" model="VIS_AUTOF_ZG_TF_PH2_4,2X25" image="BITMAPS/VIS_AUTOF_TETE_FRAISEE_PH2.jpg" label="Vis Autoforante zing tete fraisée PH2 4,2x25" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4x20" model="VIS_AGGLO_ZG_TF_PZ2_4x20" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4x20" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4x25" model="VIS_AGGLO_ZG_TF_PZ2_4x25" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4X25" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4x30" model="VIS_AGGLO_ZG_TF_PZ2_4x30" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4X30" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4x70" model="VIS_AGGLO_ZG_TF_PZ2_4x70" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4X70" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_5x90" model="VIS_AGGLO_ZG_TF_PZ2_5x90" image="BITMAPS/VIS_AGGLO_ZG_TF_filetage partiel.jpg" label="Vis agglo Zing tete fraisée PZ2 5X90" info="Visserie"/>
+                <object name="VIS_AUTOF_ZG_TF_PH2_3,5X13" model="VIS_AUTOF_ZG_TF_PH2_3,5X13" image="BITMAPS/VIS_AUTOF_TETE_FRAISEE_PH2.jpg" label="Vis Autoforante zing tete fraisée PH2 3.5x13" info="Visserie"/>
+                <object name="VIS_AUTOF_ZG_TF_PH2_3,9X19" model="VIS_AUTOF_ZG_TF_PH2_3,9X19" image="BITMAPS/VIS_AUTOF_TETE_FRAISEE_PH2.jpg" label="Vis Autoforante zing tete fraisée PH2 3.9x19" info="Visserie"/>
+                <object name="VIS_AUTOF_ZG_TF_PH2_3,9X25" model="VIS_AUTOF_ZG_TF_PH2_3,9X25" image="BITMAPS/VIS_AUTOF_TETE_FRAISEE_PH2.jpg" label="Vis Autoforante zing tete fraisée PH2 3.9x25" info="Visserie"/>
+                <object name="VIS_AUTOF_ZG_TF_PH2_3,9X32" model="VIS_AUTOF_ZG_TF_PH2_3,9X32" image="BITMAPS/VIS_AUTOF_TETE_FRAISEE_PH2.jpg" label="Vis Autoforante zing tete fraisée PH2 3.9x32" info="Visserie"/>
+                <object name="VIS_AUTOF_ZG_TF_PH2_4,8X75" model="VIS_AUTOF_ZG_TF_PH2_4,8X75" image="BITMAPS/VIS_AUTOF_TETE_FRAISEE_PH2.jpg" label="Vis Autoforante zing tête fraisée PH2 4,8x75" info="Visserie"/>
+                <object name="VIS_AUTOF_ZG_TF_PH2_4,8X100" model="VIS_AUTOF_ZG_TF_PH2_4,8X100" image="BITMAPS/VIS_AUTOF_TETE_FRAISEE_PH2.jpg" label="Vis Autoforante zing tête fraisée PH2 4,8x100" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_3,5x45" model="VIS_AGGLO_ZG_TF_PZ2_3,5x45" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 3.5X45" info="Visserie"/>
+                <object name="VIS_DIN965_INOX_TF_PH2_M4x8" model="VIS_DIN965_INOX_TF_PH2_M4x8" image="BITMAPS/VIS_STE_INOX_TF_PH_M4.jpg" label="Vis métrique inox tete fraisée PH2 M4x8 mm " info="Visserie"/>
+                <object name="VIS_AUTOF_ZG_TB_PH2_4,2X13" model="VIS_AUTOF_ZG_TB_PH2_4,2X13" image="BITMAPS/VIS_AUTOF_TETE_BOMBEE_PH2.jpg" label="Vis Autoforante zing tête bombée PH2 4,2x13" info="Visserie"/>
+                <object name="MA_TO_DR_MAKITA_DHR243RTJ_18V" model="MA_TO_DR_MAKITA_DHR243RTJ_18V" image="BITMAPS/S00128637.jpg" label="Visseuse foreuse Makita L-Ion 18V DDF484RT3J - 3x 5.0 Ah Brushless" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4x60" model="VIS_AGGLO_ZG_TF_PZ2_4x60" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4X60" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4x40" model="VIS_AGGLO_ZG_TF_PZ2_4x40" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4X40" info="Visserie"/>
+                <object name="VIS_AUTOF_ZG_TF_PH2_3,5X19" model="VIS_AUTOF_ZG_TF_PH2_3,5X19" image="BITMAPS/VIS_AUTOF_TETE_FRAISEE_PH2.jpg" label="Vis Autoforante zing tete fraisée PH2 3.5x19" info="Visserie"/>
+                <object name="VIS_AUTOF_PHOSP_TF_PH2_3,5X35" model="VIS_AUTOF_PHOSP_TF_PH2_3,5X35" image="BITMAPS/VIS_AUTOF_NOIRE_TETE_FRAISEE_PH2.jpg" label="Vis Autoforante phosphatée tete fraisée PH2 3.5x35" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_3,5X35" model="VIS_AGGLO_ZG_TF_PZ2_3,5X35" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 3.5X35" info="Visserie"/>
+                <object name="VIS_AGGLO_INOX_TF_PZ2_5x60" model="VIS_AGGLO_INOX_TF_PZ2_5x60" image="BITMAPS/VIS_AGGLO_INOX_TF_PZ2_5x60.jpg" label="Vis agglo INOX Tête fraisée PZ2 5x60" info="Visserie"/>
+                <object name="MA_TO_SG_MAKITA_DTD153Z_18V" model="MA_TO_SG_MAKITA_DTD153Z_18V" image="BITMAPS/DTD153Z.jpg" label="Visseuse à chocs Makita DTD153Z 18V" info="Visserie"/>
+                <object name="MA_TO_SG_MAKITA_DLX2174TJ1_18V" model="MA_TO_SG_MAKITA_DLX2174TJ1_18V" image="BITMAPS/DLX2174TJ1.jpg" label="Pack de 2 visseuses Makita DLX2174TJ1 18 V" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ1_3x35" model="VIS_AGGLO_ZG_TF_PZ1_3x35" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ1 3X35" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4x50" model="VIS_AGGLO_ZG_TF_PZ2_4x50" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4X50" info="Visserie"/>
+                <object name="VIS_AUTOF_AC_TB_CA_3,5X13" model="VIS_AUTOF_AC_TB_CA_3,5X13" image="BITMAPS/scale.jpg" label="Vis Autoforante acier tête bombée Carré 3,5x13" info="Visserie"/>
+                <object name="VIS_MET_ZG_M4x25" model="VIS_MET_ZG_M4x25" image="BITMAPS/BLUM_ZR7.1080U.jpg" label="VIS A METAUX TR ZING M4X25" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_5x60" model="VIS_AGGLO_ZG_TF_PZ2_5x60" image="BITMAPS/VIS_AGGLO_ZG_TF_filetage partiel.jpg" label="Vis agglo Zing tete fraisée PZ2 5X60" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_3,5x25" model="VIS_AGGLO_ZG_TF_PZ2_3,5x25" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 3.5X25" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ1_3x12" model="VIS_AGGLO_ZG_TF_PZ1_3x12" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ1 3X12" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_3,5x20" model="VIS_AGGLO_ZG_TF_PZ2_3,5x20" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 3.5X20" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_3,5x40" model="VIS_AGGLO_ZG_TF_PZ2_3,5x40" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 3.5X40" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4x35" model="VIS_AGGLO_ZG_TF_PZ2_4x35" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4X35" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_3,5x30" model="VIS_AGGLO_ZG_TF_PZ2_3,5x30" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 3.5X30" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4x45" model="VIS_AGGLO_ZG_TF_PZ2_4x45" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4X45" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4x15" model="VIS_AGGLO_ZG_TF_PZ2_4x15" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4X15" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ1_3x20" model="VIS_AGGLO_ZG_TF_PZ1_3x20" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ1 3X20" info="Visserie"/>
+                <object name="VIS_AUTOF_ZG_TF_PH2_4,2X13" model="VIS_AUTOF_ZG_TF_PH2_4,2X13" image="BITMAPS/VIS_AUTOF_TETE_FRAISEE_PH2.jpg" label="Vis Autoforante zing tête fraisée PH2 4,2x13" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ1_3x15" model="VIS_AGGLO_ZG_TF_PZ1_3x15" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ1 3X15" info="Visserie"/>
+                <object name="VIS_EMBR_BOIS_TX25_6x80" model="VIS_EMBR_BOIS_TX25_6x80" image="BITMAPS/BLUM_ZR7.1080U.jpg" label="Vis à patte 6x80mm tete filetée 20mmTorx 25" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4,5x50" model="VIS_AGGLO_ZG_TF_PZ2_4,5x50" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4.5X50" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_5x70" model="VIS_AGGLO_ZG_TF_PZ2_5x70" image="BITMAPS/VIS_AGGLO_ZG_TF_filetage partiel.jpg" label="Vis agglo Zing tete fraisée PZ2 5X70" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_5x70_BTG" model="VIS_AGGLO_ZG_TF_PZ2_5x70_BTG" image="BITMAPS/VIS_AGGLO_ZG_TF_filetage partiel.jpg" label="Vis agglo Zing tete fraisée pour BTG PZ2 5X70" info="Visserie"/>
+                <object name="VIS_GYP_ZG_PH2_4,2x75" model="VIS_GYP_ZG_PH2_4,2x75" image="BITMAPS/BLUM_ZR7.1080U.jpg" label="vis gyproc zing tete fraisée PH2 4,2x75" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ3_6x120" model="VIS_AGGLO_ZG_TF_PZ3_6x120" image="BITMAPS/VIS_AGGLO_ZG_TF_filetage partiel.jpg" label="Vis agglo Zing jaune tete fraisée PZ3 6X120" info="Visserie"/>
+                <object name="TEC_EmbaseCroixfrigo_194K6100E" model="TEC_EmbaseCroixfrigo_194K6100E" image="BITMAPS/BLUM_173L8100_21.jpg" label="Embase en croix pour portes FRIGO ; EuroVis Ø 5mm" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ1_3x25" model="VIS_AGGLO_ZG_TF_PZ1_3x25" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ1 3X25" info="Visserie"/>
+                <object name="ACCS_PORT_CH10_NEO_M6_NOIR" model="ACCS_PORT_CH10_NEO_M6_NOIR" image="BITMAPS/NEO M6.jpg" label="[040220752] Charnière invisible - ARGENTA Invisible Neo M6_Noir" info="Visserie"/>
+                <object name="VIS_AUTOF_ZG_TF_PH2_4,8X50" model="VIS_AUTOF_ZG_TF_PH2_4,8X50" image="BITMAPS/VIS_AUTOF_TETE_FRAISEE_PH2.jpg" label="Vis Autoforante zing tête fraisée PH2 4,8x50" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_TX15_3,5X40" model="VIS_AGGLO_ZG_TF_TX15_3,5X40" image="BITMAPS/VIS_AGGLO_ZG_TF_TX15.jpg" label="Vis agglo Zing tete fraisée TX15 3,5x40" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4,5x35" model="VIS_AGGLO_ZG_TF_PZ2_4,5x35" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4.5X35" info="Visserie"/>
+                <object name="VIS_TOLE_ZG_TB_PH2_4,8X25" model="VIS_TOLE_ZG_TB_PH2_4,8X25" image="BITMAPS/VIS_TOLE_ZG_TB_PH2.jpg" label="Vis a tôle tête bombée PH2 4,8x25" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ3_6x60" model="VIS_AGGLO_ZG_TF_PZ3_6x60" image="BITMAPS/VIS_AGGLO_ZG_TF_filetage partiel.jpg" label="Vis agglo Zing jaune tete fraisée PZ3 6X60" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ3_6x90" model="VIS_AGGLO_ZG_TF_PZ3_6x90" image="BITMAPS/VIS_AGGLO_ZG_TF_filetage partiel.jpg" label="Vis agglo Zing jaune tete fraisée PZ3 6X90" info="Visserie"/>
+                <object name="VIS_EMBR_BOIS_6x120" model="VIS_EMBR_BOIS_6x120" image="BITMAPS/BLUM_ZR7.1080U.jpg" label="Vis a patte 6x120 tete filetée 20mm " info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ1_3x30" model="VIS_AGGLO_ZG_TF_PZ1_3x30" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ1 3X30" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_3,5X35" 		model="VIS_AGGLO_ZG_TF_PZ2_3,5X35" 		image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" 					label="Vis agglo Zing tete fraisée PZ2 3.5X35" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_3_5X16" model="VIS_AGGLO_ZG_TF_PZ2_3_5X16" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 3.5X16" info="Visserie"/>
+                <object name="CHEV_GYP_VIS_AL_ 4,5" model="CHEV_GYP_VIS_AL_ 4,5" image="BITMAPS/40432.jpg" label="Cheville metallique gyproc + Vis 4.5x35mm" info="Visserie"/>
+                <object name="TEC_VisPoignee_M4_25" model="TEC_VisPoignee_M4_25" image="BITMAPS/3225-0425.jpg" label="Vis à métaux TR Zing pour poignée M4x25mm" info="Visserie"/>
+                <object name="TECTUS_540_3D_A8" model="TECTUS_540_3D_A8" image="BITMAPS/TECTUS_540_A8.gif" label="Charniere invisible Tectus TE540 3D A8 - Inox look - max 100kg - 3D réglable - 180°" info="Visserie"/>
+                <object name="OS_Led_Spot_NUBE" model="OS_Led_Spot_NUBE" image="BITMAPS/5063810501_intl_tdra1.jpg" label="NUBE, blanc neutre, lampe à encastrer, sans point lumineux visible, 12V, 1,8W" info="Visserie"/>
+                <object name="VIS_GYP_PHOSP_PH2_3,5X25" model="VIS_GYP_PHOSP_PH2_3,5X25" image="BITMAPS/VIS_GYP.jpg" label="Vis GYPROC phosp. tete fraisée PH2 3,5x25" info="Visserie"/>
+                <object name="VIS_GYP_PHOSP_PH2_3,5X35" model="VIS_GYP_PHOSP_PH2_3,5X35" image="BITMAPS/VIS_GYP.jpg" label="Vis GYPROC phosp. tete fraisée PH2 3,5x35" info="Visserie"/>
+                <object name="VIS_GYP_PHOSP_PH2_3,5X70" model="VIS_GYP_PHOSP_PH2_3,5X70" image="BITMAPS/VIS_GYP.jpg" label="Vis GYPROC phosp. tete fraisée PH2 3,5x70" info="Visserie"/>
+                <object name="VIS_GYP_PHOSP_PH2_3,9X90" model="VIS_GYP_PHOSP_PH2_3,9X90" image="BITMAPS/VIS_GYP.jpg" label="Vis GYPROC phosp. tete fraisée PH2 3,9x90" info="Visserie"/>
+                <object name="TECTUS_240_3D" model="TECTUS_240_3D" image="BITMAPS/TECTUS_240.jpg" label="Charniere invisible Tectus TE240 3D - Inox look - max 60kg - 3D réglable - 180°" info="Visserie"/>
+                <object name="VIS_GYP_PHOSP_PH2_3,6X50" model="VIS_GYP_PHOSP_PH2_3,6X50" image="BITMAPS/VIS_GYP.jpg" label="Vis GYPROC phosp. tete fraisée PH2 3,6x50" info="Visserie"/>
+                <object name="VIS_ADJ_ZG_T25_6x80" model="VIS_ADJ_ZG_T25_6x80" image="BITMAPS/VIS_ADJ_ZG.jpg" label="Vis ajustage acier zingué empreinte T25 6X80" info="Visserie"/>
+                <object name="TECTUS_340_3D" model="TECTUS_340_3D" image="BITMAPS/TECTUS_340.gif" label="Charniere invisible Tectus TE340 3D - Inox look - max 80kg - 3D réglable - 180°" info="Visserie"/>
+                <object name="AA_CO_TL0903" model="AA_CO_TL0903" image="BITMAPS/LX58-59.jpg" label="Passe-câble invisible 120° TL0903SS - 300mm max dia 7.5mm" info="Visserie"/>
+                <object name="BE_LE_VIS_M8X33MM" model="BE_LE_VIS_M8X33MM" image="BITMAPS/7336-1308.png" label="Vis de reglage, M8x33mm" info="Visserie"/>
+
+                <object name="SC_BIT_PH2_50mm" model="SC_BIT_PH2_50mm" image="BITMAPS/SC_BIT_PH2_50mm.jpg" label="Embout de vissage cruciforme Phllips PH2" info="Visserie"/>
+                <object name="Euro_screw_6_3x11" model="Euro_screw_6_3x11" image="BITMAPS/47451.GIF" label="Euro screw 6.3 x 11mm" info="Visserie"/>
+                <object name="D_SQ_SP_x2_898_124_62_62" model="D_SQ_SP_x2_898_124_62_62" image="BITMAPS/Carré dédoublé 8-9-8.JPG" label="Tige carré dédoublée 8/9/8, longueur 124mm (62/62)" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4,5x70" model="VIS_AGGLO_ZG_TF_PZ2_4,5x70" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4.5X70" info="Visserie"/>
+                <object name="SC_BIT_PZ2_25mm" model="SC_BIT_PZ2_25mm" image="BITMAPS/SC_BIT_PZ2_25mm.jpg" label="Embout de vissage cruciforme Pozidriv PZ2" info="Visserie"/>
+                <object name="SC_BIT_PZ1_25mm" model="SC_BIT_PZ1_25mm" image="BITMAPS/SC_BIT_PZ1_25mm.jpg" label="Embout de vissage cruciforme Pozidriv PZ1" info="Visserie"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4,5x30" model="VIS_AGGLO_ZG_TF_PZ2_4,5x30" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4.5X30" info="Visserie"/>
+
+                <object name="SC_TO_FL_02_5" model="SC_TO_FL_02_5" image="BITMAPS/SC_TO_FL.jpg" label="Tournevis plat largeur tête 2.5mm"/>
+                <object name="SC_TO_FL_03" model="SC_TO_FL_03" image="BITMAPS/SC_TO_FL.jpg" label="Tournevis plat largeur tête 3mm"/>
+            </category>
+            <category name="CON_WS_CHEV" label="Chevilles" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg">
+                <object name="PLUG_STE_CAV_Ø08_60" model="PLUG_STE_CAV_Ø08_60" image="BITMAPS/Fischer_5197XX.jpg" label="Cheville metallique à expansion pour parois creuses, Ø perçage 8 x longueur 60 mm"/>
+                <object name="PLUG_STE_CAV_Ø08_32" model="PLUG_STE_CAV_Ø08_32" image="BITMAPS/Fischer_5197XX.jpg" label="Cheville metallique à expansion pour parois creuses, Ø perçage 8 x longueur 32 mm"/>
+                <object name="PLUG_STE_CAV_Ø08_45" model="PLUG_STE_CAV_Ø08_45" image="BITMAPS/Fischer_5197XX.jpg" label="Cheville metallique à expansion pour parois creuses, Ø perçage 8 x longueur 45 mm"/>
+                <object name="CHEV_FRAP_08X60_6S" model="CHEV_FRAP_08X60_6S" image="BITMAPS/CHEV_FRAP_6S_Shark.jpg" label="Cheville à frapper plastique Ø8x60mm, vis tête hexagonale" info="Visserie"/>
+                <object name="CHEV_FRAP_08X80_6S" model="CHEV_FRAP_08X80_6S" image="BITMAPS/CHEV_FRAP_6S_Shark.jpg" label="Cheville à frapper plastique Ø8x80mm, vis tête hexagonale" info="Visserie"/>
+                <object name="CHEV_FRAP_08X100_6S" model="CHEV_FRAP_08X100_6S" image="BITMAPS/CHEV_FRAP_6S_Shark.jpg" label="Cheville à frapper plastique Ø8x100mm, vis tête hexagonale" info="Visserie"/>
+                <object name="PLUG_PLAS_O04_20" model="PLUG_PLAS_O04_20" image="BITMAPS/Duebel SX Plus.jpg" label="Cheville plastique Ø4 x 20 mm"/>
+                <object name="PLUG_PLAS_OE05_25" model="PLUG_PLAS_OE05_25" image="BITMAPS/Duebel SX Plus.jpg" label="Cheville plastique Ø5 x 25 mm"/>
+                <object name="PLUG_PLAS_OE06_30" model="PLUG_PLAS_OE06_30" image="BITMAPS/STROXX CHEVILLE UNIVERSEL.jpg" label="Cheville plastique Ø6 x 30 mm"/>
+                <object name="PLUG_PLAS_OE06_36" model="PLUG_PLAS_OE06_36" image="BITMAPS/SHARK_TWIST.jpg" label="Cheville plastique Ø6 x 36 mm"/>
+                <object name="PLUG_PLAS_OE06_50" model="PLUG_PLAS_OE06_50" image="BITMAPS/FISCHER CHEVILLE NYLON DUOPOWER.jpg" label="Cheville plastique Ø6 x 50 mm"/>
+                <object name="PLUG_PLAS_OE06_60" model="PLUG_PLAS_OE06_60" image="BITMAPS/CHEV-TYPE-1-DOUBLE-EXPANSION.jpg" label="Cheville plastique Ø6 x 60 mm"/>
+                <object name="PLUG_PLAS_OE08_40" model="PLUG_PLAS_OE08_40" image="BITMAPS/STROXX CHEVILLE UNIVERSEL.jpg" label="Cheville plastique Ø8 x 40 mm"/>
+                <object name="PLUG_PLAS_OE08_46" model="PLUG_PLAS_OE08_46" image="BITMAPS/SHARK_TWIST.jpg" label="Cheville plastique Ø8 x 46 mm"/>
+                <object name="PLUG_PLAS_OE08_60" model="PLUG_PLAS_OE08_60" image="BITMAPS/CHEV-TYPE-1-DOUBLE-EXPANSION.jpg" label="Cheville plastique Ø8 x 60 mm"/>
+                <object name="PLUG_PLAS_OE08_65" model="PLUG_PLAS_OE08_65" image="BITMAPS/FISCHER CHEVILLE NYLON DUOPOWER.jpg" label="Cheville plastique Ø8 x 65 mm"/>
+                <object name="PLUG_PLAS_OE08_80" model="PLUG_PLAS_OE08_80" image="BITMAPS/CHEV-TYPE-1-DOUBLE-EXPANSION.jpg" label="Cheville plastique Ø8 x 80 mm"/>
+                <object name="PLUG_PLAS_OE10_50" model="PLUG_PLAS_OE10_50" image="BITMAPS/STROXX CHEVILLE UNIVERSEL.jpg" label="Cheville plastique Ø10 x 50 mm"/>
+                <object name="PLUG_PLAS_OE10_56" model="PLUG_PLAS_OE10_56" image="BITMAPS/SHARK_TWIST.jpg" label="Cheville plastique Ø10 x 56 mm"/>
+                <object name="PLUG_PLAS_OE10_80" model="PLUG_PLAS_OE10_80" image="BITMAPS/FISCHER CHEVILLE NYLON DUOPOWER.jpg" label="Cheville plastique Ø10 x 80 mm"/>
+                <object name="PLUG_PLAS_OE12_60" model="PLUG_PLAS_OE12_60" image="BITMAPS/STROXX CHEVILLE UNIVERSEL.jpg" label="Cheville plastique Ø12 x 60 mm"/>
+                <object name="PLUG_PLAS_OE12_66" model="PLUG_PLAS_OE12_66" image="BITMAPS/SHARK_TWIST.jpg" label="Cheville plastique Ø12 x 66 mm"/>
+                <object name="CHEV_GYP_VIS_NYL_ 6X35" model="CHEV_GYP_VIS_NYL_ 6X35" image="BITMAPS/BLUM_ZR7.1080U.jpg" label="Cheville gyproc Nylon 6 x 35 mm 843500" info="Visserie"/>
+                <object name="CHEV_GYP_VIS_AL_ 4,5" model="CHEV_GYP_VIS_AL_ 4,5" image="BITMAPS/40432.jpg" label="Cheville metallique gyproc + Vis 4.5x35mm" info="Visserie"/>
+            </category>
+            <category name="CON_WS_ECROU" label="Ecrou" image="BITMAPS/01100.080.001.jpg">
+                <object name="HN_M06" model="HN_M06" image="BITMAPS/ecrou-hexagonal-inox-a2-det.jpg" label="Écrou hexagonal DIN 934 Acier Brut M6" info="Ecrou"/>
+                <object name="HN_M08" model="HN_M08" image="BITMAPS/01100.080.001.jpg" label="Écrou hexagonal DIN 934 Acier Brut M8" info="Ecrou"/>
+                <object name="HN_M10" model="HN_M10" image="BITMAPS/01100.100.001.jpg" label="Écrou hexagonal DIN 934 Acier Brut M10" info="Ecrou"/>
+                <object name="HN_M12" model="HN_M12" image="BITMAPS/01100.120.001.jpg" label="Écrou hexagonal DIN 934 Acier Brut M12" info="Ecrou"/>
+            </category>
+            <category name="CON_WS_PRL" label="Cimaise/perlon" image="BITMAPS/9.4412.JPG">
+                <object name="AS_Picture_Rail_Cap" model="AS_Picture_Rail_Cap" image="BITMAPS/9.4105.JPG" label="Embout arrêt blanc Artiteq (9.4105)" info="Cimaise/perlon"/>
+                <object name="AS_Picture_Rail_Fix" model="AS_Picture_Rail_Fix" image="BITMAPS/9.4113.JPG" label="Fixation Artiteq click &amp; connect - 3 clips/m (9.4113)" info="Cimaise/perlon"/>
+                <object name="AS_Picture_Rail_Th100" model="AS_Picture_Rail_Th100" image="BITMAPS/Kit_9.4412_9.4261.JPG" label="Kit Artiteq fils en perlon 100cm avec oeillet (9.4412) + crochet 15kg (9.4261)" info="Cimaise/perlon"/>
+                <object name="AS_Picture_Rail_Th100_Hk_p21" model="AS_Picture_Rail_Th100_Hk_p21" image="BITMAPS/Kit_9.4412_9.4261_9.4504.JPG" label="Kit Artiteq fils en perlon 100cm avec oeillet (9.4412) + crochet panneau 21mm (9.4504) + crochet 15kg (9.4261)" info="Cimaise/perlon"/>
+                <object name="AS_Picture_Rail_WH_3m" model="AS_Picture_Rail_WH_3m" image="BITMAPS/9.4304.JPG" label="Cimaise Artiteq click rail alu laqué blanc RAL 9010 - Longueur de 3m (9.4304)" info="Cimaise/perlon"/>
+                <object name="AS_Picture_Rail_WH_6m" model="AS_Picture_Rail_WH_6m" image="BITMAPS/9.4304.JPG" label="Cimaise Artiteq click rail alu laqué blanc RAL 9010 - Longueur de 6m (9.4372)" info="Cimaise/perlon"/>
+                <object name="AS_Hanging_Wire_Th150" model="AS_Hanging_Wire_Th150" image="BITMAPS/9.4412.JPG" label="Artiteq fils en perlon 2mm, longueur 150cm avec oeillet (9.4413)" info="Cimaise/perlon"/>
+                <object name="AS_Hanging_Wire_Twister_Th150" model="AS_Hanging_Wire_Twister_Th150" image="BITMAPS/09.23150.JPG" label="Artiteq fils en perlon 2mm, longueur 150cm, Twister (09.23150)" info="Cimaise/perlon"/>
+            </category>
+            <category name="CON_WS_TOOLS_CHANTIER" label="Outillage Chantier" image="BITMAPS/9.4412.JPG">
+                <object name="BE_AVB_4_Slim_100" model="BE_AVB_4_Slim_100" image="BITMAPS/G8_AVB_9085654_TA.jpg" label="AVB 4 Slim, 100 mm"/>
+                <object name="w_panel_connector_dowel" model="w_panel_connector_dowel" image="BITMAPS/imos_000_035.jpg" label="Raccord plan de travail AVB 5 Clip, 100mm, acier, brut"/>
+                <object name="w_work_surface_connector" model="w_work_surface_connector" image="BITMAPS/HAFELE_262.96.220.jpg" label="ferrrure assemblage pour plan de travail goujon 150mm"/>
+                <object name="w_buffer_5mm" model="w_buffer_5mm" image="BITMAPS/imos_000_559.jpg" label="amortisseurs porte gris clair 5mm"/>
+                <object name="w_base_hght_adjustabl_leg_clip" model="w_base_hght_adjustabl_leg_clip" image="BITMAPS/HAFELE_637.81.330.jpg" label="Lame de ressort pour plinthe"/>
+                <object name="OS_Base_Adap_Clip" model="OS_Base_Adap_Clip" image="BITMAPS/3211040_intl_ipic1.jpg" label="Adaptateur REDOCOL fixation clip, à serrer dans socle / plinthe avec rainure"/>
+                <object name="i_BT_half_hidden_LR1_A32_5mm" model="i_BT_half_hidden_LR1_A32_5mm" image="BITMAPS/282.43.905.jpg" label="Taquet 5mm droit"/>
+                <object name="i_BT_round_br_shid_LR1_A32_5mm" model="i_BT_round_br_shid_LR1_A32_5mm" image="BITMAPS/282_38_502.jpg" label="Taquet 5mm droit laitonné"/>
+                <object name="BE_LK_Glass_Bracket_Front_Stop" model="BE_LK_Glass_Bracket_Front_Stop" image="BITMAPS/4025-7405_1.png" label="Taquet 5mm avec capuchon transparent pour tablette vitrée"/>
+                <object name="CHEV_GYP_VIS_AL__4_5" model="CHEV_GYP_VIS_AL__4_5" image="BITMAPS/40432.jpg" info="CHEV_GYP_VIS_AL_ 4,5" label="Fischer 40432 - Cheville métallique GKM 12 avec vis Ø4.5mm pour plaques de plâtre"/>
+                <object name="KENT_ROTA_2000_WH_290" model="KENT_ROTA_2000_WH_290" image="BITMAPS/KENT_ROTA_2000_WH_290.jpg" label="Kent Rotabond 2000 blanc (34454) cartouche 290ml - Adhésif/joint MS Polymère monocomposant haute performance"/>
+                <object name="PR_FM_FILL_FOAM" model="PR_FM_FILL_FOAM" image="BITMAPS/FILL_FOAM.jpg" label="Mousse PU Promanté Fill Foam 61db 500ml"/>
+                <object name="PRO_FM_RF_PROMAFOAM_C" model="PRO_FM_RF_PROMAFOAM_C" image="BITMAPS/PROMAFOAM_C.jpg" label="Mousse PU RF Promafoam-C 750ml"/>
+                <object name="TUB_ISOL_MOUSSE_PU_RF" model="TUB_ISOL_MOUSSE_PU_RF" image="BITMAPS/065073052.jpg" label="Mousse PU RF Soudafoam"/>
+                <object name="TEC_VisPoignee_M4_25" model="TEC_VisPoignee_M4_25" image="BITMAPS/3225-0425.jpg" label="Vis à métaux TR Zing pour poignée M4x25mm"/>
+                <object name="CONE_ORG_H50" model="CONE_ORG_H50" image="BITMAPS/CONE_ORG_H50.jpg" label="Cône de signalisation à 2 bandes, hauteur 50cm"/>
+                <object name="TAPE_SIGN_RED_WH_50mm" model="TAPE_SIGN_RED_WH_50mm" image="BITMAPS/TAPE_SIGN_RED_WH.jpg" label="Ruban de balisage, largeur 50mm"/>
+                <object name="GARB_BAG_100L" model="GARB_BAG_100L" image="BITMAPS/GARB_BAG.JPG" label="Sacs poubelles 100L"/>
+                <object name="GARB_BAG_60L" model="GARB_BAG_60L" image="BITMAPS/GARB_BAG.JPG" label="Sacs poubelles 60L"/>
+                <object name="GARB_BAG_30L" model="GARB_BAG_30L" image="BITMAPS/GARB_BAG.JPG" label="Sacs poubelles 30L"/>
+                <object name="BIG_BAG_110x90x90cm_STD" model="BIG_BAG_110x90x90cm_STD" image="BITMAPS/BIG_BAG.JPG" label="Big bag standard 110x90x90cm"/>
+                <object name="TO_DR_STEEL_D3_HSS" model="TO_DR_STEEL_D3_HSS" image="BITMAPS/TO_DR_STEEL.jpg" label="Foret pour métal D3 HSS"/>
+                <object name="TO_DR_STEEL_D3,5_HSS" model="TO_DR_STEEL_D3,5_HSS" image="BITMAPS/TO_DR_STEEL.jpg" label="Foret pour métal D3.5 HSS"/>
+                <object name="TO_DR_STEEL_D4_HSS" model="TO_DR_STEEL_D4_HSS" image="BITMAPS/TO_DR_STEEL.jpg" label="Foret pour métal D4 HSS"/>
+                <object name="TO_DR_STEEL_D5_HSS" model="TO_DR_STEEL_D5_HSS" image="BITMAPS/TO_DR_STEEL.jpg" label="Foret pour métal D5 HSS"/>
+                <object name="SC_BIT_HOLD_MAG_150mm" model="SC_BIT_HOLD_MAG_150mm" image="BITMAPS/SC_BIT_HOLD_MAG_150mm.jpg" label="Porte-embout magnétique 150mm"/>
+                <object name="SC_BIT_HOLD_MAG_305mm" model="SC_BIT_HOLD_MAG_305mm" image="BITMAPS/SC_BIT_HOLD_MAG_305mm.jpg" label="Porte-embout magnétique 305mm"/>
+                <object name="SC_BIT_HOLD_MAG_60mm" model="SC_BIT_HOLD_MAG_60mm" image="BITMAPS/SC_BIT_HOLD_MAG_60mm.jpg" label="Porte-embout magnétique 60mm"/>
+                <object name="DR_CONC_SDS_D06_100_160" model="DR_CONC_SDS_D06_100_160" image="BITMAPS/DR_CONC_SDS.jpg" label="Foret SDS-plus pour béton et pierre, Ø6mm. Longueur utile 100mm, longueur totale 160mm"/>
+                <object name="STR_TO_KN_BLA_25MM" model="STR_TO_KN_BLA_25MM" image="BITMAPS/100-508.jpg" label="Cutter noir STROXX revêtement doux 25mm" info="Outillage Chantier"/>
+                <object name="MA_LIGHT_LXT_DEAML005G_18V" model="MA_LIGHT_LXT_DEAML005G_18V" image="BITMAPS/LXT_DEAML005G_18V.jpg" label="Lampe de chantier Makita LXT DEAML005G 18V" info="Outillage Chantier"/>
+                <object name="DRILL_HC_WO_O35" model="DRILL_HC_WO_O35" image="BITMAPS/DRILL_HC_WO_O35.jpg" label="Mèche à charnière Ø35mm pour bois" info="Outillage Chantier"/>
+                <object name="STAN_TO_TM_5M_FatMax_AL" model="STAN_TO_TM_5M_FatMax_AL" image="BITMAPS/STAN_TO_TM_5M_FatMax_AL.jpg" label="Mètre ruban Stanley FatMax 5m Autolock" info="Outillage Chantier"/>
+	            <object name="STAN_TO_TM_3M" model="STAN_TO_TM_3M" image="BITMAPS/STAN_TO_TM_3M.jpg" label="Mètre ruban Stanley 3m" info="Outillage Chantier"/>
+                <object name="SCAF_VSC18" model="SCAF_VSC18" image="BITMAPS/SCAF_VSC18.jpg" label="Echauffaudage compact 3.80 ml - Pliant roue" info="Outillage Chantier"/>
+                <object name="FE_TO_VAC_CTL_26E" model="FE_TO_VAC_CTL_26E" image="BITMAPS/574947.jpg" label="Aspirateur Festool CTL 26 E" info="Outillage Chantier"/>
+                <object name="FE_TO_SUC_SET_D27_D36_PLUS" model="FE_TO_SUC_SET_D27_D36_PLUS" image="BITMAPS/577257.jpg" label="Kit de nettoyage Festool RS-ST D27/D36 Plus - aspirateur CT" info="Outillage Chantier"/>
+                <object name="FE_TO_ROUTER_OF_1400_EB_Plus" model="FE_TO_ROUTER_OF_1400_EB_Plus" image="BITMAPS/576207.jpg" label="Défonceuse OF 1400 EBQ-Plus" info="Outillage Chantier"/>
+                <object name="FE_TO_SG_C_18_HPC4_I_Plus" model="FE_TO_SG_C_18_HPC4_I_Plus" image="BITMAPS/576435.jpg" label="Perceuse-visseuse compacte sans fil C 18 HPC 4,0 I-Plus" info="Outillage Chantier"/>
+                <object name="FE_TO_HAM_DR_BHC_18_HPC4_Plus" model="FE_TO_HAM_DR_BHC_18_HPC4_Plus" image="BITMAPS/577602.jpg" label="Perforateur sans fil BHC 18 HPC 4,0 I-Plus" info="Outillage Chantier"/>
+                <object name="FE_TO_PLANE_EHL_65_EQ_Plus" model="FE_TO_PLANE_EHL_65_EQ_Plus" image="BITMAPS/576247.jpg" label="Rabot EHL 65 EQ-Plus" info="Outillage Chantier"/>
+                <object name="FE_TO_SAW_TS55_FEBQ_Plus" model="FE_TO_SAW_TS55_FEBQ_Plus" image="BITMAPS/576703.jpg" label="Scie plongeante Festool TS 55 FEBQ-Plus" info="Outillage Chantier"/>
+                <object name="FE_TO_SAW_PS_300_EQ_Plus" model="FE_TO_SAW_PS_300_EQ_Plus" image="BITMAPS/576041.jpg" label="Scie sauteuse Festool PS 300 EQ-Plus" info="Outillage Chantier"/>
+                <object name="MA_TO_SET_DR_12_CHI_5_SDS_PLUS" model="MA_TO_SET_DR_12_CHI_5_SDS_PLUS" image="BITMAPS/385900.jpg" label="Set de 12 mèches et 5 burins Makita SDS-plus" info="Outillage Chantier"/>
+                <object name="MA_TO_DR_MAKITA_DHR243T1J_18V" model="MA_TO_DR_MAKITA_DHR243T1J_18V" image="BITMAPS/3850090.jpg" label="Marteau Makita SDS-Plus 18V DHR243T1J + accu 5Ah" info="Outillage Chantier"/>
+                <object name="FEIN_TO_SAW_MM_300_PLUS_START" model="FEIN_TO_SAW_MM_300_PLUS_START" image="BITMAPS/MM_300_PLUS_START.jpg" label="Fein MultiMaster MM 300 Plus Start" info="Outillage Chantier"/>
+                <object name="HEX_KEY_7mm_XLong_Ball_Head" model="HEX_KEY_7mm_XLong_Ball_Head" image="BITMAPS/HEX_KEY_Ball_Head.jpg" label="Clé Allen coudée hexagonale 7mm, Extra Long, avec tête sphérique" info="Outillage Chantier"/>
+                <object name="CLE_WAX_RAL_9016" model="CLE_WAX_RAL_9016" image="BITMAPS/CLE_WAX_RAL_9016.jpg" label="Cire molle CleHo RAL 9016 blanc signalisation " info="Outillage Chantier"/>
+                <object name="BAC_CAMION_8L" model="BAC_CAMION_8L" image="BITMAPS/BAC_CAMION_8L.jpg" label="Recharge pour camion 8L bac avec 5 films protection" info="Outillage Chantier"/>
+                <object name="BAC_CAMION_14L" model="BAC_CAMION_14L" image="BITMAPS/BAC_CAMION_8L.jpg" label="Recharge pour camion 14L bac avec 5 films protection" info="Outillage Chantier"/>
+                <object name="BUCKET_8L_BLUE" model="BUCKET_8L_BLUE" image="BITMAPS/BUCKET_8L_BLUE.jpg" label="Seau de peinture bleu 6980" info="Outillage Chantier"/>
+                <object name="BUCKET_14L_BLACK" model="BUCKET_14L_BLACK" image="BITMAPS/BUCKET_14L_BLACK.jpg" label="Seau rectangulaire noir 14L" info="Outillage Chantier"/>
+                <object name="RAD_BRUSH_GR50_3512" model="RAD_BRUSH_GR50_3512" image="BITMAPS/RAD_BRUSH_GR50_3512.jpg" label="Pinceau n.50 pour radiateur premère qualité 3512" info="Outillage Chantier"/>
+                <object name="TELES_EXT_POLE_95_160cm" model="TELES_EXT_POLE_95_160cm" image="BITMAPS/TELES_EXT_POLE_95_160cm.jpeg" label="Rallonge telescopique Block-System 95-160cm" info="Outillage Chantier"/>
+                <object name="PAINT_MASK_FLEECE_25x1m" model="PAINT_MASK_FLEECE_25x1m" image="BITMAPS/PAINT_MASK_FLEECE.jpg" label="Toile de protection pour peinture 25x1m" info="Outillage Chantier"/>
+                <object name="AST_ROLL_PA_REP_CLIC_SYS_25cm" model="AST_ROLL_PA_REP_CLIC_SYS_25cm" image="BITMAPS/AST_ROLL_PA_REP_CLIC_SYS_25cm.jpg" label="Astella rouleau de remplacement 25cm Malerstreif Click System" info="Outillage Chantier"/>
+                <object name="AST_UNDERW_CLIC_SYS_SOFT_25cm" model="AST_UNDERW_CLIC_SYS_SOFT_25cm" image="BITMAPS/AST_UNDERW_CLIC_SYS_SOFT_25cm.jpg" label="Astella manche pour rouleau Click System Softtouch 25cm" info="Outillage Chantier"/>
+                <object name="AST_CLAS_FARB_BASE_A_10L" model="AST_CLAS_FARB_BASE_A_10L" image="BITMAPS/Astella_Classic.jpg" label="Astella Classic+ Farbton Base A 10L" info="Outillage Chantier"/>
+                <object name="PRO_CLAS_ELF_A_1,5L" model="PRO_CLAS_ELF_A_1,5L" image="BITMAPS/" label="Profi Classic Elf A 1.5L" info="Outillage Chantier"/>
+                <object name="PRO_CLAS_ELF_C_1,5L" model="PRO_CLAS_ELF_C_1,5L" image="BITMAPS/" label="Profi Classic Elf C 1.5L" info="Outillage Chantier"/>
+                <object name="AST_CLAS_WHITE_10L" model="AST_CLAS_WHITE_10L" image="BITMAPS/Astella_Classic.jpg" label="Astella Classic+ Blanc 10L" info="Outillage Chantier"/>
+
+                <object name="Blade_FEIN_35222967080" model="Blade_FEIN_35222967080" image="BITMAPS/35222967080.jpg" label="Combo Fein E-Cut Starlock bois - 3 lames de scie plongeantes" info="Outillage Chantier"/>
+                <object name="Blade_FEIN_63502183220" model="Blade_FEIN_63502183220" image="BITMAPS/63502183220.jpg" label="Set E-Cut BIM 20mm Fein SL Long-Life - 3 lames de scie plongeantes" info="Outillage Chantier"/>
+                <object name="Blade_FEIN_63502160220" model="Blade_FEIN_63502160220" image="BITMAPS/63502160220.jpg" label="Set E-Cut BIM 35mm Fein SL Long-Life - 3 lames de scie plongeantes" info="Outillage Chantier"/>
+
+                <object name="MA_PLAN_BLADE_D_07945" model="MA_PLAN_BLADE_D_07945" image="BITMAPS/D-07945.jpg" label="Makita - Jeu de fers réversibles au carbure" info="Outillage Chantier"/>
+                <object name="STAN_TO_BOX_PACK_FMST1_71981" model="STAN_TO_BOX_PACK_FMST1_71981" image="BITMAPS/FMST1-71981.jpg" label="Kit 2 malettes Fatmax Pro-Stack Combo II + IV" info="Outillage Chantier"/>
+                <object name="BES_AVSNP_CUT_D16_SB" model="BES_AVSNP_CUT_D16_SB" image="BITMAPS/D16-SB.jpg" label="Cisaille bichantourneuse et à découpe Bessey D16-SB" info="Outillage Chantier"/>
+                <object name="MA_TO_CHA_MAKITA_DC_18RC" model="MA_TO_CHA_MAKITA_DC_18RC" image="BITMAPS/DC18RC.jpg" label="Chargeur Makita DC 18RC" info="Outillage Chantier"/>
+                <object name="STAN_PLAN_BLADE_5_21_293" model="STAN_PLAN_BLADE_5_21_293" image="BITMAPS/5-21-293.jpg" label="Stanley Surform lame coupe - standard 255mm" info="Outillage Chantier"/>
+                <object name="GARB_BAR_120x90cm" model="GARB_BAR_120x90cm" image="BITMAPS/" label="Sacs poubelles 120L" info="Outillage Chantier"/>
+                <object name="TO_DISC_TILES_GLASS_D85mm" model="TO_DISC_TILES_GLASS_D85mm" image="BITMAPS/TO_DISC_TILES_GLASS_D85mm.jpg" label="Disque diamant à jante continue carrelage et verre diam. 85mm" info="Outillage Chantier"/>
+                <object name="FE_TO_SPLINTER_GUARD_1400" model="FE_TO_SPLINTER_GUARD_1400" image="BITMAPS/FE_TO_SPLINTER_GUARD_1400.jpg" label="Pare-éclats pour rail de guidage Festool - longueur 1400mm" info="Outillage Chantier"/>
+
+                <object name="DR_CONC_SDS_D06_150_210" model="DR_CONC_SDS_D06_150_210" image="BITMAPS/DR_CONC_SDS.jpg" label="Foret SDS-plus pour béton et pierre, Ø6mm. Longueur utile 150mm, longueur totale 210mm" info="Outillage Chantier"/>
+                <object name="CLOU_SPIT_PULSA_HC6_17" model="CLOU_SPIT_PULSA_HC6_17" image="BITMAPS/SPIT_PULSA_HC6.jpg" label="Clous pour béton et métal SPIT PULSA HC6-17 - Bandes de 10 - Usage avec cloeur Spit Pulsa 800-40-65" info="Outillage Chantier"/>
+                <object name="MI_TO_WIRE_CUT_260MM" model="MI_TO_WIRE_CUT_260MM" image="BITMAPS/MI_TO_WIRE_CUT_260MM.jpg" label="Milwaukee cisaille aviation metal Ø1mm, rectiligne" info="Outillage Chantier"/>
+                <object name="TO_DISC_STEEL_INOX_D125mm" model="TO_DISC_STEEL_INOX_D125mm" image="BITMAPS/TO_DISC_STEEL_INOX_D125mm.jpg" label="Disque à tronçonner acier/inox diam. 125mm" info="Outillage Chantier"/>
+                <object name="TAPE_ADH_PVC_50_BR" model="TAPE_ADH_PVC_50_BR" image="BITMAPS/TAPE_ADH_PVC.jpg" label="Tape adhésif PVC 50mm, Brun" info="Outillage Chantier"/>
+                <object name="TO_DR_STEEL_D4_HSS_CE_3" model="TO_DR_STEEL_D4_HSS_CE_3" image="BITMAPS/" label="Foret pour métal D4 HSS CE/3" info="Outillage Chantier"/>
+                <object name="TO_DR_STEEL_D5_HSS_CE_3" model="TO_DR_STEEL_D5_HSS_CE_3" image="BITMAPS/" label="Foret pour métal D5 HSS CE/3" info="Outillage Chantier"/>
+                <object name="WU_Gloves_0899405308_T08" model="WU_Gloves_0899405308_T08" image="BITMAPS/08994053XX.JPG" label="Gants de protection nitrile plus Multifit - T8" info="Outillage Chantier"/>
+                <object name="ANS_Gloves_11518_08" model="ANS_Gloves_11518_08" image="BITMAPS/11-518.jpg" label="Gants anti-coupures Ansell Hyflex 11-518, revêtement PU, taille 8" info="Outillage Chantier"/>
+                <object name="ANS_Gloves_11518_09" model="ANS_Gloves_11518_09" image="BITMAPS/11-518.jpg" label="Gants anti-coupures Ansell Hyflex 11-518, revêtement PU, taille 9" info="Outillage Chantier"/>
+                <object name="ANS_Gloves_11518_11" model="ANS_Gloves_11518_11" image="BITMAPS/11-518.jpg" label="Gants anti-coupures Ansell Hyflex 11-518, revêtement PU, taille 11" info="Outillage Chantier"/>
+
+                <object name="BO_SC_BIT_Set_43" model="BO_SC_BIT_Set_43" image="BITMAPS/BO_SC_BIT_Set_43.jpg" label="Coffret de 43 embouts Bosch" info="Outillage Chantier"/>
+
+                <object name="MA_TO_AG_MAKITA_9558HNRGK3" model="MA_TO_AG_MAKITA_9558HNRGK3" image="BITMAPS/9558HNRGK3.jpg" label="Meuleuse angle Makita 9558HNRGK3" info="Outillage Chantier"/>
+                <object name="MI_TO_WIRE_CUT_260MM" model="MI_TO_WIRE_CUT_260MM" image="BITMAPS/MI_TO_WIRE_CUT_260MM.jpg" label="Milwaukee cisaille aviation metal Ø1mm, rectiligne" info="Outillage Chantier"/>
+                <object name="SC_TO_FL_02_5" model="SC_TO_FL_02_5" image="BITMAPS/SC_TO_FL.jpg" label="Tournevis plat largeur tête 2.5mm" info="Outillage Chantier"/>
+                <object name="SC_TO_FL_03" model="SC_TO_FL_03" image="BITMAPS/SC_TO_FL.jpg" label="Tournevis plat largeur tête 3mm" info="Outillage Chantier"/>
+                <object name="STAN_PL_SURFORM" model="STAN_PL_SURFORM" image="BITMAPS/STAN_PL_SURFORM.jpg" label="Surform rabot-lime Stanley" info="Outillage Chantier"/>
+                <object name="BA_TO_MET_SAW_317" model="BA_TO_MET_SAW_317" image="BITMAPS/PC-12-COM.jpg" label="Scie à guichet ProfCut™ pour bois/plastique" info="Outillage Chantier"/>
+                <object name="IRO_TO_HAM_230" model="IRO_TO_HAM_230" image="BITMAPS/IRO_TO_HAM.jpg" label="Ironside marteau de menuisier 230g" info="Outillage Chantier"/>
+                <object name="BH_TO_HEX_KEY_SET" model="BH_TO_HEX_KEY_SET" image="BITMAPS/310598.jpg" label="Jeu de 9 clés allen Bondhus en étui" info="Outillage Chantier"/>
+                <object name="LUMX_TO_REEL_GAR_25M_85025" model="LUMX_TO_REEL_GAR_25M_85025" image="BITMAPS/LM_85025.jpg" label="Enrouleur câble 3x2,5 25m néoprène 4 prises IP44" info="Outillage Chantier"/>
+                <object name="VISE_GRIPS_10mm" model="VISE_GRIPS_10mm" image="BITMAPS/VISE_GRIPS.jpg" label="Pince étau courbe 10mm" info="Outillage Chantier"/>
+                <object name="TO_DISC_STEEL_INOX_D115mm" model="TO_DISC_STEEL_INOX_D115mm" image="BITMAPS/TO_DISC_STEEL_INOX_D115mm.jpg" label="Disque à tronçonner acier/inox diam. 115mm" info="Outillage Chantier"/>
+                <object name="MA_TO_BOX_POW_MAKITA_BL1850" model="MA_TO_BOX_POW_MAKITA_BL1850" image="BITMAPS/BL1850_Box.jpg" label="Power Pack Makita 2 accus BL1850 18V Li-ion - 5Ah + chargeur en coffret" info="Outillage Chantier"/>
+                <object name="TAJ_TO_BLA_10_FS_25MM" model="TAJ_TO_BLA_10_FS_25MM" image="BITMAPS/3082942.jpg" label="Tajima - Blister 10 lames sécable ULTRA FINE &amp; SHARP, noire 25 mm" info="Outillage Chantier"/>
+                <object name="FG_TO_KN_BLA_25MM" model="FG_TO_KN_BLA_25MM" image="BITMAPS/308266.jpg" label="Cutter à lame sécable 25mm poignée rubber grip Auto lock" info="Outillage Chantier"/>
+                <object name="DR_STONE_D6_090_150" model="DR_STONE_D6_090_150" image="BITMAPS/DR_STONE.jpg" label="Foret pour béton et pierre Ø6mm. Longueur utile 90mm, longueur totale 150mm" info="Outillage Chantier"/>
+                <object name="CLOU_SPIT_PULSA_HC6_17" model="CLOU_SPIT_PULSA_HC6_17" image="BITMAPS/SPIT_PULSA_HC6.jpg" label="Clous pour béton et métal SPIT PULSA HC6-17 - Bandes de 10 - Usage avec cloeur Spit Pulsa 800-40-65" info="Outillage Chantier"/>
+            </category>
+            <category name="CON_WS_TOOLS_ATELIER" label="Outillage Atelier" image="BITMAPS/715930.JPG">
+                <object name="GCP_TANEX_POWER_750ML" model="GCP_TANEX_POWER_750ML" image="BITMAPS/715930.jpg" label="Green Care Professional Tanex Power - Nettoyant détachant puissant 750 ml" info="Outillage Atelier"/>
+            </category>
+            <category name="REASOR_CAMM" label="Réassort camionnette" image="BITMAPS/RA_TAPE_33M_PE_ORA.jpg">
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4x80" model="VIS_AGGLO_ZG_TF_PZ2_4x80" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4X80"/>
+                <object name="PLUG_STE_CAV_Ø08_60" model="PLUG_STE_CAV_Ø08_60" image="BITMAPS/Fischer_5197XX.jpg" label="Cheville metallique à expansion pour parois creuses, Ø perçage 8 x longueur 60 mm"/>
+                <object name="PLUG_STE_CAV_Ø08_32" model="PLUG_STE_CAV_Ø08_32" image="BITMAPS/Fischer_5197XX.jpg" label="Cheville metallique à expansion pour parois creuses, Ø perçage 8 x longueur 32 mm"/>
+                <object name="PLUG_STE_CAV_Ø08_45" model="PLUG_STE_CAV_Ø08_45" image="BITMAPS/Fischer_5197XX.jpg" label="Cheville metallique à expansion pour parois creuses, Ø perçage 8 x longueur 45 mm"/>
+                <object name="w_lamello_10mm_rainure100mm" model="w_lamello_10mm_rainure100mm" image="BITMAPS/BERMA_3150-1310.png" label="Lamello bois taille 10" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="i_BT_flat_pivot_LR0_A32_5mm" model="i_BT_flat_pivot_LR0_A32_5mm" image="BITMAPS/282.24.720.PNG" label="Taquet, pour fonds en bois, à enficher dans Ø trou de perçage 5 mm" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="w_work_surface_connector" model="w_work_surface_connector" image="BITMAPS/HAFELE_262.96.220.jpg" label="ferrrure assemblage pour plan de travail goujon 150mm" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="TEC_Tour_8x30" model="TEC_Tour_8x30" image="BITMAPS/imos_000_024.jpg" label="Tourillons 8x30" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="TEC_Tour_10x30_FF" model="TEC_Tour_10x30_FF" image="BITMAPS/imos_000_024.jpg" label="Tourillon bois 10x30mm" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="ACCS_VP6030_EQU_TRAV_40X40X40" model="ACCS_VP6030_EQU_TRAV_40X40X40" image="BITMAPS/Equerre 40x40x40mm.JPG" label="Equerre 40x40x40mm" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="w_buffer_5mm" model="w_buffer_5mm" image="BITMAPS/imos_000_559.jpg" label="amortisseurs porte gris clair 5mm" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="w_base_hght_adjustabl_leg_clip" model="w_base_hght_adjustabl_leg_clip" image="BITMAPS/HAFELE_637.81.330.jpg" label="Lame de ressort pour plinthe" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="w_base_hght_adjustabl_leg_H100" model="w_base_hght_adjustabl_leg_H100" image="BITMAPS/BERMA_7329-0080.png" label="Pied de meuble 100mm NEHL - réglable de -10mm/+18mm" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="PAN_FLO_RG2_BSEN_600x600" model="PAN_FLO_RG2_BSEN_600x600" image="BITMAPS/PAN_FLO_RG2_BSEN_600x600.jpg" label="Dalle faux-plancher Kingspan RG2 BSEN Light Duty 600x600mm" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="BLADE_D160_2_2_20_Z48" model="BLADE_D160_2_2_20_Z48" image="BITMAPS/BLADE_D160_2_2_20_Z48.jpg" label="Lame scie circulaire Ø160 2.2/1.6x20mm Z48 TF -2/6/32" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="SO_SIL_SAN_SRUB_2S_LIGR_102307" model="SO_SIL_SAN_SRUB_2S_LIGR_102307" image="BITMAPS/SILRUB_2S.jpg" label="Soudal Silirub 2S 105549 cartouche 300ml - Silicone sanitaire gris clair (RAL 7038)" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="TO_SCRAP_150" model="TO_SCRAP_150" image="BITMAPS/0-28-616.jpg" label="Racloir 150mm lame 2 tranchants" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="PL_BR_10x32" model="PL_BR_10x32" image="BITMAPS/PL_BR_Fischer.jpg" label="Cheville laiton MS 10x32" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="HN_M10" model="HN_M10" image="BITMAPS/01100.100.001.jpg" label="Écrou hexagonal DIN 934 Acier Brut M10" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="WA_M10" model="WA_M10" image="BITMAPS/38100.jpg" label="Rondelle plate M10 acier" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="STAN_TO_CHALK_LINE_30M" model="STAN_TO_CHALK_LINE_30M" image="BITMAPS/342371.jpg" label="Traceur a poudre avec recharge Stanley, 30m + craie bleue 30g" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="SC_BIT_HOLD_125mm" model="SC_BIT_HOLD_125mm" image="BITMAPS/SC_BIT_HOLD_125mm.jpg" label="Porte-embouts 125mm" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="SOU_ACRYRUB_BL_310" model="SOU_ACRYRUB_BL_310" image="BITMAPS/Acryrub.jpg" label="Mastic acrylique monocomposant Soudal Acryrub Noir - 310ml p/ cartouche" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="SOU_ACRYRUB_WH_310" model="SOU_ACRYRUB_WH_310" image="BITMAPS/Acryrub.jpg" label="Mastic acrylique monocomposant Soudal Acryrub Blanc - 310ml p/ cartouche" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="SOU_ACRYRUB_GR_310" model="SOU_ACRYRUB_GR_310" image="BITMAPS/Acryrub.jpg" label="Mastic acrylique monocomposant Soudal Acryrub Gris - 310ml p/ cartouche" info="Réassort camionnette , Réassort camionnette"/>
+
+                <object name="PRF_COL_ACRYL_25MM" model="PRF_COL_ACRYL_25MM" image="img/new_img/spp_img/SPP_25x1.PNG" label="Double face acrylique HR 25mm - Type VHB 4950" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="PSPP_PRF_ISOL_DF11" model="PSPP_PRF_ISOL_DF11" image="img/new_img/spp_img/FOAM_MP_25x1.PNG" label="Joint DF11 noir (ligne grise) pour 88.2 avec profilé DF (02-03) 30x25mm - Joint pour 66.2 avec profilé U 30x20mm" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="PSPP_PRF_ISOL_DF12" model="PSPP_PRF_ISOL_DF12" image="img/new_img/spp_img/FOAM_MP_25x1.PNG" label="Joint DF12 noir (ligne orange) pour 66.2 avec profilé DF (02-03) 30x25mm" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="PSPP_PRF_COL_TRSP_25x01" model="PSPP_PRF_COL_TRSP_25x01" image="img/new_img/spp_img/FOAM_MP_25x1.PNG" label="Double face transparent SHB AFT 1000 25x01mm, rouleau de 33m" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="PSPP_TAPE_MASK_50_BE" model="PSPP_TAPE_MASK_50_BE" image="img/new_img/spp_img/FOAM_MP_48x1.PNG" label="Tape masquage 50mm beige" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="PSPP_TAPE_MASK_50_WH" model="PSPP_TAPE_MASK_50_WH" image="img/new_img/spp_img/FOAM_MP_48x1.PNG" label="Tape masquage 50mm blanc" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="SPP_TAPE_ADH_PVC_50_BR" model="SPP_TAPE_ADH_PVC_50_BR" image="img/new_img/spp_img/FOAM_MP_48x1.PNG" label="Tape adhésif PVC 50mm, Brun" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="SPP_TAPE_ADH_PVC_50_RE" model="SPP_TAPE_ADH_PVC_50_RE" image="img/new_img/spp_img/FOAM_MP_50x1.PNG" label="Tape adhésif PVC 50mm, Rouge" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="SPP_TAPE_ADH_PVC_50_TRSP" model="SPP_TAPE_ADH_PVC_50_TRSP" image="img/new_img/spp_img/FOAM_MP_48x1.PNG" label="Tape adhésif PVC 50mm, Transparent" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="TS_SIGN_TAPE_SOC_DIS" model="TS_SIGN_TAPE_SOC_DIS" image="BITMAPS/TS_SIGN_TAPE_SOC_DIS.jpg" label="Ruban adhésif de distanciation sociale - Tesa signal - Rouleau de 50m"/>
+                <object name="SPP_TASSEAU_20x20" model="SPP_TASSEAU_20x20" image="img/new_img/spp_img/SPP_TASS_20x20.PNG" label="Latte - tasseaux - SRN de 20x20 mm; 2.7m" info="Réassort camionnette , Réassort camionnette"/>
+
+
+                <object name="CHB_SEC_FIR_EXT_POW_ABC_1KG" model="CHB_SEC_FIR_EXT_POW_ABC_1KG" image="BITMAPS/CHB_SEC_FIR_EXT_POW_ABC.jpg" label="Chubb Extincteur 1kg - à poudre ABC - Pour commerces, ateliers, garages, maison" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="CHB_SEC_FIR_EXT_POW_ABC_2KG" model="CHB_SEC_FIR_EXT_POW_ABC_2KG" image="BITMAPS/CHB_SEC_FIR_EXT_POW_ABC.jpg" label="Chubb Extincteur 2kg - à poudre ABC - Pour commerces, ateliers, garages, maison" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="CHB_SEC_FIR_EXT_POW_ABC_6KG" model="CHB_SEC_FIR_EXT_POW_ABC_6KG" image="BITMAPS/CHB_SEC_FIR_EXT_POW_ABC.jpg" label="Chubb Extincteur 6kg - à poudre ABC - Pour commerces, ateliers, garages, maison" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="CHB_SEC_FIR_EXT_POW_ABC_9KG" model="CHB_SEC_FIR_EXT_POW_ABC_9KG" image="BITMAPS/CHB_SEC_FIR_EXT_POW_ABC.jpg" label="Chubb Extincteur 9kg - à poudre ABC - Pour commerces, ateliers, garages, maison" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="LE_SIGN_BRADY_256723" model="LE_SIGN_BRADY_256723" image="BITMAPS/59425672301.jpg" label="Balisage - Brady 256723" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="TUB_FINIT_SILIC_BLANC_PEINT" model="TUB_FINIT_SILIC_BLANC_PEINT" image="BITMAPS/065030260.jpg" label="Silicone neutre Soudal Silirub P2 Blanc - 300ml p/ cartouche" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="PR_GLUE_SIL_WH_15473" model="PR_GLUE_SIL_WH_15473" image="BITMAPS/constru_fix.jpg" label="Promante 15473 Constru-Fix cartouche 290ml - Colle silicone blanche à adhésion immédiate" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="SOU_SILIRUB_2_WH_300" model="SOU_SILIRUB_2_WH_300" image="BITMAPS/Silirub_2.jpg" label="Silicone neutre Soudal Silirub 2 Blanc - 300ml p/ cartouche" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="TUB_COL_SILIC_TRANSP" model="TUB_COL_SILIC_TRANSP" image="BITMAPS/BLUM_ZR7.1080U.jpg" label="Colle silicone transparente 85050 27" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="PR_GLUE_SIL_BL_15474" model="PR_GLUE_SIL_BL_15474" image="BITMAPS/constru_fix.jpg" label="Promante 15474 Constru-Fix cartouche 290ml - Colle silicone noire à adhésion immédiate" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="PR_FM_FILL_FOAM" model="PR_FM_FILL_FOAM" image="BITMAPS/FILL_FOAM.jpg" label="Mousse PU Promanté Fill Foam 61db 500ml" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="CHEV_FRAP_ 6X40" model="CHEV_FRAP_ 6X40" image="BITMAPS/CHEV_FRAP.jpg" label="Chevilles a frapper 6x40" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="CHEV_FRAP_ 6X60" model="CHEV_FRAP_ 6X60" image="BITMAPS/CHEV_FRAP.jpg" label="Chevilles a frapper 6x60" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="A_HKD_M6X25" 						model="A_HKD_M6X25" 					image="BITMAPS/376894.jpg" 								label="Cheville compacte HKD M6X25" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="ACCS_VP6030_EQU_TRAV_40X40X40" 	model="ACCS_VP6030_EQU_TRAV_40X40X40" 	image="BITMAPS/BLUM_ZR7.1080U.jpg" 						label="Grande Equerre 40mm" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="FILM_PLAST_PROTECT_VISQUEEN" 		model="FILM_PLAST_PROTECT_VISQUEEN" 	image="BITMAPS/FEB44.jpg" 								label="Film FEB44 de protection transparent sol, rouleau de 95m, largeur 400cm" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="RA_PAP_KRA_70G_M2" 				model="RA_PAP_KRA_70G_M2" 				image="BITMAPS/RA_PAP_KRA_70G_M2.jpg" 					label="Papier kraft naturel en rouleau Super Qualité standard 70 g/m² RAJA en rouleau" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="RA_TAPE_33M_PE_ORA" 				model="RA_TAPE_33M_PE_ORA" 				image="BITMAPS/RA_TAPE_33M_PE_ORA.jpg" 					label="Ruban adhésif polyéthylène pour bâtiment, Orange, ADVANCE 50mm x 33m" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="TS_M6X1000" 						model="TS_M6X1000" 						image="BITMAPS/FABORY_20200.120.001" 					label="tige filetée M6x1000 acier brut, classe 4.8" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="TUB_COL_SILIC_FORTE" 				model="TUB_COL_SILIC_FORTE" 			image="BITMAPS/1547X.jpg" 								label="Promante 15473 Constru-Fix cartouche 290ml - Colle silicone blanche à adhésion immédiate" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="TUB_COL_SILIC_FORTE_NOIR" 		model="TUB_COL_SILIC_FORTE_NOIR" 		image="BITMAPS/constru_fix.jpg" 						label="Promante 15474 Constru-Fix cartouche 290ml - Colle silicone noire à adhésion immédiate" info="Réassort camionnette , Réassort camionnette"/>
+
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4x20" model="VIS_AGGLO_ZG_TF_PZ2_4x20" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4x20" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="TEC_VisPoignee_M4_25" model="TEC_VisPoignee_M4_25" image="BITMAPS/3225-0425.jpg" label="Vis à métaux TR Zing pour poignée M4x25mm" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="VIS_GYP_PHOSP_PH2_3_5X25" model="VIS_GYP_PHOSP_PH2_3_5X25" image="BITMAPS/VIS_GYP.jpg" label="Vis GYPROC phosp. tete fraisée PH2 3,5x25" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_3,5x30" model="VIS_AGGLO_ZG_TF_PZ2_3,5x30" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 3.5X30" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4x25" model="VIS_AGGLO_ZG_TF_PZ2_4x25" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4X25" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4x30" model="VIS_AGGLO_ZG_TF_PZ2_4x30" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4X30" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4x70" model="VIS_AGGLO_ZG_TF_PZ2_4x70" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4X70" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4x60" model="VIS_AGGLO_ZG_TF_PZ2_4x60" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4X60" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4x40" model="VIS_AGGLO_ZG_TF_PZ2_4x40" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4X40" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_3,5X35" model="VIS_AGGLO_ZG_TF_PZ2_3,5X35" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 3.5X35" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4x50" model="VIS_AGGLO_ZG_TF_PZ2_4x50" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4X50" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4x35" model="VIS_AGGLO_ZG_TF_PZ2_4x35" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4X35" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_4x45" model="VIS_AGGLO_ZG_TF_PZ2_4x45" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 4X45" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="VIS_AGGLO_ZG_TF_PZ2_3_5X16" model="VIS_AGGLO_ZG_TF_PZ2_3_5X16" image="BITMAPS/VIS_AGGLO_ZG_TF.jpg" label="Vis agglo Zing tete fraisée PZ2 3.5X16" info="Réassort camionnette , Réassort camionnette"/>
+                <object name="VIS_GYP_PHOSP_PH2_3_5X35" model="VIS_GYP_PHOSP_PH2_3_5X35" image="BITMAPS/VIS_GYP.jpg" label="Vis GYPROC phosp. tete fraisée PH2 3,5x35" info="Réassort camionnette , Réassort camionnette"/>
+
+                <object name="SC_BIT_HOLD_MAG_152mm" model="SC_BIT_HOLD_MAG_152mm" image="BITMAPS/SC_BIT_HOLD_MAG_152mm.jpg" label="Porte-embouts magnétique 152mm"/>
+                <object name="SC_BIT_HOLD_MAG_100mm" model="SC_BIT_HOLD_MAG_100mm" image="BITMAPS/SC_BIT_HOLD_MAG_100mm.jpg" label="Porte-embouts magnétique 100mm"/>
+
+                <object name="STAN_TO_TM_8M_FatMax_AL" model="STAN_TO_TM_8M_FatMax_AL" image="BITMAPS/STAN_TO_TM_8M_FatMax_AL.jpg" label="Mètre ruban Stanley FatMax 8m Autolock"/>
+            </category>
+                     <!-- 20-01-2024 N.AL-->
+            <category name="CON_BDO_PAPE" label="Papeterie" image="BITMAPS/.jpg">
+                <object name="Paper_80gr_WH_A4_500" model="Paper_80gr_WH_A4_500" image="BITMAPS/Paper_80gr_WH_A4.jpg" label="Papier 80gr blanc A4 - ramette de 500 feuilles" info="Papeterie"/>
+                <object name="Paper_80gr_WH_A3_500" model="Paper_80gr_WH_A3_500" image="BITMAPS/Paper_80gr_WH_A4.jpg" label="Papier 80gr blanc A3 - ramette de 500 feuilles" info="Papeterie"/>
+                <object name="Paper_roll_80gr_WH_914mmx50m" model="Paper_roll_80gr_WH_914mmx50m" image="BITMAPS/Paper_roll_80gr_WH.png" label="Rouleau papier traceur 80gr - 914mm x 50m" info="Papeterie"/>
+            </category>
+            <category name="CON_BDO_CE" label="Cartouches encre" image="BITMAPS/.jpg">
+                <object name="TN_910M" model="TN_910M" image="BITMAPS/TN-910M.png" label="Toner Brother TN-910M Magenta" info="Cartouches encre"/>
+                <object name="LC_427XLC_Cyan" model="LC_427XLC_Cyan" image="BITMAPS/LC_427XLC_Cyan.png" label="Cartouche jet encre Brother LC-427XLC Cyan" info="Cartouches encre"/>
+            </category>
+            <category name="CON_BDO_BAT" label="Battery" image="BITMAPS/.jpg">
+                <object name="Battery_Alc_AA_LR06_24" model="Battery_Alc_AA_LR06_24" image="BITMAPS/Battery_Alc_AA_LR06_24.jpg" label="Pile alcaline AA-LR06 - Boite de 24" info="Battery"/>
+            </category>
+            <category name="CON_BDO_STY" label="Stylos" image="BITMAPS/.jpg">
+                <object name="Felt_Pen_Medium_Green" model="Felt_Pen_Medium_Green" image="BITMAPS/Felt_Pen_Medium_Green.jpg" label="Stylo feutre moyen vert" info="Stylos"/>
+                <object name="Felt_Pen_Medium_Blue" model="Felt_Pen_Medium_Blue" image="BITMAPS/Felt_Pen_Medium_Blue.jpg" label="Stylo feutre moyen bleu" info="Stylos"/>
+                <object name="Felt_Pen_Medium_Red" model="Felt_Pen_Medium_Red" image="BITMAPS/Felt_Pen_Medium_Red.jpg" label="Stylo feutre moyen rouge" info="Stylos"/>
+                <object name="Felt_Pen_Medium_Black" model="Felt_Pen_Medium_Black" image="BITMAPS/Felt_Pen_Medium_Black.jpg" label="Stylo feutre moyen noir" info="Stylos"/>
+            </category>
+            <category name="CON_BDO_FOOD" label="Food" image="BITMAPS/.jpg">
+                <object name="Milk_7,5gr_240" model="Milk_7,5gr_240" image="BITMAPS/Milk_7,5gr.png" label="Lait dosette 7.5 grammes - boite de 240" info="Food"/>
+            </category>
+            <category name="CON_BDO_FES" label="Festool" image="BITMAPS/.jpg">
+                <object name="FE_TO_BACK_PAD_STICKFIX_RS400" model="FE_TO_BACK_PAD_STICKFIX_RS400" image="BITMAPS/489252.jpg" label="Plateau de ponçage StickFix SSH-STF-80x130/12, pour Festool RS400" info="Festool"/>
+            </category>
+            <category name="CON_BDO_PB" label="Protection bruit" image="BITMAPS/.jpg">
+                <object name="WU_Protec_Ear_X300" model="WU_Protec_Ear_X300" image="BITMAPS/0899300339.JPG" label="Arceau de protection anti-bruit X-300" info="Protection bruit"/>
+            </category>
+            <category name="CON_BDO_PHAR" label="Pharmacie" image="BITMAPS/.jpg">
+                <object name="WU_Bandage_0899520151" model="WU_Bandage_0899520151" image="BITMAPS/0899520151.JPG" label="Bandes de pansement" info="Pharmacie"/>
+                <object name="WU_Bandage_0899520106" model="WU_Bandage_0899520106" image="BITMAPS/0899520106.JPG" label="Pansements, longs" info="Pharmacie"/>
+                <object name="WU_Bandage_Dispenser" model="WU_Bandage_Dispenser" image="BITMAPS/0899520175.JPG" label="Distributeur de pansements" info="Pharmacie"/>
+            </category>
+            <category name="CON_BDO_PV" label="Protection vue" image="BITMAPS/WU_Protec.jpg">
+                <object name="WU_Protec_Glasses_S500" model="WU_Protec_Glasses_S500" image="BITMAPS/0899102460.JPG" label="Lunettes de protection S500" info="Protection vue"/>
+                <object name="WU_Protec_Glasses_WEGA" model="WU_Protec_Glasses_WEGA" image="BITMAPS/0899102115.JPG" label="Lunettes de protection WEGA" info="Protection vue"/>
+                <object name="WU_Protec_Mask_ANDROMEDA" model="WU_Protec_Mask_ANDROMEDA" image="BITMAPS/0899102110.JPG" label="Masque de protection ANDROMEDA" info="Protection vue"/>
+            </category>
+            <category name="CON_BDO_HV" label="Hors vente" image="BITMAPS/.jpg">
+                <object name="SI_FR_KU22LADD0" model="SI_FR_KU22LADD0" image="BITMAPS/KU22LADD0_dim.jpg" label="Siemens KU22LADD0 iQ500, réfrigérateur sous-encastrable avec compartiment de congélation, 82 x 60 cm, charnières plates SoftClose" info="Hors vente"/>
+            </category>
+        </category>
+</Catalog>
