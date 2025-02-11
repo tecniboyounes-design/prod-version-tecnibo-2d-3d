@@ -181,7 +181,7 @@ const NewProject = () => {
         sx={{
           display: 'flex',
           flexDirection: 'row',
-          height: '85%',
+          height: '90%',
           overflow: 'hidden',
         }}>
 

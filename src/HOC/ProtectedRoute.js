@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 const ProtectedRoute = ({ children, isAdmin }) => {
     const router = useRouter();
-
+    
     const { loading, isAuthenticated, user } = useSelector(state => state.jsonData.user);
     console.log(loading, isAuthenticated, user);
     

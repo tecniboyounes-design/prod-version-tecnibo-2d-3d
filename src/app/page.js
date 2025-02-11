@@ -24,12 +24,10 @@ import ProtectedRoute from "@/HOC/ProtectedRoute";
 
 const Page = () => {
     const currentStep = useSelector((state) => state.jsonData.currentStep);
-    // console.log('current step:', currentStep);
-
-
+    
   return (
     <>
-    {/* <ProtectedRoute isAdmin={false} >    */}
+
       <PreloadGLTF />
       {currentStep === null ? (
         <Projects />

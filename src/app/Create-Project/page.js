@@ -1,16 +1,24 @@
 "use client"; 
 
+import CircularWithValueLabel from "@/components/Otman/UI/CircularWithValueLabel";
 import dynamic from "next/dynamic";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const NewProject = dynamic(() => import("@/components/Otman/UI/NewProject"), {
   ssr: false,
-  loading: () => <div>Loading...</div>, 
+  loading: () => <CircularWithValueLabel />, 
 });
 
 const Page = () => {
+  const GlobalState = useSelector((state) => state);
+  useEffect(() => {
+     console.log('GlobalState:', GlobalState);
+     
+  }, [GlobalState])
+   
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<CircularWithValueLabel />}>
       <NewProject />
     </Suspense>
   );

@@ -21,11 +21,12 @@ import ArrowDropUp from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDown from "@mui/icons-material/ArrowDropDown";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteProject, setProjectInfo } from "../../../store";
-import { Delete } from "@mui/icons-material";
+import { Delete, FileDownload, PictureAsPdf } from "@mui/icons-material";
 import LinearBuffer from "./LinearBuffer";
 import { PeopleAlt } from "@mui/icons-material";
 import { StatusChip } from "@/app/styles/Themes";
 import { useRouter } from 'next/router';
+import { handleDownloadXML } from "@/actions/filesActions";
 
 const ProjectInfoBar = () => {
   const [filterOpen, setFilterOpen] = useState(false);
@@ -64,6 +65,10 @@ const ProjectInfoBar = () => {
     }
   };
 
+
+const handleXML = () => {
+  handleDownloadXML()
+}
   
   
   
@@ -256,15 +261,44 @@ const ProjectInfoBar = () => {
                   horizontal: "left",
                 }}
               >
-                {/* MenuItem for Delete Project */}
-                <MenuItem onClick={handleDeleteProject}>
-                  <Typography variant="body2" sx={{ flexGrow: 1 }}>
-                    Delete Project
-                  </Typography>
-                  <IconButton edge="end" sx={{ color: "secondary" }}>
-                    <Delete />
-                  </IconButton>
-                </MenuItem>
+           <Box sx={{ width: 250, p: 1 }}>  
+      {/* Delete Project */}
+
+      <MenuItem onClick={handleDeleteProject}>
+        <Typography variant="body2" sx={{ flexGrow: 1 }}>
+          Delete Project
+        </Typography>
+        <IconButton edge="end" color="error">
+          <Delete />
+        </IconButton>
+      </MenuItem>
+
+      {/* Download Order (XML) */}
+      <MenuItem 
+      onClick={handleXML}
+      >
+        <Typography variant="body2" sx={{ flexGrow: 1 }}>
+          Download Order (XML)
+        </Typography>
+        <IconButton edge="end" color="primary">
+          <FileDownload />
+        </IconButton>
+      </MenuItem>
+
+      {/* Show Quotes (PDF) */}
+      <MenuItem 
+      // onClick={handleShowPDF}
+      >
+        <Typography variant="body2" sx={{ flexGrow: 1 }}>
+          Show Quotes (PDF)
+        </Typography>
+        <IconButton edge="end" color="success">
+          <PictureAsPdf />
+        </IconButton>
+      </MenuItem>
+    </Box>
+
+
               </Menu>
             </div>
           </Stack>

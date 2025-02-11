@@ -1,5 +1,5 @@
-"use client"
-import React, { useState, useEffect, useMemo } from "react";
+"use client";
+import React, { useState, useEffect, useMemo, Suspense, lazy } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import CardActions from "@mui/material/CardActions";
 import Collapse from "@mui/material/Collapse";
@@ -75,8 +75,10 @@ import {
 } from "../../../app/styles/Themes";
 import { v4 as uuidv4 } from "uuid";
 import { generateUniqueProjectNumber } from "../../../data/models";
-import axios from "axios"; 
-
+import axios from "axios";
+import { Canvas } from "@react-three/fiber";
+import CircularWithValueLabel from "./CircularWithValueLabel";
+const Points = lazy(() => import("../Points/Points"));
 
 const Projects = () => {
   const [resultOfFilter, setResultOfFilter] = useState([]);
@@ -104,14 +106,14 @@ const Projects = () => {
     const handleMenuClose = () => {
       setAnchorEl(null);
     };
-    
+
     const toggleFilterBar = () => {
       setFilterOpen((prev) => !prev);
     };
 
     const handleMenuItemClick = () => {
-      handleMenuClose();  // Close the menu
-      navigate.push("/odoo-auto-requester");  // Navigate to the new route
+      handleMenuClose(); 
+      navigate.push("/signin"); 
     };
 
     return (
@@ -465,7 +467,7 @@ const Projects = () => {
       </Box>
     );
   }
-  
+
   function ResponsiveCardGrid() {
     const [expanded, setExpanded] = React.useState(null);
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -475,7 +477,7 @@ const Projects = () => {
     const [filteredProjects, setFilteredProjects] = useState([]);
     const [dataToSearch, setDataToSearch] = useState([]);
     const dispatch = useDispatch();
-    const  router = useRouter();
+    const router = useRouter();
 
     const [selectedProjectForDeletion, setSelectedProjectForDeletion] =
       useState(null);
@@ -515,7 +517,6 @@ const Projects = () => {
       setOpenDialog(false);
       setSelectedProjectForDeletion(null);
     };
-    
 
     const handleCloseDialog = () => {
       setOpenDialog(false);
@@ -733,13 +734,23 @@ const Projects = () => {
                       </Tooltip>
                     }
                   />
-
                   <CardMedia
                     component="img"
                     height="194"
                     image={project.image}
                     alt={project.title}
                   />
+
+                  {/* <div style={{ height: 194, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+  <Suspense fallback={ <CardMedia
+component="img"
+height="194"
+image={project.image}
+alt={project.title}
+/> }>
+    <Points/>
+  </Suspense>
+</div> */}
 
                   <CardContent>
                     <StatusChip status={project.status} />
@@ -959,11 +970,11 @@ const Projects = () => {
       </>
     );
   }
-  
+
   const handleOpen = () => {
     setOpen(true);
   };
-  
+
   const handleClose = () => {
     setOpen(false);
     setOnClose(true);
@@ -984,11 +995,6 @@ const Projects = () => {
     </>
   );
 };
-
-
-
-
-
 
 const ConfirmDeleteDialog = ({
   openDialog,
@@ -1022,10 +1028,6 @@ const ConfirmDeleteDialog = ({
   );
 };
 
-
-
-
-
 const ProjectDialog = ({ open, onClose }) => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -1035,7 +1037,6 @@ const ProjectDialog = ({ open, onClose }) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
- 
 
   useEffect(() => {
     if (open) {
@@ -1044,26 +1045,32 @@ const ProjectDialog = ({ open, onClose }) => {
   }, [open]);
 
   const handleCloseSnackbar = () => setSnackbarOpen(false);
-  
+
   const handleSave = () => {
     onClose();
 
     const now = new Date().toLocaleString("fr-FR");
     const newProject = {
-        id: uuidv4(),
-        image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d",
-        title: projectTitle || "New Project",
-        projectNumber: projectNumber || "2025001471",
-        description: description || "No description provided",
-        createdOn: now,
-        changedOn: now,
-        managers: [{ id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" }],
-        status: "temp",
+      id: uuidv4(),
+      image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d",
+      title: projectTitle || "New Project",
+      projectNumber: projectNumber || "2025001471",
+      description: description || "No description provided",
+      createdOn: now,
+      changedOn: now,
+      managers: [
+        {
+          id: uuidv4(),
+          name: "Otman",
+          avatar: "https://i.pravatar.cc/150?img=3",
+        },
+      ],
+      status: "temp",
     };
-    
+
     dispatch(pushProject(newProject));
     router.push("/Create-Project");
-    
+
     // axios.post("http://192.168.30.33:8069", newProject)
     //     .then((response) => {
     //         setSnackbarMessage("Project saved successfully!");
@@ -1079,9 +1086,7 @@ const ProjectDialog = ({ open, onClose }) => {
     //         dispatch(pushProject(newProject));
     //         navigate("/Create-Project");
     //     });
-};
-
-
+  };
 
   return (
     <>
@@ -1123,11 +1128,17 @@ const ProjectDialog = ({ open, onClose }) => {
               <strong>Project Number</strong>
             </Typography>
             <Box display="flex" alignItems="center">
-              <Typography variant="body1" style={{ color: "green", flexGrow: 1 }}>
+              <Typography
+                variant="body1"
+                style={{ color: "green", flexGrow: 1 }}
+              >
                 {projectNumber}
               </Typography>
               <Tooltip title="Copy Project Number" arrow>
-                <IconButton onClick={() => navigator.clipboard.writeText(projectNumber)} color="primary">
+                <IconButton
+                  onClick={() => navigator.clipboard.writeText(projectNumber)}
+                  color="primary"
+                >
                   <FileCopy />
                 </IconButton>
               </Tooltip>
@@ -1162,20 +1173,23 @@ const ProjectDialog = ({ open, onClose }) => {
           </Button>
         </DialogActions>
       </Dialog>
-      
+
       {/* Snackbar for Feedback */}
-      <Snackbar open={snackbarOpen} autoHideDuration={4000} onClose={handleCloseSnackbar}>
-        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} variant="filled">
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={4000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbarSeverity}
+          variant="filled"
+        >
           {snackbarMessage}
         </Alert>
       </Snackbar>
     </>
   );
 };
-
-
-
-
-
 
 export default Projects;
