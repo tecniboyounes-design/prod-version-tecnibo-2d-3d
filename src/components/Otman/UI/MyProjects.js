@@ -78,6 +78,7 @@ import { generateUniqueProjectNumber } from "../../../data/models";
 import axios from "axios";
 import { Canvas } from "@react-three/fiber";
 import CircularWithValueLabel from "./CircularWithValueLabel";
+import { createProject } from "@/actions/createProjectActions";
 const Points = lazy(() => import("../Points/Points"));
 
 const Projects = () => {
@@ -1028,168 +1029,144 @@ const ConfirmDeleteDialog = ({
   );
 };
 
+
+
+
+
+
+
 const ProjectDialog = ({ open, onClose }) => {
-  const router = useRouter();
-  const dispatch = useDispatch();
-  const [projectTitle, setProjectTitle] = useState("");
-  const [projectNumber, setProjectNumber] = useState("");
-  const [description, setDescription] = useState("");
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+    const router = useRouter();
+    const dispatch = useDispatch();
+    const [projectTitle, setProjectTitle] = useState("");
+    const [projectNumber, setProjectNumber] = useState("");
+    const [description, setDescription] = useState("");
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState("");
+    const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+    const user = useSelector((state) => state.jsonData.user);
+    console.log('dialog user', user);
 
-  useEffect(() => {
-    if (open) {
-      setProjectNumber(generateUniqueProjectNumber());
-    }
-  }, [open]);
+    useEffect(() => {
+        if (open) {
+            setProjectNumber(generateUniqueProjectNumber());
+        }
+    }, [open]);
 
-  const handleCloseSnackbar = () => setSnackbarOpen(false);
+    const handleCloseSnackbar = () => setSnackbarOpen(false);
 
-  const handleSave = () => {
-    onClose();
+    const handleSave = async () => {
+        onClose();
+        const now = new Date().toLocaleString("fr-FR");
 
-    const now = new Date().toLocaleString("fr-FR");
-    const newProject = {
-      id: uuidv4(),
-      image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d",
-      title: projectTitle || "New Project",
-      projectNumber: projectNumber || "2025001471",
-      description: description || "No description provided",
-      createdOn: now,
-      changedOn: now,
-      managers: [
-        {
-          id: uuidv4(),
-          name: "Otman",
-          avatar: "https://i.pravatar.cc/150?img=3",
-        },
-      ],
-      status: "temp",
+        const newProject = {
+            title: projectTitle || "New Project",
+            projectNumber: generateUniqueProjectNumber(),
+            description: description || "No description provided",
+            createdOn: now,
+            changedOn: now,
+            managers: [{ id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" }],
+            status: "temp", 
+            ...user
+        };
+
+        dispatch(pushProject(newProject)); 
+
+        try {
+            const response = await createProject(newProject); 
+            if (response) {
+                setSnackbarMessage("Project saved successfully!");
+                setSnackbarSeverity("success");
+                router.push("/Create-Project"); 
+            } else {
+                throw new Error("Project creation failed.");
+            }
+        } catch (error) {
+            setSnackbarMessage("Failed to save project. Please try again.");
+            setSnackbarSeverity("error");
+        } finally {
+            setSnackbarOpen(true);
+        }
     };
 
-    dispatch(pushProject(newProject));
-    router.push("/Create-Project");
+    return (
+        <>
+            <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+                <DialogTitle>
+                    <Grid container spacing={1} alignItems="center">
+                        <Grid item><Info fontSize="large" /></Grid>
+                        <Grid item><Typography variant="h6">Create New Project</Typography></Grid>
+                    </Grid>
+                </DialogTitle>
 
-    // axios.post("http://192.168.30.33:8069", newProject)
-    //     .then((response) => {
-    //         setSnackbarMessage("Project saved successfully!");
-    //         setSnackbarSeverity("success");
-    //         setSnackbarOpen(true);
-    //         dispatch(pushProject(newProject));
-    //         navigate("/Create-Project");
-    //     })
-    //     .catch((error) => {
-    //         setSnackbarMessage("Failed to save project. Please try again.");
-    //         setSnackbarSeverity("error");
-    //         setSnackbarOpen(true);
-    //         dispatch(pushProject(newProject));
-    //         navigate("/Create-Project");
-    //     });
-  };
+                <DialogContent>
+                    <Box display="flex" flexDirection="column" gap={2}>
+                        <Typography variant="body1">
+                            <IconButton edge="start" color="primary"><Edit /></IconButton>
+                            <strong>Project Title</strong>
+                        </Typography>
+                        <TextField
+                            value={projectTitle}
+                            onChange={(e) => setProjectTitle(e.target.value)}
+                            label="Enter Project Title"
+                            variant="outlined"
+                            size="small"
+                            fullWidth
+                        />
 
-  return (
-    <>
-      <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-        <DialogTitle>
-          <Grid container spacing={1} alignItems="center">
-            <Grid item>
-              <Info fontSize="large" />
-            </Grid>
-            <Grid item>
-              <Typography variant="h6">Create New Project</Typography>
-            </Grid>
-          </Grid>
-        </DialogTitle>
+                        <Typography variant="body1">
+                            <IconButton edge="start" color="primary"><Description /></IconButton>
+                            <strong>Project Number</strong>
+                        </Typography>
+                        <Box display="flex" alignItems="center">
+                            <Typography variant="body1" style={{ color: "green", flexGrow: 1 }}>
+                                {projectNumber}
+                            </Typography>
+                            <Tooltip title="Copy Project Number" arrow>
+                                <IconButton onClick={() => navigator.clipboard.writeText(projectNumber)} color="primary">
+                                    <FileCopy />
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
 
-        <DialogContent>
-          <Box display="flex" flexDirection="column" gap={2}>
-            {/* Project Title */}
-            <Typography variant="body1">
-              <IconButton edge="start" color="primary">
-                <Edit />
-              </IconButton>
-              <strong>Project Title</strong>
-            </Typography>
-            <TextField
-              value={projectTitle}
-              onChange={(e) => setProjectTitle(e.target.value)}
-              label="Enter Project Title"
-              variant="outlined"
-              size="small"
-              fullWidth
-            />
+                        <Typography variant="body1">
+                            <IconButton edge="start" color="primary"><Edit /></IconButton>
+                            <strong>Description</strong>
+                        </Typography>
+                        <TextField
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            label="Enter Project Description"
+                            variant="outlined"
+                            multiline
+                            rows={3}
+                            size="small"
+                            fullWidth
+                        />
+                    </Box>
+                </DialogContent>
 
-            {/* Project Number */}
-            <Typography variant="body1">
-              <IconButton edge="start" color="primary">
-                <Description />
-              </IconButton>
-              <strong>Project Number</strong>
-            </Typography>
-            <Box display="flex" alignItems="center">
-              <Typography
-                variant="body1"
-                style={{ color: "green", flexGrow: 1 }}
-              >
-                {projectNumber}
-              </Typography>
-              <Tooltip title="Copy Project Number" arrow>
-                <IconButton
-                  onClick={() => navigator.clipboard.writeText(projectNumber)}
-                  color="primary"
-                >
-                  <FileCopy />
-                </IconButton>
-              </Tooltip>
-            </Box>
+                <DialogActions>
+                    <Button onClick={onClose} color="secondary">Cancel</Button>
+                    <Button onClick={handleSave} color="primary" variant="contained">Save</Button>
+                </DialogActions>
+            </Dialog>
 
-            {/* Description */}
-            <Typography variant="body1">
-              <IconButton edge="start" color="primary">
-                <Edit />
-              </IconButton>
-              <strong>Description</strong>
-            </Typography>
-            <TextField
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              label="Enter Project Description"
-              variant="outlined"
-              multiline
-              rows={3}
-              size="small"
-              fullWidth
-            />
-          </Box>
-        </DialogContent>
-
-        <DialogActions>
-          <Button onClick={onClose} color="secondary">
-            Cancel
-          </Button>
-          <Button onClick={handleSave} color="primary" variant="contained">
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Snackbar for Feedback */}
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={4000}
-        onClose={handleCloseSnackbar}
-      >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity={snackbarSeverity}
-          variant="filled"
-        >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
-    </>
-  );
+            <Snackbar open={snackbarOpen} autoHideDuration={4000} onClose={handleCloseSnackbar}>
+                <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} variant="filled">
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
+        </>
+    );
 };
+
+
+
+
+
+
+
+
 
 export default Projects;

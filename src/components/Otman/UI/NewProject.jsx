@@ -355,6 +355,8 @@ const NewProject = () => {
 
       </Box>
 
+      <PriceDisplay />
+
     </Container>
 
   );

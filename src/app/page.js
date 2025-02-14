@@ -24,6 +24,8 @@ import ProtectedRoute from "@/HOC/ProtectedRoute";
 
 const Page = () => {
     const currentStep = useSelector((state) => state.jsonData.currentStep);
+    const user = useSelector((state) => state.jsonData.user);
+    console.log('user:', user);
     
   return (
     <>

@@ -27,10 +27,9 @@ export async function POST(request) {
         });
 
         const data = await response.json();
-
+          
         // Log the response from Odoo API
         console.log("Response from Odoo API:", data);
-
         // Check if the response contains the 'result' key
         if (data?.result) {
             return new Response(

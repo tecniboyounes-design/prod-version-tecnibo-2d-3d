@@ -17,6 +17,9 @@ export const ProjectInfoMenu = ({ menuWidth, isDragging }) => {
   const [expanded, setExpanded] = React.useState(false);
   const dispatch = useDispatch();
   const { title, projectNumber, createdOn, changedOn, managers } = useSelector((state)=> state.jsonData.project);
+  const user = useSelector((state) => state.jsonData.user);
+  
+  console.log('user', user); 
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -112,14 +115,20 @@ export const ProjectInfoMenu = ({ menuWidth, isDragging }) => {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            <strong>Company:</strong> Some Company<br />
-            <strong>Address:</strong> Some Address<br />
-            <strong>ZIP:</strong> 12345<br />
-            <strong>City:</strong> Some City<br />
-            <strong>E-Mail:</strong> example@example.com<br />
-            <strong>Telephone:</strong> +1234567890
+            <strong>Name:</strong> {user?.name} <br />
+            <strong>Username:</strong> {user?.username} <br />
+            <strong>Partner Display Name:</strong> {user?.partner_display_name} <br />
+            <strong>Email:</strong> {user?.username} <br />
+            <strong>Timezone:</strong> {user?.user_context?.tz} <br />
+            <strong>Database:</strong> {user?.db} <br />
+            <strong>Server Version:</strong> {user?.server_version} <br />
+            <strong>Support URL:</strong> {user?.support_url} <br />
+            <strong>Expiration Date:</strong> {user?.expiration_date} <br />
+            <strong>Expiration Reason:</strong> {user?.expiration_reason} <br />
           </Typography>
         </AccordionDetails>
+
+
       </Accordion>
     </div>
   );

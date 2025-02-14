@@ -1,9 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { TextField, Button, Box, Typography, CircularProgress, Alert } from "@mui/material";
+import { TextField, Button, Box, Typography, CircularProgress, Alert, IconButton } from "@mui/material";
 import { styled } from '@mui/system';
-
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "@/store";
+import { ArrowBack } from "@mui/icons-material";
+import { useRouter } from 'next/navigation'; 
+import Link from 'next/link';
 
 const Background = styled(Box)({
     // background: 'linear-gradient(to right, #f0f0f0, #ffffff)',
@@ -20,7 +24,11 @@ const OdooLogin = () => {
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.jsonData.user);
+    console.log('user', user);
+    const router = useRouter();  
+    
     const validateEmail = (email) => email.includes("tecnibo");
 
     const sendRequest = async () => {
@@ -43,7 +51,10 @@ const OdooLogin = () => {
             });
 
             const data = await response.json();
+            // console.log('data', data);
+            dispatch(setUser(data.response.result));
             setRequestResult(data.result ? "Login Successful" : "Login Failed");
+            router.push('/');
         } catch (error) {
             console.error("Error:", error);
             setRequestResult("Request failed. Check console for details.");
@@ -70,20 +81,26 @@ const OdooLogin = () => {
                     textAlign: "center",
                 }}
             >
+
+                <IconButton sx={{ position: 'absolute', left: 16, top: 16 }}>
+                    <Link href="/">
+                        <ArrowBack color="secondary" />
+                    </Link>
+                </IconButton>
+
                 <Box
                     sx={{
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        height:'50px'
+                        height: '50px',
                     }}
                 >
-                    <img src="/odoo.png" alt="Odoo Logo" style={{ width: '100px', marginBottom: '16px' }} />
+                    <img src="https://tecnibo-2d-3d.vercel.app/odoo.png" alt="Odoo Logo" style={{ width: '100px', marginBottom: '16px' }} />
                     <img
                         src="https://tecnibo.com/web/image/website/6/logo/Tecnibo?unique=4ee68e8"
                         alt="Tecnibo Logo" style={{ width: '100px', marginBottom: '16px' }} />
                 </Box>
-
 
                 {requestResult && (
                     <Alert severity={requestResult.includes("Successful") ? "success" : "error"} sx={{ mb: 2 }}>
@@ -101,6 +118,8 @@ const OdooLogin = () => {
                     required
                     error={Boolean(errorMessage)}
                     helperText={errorMessage}
+                    InputLabelProps={{ shrink: true }}  // Force label behavior
+                    autoFocus
                 />
 
                 <TextField
@@ -108,13 +127,12 @@ const OdooLogin = () => {
                     type={showPassword ? "text" : "password"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    onFocus={() => setShowPassword(true)}
-                    onBlur={() => setShowPassword(false)}
-                    onKeyPress={handleKeyPress}
                     fullWidth
                     margin="normal"
                     required
+                    InputLabelProps={{ shrink: true }}  // Fix label issue
                 />
+
 
                 <Button
                     variant="contained"

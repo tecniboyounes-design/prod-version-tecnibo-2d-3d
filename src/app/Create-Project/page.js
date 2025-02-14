@@ -11,11 +11,8 @@ const NewProject = dynamic(() => import("@/components/Otman/UI/NewProject"), {
 });
 
 const Page = () => {
-  const GlobalState = useSelector((state) => state);
-  useEffect(() => {
-     console.log('GlobalState:', GlobalState);
-     
-  }, [GlobalState])
+  const GlobalState = useSelector((state) => state.jsonData.items);
+  // console.log('items:', GlobalState)
    
   return (
     <Suspense fallback={<CircularWithValueLabel />}>
