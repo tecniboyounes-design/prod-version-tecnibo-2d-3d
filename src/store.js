@@ -157,7 +157,7 @@ const initialState = {
         { id: uuidv4(), name: "Rachid Benjelloun", avatar: "https://i.pravatar.cc/150?img=5" },
         { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" }, 
       ],
-      status: "ordered",
+      status: "temp",
       articles:[],
     },
     {
@@ -171,7 +171,7 @@ const initialState = {
         { id: uuidv4(), name: "Salma Mounir", avatar: "https://i.pravatar.cc/150?img=6" },
         { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" }, 
       ],
-      status: "in working",
+      status: "temp",
       articles:[],
 
     
@@ -188,7 +188,7 @@ const initialState = {
         { id: uuidv4(), name: "Omar El Idrissi", avatar: "https://i.pravatar.cc/150?img=8" },
         { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" }, 
       ],
-      status: "finished",
+      status: "temp",
       articles:[],
 
     },
@@ -203,7 +203,7 @@ const initialState = {
         { id: uuidv4(), name: "Sofia El Hamidi", avatar: "https://i.pravatar.cc/150?img=9" },
         { id: uuidv4(), name: "Tariq Benali", avatar: "https://i.pravatar.cc/150?img=10" },
       ],
-      status: "finished",
+      status: "temp",
       articles:[],
 
     },
@@ -218,7 +218,7 @@ const initialState = {
         { id: uuidv4(), name: "Amina Aouad", avatar: "https://i.pravatar.cc/150?img=11" },
         { id: uuidv4(), name: "Yassine Boushaba", avatar: "https://i.pravatar.cc/150?img=12" },
       ],
-      status: "ordered",
+      status: "temp",
       articles:[],
 
     },
@@ -232,7 +232,7 @@ const initialState = {
       managers: [
         { id: uuidv4(), name: "Imane El Messaoudi", avatar: "https://i.pravatar.cc/150?img=13" },
       ],
-      status: "in planning",
+      status: "temp",
       articles:[],
 
     },
@@ -247,7 +247,7 @@ const initialState = {
         { id: uuidv4(), name: "Fatiha El Ghazali", avatar: "https://i.pravatar.cc/150?img=14" },
         { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" },
       ],
-      status: "ordered",
+      status: "temp",
       articles:[],
 
     },
@@ -392,13 +392,6 @@ const jsonData = createSlice({
       let newItem = sanitizePayload(action.payload); 
       // Remove non-serializable values
     
-      // Check if an item with the same name already exists
-      const isDuplicate = state.items.some(item => item.name === newItem.name);
-      if (isDuplicate) {
-        console.warn(`⚠️ Item with name "${newItem.name}" already exists! Skipping addition.`);
-        return;
-      }
-    
       // Assign a unique ID if not present
       if (!newItem.id) {
         newItem.id = uuidv4();
@@ -417,19 +410,35 @@ const jsonData = createSlice({
       state.items.push(newItem);
     },
     
-    
     updateProjectStatus: (state, action) => {
-    // console.log('action', action.payload);
-      
+      // console.log('action', action.payload); // Log the action to check the payload
+  
       const { id, status } = action.payload;
-      const project = state.projects.find(p => p.id === id);
+      
+      // First, try to find the project in state.projects (array of multiple projects)
+      let project = state.projects.find(p => p.id === id);
       
       if (project) {
-        project.status = status;
+          console.log('Found project in state.projects:', project); // Log the found project in state.projects
+          project.status = status; // Update the status in the found project
+          // console.log('Updated project in state.projects:', project); // Log the updated project
+      } else {
+          // If not found in state.projects, look for the project in state.project (single project)
+          console.warn('Project not found in state.projects, looking in state.project...');
+          
+          if (state.project && state.project.id === id) {
+              // console.log('Found project in state.project:', state.project); // Log the found project in state.project
+              state.project.status = status; // Update the status in the staged project
+              // console.log('Updated project in state.project:', state.project); // Log the updated staged project
+          } else {
+              // If project is not found in either state.projects or state.project, log an error
+              console.error(`Project with id: ${id} not found in state.projects or state.project`);
+          }
       }
-
-    },
-    
+  },
+  
+      
+    // Reducer to update the quantity of an item based on its ID
      updateItemQuantity :(state, action) => {
       const { id, quantity } = action.payload;
     
@@ -443,6 +452,8 @@ const jsonData = createSlice({
       }
     },
 
+    
+    
     addProject: (state, action) => {
       const copiedProject = { ...action.payload };
       copiedProject.title = `Copied Basket: ${copiedProject.title}`;
@@ -505,7 +516,7 @@ const jsonData = createSlice({
       console.log('Updating wall with star config:', action.payload);
 
       const { wallId, config } = action.payload;
-      console.log('walls',)
+      // console.log('walls',)
 
       if (state.floorplanner && state.floorplanner.walls[wallId]) {
         const wall = state.floorplanner.walls[wallId];
@@ -523,7 +534,7 @@ const jsonData = createSlice({
 
 
     setWallConfig: (state, action) => {
-      console.log('Updating wall config:', action.payload);
+      // console.log('Updating wall config:', action.payload);
 
       const { id, key, value } = action.payload;
       
@@ -563,7 +574,7 @@ const jsonData = createSlice({
         // Update the favorite state in Redux
         state.favorite = updatedFavorites;
 
-        console.log(`✨ Wall with ID ${wallId} has been starred and added to favorites! 🌟`, wall);
+        // console.log(`✨ Wall with ID ${wallId} has been starred and added to favorites! 🌟`, wall);
       } else {
         console.log(`❌ Wall with ID ${wallId} not found... Sorry, no stars here.`);
       }
@@ -591,7 +602,7 @@ const jsonData = createSlice({
     },
 
     updateSettings: (state, action) => {
-      console.log('updateSettings', action.payload);
+      // console.log('updateSettings', action.payload);
       const { key, value } = action.payload;
       state.settings[key] = value;
     },
@@ -734,10 +745,10 @@ const jsonData = createSlice({
 
 
     createRoom: (state, action) => {
-      console.log('Room created:', action.payload);
+      // console.log('Room created:', action.payload);
 
       const corners = state.floorplanner.corners;
-      console.log('Room corners:', JSON.parse(JSON.stringify(corners)));
+      // console.log('Room corners:', JSON.parse(JSON.stringify(corners)));
 
       const pointIds = gatherAllCorners(corners);
       const roomName = `Room ${Object.keys(state.floorplanner.rooms).length + 1}`;

@@ -1,20 +1,28 @@
 import React, { useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Box, Typography, Button, Badge } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { Box, Typography, Badge } from '@mui/material';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import { GradientButtonWithTooltip } from './Button';
-import axios from 'axios';
 import DirectionsCarFilledIcon from '@mui/icons-material/DirectionsCarFilled';
-
+import axios from 'axios';
+import { GradientButtonWithTooltip } from './Button';
+import CustomAlert from './CustomAlert';
+import { updateProjectStatus } from '@/store';
 
 const PriceDisplay = () => {
   const items = useSelector((state) => state.jsonData.items);
   const projectDetails = useSelector((state) => state.jsonData.project);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertSeverity, setAlertSeverity] = useState('success');
+  const user = useSelector((state) => state.jsonData.user);
+  const project = useSelector((state) => state.jsonData.project);
+  console.log('project', project);
+  const dispatch = useDispatch();
 
   const VAT_RATE = 0.19;
   const SHIPPING_COST = 10;
-
+  
   const { totalPrice, totalVAT, totalWithVAT } = useMemo(() => {
     let totalPrice = 0;
     let totalVAT = 0;
@@ -32,29 +40,42 @@ const PriceDisplay = () => {
       totalWithVAT: totalPrice + totalVAT + SHIPPING_COST,
     };
   }, [items]);
-
+  
   const handleOrderClick = async () => {
     const orderPayload = {
       items: items?.map((item) => ({
-        name: item?.attributes?.name || 'Fallback Name',
-        product_id: item?.attributes?.id || null,
+        name: item?.attributes?.name || item.itemName,
+        product_id: item?.id || null,
         quantity: item?.quantity || 1,
         price: item?.attributes?.price || 0,
       })) || [],
       orderName: projectDetails?.title || 'Untitled Project',
+      userData: user || { uid: 447, allowed_company_ids: [11] },
     };
 
     try {
       const response = await axios.post('/api/orderSales', orderPayload);
+      // console.log('response', response);
+
       if (response.status === 200) {
-        alert('Order placed successfully!');
+        setAlertOpen(true);
+        setAlertMessage('Order placed successfully!');
+        setAlertSeverity('success');
+        dispatch(updateProjectStatus({ id: project.id, status: "ordered" }));
       }
     } catch (error) {
       console.error('Error placing the order:', error);
-      alert('Failed to place the order.');
+      setAlertMessage('Failed to place the order.');
+      setAlertSeverity('error');
+    } finally {
+      setAlertOpen(true); // Show alert after the order attempt
     }
   };
 
+  const handleAlertClose = () => {
+    setAlertOpen(false);
+  };
+  
   return (
     <Box
       sx={{
@@ -72,8 +93,6 @@ const PriceDisplay = () => {
       }}
     >
       {/* Toggle Button */}
-
-
       <Badge badgeContent={items.length} color="error">
         <GradientButtonWithTooltip
           tooltipText={isExpanded ? 'Hide Details' : 'Show Details'}
@@ -124,6 +143,7 @@ const PriceDisplay = () => {
               </Typography>
             </Box>
           </Box>
+
           {/* Place Order Button */}
           <GradientButtonWithTooltip
             text="Place Order"
@@ -136,7 +156,13 @@ const PriceDisplay = () => {
         </>
       )}
 
-
+      {/* Alert component integration */}
+      <CustomAlert
+        open={alertOpen}
+        message={alertMessage}
+        severity={alertSeverity}
+        onClose={handleAlertClose}
+      />
     </Box>
   );
 };

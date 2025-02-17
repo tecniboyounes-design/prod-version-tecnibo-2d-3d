@@ -16,12 +16,12 @@ import { ItemList, PreviewArticle } from './ItemList';
 import { Canvas } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import CircularWithValueLabel from './CircularWithValueLabel';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
  const MainComponent = ({ currentView, menuWidth, isDragging, openedItemGrid }) => {
   const dispatch = useDispatch();
-  const router = useRouter;
+  const router = useRouter();
 
   const handleStartClick = () => {
     dispatch(setCurrentStep(0));

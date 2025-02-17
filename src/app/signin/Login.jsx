@@ -26,7 +26,6 @@ const OdooLogin = () => {
     const [showPassword, setShowPassword] = useState(false);
     const dispatch = useDispatch();
     const user = useSelector((state) => state.jsonData.user);
-    console.log('user', user);
     const router = useRouter();  
     
     const validateEmail = (email) => email.includes("tecnibo");
@@ -49,6 +48,7 @@ const OdooLogin = () => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
             });
+            console.log('response', response);
 
             const data = await response.json();
             // console.log('data', data);

@@ -1,0 +1,20 @@
+Our Room Planner system makes it easier than ever to manage projects, 
+integrating smoothly with our CRM to give teams a real-time, 
+bird’s-eye view of everything happening with each project. 
+From the moment a project is created, through client orders and all the way to production, 
+the system keeps everyone on the same page. Teams can quickly filter, search, and update project details, 
+which boosts communication and transparency across departments.
+
+Clients are able to interact with their projects in 3D, customizing doors, 
+walls, and furniture. Any changes they make are instantly reflected in the system, 
+giving them the most up-to-date information. Once an order is placed, 
+sales and logistics teams see it immediately, removing any delays and confusion.
+
+By eliminating double data entry and integrating directly with Odoo, 
+the system gives clients the ability to track their orders, while teams gain better control over the entire process. 
+The entire flow from project concept to production is streamlined, improving operational efficiency and reducing errors along the way.
+
+Everything happens within one centralized platform, so all stakeholders are aligned, 
+informed, and able to make better decisions faster. 
+It’s a seamless experience that simplifies the complexities of managing projects, 
+ensuring everyone’s on the same page and that nothing falls through the cracks

@@ -16,7 +16,7 @@ import ProtectedRoute from "@/HOC/ProtectedRoute";
   
   const AppContainer = styled("div")({
     display: "flex",
-    height: "100%",
+    height: "100vh",
     flexDirection: "column",
     position: "relative",
   });

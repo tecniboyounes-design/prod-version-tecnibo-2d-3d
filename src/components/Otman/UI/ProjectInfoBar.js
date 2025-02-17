@@ -16,7 +16,7 @@ import {
   Tooltip
 } from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ArrowDropUp from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDown from "@mui/icons-material/ArrowDropDown";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,19 +32,28 @@ const ProjectInfoBar = () => {
   const [filterOpen, setFilterOpen] = useState(false);
   const dispatch = useDispatch();
   const selectedProject = useSelector((state) => state.jsonData.project);
-  // console.log('selectedproject', selectedProject)
   const [anchorEl, setAnchorEl] = useState(null);
   const router = useRouter;
+  const [pathname, setPathname] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setPathname(window.location.pathname); 
+    }
+  }, []); 
+
 
   const handleToggle = (event) => {
     setFilterOpen((prevState) => !prevState);
     setAnchorEl(event.currentTarget);
   };
 
+
   const handleStackClick = (e) => {
     dispatch(setProjectInfo(e));
   };
 
+  
   const handleCloseMenu = () => {
     setAnchorEl(null);
     setFilterOpen(false);
@@ -304,9 +313,9 @@ const handleXML = () => {
           </Stack>
         </Toolbar>
       </AppBar> 
+      {typeof window !== "undefined" && !pathname.includes("/configurator") && <LinearBuffer />}
       
-      {/* {!router.pathname.includes("/configurator") && <LinearBuffer />}    */}
-       </>
+      </>
   );
 };
 

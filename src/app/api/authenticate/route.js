@@ -1,9 +1,6 @@
 export async function POST(request) {
     const { email, password } = await request.json();
 
-    // Logging the incoming request
-    console.log("Received request with data:", { email, password });
-
     const loginData = {
         jsonrpc: "2.0",
         method: "call",
@@ -26,19 +23,28 @@ export async function POST(request) {
             body: JSON.stringify(loginData),
         });
 
-        const data = await response.json();
-          
-        // Log the response from Odoo API
-        console.log("Response from Odoo API:", data);
-        // Check if the response contains the 'result' key
+        
+        console.log('response', response);
+        
+        const data = await response.json(); 
+        const setCookie = response.headers.get("set-cookie");
+
         if (data?.result) {
+            const headers = new Headers({
+                "Content-Type": "application/json",
+            });
+
+            if (setCookie) {
+                headers.append("Set-Cookie", setCookie); 
+            }
+
             return new Response(
                 JSON.stringify({
                     message: "Request succeeded",
                     result: true,
                     response: data,
                 }),
-                { status: 200 }
+                { status: 200, headers }
             );
         } else {
             return new Response(
@@ -51,7 +57,6 @@ export async function POST(request) {
             );
         }
     } catch (error) {
-        // Log error details
         console.error("Error occurred during authentication:", error);
 
         return new Response(

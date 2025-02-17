@@ -22,6 +22,7 @@ import { Dialog, Paper, DialogActions, DialogContent, DialogTitle } from '@mui/m
 import { dialogsData } from '../../../data/models';
 import { houses } from '../../../data/models';
 import DownloadStateOnMount from '../../../HOC/DownloadStateOnMount';
+import CustomizedSteppers from '../Headers/Header';
 
 
 export const FloatingSpeedDial = ({ actions }) => {
@@ -105,6 +106,7 @@ export const RoomShape = () => {
   const handleSpeedDialHover = () => {
     setOpenSpeedDial(true);
   };
+  
   const handleSpeedDialLeave = () => {
     setOpenSpeedDial(false);
   };
@@ -127,7 +129,7 @@ export const RoomShape = () => {
 
   return (
     <div style={{ display: 'flex', height: '100%', width: '100%', overflow:'hidden' }}>
-     <DownloadStateOnMount />
+     
       <div
         style={{ width: '100px', position: 'relative', zIndex: 1000 }}
       >

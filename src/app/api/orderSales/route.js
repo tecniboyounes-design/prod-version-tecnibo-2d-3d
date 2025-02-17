@@ -7,13 +7,14 @@ export async function POST(req) {
         const request = await req.json();
         const items = request.items;
         const orderName = request.orderName;
+        const userData = request.userData;
+        
+        // console.log('Items:', items);
+        // console.log('Order Name:', orderName);
 
-        console.log('Items:', items);
-        console.log('Order Name:', orderName);
-
-        const payload = createOrderPayload(items, orderName);
-        console.log('Created object:', JSON.stringify(payload, null, 2));
-
+        const payload = createOrderPayload(items, orderName, userData);
+        // console.log('Created object:', JSON.stringify(payload, null, 2));
+        
         // Example URL for API (replace with the actual endpoint)
         const url = "http://192.168.30.33:8069/web/dataset/call_kw/sale.order/web_save";
 

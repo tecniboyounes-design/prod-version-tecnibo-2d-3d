@@ -1,5 +1,12 @@
 "use client";
-import React, { useState, useEffect, useMemo, Suspense, lazy } from "react";
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  Suspense,
+  lazy,
+  useRef,
+} from "react";
 import { styled, alpha } from "@mui/material/styles";
 import CardActions from "@mui/material/CardActions";
 import Collapse from "@mui/material/Collapse";
@@ -31,6 +38,8 @@ import {
   Chip,
   Snackbar,
   Alert,
+  CircularProgress,
+  Paper,
 } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -42,7 +51,14 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
-import { Person, AccountBox, ExitToApp, Info, Edit } from "@mui/icons-material";
+import {
+  Person,
+  AccountBox,
+  ExitToApp,
+  Info,
+  Edit,
+  Troubleshoot,
+} from "@mui/icons-material";
 import {
   FileCopy,
   Delete,
@@ -76,10 +92,8 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { generateUniqueProjectNumber } from "../../../data/models";
 import axios from "axios";
-import { Canvas } from "@react-three/fiber";
 import CircularWithValueLabel from "./CircularWithValueLabel";
 import { createProject } from "@/actions/createProjectActions";
-const Points = lazy(() => import("../Points/Points"));
 
 const Projects = () => {
   const [resultOfFilter, setResultOfFilter] = useState([]);
@@ -89,9 +103,15 @@ const Projects = () => {
   const [dateTo, setDateTo] = useState("");
   const [customerNumber, setCustomerNumber] = useState("");
   const [sortOption, setSortOption] = useState("");
+
   const [open, setOpen] = useState(false);
   const [onClose, setOnClose] = useState(false);
+  const [openFetch, setOpenFetch] = useState(false);
+  const [onCloseFetch, setOnCloseFetch] = useState(false);
+
   const projectsData = useSelector((state) => state.jsonData.projects);
+  const user = useSelector((state) => state.jsonData.user);
+
   const navigate = useRouter();
 
   function SearchAppBar({ searchQuery, handleSearchChange, projectsData }) {
@@ -113,8 +133,8 @@ const Projects = () => {
     };
 
     const handleMenuItemClick = () => {
-      handleMenuClose(); 
-      navigate.push("/signin"); 
+      handleMenuClose();
+      navigate.push("/signin");
     };
 
     return (
@@ -209,6 +229,46 @@ const Projects = () => {
                   New Project
                 </NewProjectButton>
 
+                <Tooltip title="Check if the project is already in Odoo">
+                  <Button
+                    onClick={handleOpenFetch}
+                    variant="contained"
+                    sx={{
+                      backgroundColor: "#fff",
+                      color: "#000",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      width: 160,
+                      height: 48,
+                      boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+                      padding: "0 16px",
+                      textTransform: "none",
+                      fontWeight: 500,
+                      "&:hover": {
+                        backgroundColor: "#f5f5f5",
+                      },
+                    }}
+                  >
+                    <Typography
+                      variant="body2"
+                      sx={{ fontSize: "14px", flexGrow: 1 }}
+                    >
+                      Odoo Project
+                    </Typography>
+                    <Box
+                      component="img"
+                      src="odoo.png"
+                      alt="Odoo"
+                      sx={{
+                        height: "80%", // Scales nicely inside the button
+                        width: "auto",
+                        maxWidth: "32px", // Keeps the icon proportional
+                        objectFit: "contain",
+                      }}
+                    />
+                  </Button>
+                </Tooltip>
                 <MenuItem onClick={handleProfileMenuOpen}>
                   <IconButton
                     size="large"
@@ -217,8 +277,22 @@ const Projects = () => {
                     aria-haspopup="true"
                     color="inherit"
                   >
-                    <AccountCircle />
+                    {user ? (
+                      <Avatar
+                        sx={{
+                          bgcolor: "primary.main", 
+                          width: 30,
+                          height: 30, 
+                          fontSize: 14, 
+                        }}
+                      >
+                        {user.name.charAt(0).toUpperCase()}
+                      </Avatar>
+                    ) : (
+                      <AccountCircle />
+                    )}
                   </IconButton>
+
                   <p>Profile</p>
                 </MenuItem>
               </Box>
@@ -246,6 +320,7 @@ const Projects = () => {
             </ListItemIcon>
             Profile
           </MenuItem>
+
           <MenuItem onClick={handleMenuClose}>
             <ListItemIcon>
               <AccountBox fontSize="small" />
@@ -981,6 +1056,14 @@ alt={project.title}
     setOnClose(true);
   };
 
+  const handleOpenFetch = () => {
+    setOpenFetch(true);
+  };
+
+  const handleCloseFetch = () => {
+    setOpenFetch(false);
+  };
+
   return (
     <>
       <ProjectDialog
@@ -990,6 +1073,11 @@ alt={project.title}
           title: "Sample Project",
           description: "Sample project description.",
         }}
+      />
+
+      <SearchForProjectOnOdooDialog
+        open={openFetch}
+        onClose={handleCloseFetch}
       />
 
       <ResponsiveCardGrid />
@@ -1029,144 +1117,280 @@ const ConfirmDeleteDialog = ({
   );
 };
 
-
-
-
-
-
-
 const ProjectDialog = ({ open, onClose }) => {
-    const router = useRouter();
-    const dispatch = useDispatch();
-    const [projectTitle, setProjectTitle] = useState("");
-    const [projectNumber, setProjectNumber] = useState("");
-    const [description, setDescription] = useState("");
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [snackbarMessage, setSnackbarMessage] = useState("");
-    const [snackbarSeverity, setSnackbarSeverity] = useState("success");
-    const user = useSelector((state) => state.jsonData.user);
-    console.log('dialog user', user);
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const [projectTitle, setProjectTitle] = useState("");
+  const [projectNumber, setProjectNumber] = useState("");
+  const [description, setDescription] = useState("");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const user = useSelector((state) => state.jsonData.user);
 
-    useEffect(() => {
-        if (open) {
-            setProjectNumber(generateUniqueProjectNumber());
-        }
-    }, [open]);
+  useEffect(() => {
+    if (open) {
+      setProjectNumber(generateUniqueProjectNumber());
+    }
+  }, [open]);
 
-    const handleCloseSnackbar = () => setSnackbarOpen(false);
+  const handleCloseSnackbar = () => setSnackbarOpen(false);
 
-    const handleSave = async () => {
-        onClose();
-        const now = new Date().toLocaleString("fr-FR");
+  const handleSave = async () => {
+    onClose();
+    const now = new Date().toLocaleString("fr-FR");
 
-        const newProject = {
-            title: projectTitle || "New Project",
-            projectNumber: generateUniqueProjectNumber(),
-            description: description || "No description provided",
-            createdOn: now,
-            changedOn: now,
-            managers: [{ id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" }],
-            status: "temp", 
-            ...user
-        };
-
-        dispatch(pushProject(newProject)); 
-
-        try {
-            const response = await createProject(newProject); 
-            if (response) {
-                setSnackbarMessage("Project saved successfully!");
-                setSnackbarSeverity("success");
-                router.push("/Create-Project"); 
-            } else {
-                throw new Error("Project creation failed.");
-            }
-        } catch (error) {
-            setSnackbarMessage("Failed to save project. Please try again.");
-            setSnackbarSeverity("error");
-        } finally {
-            setSnackbarOpen(true);
-        }
+    const newProject = {
+      id: uuidv4(),
+      title: projectTitle || "New Project",
+      projectNumber: generateUniqueProjectNumber(),
+      description: description || "No description provided",
+      createdOn: now,
+      changedOn: now,
+      managers: [
+        {
+          id: uuidv4(),
+          name: "Otman",
+          avatar: "https://i.pravatar.cc/150?img=3",
+        },
+      ],
+      status: "temp",
+      ...user,
     };
 
-    return (
-        <>
-            <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-                <DialogTitle>
-                    <Grid container spacing={1} alignItems="center">
-                        <Grid item><Info fontSize="large" /></Grid>
-                        <Grid item><Typography variant="h6">Create New Project</Typography></Grid>
-                    </Grid>
-                </DialogTitle>
+    dispatch(pushProject(newProject));
 
-                <DialogContent>
-                    <Box display="flex" flexDirection="column" gap={2}>
-                        <Typography variant="body1">
-                            <IconButton edge="start" color="primary"><Edit /></IconButton>
-                            <strong>Project Title</strong>
-                        </Typography>
-                        <TextField
-                            value={projectTitle}
-                            onChange={(e) => setProjectTitle(e.target.value)}
-                            label="Enter Project Title"
-                            variant="outlined"
-                            size="small"
-                            fullWidth
-                        />
+    try {
+      const response = await createProject(newProject);
+      if (response) {
+        setSnackbarMessage("Project saved successfully!");
+        setSnackbarSeverity("success");
+        router.push("/Create-Project");
+      } else {
+        throw new Error("Project creation failed.");
+      }
+    } catch (error) {
+      setSnackbarMessage("Failed to save project. Please try again.");
+      setSnackbarSeverity("error");
+    } finally {
+      setSnackbarOpen(true);
+    }
+  };
 
-                        <Typography variant="body1">
-                            <IconButton edge="start" color="primary"><Description /></IconButton>
-                            <strong>Project Number</strong>
-                        </Typography>
-                        <Box display="flex" alignItems="center">
-                            <Typography variant="body1" style={{ color: "green", flexGrow: 1 }}>
-                                {projectNumber}
-                            </Typography>
-                            <Tooltip title="Copy Project Number" arrow>
-                                <IconButton onClick={() => navigator.clipboard.writeText(projectNumber)} color="primary">
-                                    <FileCopy />
-                                </IconButton>
-                            </Tooltip>
-                        </Box>
+  return (
+    <>
+      <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+        <DialogTitle>
+          <Grid container spacing={1} alignItems="center">
+            <Grid item>
+              <Info fontSize="large" />
+            </Grid>
+            <Grid item>
+              <Typography variant="h6">Create New Project</Typography>
+            </Grid>
+          </Grid>
+        </DialogTitle>
 
-                        <Typography variant="body1">
-                            <IconButton edge="start" color="primary"><Edit /></IconButton>
-                            <strong>Description</strong>
-                        </Typography>
-                        <TextField
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            label="Enter Project Description"
-                            variant="outlined"
-                            multiline
-                            rows={3}
-                            size="small"
-                            fullWidth
-                        />
-                    </Box>
-                </DialogContent>
+        <DialogContent>
+          <Box display="flex" flexDirection="column" gap={2}>
+            <Typography variant="body1">
+              <IconButton edge="start" color="primary">
+                <Edit />
+              </IconButton>
+              <strong>Project Title</strong>
+            </Typography>
+            <TextField
+              value={projectTitle}
+              onChange={(e) => setProjectTitle(e.target.value)}
+              label="Enter Project Title"
+              variant="outlined"
+              size="small"
+              fullWidth
+            />
 
-                <DialogActions>
-                    <Button onClick={onClose} color="secondary">Cancel</Button>
-                    <Button onClick={handleSave} color="primary" variant="contained">Save</Button>
-                </DialogActions>
-            </Dialog>
+            <Typography variant="body1">
+              <IconButton edge="start" color="primary">
+                <Description />
+              </IconButton>
+              <strong>Project Number</strong>
+            </Typography>
+            <Box display="flex" alignItems="center">
+              <Typography
+                variant="body1"
+                style={{ color: "green", flexGrow: 1 }}
+              >
+                {projectNumber}
+              </Typography>
+              <Tooltip title="Copy Project Number" arrow>
+                <IconButton
+                  onClick={() => navigator.clipboard.writeText(projectNumber)}
+                  color="primary"
+                >
+                  <FileCopy />
+                </IconButton>
+              </Tooltip>
+            </Box>
 
-            <Snackbar open={snackbarOpen} autoHideDuration={4000} onClose={handleCloseSnackbar}>
-                <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} variant="filled">
-                    {snackbarMessage}
-                </Alert>
-            </Snackbar>
-        </>
-    );
+            <Typography variant="body1">
+              <IconButton edge="start" color="primary">
+                <Edit />
+              </IconButton>
+              <strong>Description</strong>
+            </Typography>
+            <TextField
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              label="Enter Project Description"
+              variant="outlined"
+              multiline
+              rows={3}
+              size="small"
+              fullWidth
+            />
+          </Box>
+        </DialogContent>
+
+        <DialogActions>
+          <Button onClick={onClose} color="secondary">
+            Cancel
+          </Button>
+          <Button onClick={handleSave} color="primary" variant="contained">
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={4000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbarSeverity}
+          variant="filled"
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+    </>
+  );
 };
 
+function SearchForProjectOnOdooDialog({ open, onClose }) {
+  const [loading, setLoading] = useState(false);
+  const [projectName, setProjectName] = useState("");
+  const [reference, setReference] = useState("");
+  const [responseData, setResponseData] = useState({});
+  const referenceInputRef = useRef(null); // Reference for the reference input field
 
+  const handleDialogClose = () => {
+    if (onClose) onClose();
+  };
 
+  const handleProjectNameChange = (e) => setProjectName(e.target.value);
+  const handleReferenceChange = (e) => setReference(e.target.value);
 
+  // Handle Enter key press on projectName input
+  const handleProjectNameKeyDown = (e) => {
+    if (e.key === "Enter" && projectName.trim()) {
+      e.preventDefault();
+      fetchProjects();
+      referenceInputRef.current?.focus(); // Move focus to the reference input
+    }
+  };
 
+  async function fetchProjects() {
+    setLoading(true);
+    try {
+      const response = await axios.post("/api/searchProject", {
+        projectName,
+      });
+      setResponseData(response.data);
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+      setResponseData({ error: "Error fetching projects" });
+    } finally {
+      setLoading(false);
+    }
+  }
 
+  return (
+    <Dialog open={open} onClose={onClose}>
+      {/* Top Section with Avatars */}
+      <Box sx={{ display: "flex", alignItems: "center", padding: 2 }}>
+        <img
+          src="/odoo.png"
+          alt="Odoo Logo"
+          style={{ height: 40, marginRight: 8 }}
+        />
+        {responseData?.records?.map((project) => (
+          <Tooltip
+            key={project?.id}
+            title={project?.user_id?.display_name || "Unknown"}
+            placement="bottom-start"
+          >
+            <Avatar sx={{ bgcolor: "primary.main", marginLeft: 1 }}>
+              {project?.user_id?.display_name
+                ? project?.user_id?.display_name[0]
+                : "?"}
+            </Avatar>
+          </Tooltip>
+        ))}
+      </Box>
 
+      <DialogContent>
+        {/* Project Name Input */}
+        <TextField
+          label="Project Name"
+          variant="outlined"
+          value={projectName}
+          onChange={handleProjectNameChange}
+          onKeyDown={handleProjectNameKeyDown} // Handle Enter press
+          fullWidth
+          margin="normal"
+        />
 
+        {/* Reference Input */}
+        <TextField
+          label="Reference"
+          variant="outlined"
+          value={reference}
+          onChange={handleReferenceChange}
+          fullWidth
+          margin="normal"
+          inputRef={referenceInputRef} // Reference for focus
+        />
+
+        {/* Response Data Display */}
+        {responseData.records &&
+          responseData.records.length > 0 &&
+          responseData.records.map((project) => (
+            <Card key={project.id} sx={{ mt: 2, p: 2, position: "relative" }}>
+              <CardContent>
+                <Typography variant="h6" sx={{ pl: 6 }}>
+                  {project.display_name}
+                </Typography>
+                <Typography color="text.secondary" sx={{ pl: 6 }}>
+                  {project.partner_id?.display_name}
+                </Typography>
+                <Typography sx={{ pl: 6 }}>
+                  Tasks: {project.task_count} | Open: {project.open_task_count}{" "}
+                  | Closed: {project.closed_task_count}
+                </Typography>
+              </CardContent>
+            </Card>
+          ))}
+      </DialogContent>
+
+      {/* Dialog Actions */}
+      <DialogActions>
+        <Button onClick={handleDialogClose} color="primary">
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
 
 export default Projects;

@@ -395,7 +395,7 @@ export const projectsData = [
       { id: uuidv4(), name: "Rachid Benjelloun", avatar: "https://i.pravatar.cc/150?img=5" },
       { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" }, 
     ],
-    status: "ordered",
+    status: "temp",
   },
   {
     id: uuidv4(),
@@ -409,7 +409,7 @@ export const projectsData = [
       { id: uuidv4(), name: "Salma Mounir", avatar: "https://i.pravatar.cc/150?img=6" },
       { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" }, 
     ],
-    status: "in working",
+    status: "temp",
   },
   {
     id: uuidv4(),
