@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getSessionId } from '../sessionMiddleware';
 
 export async function POST(req) {
     // Set the URL for the API request
@@ -17,7 +18,9 @@ export async function POST(req) {
     };
 
     // Extract session_id from cookies or assume it's available
-    const session_id = "9568641c9f90e353448665cdd01e308598e1b9c6"; 
+    const session_id = getSessionId(req);
+    console.log('session_id', session_id);
+
 
     try {
         // Send the POST request with credentials (cookies)

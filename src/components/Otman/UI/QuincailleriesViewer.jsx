@@ -33,7 +33,7 @@ const CatalogParser = ({ xmlPath, imagesDir }) => {
         const response = await fetch(xmlPath);
         const xmlText = await response.text();
         const xml = new XMLParser().parseFromString(xmlText);
-        // console.log('xml data:', xml);
+        console.log('xml data:', xml);
         setCatalogData(xml);
       } catch (error) {
         console.error('Error fetching or parsing XML:', error);

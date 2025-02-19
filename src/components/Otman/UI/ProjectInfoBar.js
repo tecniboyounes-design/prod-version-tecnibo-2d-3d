@@ -101,10 +101,12 @@ const handleXML = () => {
                 variant="h6"
                 sx={{ fontWeight: "bold", marginRight: 1 }}
               >
-                {selectedProject?.title}
+                {selectedProject?.title || selectedProject?.display_name}
               </Typography>
-              <StatusChip status={selectedProject?.status} />
+              <StatusChip status={selectedProject?.status || selectedProject?.rating_status  } />
             </Box>
+
+
 
             <Box
               sx={{ display: "flex", flexDirection: "row", marginTop: "2px" }}
@@ -126,16 +128,29 @@ const handleXML = () => {
 
   <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
     <Typography variant="body2" sx={{ fontSize: "0.75rem", fontWeight: "bold" }}>
-      DM Manager{selectedProject?.managers?.length > 1 ? "(s)" : ""}:
+      DM Manager{selectedProject?.managers?.length > 1 ? "(s)" : "" }:
     </Typography>
 
     {/* Display first 3 Avatars, show count if more */}
     <AvatarGroup max={3} sx={{ marginLeft: 1, "& .MuiAvatar-root": { width: 24, height: 24, fontSize: "0.7rem" } }}>
-      {selectedProject?.managers?.slice(0, 3).map((manager, index) => (
-        <Tooltip key={index} title={manager?.name}>
-          <Avatar sx={{ bgcolor: "#1976d2" }}>{manager?.name[0]}</Avatar>
-        </Tooltip>
-      ))}
+     
+    {selectedProject?.managers?.length > 0 ? (
+  selectedProject.managers.slice(0, 3).map((manager, index) => (
+    <Tooltip key={index} title={manager?.name}>
+      <Avatar sx={{ bgcolor: "#1976d2" }}>
+        {manager?.name?.charAt(0)}
+      </Avatar>
+    </Tooltip>
+  ))
+) : (
+  <Tooltip title={selectedProject?.user_id?.display_name}>
+    <Avatar sx={{ bgcolor: "#1976d2" }}>
+      {selectedProject?.user_id?.display_name?.charAt(0)}
+    </Avatar>
+  </Tooltip>
+)}
+
+
     </AvatarGroup>
 
     {/* Show "+X more" if there are more managers */}
@@ -183,10 +198,11 @@ const handleXML = () => {
                     justifyContent: "flex-end",
                   }}
                 >
-                  <Typography variant="body2" sx={{ fontSize: "0.75rem" }}>
-                    <strong>Project Number:</strong>{" "}
-                    {selectedProject?.projectNumber}
-                  </Typography>
+                 <Typography variant="body2" sx={{ fontSize: "0.75rem" }}>
+  <strong>Project Number:</strong>{" "}
+  {selectedProject?.projectNumber || selectedProject?.display_name?.match(/\[(\d+)\]/)?.[1]}
+  </Typography>
+
                 </Box>
               </Paper>
 
@@ -208,11 +224,21 @@ const handleXML = () => {
                   }}
                 >
                   <Typography variant="body2" sx={{ fontSize: "0.75rem" }}>
-                    <strong>Created On:</strong> {selectedProject?.createdOn}
-                  </Typography>
+                    <strong>Created On: </strong> 
+                    {selectedProject?.date || selectedProject?.createdOn  }
+                    </Typography>
                 </Box>
               </Paper>
+
+              
             </Box>
+
+
+
+
+
+
+
           </Box>
 
           <Stack

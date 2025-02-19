@@ -1,24 +1,40 @@
 import axios from "axios";
 import { createPayload } from "./searchProjectPayload";
+import { getSessionId } from "../sessionMiddleware";
+import { getAuthenticationUrl } from "../redirect";
 
 export async function POST(req) {
+
   try {
     // Extract request data
     const request = await req.json();
     console.log("Incoming request:", request);
+    const session_id = getSessionId(req);
+    console.log('session Test', session_id);
 
     const { projectName = "Default Project", reference = null } = request;
 
+     
+    if (!session_id) {
+      console.error("Session ID not found in cookies");
+      return new Response(
+        JSON.stringify({
+          message: "Unauthorized: Missing session ID",
+        }),
+        { status: 401 }
+      );
+    }
+
     // Define the API endpoint
-    const url =
-      "http://192.168.30.33:8069/web/dataset/call_kw/project.project/web_search_read";
+    // const ur =
+    //   "http://192.168.30.33:8069/web/dataset/call_kw/project.project/web_search_read";
 
-    // Example session ID (Replace with an actual session ID or authentication handling)
-    const session_id = "9568641c9f90e353448665cdd01e308598e1b9c6";
-
+          const relativePath = "web/dataset/call_kw/project.project/web_search_read";
+          const url = getAuthenticationUrl(req, relativePath);
+      
     // Create JSON payload
     const jsonPayload = JSON.parse(createPayload(projectName, reference));
-
+    
     // Send POST request to Odoo server
     const response = await axios.post(url, jsonPayload, {
       withCredentials: true,
@@ -55,4 +71,3 @@ export async function POST(req) {
     );
   }
 }
- 

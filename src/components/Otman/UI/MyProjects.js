@@ -40,6 +40,9 @@ import {
   Alert,
   CircularProgress,
   Paper,
+  OutlinedInput,
+  ListItemText,
+  InputAdornment,
 } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -51,6 +54,10 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
+import CloudDoneIcon from "@mui/icons-material/CloudDone";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CloseIcon from "@mui/icons-material/Close";
 import {
   Person,
   AccountBox,
@@ -208,7 +215,7 @@ const Projects = () => {
                   onChange={handleSearchChange}
                   inputProps={{ "aria-label": "search" }}
                   sx={{
-                    color: "#333", // Darker text for better contrast
+                    color: "#333",
                     width: "100%",
                   }}
                 />
@@ -261,14 +268,15 @@ const Projects = () => {
                       src="odoo.png"
                       alt="Odoo"
                       sx={{
-                        height: "80%", // Scales nicely inside the button
+                        height: "80%",
                         width: "auto",
-                        maxWidth: "32px", // Keeps the icon proportional
+                        maxWidth: "32px",
                         objectFit: "contain",
                       }}
                     />
                   </Button>
                 </Tooltip>
+
                 <MenuItem onClick={handleProfileMenuOpen}>
                   <IconButton
                     size="large"
@@ -280,10 +288,10 @@ const Projects = () => {
                     {user ? (
                       <Avatar
                         sx={{
-                          bgcolor: "primary.main", 
+                          bgcolor: "primary.main",
                           width: 30,
-                          height: 30, 
-                          fontSize: 14, 
+                          height: 30,
+                          fontSize: 14,
                         }}
                       >
                         {user.name.charAt(0).toUpperCase()}
@@ -810,24 +818,14 @@ const Projects = () => {
                       </Tooltip>
                     }
                   />
+
                   <CardMedia
                     component="img"
                     height="194"
-                    image={project.image}
+                    image="Room.jpeg"
                     alt={project.title}
                   />
-
-                  {/* <div style={{ height: 194, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-  <Suspense fallback={ <CardMedia
-component="img"
-height="194"
-image={project.image}
-alt={project.title}
-/> }>
-    <Points/>
-  </Suspense>
-</div> */}
-
+                
                   <CardContent>
                     <StatusChip status={project.status} />
 
@@ -1277,120 +1275,270 @@ const ProjectDialog = ({ open, onClose }) => {
   );
 };
 
+
 function SearchForProjectOnOdooDialog({ open, onClose }) {
+  const router = useRouter();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [projectName, setProjectName] = useState("");
-  const [reference, setReference] = useState("");
-  const [responseData, setResponseData] = useState({});
-  const referenceInputRef = useRef(null); // Reference for the reference input field
+  const [projects, setProjects] = useState([]);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [projectPhases, setProjectPhases] = useState([]);
+  const [selectedPhase, setSelectedPhase] = useState("");
 
-  const handleDialogClose = () => {
-    if (onClose) onClose();
-  };
-
+  const handleDialogClose = () => onClose?.();
   const handleProjectNameChange = (e) => setProjectName(e.target.value);
-  const handleReferenceChange = (e) => setReference(e.target.value);
 
-  // Handle Enter key press on projectName input
   const handleProjectNameKeyDown = (e) => {
     if (e.key === "Enter" && projectName.trim()) {
       e.preventDefault();
       fetchProjects();
-      referenceInputRef.current?.focus(); // Move focus to the reference input
     }
   };
 
-  async function fetchProjects() {
+  const fetchProjects = async () => {
     setLoading(true);
     try {
-      const response = await axios.post("/api/searchProject", {
-        projectName,
-      });
-      setResponseData(response.data);
+      const { data } = await axios.post("/api/searchProject", { projectName });
+      setProjects(data.records || []);
+
+      if (data.records?.length === 1) {
+        const project = data.records[0];
+        setSelectedProject(project);
+        await fetchProjectPhases(project.id);
+      } else {
+        setSelectedProject(null);
+        setProjectPhases([]);
+      }
     } catch (error) {
       console.error("Error fetching projects:", error);
-      setResponseData({ error: "Error fetching projects" });
+      setProjects([]);
     } finally {
       setLoading(false);
     }
-  }
+  };
+
+  const fetchProjectPhases = async (projectId) => {
+    try {
+      const { data } = await axios.post("/api/phasesOfProject", { projectId });
+      setProjectPhases(data.records || []);
+    } catch (error) {
+      console.error(`Error fetching phases for project ${projectId}:`, error);
+    }
+  };
+
+  const handleProjectSelect = async (project) => {
+    setSelectedProject(project);
+    setSelectedPhase("");
+    setProjectPhases([]);
+    await fetchProjectPhases(project.id);
+  };
+
+  const handleProceedToProject = () => {
+    if (selectedProject && selectedPhase) {
+      dispatch(pushProject(selectedProject));
+      router.push("/Create-Project");
+    }
+  };
+
+  const handleChange = (event) => {
+    setSelectedPhase(event.target.value);
+  };
 
   return (
-    <Dialog open={open} onClose={onClose}>
-      {/* Top Section with Avatars */}
-      <Box sx={{ display: "flex", alignItems: "center", padding: 2 }}>
-        <img
-          src="/odoo.png"
-          alt="Odoo Logo"
-          style={{ height: 40, marginRight: 8 }}
-        />
-        {responseData?.records?.map((project) => (
-          <Tooltip
-            key={project?.id}
-            title={project?.user_id?.display_name || "Unknown"}
-            placement="bottom-start"
-          >
-            <Avatar sx={{ bgcolor: "primary.main", marginLeft: 1 }}>
-              {project?.user_id?.display_name
-                ? project?.user_id?.display_name[0]
-                : "?"}
-            </Avatar>
-          </Tooltip>
-        ))}
-      </Box>
-
+    <Dialog open={open} onClose={handleDialogClose} fullWidth maxWidth="sm">
       <DialogContent>
-        {/* Project Name Input */}
-        <TextField
-          label="Project Name"
-          variant="outlined"
-          value={projectName}
-          onChange={handleProjectNameChange}
-          onKeyDown={handleProjectNameKeyDown} // Handle Enter press
-          fullWidth
-          margin="normal"
-        />
+        <Box sx={{ display: "flex", alignItems: "center", p: 1 }}>
+          <img
+            src="/odoo.png"
+            alt="Odoo Logo"
+            style={{ height: 40, marginRight: 8 }}
+          />
 
-        {/* Reference Input */}
-        <TextField
-          label="Reference"
-          variant="outlined"
-          value={reference}
-          onChange={handleReferenceChange}
-          fullWidth
-          margin="normal"
-          inputRef={referenceInputRef} // Reference for focus
-        />
+<AvatarGroup total={selectedProject ? 1 : projects.length}>
+  {selectedProject ? (
+    <Tooltip
+      arrow
+      title={selectedProject.user_id?.display_name || "Unknown"}
+    >
+      <Avatar sx={{ bgcolor: "primary.main", ml: 1 }}>
+        {selectedProject.user_id?.display_name?.[0] || "?"}
+      </Avatar>
+    </Tooltip>
+  ) : (
+    projects.map((project) => (
+      <Tooltip
+        arrow
+        key={project.id}
+        title={project.user_id?.display_name || "Unknown"}
+      >
+        <Avatar sx={{ bgcolor: "primary.main", ml: 1 }}>
+          {project.user_id?.display_name?.[0] || "?"}
+        </Avatar>
+      </Tooltip>
+    ))
+  )}
+</AvatarGroup>
 
-        {/* Response Data Display */}
-        {responseData.records &&
-          responseData.records.length > 0 &&
-          responseData.records.map((project) => (
-            <Card key={project.id} sx={{ mt: 2, p: 2, position: "relative" }}>
-              <CardContent>
-                <Typography variant="h6" sx={{ pl: 6 }}>
-                  {project.display_name}
-                </Typography>
-                <Typography color="text.secondary" sx={{ pl: 6 }}>
-                  {project.partner_id?.display_name}
-                </Typography>
-                <Typography sx={{ pl: 6 }}>
-                  Tasks: {project.task_count} | Open: {project.open_task_count}{" "}
-                  | Closed: {project.closed_task_count}
-                </Typography>
-              </CardContent>
-            </Card>
-          ))}
+          {/* Display Date of Creation only if a single project is selected */}
+          {selectedProject && (
+            <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
+              <Tooltip title="Date of Creation this Project" arrow>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    cursor: "pointer",
+                  }}
+                >
+                  <CalendarTodayIcon sx={{ fontSize: 16, mr: 1 }} />
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: selectedProject.date_start
+                        ? "text.primary"
+                        : "text.disabled",
+                    }}
+                  >
+                    {selectedProject.date_start
+                      ? new Intl.DateTimeFormat("en-US", {
+                          weekday: "short",
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          second: "2-digit",
+                          hour12: false,
+                        }).format(new Date(selectedProject.date_start))
+                      : "N/A"}
+                  </Typography>
+                </Box>
+              </Tooltip>
+            </Box>
+          )}
+        </Box>
+
+
+        {/* Search and Select Project */}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+            alignItems: "center",
+          }}
+        >
+        
+          <TextField
+            label="Search by Project Name or Reference Code"
+            variant="outlined"
+            value={projectName}
+            onChange={handleProjectNameChange}
+            onKeyDown={handleProjectNameKeyDown}
+            fullWidth
+            margin="normal"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  {loading ? (
+                    <CircularProgress size={24} color="primary" />
+                  ) : projects.length > 0 ? (
+                    <CloudDoneIcon style={{ color: "green" }} />
+                  ) : null}
+                </InputAdornment>
+              ),
+            }}
+            sx={{ height: "56px" }}
+          />
+
+          {/* If multiple projects, show dropdown for selection */}
+          {projects.length > 1 && (
+            <FormControl fullWidth margin="normal" sx={{ height: "56px" }}>
+              <InputLabel id="select-project-label">
+                Select a Project
+              </InputLabel>
+              <Select
+                labelId="select-project-label"
+                value={selectedProject?.id || ""}
+                onChange={(e) => {
+                  const project = projects.find((p) => p.id === e.target.value);
+                  if (project) handleProjectSelect(project);
+                }}
+                sx={{ height: "56px", width: "90%" }}
+              >
+                {projects.map((project) => (
+                  <MenuItem key={project.id} value={project.id}>
+                    {project.display_name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
+
+          {/* Phases Dropdown */}
+          <FormControl
+            sx={{ m: 1, width: "90%", height: "56px" }}
+            disabled={!selectedProject}
+          >
+            <InputLabel id="select-project-phase-label">
+              Select Project Phase
+            </InputLabel>
+            <Select
+              labelId="select-project-phase-label"
+              id="select-project-phase"
+              value={selectedPhase}
+              onChange={handleChange}
+              input={<OutlinedInput label="Select Project Phase" />}
+            >
+              {projectPhases.map((phase) => (
+                <MenuItem key={phase.id} value={phase.id}>
+                  <ListItemText primary={phase.name} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
+
       </DialogContent>
 
-      {/* Dialog Actions */}
       <DialogActions>
-        <Button onClick={handleDialogClose} color="primary">
+        <Button
+          onClick={handleDialogClose}
+          color="secondary"
+          startIcon={<CloseIcon />}
+        >
           Close
         </Button>
+        <Button
+          onClick={fetchProjects}
+          color="primary"
+          variant="contained"
+          disabled={loading}
+          startIcon={
+            loading ? (
+              <CircularProgress size={24} color="secondary" />
+            ) : (
+              <SearchIcon />
+            )
+          }
+        >
+          {loading ? "" : "Search"}
+        </Button>
+        {selectedProject && selectedPhase && (
+          <Button
+            onClick={handleProceedToProject}
+            color="primary"
+            variant="contained"
+            startIcon={<CheckCircleIcon />}
+          >
+            Proceed
+          </Button>
+        )}
       </DialogActions>
     </Dialog>
   );
 }
+
 
 export default Projects;

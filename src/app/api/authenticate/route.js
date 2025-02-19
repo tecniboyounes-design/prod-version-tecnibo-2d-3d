@@ -1,3 +1,5 @@
+import { getAuthenticationUrl } from "../redirect";
+
 export async function POST(request) {
     const { email, password } = await request.json();
 
@@ -13,7 +15,9 @@ export async function POST(request) {
     };
 
     try {
-        const response = await fetch("http://192.168.30.33:8069/web/session/authenticate", {
+        const relativePath = "web/session/authenticate"; 
+        const authUrl = getAuthenticationUrl(request, relativePath); 
+        const response = await fetch(authUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -23,28 +27,32 @@ export async function POST(request) {
             body: JSON.stringify(loginData),
         });
 
-        
-        console.log('response', response);
-        
-        const data = await response.json(); 
+        const data = await response.json();
         const setCookie = response.headers.get("set-cookie");
+        
+        let sessionId = null;
+        if (setCookie) {
+            const match = setCookie.match(/session_id=([^;]+)/);
+            if (match) {
+                sessionId = match[1]; 
+            }
+        }
 
         if (data?.result) {
-            const headers = new Headers({
-                "Content-Type": "application/json",
-            });
-
-            if (setCookie) {
-                headers.append("Set-Cookie", setCookie); 
-            }
-
             return new Response(
                 JSON.stringify({
                     message: "Request succeeded",
                     result: true,
+                    session_id: sessionId,  
                     response: data,
                 }),
-                { status: 200, headers }
+                {
+                    status: 200,
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Set-Cookie": `session_id=${sessionId}; Path=/; HttpOnly; Secure; SameSite=Strict`,
+                    },
+                }
             );
         } else {
             return new Response(

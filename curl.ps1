@@ -9,11 +9,12 @@ $body = @{
     method  = "call"
     params  = @{
         db       = "tecnibo17_test"
-        login    = "y.attaoui@tecnibo.com"  # Change this to your email
-        password = "Y5EhmP5BX-r9Fru"        # Change this to your password
+        login    = "y.attaoui@tecnibo.com" 
+        password = "Y5EhmP5BX-r9Fru"        
     }
     id = 1
-} | ConvertTo-Json -Depth 10  # Convert body to JSON format
+} | ConvertTo-Json -Depth 10 
+ # Convert body to JSON format
 
 # Send the request
 $response = Invoke-WebRequest -Uri "http://192.168.30.33:8069/web/session/authenticate" -Method POST -Headers $headers -Body $body
@@ -30,6 +31,7 @@ Write-Output "`n====== Response End ======`n"
 $timestamp = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
 $logPath = "C:\Users\Huawei\Desktop\response_$timestamp.json"
 $prettyJson | Out-File -FilePath $logPath
+
 
 # Notify user where the log is saved
 Write-Output "`n📌 Response saved to: $logPath"
@@ -72,3 +74,8 @@ $response = Invoke-WebRequest -Uri "http://192.168.30.33:8069/web/dataset/call_k
 
 # Display the response to check if the project was created successfully
 $response.Content
+
+
+
+
+Q-AzQfijP28bV79

@@ -262,7 +262,7 @@ const initialState = {
       managers: [
         { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" },
       ],
-      status: "in working",
+      status: "temp",
       articles:[],
 
     },

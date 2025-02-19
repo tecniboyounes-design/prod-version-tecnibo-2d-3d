@@ -8,6 +8,8 @@ import { setUser } from "@/store";
 import { ArrowBack } from "@mui/icons-material";
 import { useRouter } from 'next/navigation'; 
 import Link from 'next/link';
+import Cookies from "js-cookie";
+
 
 const Background = styled(Box)({
     // background: 'linear-gradient(to right, #f0f0f0, #ffffff)',
@@ -30,44 +32,60 @@ const OdooLogin = () => {
     
     const validateEmail = (email) => email.includes("tecnibo");
 
-    const sendRequest = async () => {
-        if (isSending) return;
 
-        if (!validateEmail(email)) {
-            setErrorMessage("Invalid email. It should contain 'tecnibo'.");
-            return;
-        }
+const sendRequest = async () => {
+    if (isSending) return;
 
-        setIsSending(true);
-        setRequestResult(null);
-        setErrorMessage("");
+    if (!validateEmail(email)) {
+        setErrorMessage("Invalid email. It should contain 'tecnibo'.");
+        return;
+    }
 
-        try {
-            const response = await fetch("/api/authenticate", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password }),
-            });
-            console.log('response', response);
+    setIsSending(true);
+    setRequestResult(null);
+    setErrorMessage("");
 
-            const data = await response.json();
-            // console.log('data', data);
+    try {
+        const response = await fetch("/api/authenticate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+        console.log("data", data);
+
+        if (data.result) {
+            // Store session_id in cookies
+            Cookies.set("session_id", data.session_id, { expires: 7, secure: true, sameSite: "Strict" });
+
+            // Dispatch user data to Redux
             dispatch(setUser(data.response.result));
-            setRequestResult(data.result ? "Login Successful" : "Login Failed");
-            router.push('/');
-        } catch (error) {
-            console.error("Error:", error);
-            setRequestResult("Request failed. Check console for details.");
-        } finally {
-            setIsSending(false);
+
+            // Redirect after login
+            router.push("/");
+            setRequestResult("Login Successful");
+        } else {
+            setRequestResult("Login Failed");
         }
-    };
+    } catch (error) {
+        console.error("Error:", error);
+        setRequestResult("Request failed. Check console for details.");
+    } finally {
+        setIsSending(false);
+    }
+};
+
+
+
 
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
             sendRequest();
         }
     };
+    
+
 
     return (
         <Background>

@@ -100,7 +100,7 @@ export async function POST(req) {
         if (data.prices) {
             // Process the data and generate the XML here
             const xmlData = generateXML(exampleData);
-
+            
             // Set the appropriate headers and return the response
             return new NextResponse(xmlData, {
                 status: 200,

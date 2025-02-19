@@ -1,20 +1,17 @@
-Our Room Planner system makes it easier than ever to manage projects, 
-integrating smoothly with our CRM to give teams a real-time, 
-bird’s-eye view of everything happening with each project. 
-From the moment a project is created, through client orders and all the way to production, 
-the system keeps everyone on the same page. Teams can quickly filter, search, and update project details, 
-which boosts communication and transparency across departments.
+Our Room Planner system integrates with our CRM, offering teams a real-time, bird’s-eye view of projects from creation to production. 
+It streamlines communication by allowing teams to quickly filter, search, and update project details.
 
-Clients are able to interact with their projects in 3D, customizing doors, 
-walls, and furniture. Any changes they make are instantly reflected in the system, 
-giving them the most up-to-date information. Once an order is placed, 
-sales and logistics teams see it immediately, removing any delays and confusion.
 
-By eliminating double data entry and integrating directly with Odoo, 
-the system gives clients the ability to track their orders, while teams gain better control over the entire process. 
-The entire flow from project concept to production is streamlined, improving operational efficiency and reducing errors along the way.
+Clients can interact with their projects in 3D, customizing doors, walls, and furniture. 
+Changes are instantly reflected, ensuring up-to-date information. Once an order is placed, 
+sales and logistics teams are notified immediately, removing delays.
 
-Everything happens within one centralized platform, so all stakeholders are aligned, 
-informed, and able to make better decisions faster. 
-It’s a seamless experience that simplifies the complexities of managing projects, 
-ensuring everyone’s on the same page and that nothing falls through the cracks
+
+By eliminating double data entry and integrating with Odoo, the system enhances order tracking and gives teams better control. 
+The process from concept to production is streamlined, boosting efficiency and reducing errors.
+
+
+Everything is managed on one platform, ensuring all stakeholders stay aligned and informed, enabling faster, more informed decision-making.
+ 
+ 
+https://miro.com/welcomeonboard/Uy9LMkpmZjhMNWcxR0J4VlBpVnlySFdoQ0NwUzBEME9YQ3M1d3YweVhaSTR0VTZBZmNUdERKT2ZpYmd4RisrVXZMcU5hUm5MVytkSzNYdFdjQmc1ZnBuR1ZvZjgwMnphUlZNM25PZHMzclNlZHNkSVZCcnAvbnQ5eVJJU0QxRlJBd044SHFHaVlWYWk0d3NxeHNmeG9BPT0hdjE=?share_link_id=419612348212

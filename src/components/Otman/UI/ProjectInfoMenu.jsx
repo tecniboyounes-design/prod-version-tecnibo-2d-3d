@@ -1,10 +1,12 @@
 "use client"
 
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Accordion,
+import {
+  Accordion,
   AccordionSummary,
   AccordionDetails,
-  Typography, IconButton, Box, Tooltip, Button } from '@mui/material';
+  Typography, IconButton, Box, Tooltip, Button
+} from '@mui/material';
 import React, { useMemo, useRef, useState } from "react";
 import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,10 +18,11 @@ import { Delete } from '@mui/icons-material';
 export const ProjectInfoMenu = ({ menuWidth, isDragging }) => {
   const [expanded, setExpanded] = React.useState(false);
   const dispatch = useDispatch();
-  const { title, projectNumber, createdOn, changedOn, managers } = useSelector((state)=> state.jsonData.project);
+  const selectedProject = useSelector((state) => state.jsonData.project);
   const user = useSelector((state) => state.jsonData.user);
-  
-  console.log('user', user); 
+
+  console.log('user', user);
+  console.log('user', selectedProject);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -68,7 +71,7 @@ export const ProjectInfoMenu = ({ menuWidth, isDragging }) => {
         </IconButton>
       </Box>
 
-     <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+      <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1bh-content" id="panel1bh-header">
           <Typography component="span" sx={{ width: '33%', flexShrink: 0 }}>
             Header Data
@@ -76,13 +79,17 @@ export const ProjectInfoMenu = ({ menuWidth, isDragging }) => {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            <strong>Project Name:</strong> {title}<br />
-            <strong>Project No.:</strong> {projectNumber}<br />
-            <strong>Creation Date:</strong> {createdOn}<br />
-            <strong>Change Date:</strong> {changedOn}<br />
-            <strong>Delivery Date:</strong> TBD {/* You can add a delivery date if available */}
+            <strong>Project Name:</strong> {selectedProject?.title || selectedProject?.display_name}<br />
+            <strong>Project No.:</strong> {
+              selectedProject?.display_name?.match(/\[(\d+)\]/)?.[1] || selectedProject.id
+            }<br />
+            <strong>Creation Date:</strong> {selectedProject?.createdOn || selectedProject.date_start}<br />
+            <strong>Change Date:</strong> {selectedProject?.changedOn || selectedProject.last_update?.status}<br />
+            <strong>Delivery Date:</strong> {selectedProject?.remaining_hours}
           </Typography>
         </AccordionDetails>
+
+
       </Accordion>
 
       {/* Accordion for Editor Info */}
@@ -93,12 +100,20 @@ export const ProjectInfoMenu = ({ menuWidth, isDragging }) => {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          {managers && managers.map((manager, index) => (
-            <Typography key={manager.id}>
-              <strong>Name:</strong> {manager.name}<br />
-              <strong>Role:</strong> {manager.role || "Manager"} {/* You can add roles or other fields */}
+          {selectedProject.manager && (managers?.length > 0 ? (
+            managers.map((manager, index) => (
+              <Typography key={manager.id}>
+                <strong>Name:</strong> {manager.name}<br />
+                <strong>Role:</strong> {manager.role || "Manager"}
+              </Typography>
+            ))
+          ) : (
+            <Typography>
+              <strong>Name:</strong> {selectedProject.display_name || "No manager available"}<br />
+              <strong>Role:</strong> {"Manager"}
             </Typography>
           ))}
+
         </AccordionDetails>
       </Accordion>
 
@@ -164,7 +179,7 @@ export const PricesAccordion = () => {
     items.forEach((item) => {
       const itemPrice = item?.attributes?.price || 0;
       const quantity = item?.quantity || 1; // Assume quantity is available in the item
-      
+
       totalArticlePrice += itemPrice * quantity;
       const itemVAT = itemPrice * VAT_RATE * quantity;
       totalVAT += itemVAT;
@@ -230,7 +245,7 @@ export const PricesAccordion = () => {
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
-            <strong>Purchase:</strong> €{totalPurchase.toFixed(2)}<br />  
+            <strong>Purchase:</strong> €{totalPurchase.toFixed(2)}<br />
             {/* Price purchase */}
             <strong>Article price:</strong> €{totalArticlePrice.toFixed(2)}<br />
             <strong>Additional VAT:</strong> 19%<br />
@@ -263,7 +278,7 @@ export const FileUploadAccordion = () => {
     if (file) {
       const newFile = {
         name: file.name,
-        url: URL.createObjectURL(file), 
+        url: URL.createObjectURL(file),
       };
       setUploadedFiles((prevFiles) => [...prevFiles, newFile]); // Add new file to state
     }
@@ -330,16 +345,16 @@ export const FileUploadAccordion = () => {
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-       
 
 
- <Uploader uploadedFiles={uploadedFiles} handleDelete={handleDelete} />
+
+          <Uploader uploadedFiles={uploadedFiles} handleDelete={handleDelete} />
 
 
           <Box
             sx={{
               display: 'flex',
-              zIndex:4,
+              zIndex: 4,
               flexDirection: 'column',
               gap: '16px',
               border: '2px dashed',
@@ -357,24 +372,24 @@ export const FileUploadAccordion = () => {
               minHeight: '150px',
               position: 'relative',
             }}
-            
-            onClick={handleBoxClick}     
->
 
-  
+            onClick={handleBoxClick}
+          >
+
+
             {/* Hidden file input */}
-          <input
-        type="file"
-        ref={fileInputRef}
-        style={{ display: 'none'}}
-        onChange={handleFileChange}
-      />
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: 'none' }}
+              onChange={handleFileChange}
+            />
 
 
 
-   
-     
-        <AddIcon sx={{ fontSize: '60px', color: 'text.secondary', position: 'absolute' }} />
+
+
+            <AddIcon sx={{ fontSize: '60px', color: 'text.secondary', position: 'absolute' }} />
 
             {/* "New Upload" Text */}
             <Typography
@@ -393,9 +408,9 @@ export const FileUploadAccordion = () => {
             <Typography
               variant="body2"
               sx={{
-                marginTop: '48px', 
+                marginTop: '48px',
                 position: 'relative',
-                zIndex: 2, 
+                zIndex: 2,
               }}
             >
 
@@ -404,7 +419,7 @@ export const FileUploadAccordion = () => {
             </Typography>
           </Box>
 
-    
+
 
         </AccordionDetails>
       </Accordion>
@@ -475,30 +490,30 @@ export const Uploader = ({ uploadedFiles, handleDelete }) => {
     textAlign: 'center',
     marginBottom: '24px',
     backgroundColor: '#fff',
-    cursor:'pointer',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', 
+    cursor: 'pointer',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
     transition: 'transform 0.5s ease, box-shadow 0.2s ease',
     '&:hover': {
-      boxShadow: '0 6px 16px rgba(0, 0, 0, 0.15)', 
+      boxShadow: '0 6px 16px rgba(0, 0, 0, 0.15)',
       transform: 'scale(1.02)',
     },
   }
 
   return (
     <Box
-    sx={{
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-      gap: '16px',
-      padding: '16px',
-    }}
-  >
-      {uploadedFiles.map((file, index) => (
-      <Box
-      key={index}
-      sx={uploadedFilesStyle}
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+        gap: '16px',
+        padding: '16px',
+      }}
     >
-    
+      {uploadedFiles.map((file, index) => (
+        <Box
+          key={index}
+          sx={uploadedFilesStyle}
+        >
+
           {/* Tooltip for delete button */}
           <Tooltip title="Delete this file" arrow>
             <IconButton
