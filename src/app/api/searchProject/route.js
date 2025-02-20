@@ -10,7 +10,7 @@ export async function POST(req) {
     const request = await req.json();
     console.log("Incoming request:", request);
     const session_id = getSessionId(req);
-    console.log('session Test', session_id);
+    // console.log('session Test', session_id);
 
     const { projectName = "Default Project", reference = null } = request;
 
@@ -24,11 +24,9 @@ export async function POST(req) {
         { status: 401 }
       );
     }
-
-    // Define the API endpoint
-    // const ur =
-    //   "http://192.168.30.33:8069/web/dataset/call_kw/project.project/web_search_read";
-
+   
+     
+          
           const relativePath = "web/dataset/call_kw/project.project/web_search_read";
           const url = getAuthenticationUrl(req, relativePath);
       
@@ -44,6 +42,8 @@ export async function POST(req) {
         Cookie: `session_id=${session_id}; frontend_lang=fr_BE; tz=Africa/Casablanca`,
       },
     });
+
+    // 
 
     console.log("Response from Odoo server:", response.data);
 

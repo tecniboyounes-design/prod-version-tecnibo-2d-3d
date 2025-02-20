@@ -16,7 +16,6 @@ import { Canvas, DirectionalLight, useLoader, useFrame } from '@react-three/fibe
 import { Html, OrbitControls } from '@react-three/drei';
 import { TextureLoader } from 'three';
 import { Suspense } from 'react';
-import { Perf } from 'r3f-perf';
 import * as THREE from "three";
 import CircularWithValueLabel from './CircularWithValueLabel';
 import { useRouter } from "next/navigation";

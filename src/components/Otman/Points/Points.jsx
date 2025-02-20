@@ -3,7 +3,6 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Canvas, useThree } from '@react-three/fiber';
 import { Html, OrbitControls } from '@react-three/drei';
-import { Perf } from 'r3f-perf';
 import Walls from '../Walls/Walls';
 import {setCurrentConfig, setIs2DView, setIsDrawing, updateCorner } from '../../../store';
 import useDrawWall from '../../../HOC/useDrawWall';
