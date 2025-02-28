@@ -64,7 +64,7 @@ export async function POST(req) {
     };
 
     const session_id = getSessionId(req);
-    console.log("session_id", session_id);
+    // console.log("session_id", session_id);
 
     const response = await axios.post(url, payload, {
       withCredentials: true,

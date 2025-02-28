@@ -1,14 +1,9 @@
-
-export function createPayload(projectName = "Documentation know system", reference = null) {
+export function createPayload() {
     const domain = [
         "|", 
-        ["name", "ilike", projectName],  
-        ["code", "ilike", projectName]
+        ["name", "ilike", ""],  // Empty string will fetch all project names
+        ["code", "ilike", ""],  // Empty string will fetch all project codes
     ];
-
-    if (reference) {
-        domain.push("|", ["name", "ilike", reference], ["code", "ilike", reference]);
-    }
 
     const payload = {
         id: 71,
@@ -93,4 +88,3 @@ export function createPayload(projectName = "Documentation know system", referen
 
     return JSON.stringify(payload);
 }
-

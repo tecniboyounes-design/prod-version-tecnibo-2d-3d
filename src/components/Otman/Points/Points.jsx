@@ -16,7 +16,7 @@ const Points = () => {
   const corners = useSelector((state) => state.jsonData.floorplanner.corners);
   const rooms = useSelector((state) => state.jsonData.floorplanner.rooms);
   const walls = useSelector((state) => state.jsonData.floorplanner.walls);
-  const items = useSelector((state) => state.jsonData.items);
+  const items = useSelector((state) => state.jsonData.floorplanner.items);
   const isDrawMode = useSelector((state) => state.jsonData.isDrawing);
   const is2DView = useSelector((state) => state.jsonData.is2DView);
   const [draggedPoint, setDraggedPoint] = useState(false);
@@ -149,7 +149,6 @@ const handleEmptySpaceClick = (e) => {
 }
 
 
-const isPerfOpen = true;
 
 
 
@@ -165,9 +164,7 @@ const isPerfOpen = true;
   >
 
 
-  {/* {isPerfOpen && <Perf position="bottom-right" /> } */}
-  
-  
+
   <GLTFDoor /> 
 
  {is2DView ? <CameraController2D /> : 

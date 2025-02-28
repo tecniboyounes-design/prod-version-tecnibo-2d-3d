@@ -4,17 +4,12 @@ import { getSessionId } from "../sessionMiddleware";
 import { getAuthenticationUrl } from "../redirect";
 
 export async function POST(req) {
-
   try {
     // Extract request data
     const request = await req.json();
     console.log("Incoming request:", request);
     const session_id = getSessionId(req);
-    // console.log('session Test', session_id);
 
-    const { projectName = "Default Project", reference = null } = request;
-
-     
     if (!session_id) {
       console.error("Session ID not found in cookies");
       return new Response(
@@ -24,15 +19,14 @@ export async function POST(req) {
         { status: 401 }
       );
     }
-   
-     
-          
-          const relativePath = "web/dataset/call_kw/project.project/web_search_read";
-          const url = getAuthenticationUrl(req, relativePath);
-      
-    // Create JSON payload
-    const jsonPayload = JSON.parse(createPayload(projectName, reference));
     
+    const relativePath = "web/dataset/call_kw/project.project/web_search_read";
+    const url = getAuthenticationUrl(req, relativePath);
+
+    // Instead of extracting projectName and reference, we'll call createPayload without them
+    // Or, set them to empty if not present
+    const jsonPayload = JSON.parse(createPayload()); // Fetch all projects
+
     // Send POST request to Odoo server
     const response = await axios.post(url, jsonPayload, {
       withCredentials: true,
@@ -42,8 +36,6 @@ export async function POST(req) {
         Cookie: `session_id=${session_id}; frontend_lang=fr_BE; tz=Africa/Casablanca`,
       },
     });
-
-    // 
 
     console.log("Response from Odoo server:", response.data);
 

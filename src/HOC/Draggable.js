@@ -12,7 +12,7 @@ const withDraggable = (WrappedComponent) => {
     const dispatch = useDispatch();
 
     const handleMouseDown = (e) => {
-      // console.log('Mouse Down: Starting drag');
+      console.log('Mouse Down: Starting drag');
       dispatch(setDragging(true)); 
       dispatch(setLoading(true)); 
       e.stopPropagation();
@@ -23,7 +23,7 @@ const withDraggable = (WrappedComponent) => {
       const offsetY = e.clientY - (position.y ?? e.clientY);
       offsetRef.current = { offsetX, offsetY };
 
-      // console.log('Mouse Down: Calculated offsets', offsetRef.current);
+      console.log('Mouse Down: Calculated offsets', offsetRef.current);
 
       // Add global event listeners for drag tracking
       window.addEventListener('mousemove', handleMouseMove);
@@ -36,19 +36,19 @@ const withDraggable = (WrappedComponent) => {
         return;
       }
 
-      // console.log('Mouse Move: Dragging in progress');
+      console.log('Mouse Move: Dragging in progress');
       const { offsetX, offsetY } = offsetRef.current;
       const newPosition = {
         x: e.clientX - offsetX,
         y: e.clientY - offsetY,
       };
-      // console.log('Mouse Move: New position', newPosition);
+      console.log('Mouse Move: New position', newPosition);
 
       setPosition(newPosition);
     };
 
     const handleMouseUp = () => {
-      // console.log('Mouse Up: Dragging ended');
+      console.log('Mouse Up: Dragging ended');
       dispatch(setDragging(false)); 
       dispatch(setLoading(false));  
       setIsDraggingState(false);
@@ -60,9 +60,9 @@ const withDraggable = (WrappedComponent) => {
     };
 
     const handleDragStart = (e) => {
-      // console.log(`Drag Start: ${id}`, props.item);
+      console.log(`Drag Start: ${id}`, props.item);
       if (!props.item) {
-        // console.error("No item to drag!");
+        console.error("No item to drag!");
         return;
       }
       e.dataTransfer.setData("application/item", JSON.stringify(props.item));

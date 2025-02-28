@@ -18,6 +18,7 @@ import { Html } from '@react-three/drei';
 import CircularWithValueLabel from './CircularWithValueLabel';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useFetchProjectById } from '@/supabaseClient';
 
  const MainComponent = ({ currentView, menuWidth, isDragging, openedItemGrid }) => {
   const dispatch = useDispatch();
@@ -54,7 +55,8 @@ import Link from 'next/link';
             dpr={[1, 2]} // Adaptive resolution
             performance={{ min: 0.1, max: 1 }} // Adjust performance settings
             gl={{ antialias: true }}
-            frameloop="demand" // Renders only when necessary
+            frameloop="demand" 
+            // Renders only when necessary
           >
             <Suspense fallback={<Html center><CircularWithValueLabel /></Html>}>
               <PreviewArticle />
@@ -128,20 +130,24 @@ const NewProject = () => {
   const dispatch = useDispatch();
   const [droppedData, setDroppedData] = useState([]);
   const projectInfo = useSelector((state) => state.jsonData.projectInfo);
-  const items = useSelector((state) => state.jsonData.items);
+  const items = useSelector((state) => state.jsonData.floorplanner.items);
+  // console.log('items', items);
+  const fetchProjectById = useFetchProjectById();
 
-  const resizePanelRef = useRef();
-
-
+  useEffect(() => {
+    fetchProjectById();
+  }, []); // Runs only on mount
+  
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-
+  
   const handleClose = () => {
     setAnchorEl(null);
   };
+
 
 
 
@@ -155,7 +161,7 @@ const NewProject = () => {
       } catch (jsonError) {
         data = { label: droppedText };
       }
-
+      
       // Add the new item to the array of dropped data
       setDroppedData((prevData) => [...prevData, data]);
       console.log("Dropped data:", data);

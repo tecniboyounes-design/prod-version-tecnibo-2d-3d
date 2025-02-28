@@ -8,7 +8,8 @@ export const generatePDF = async (data) => {
   const { orderNo, head, builderList } = data;
 
   // Static header and footer information
-  const companyInfo = "imos AG • Planckstraße 24 • D-32052 Herford • +49 (0) 5221.976-0 • info@imos3d.com • www.imos3d.com";
+  const companyInfo = 
+  "Tecnibo Lux • 68 Rue de Koerich • Steinfort 8437 • Luxembourg • +352 26 10 80 77 • info@tecnibo.com";  
   
   // Construct HTML content for the PDF
   const html = `
@@ -19,53 +20,89 @@ export const generatePDF = async (data) => {
         <title>Project PDF</title>
         <style>
           body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
+            font-family: 'Helvetica', Arial, sans-serif;
+            padding: 15px; /* Increased padding */
             margin: 0;
             color: #333;
-          }
-          h1, h2 {
-            color: #007BFF;
+            line-height: 1.5; /* Adjusted line height for better readability */
+            background-color: #f9f9f9;
           }
           h1 {
-            font-size: 24px;
-            margin-bottom: 10px;
+            font-size: 22px; /* Slightly increased font size */
+            margin-bottom: 8px; /* Increased margin */
+            padding-bottom: 6px;
           }
           h2 {
-            font-size: 18px;
-            margin-top: 20px;
-            margin-bottom: 10px;
+            font-size: 18px; /* Slightly increased font size */
+            margin-top: 15px; /* Kept margin */
+            margin-bottom: 8px; /* Increased margin */
+           border-bottom: 1px solid #0056b3;
+
+          }
+          .header {
+            display: flex;
+            align-items: center; /* Vertically centers items */
+            justify-content: space-between; /* Aligns items to left and right */
+            margin-bottom: 20px; /* Spacing below header */
+          }
+          .logo {
+            width: 50%; /* Set a fixed width for the logo */
+            height: auto; /* Maintain aspect ratio */
           }
           table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            margin-top: 8px; /* Increased margin */
+            background-color: #fff;
           }
           table, th, td {
             border: 1px solid #ddd;
           }
           th, td {
-            padding: 8px;
+            padding: 8px; /* Increased padding */
             text-align: left;
+            font-size: 14px; /* Increased font size */
           }
           th {
             background-color: #f2f2f2;
           }
+          tr:hover {
+            background-color: #f1f1f1;
+          }
           .footer {
-            margin-top: 20px;
-            font-size: 12px;
+            margin-top: 20px; /* Kept margin */
+            font-size: 12px; /* Slightly increased font size */
             color: #666;
+            padding: 8px; /* Increased padding */
+            border-top: 1px solid #ddd;
+            background-color: #e9ecef;
+            text-align: center;
           }
           .total {
             font-weight: bold;
-            font-size: 16px;
+            font-size: 16px; /* Kept font size */
+            background-color: #e2f0d9;
+          }
+          .head-data {
+            margin-left: 20px; /* Spacing between image and text */
           }
         </style>
       </head>
       <body>
-        <h1>Project: ${head.textShort}</h1>
-        <h2>Project Number: ${orderNo} Create Date: ${head.createDate}</h2>
+      <h2>Project Number: ${orderNo} | Create Date: ${head.createDate}</h2>
+
+        <div class="header">
+          <img class="logo" src="https://tecnibo-2d-3d.vercel.app/Room.jpeg" alt="Company Logo" />
+          <div class="head-data">
+            <h2>Head Data</h2>
+            <p>Company Name: ${head.customer || 'N/A'}</p>
+            <p>Email: ${head.client}</p>
+            <p>Description: ${head.textLong}</p>
+          </div>
+        </div>
         
+        <h1>Project: ${head.textShort}</h1>
+      
         <h2>Article List</h2>
         <table>
           <tr>
@@ -86,12 +123,7 @@ export const generatePDF = async (data) => {
             </tr>
           `).join('')}
         </table>
-
-        <h2>Head Data</h2>
-        <p>Company Name: ${head.customer || 'N/A'}</p>
-        <p>Email: ${head.client}</p>
-        <p>Description: ${head.textLong}</p>
-
+  
         <h2>Costs</h2>
         <table>
           <tr>
@@ -115,11 +147,15 @@ export const generatePDF = async (data) => {
             <td>€ ${head.orderPriceInfo5}</td>
           </tr>
         </table>
-
+  
         <div class="footer">${companyInfo}</div>
       </body>
     </html>
   `;
+  
+
+  
+  
 
   await page.setContent(html);
   const pdfBuffer = await page.pdf({ format: 'A4', printBackground: true });

@@ -15,9 +15,13 @@ import {
 import { GradientButtonWithTooltip } from './Button';
 import { AddCircle, ArrowBack, BuildCircle } from '@mui/icons-material';
 import { gridContainerStyle } from '@/app/styles/Themes';
-import { useDispatch } from 'react-redux';
-import { pushArticles, updatePreview } from '@/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { getRandomPrice, pushArticles, updatePreview } from '@/store';
 import CircularWithValueLabel from './CircularWithValueLabel';
+import withDraggable from '@/HOC/Draggable';
+import { v4 as uuidv4 } from "uuid";
+import { manageFloorplanInDatabase } from '@/supabaseClient';
+
 
 const CatalogParser = ({ xmlPath, imagesDir }) => {
   const [catalogData, setCatalogData] = useState(null);
@@ -26,8 +30,10 @@ const CatalogParser = ({ xmlPath, imagesDir }) => {
   const [nestedCategories, setNestedCategories] = useState(null);
   const [selectedCategoryInfo, setSelectedCategoryInfo] = useState({ name: '', label: '' });
   const dispatch = useDispatch();
-
+  const { floorplan_id } = useSelector((state) => state.jsonData.project);
   useEffect(() => {
+    console.log('selected', floorplan_id);
+
     const fetchXMLData = async () => {
       try {
         const response = await fetch(xmlPath);
@@ -43,9 +49,11 @@ const CatalogParser = ({ xmlPath, imagesDir }) => {
     fetchXMLData();
   }, []);
 
+
   if (!catalogData) {
     return <CircularWithValueLabel /> ;
   }
+
 
   const handleCategoryClick = (objects, categoryInfo) => {
     console.log('category info:', categoryInfo);
@@ -55,11 +63,12 @@ const CatalogParser = ({ xmlPath, imagesDir }) => {
     setSelectedCategoryInfo(categoryInfo);
   };
   
-  const handleObjectClick = (obj) => {
+const handleObjectClick = (obj) => {
     // console.log('object', obj);
     setSelectedObject(obj);
     setNestedCategories(obj);
   };
+
 
   const handleNestedObjectClick = (child) => {
     // console.log('child selected:', child);
@@ -77,17 +86,16 @@ const CatalogParser = ({ xmlPath, imagesDir }) => {
   };
 
 
-  const handleAdd = (item) => {
-    // if (item.children && item.children.length > 0) {
-    //   console.log('Item has children, not dispatching:', item);
-    //   return;
-    // }
-  
-    dispatch(pushArticles(item));
-    console.log('Adding item:', item);
+  const handleAdd = async (item) => {
+      try {
+        dispatch(pushArticles(item));
+      await manageFloorplanInDatabase('add', floorplan_id, 'items', item);
+    } catch (error) {
+      console.error("Failed to add item to the database:", error);
+    }
   };
   
-
+  
 
   
   const handleBuild = (item) => {
@@ -347,6 +355,7 @@ const CatalogParser = ({ xmlPath, imagesDir }) => {
   const categories = catalogData.getElementsByTagName('category');
 
   return (
+    
     <Box sx={{ width: '100%', height: '100%', overflowY: 'auto', maxHeight: '80vh', padding: 2 }}>
 {!selectedObject ? (
   <>
@@ -392,6 +401,7 @@ const CatalogParser = ({ xmlPath, imagesDir }) => {
     )}
   </>
 ) : (
+
   <div name="Third/Fourth Layer - Selected Object" >
     {renderSelectedObject()}
   </div>
@@ -400,5 +410,6 @@ const CatalogParser = ({ xmlPath, imagesDir }) => {
     </Box>
   );
 };
+
 
 export default CatalogParser;

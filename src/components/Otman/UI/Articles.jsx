@@ -26,16 +26,11 @@ import QuincailleriesViewer from './QuincailleriesViewer';
 import { AddCircle, BuildCircle } from '@mui/icons-material';
 import { articles3D } from '../../../data/models';
 import { pushArticles } from '@/store';
-
-
-const DraggableCard = withDraggable(Card);
-
-
-
+import { manageFloorplanInDatabase } from '@/supabaseClient';
 
 const ItemStoreGrid = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState('Kitchen');
+  const [activeCategory, setActiveCategory] = useState('Door');
   const categories = ['3D Articles', 'Room', 'Door', 'Kitchen', 'Office Catalog'];
 
   const filteredItems = useMemo(() => {
@@ -155,16 +150,23 @@ const ItemStoreGrid = () => {
 
 export const DraggableItemGrid = () => {
 const dispatch = useDispatch();
+  const { floorplan_id } = useSelector((state) => state.jsonData.project);
 
-   const handleAdd = (item) => {
-      // if (item.children && item.children.length > 0) {
-      //   console.log('Item has children, not dispatching:', item);
-      //   return;
-      // }
-    
+
+  const handleAdd = async (item) => {
+    try {
       dispatch(pushArticles(item));
-      console.log('Adding item:', item);
-    };
+
+        await manageFloorplanInDatabase('add', floorplan_id, 'items', item);
+        
+        // Then update state with the saved item (use response data if needed)
+        
+        console.log('Adding item to state:', item); // Fixed variable name
+    } catch (error) {
+        console.error("Failed to add item to the database:", error);
+        // Consider rolling back state here if needed
+    }
+};
 
   return (
     <div

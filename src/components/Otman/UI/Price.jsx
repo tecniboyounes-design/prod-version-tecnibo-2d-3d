@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Typography, Badge } from '@mui/material';
@@ -7,9 +9,11 @@ import axios from 'axios';
 import { GradientButtonWithTooltip } from './Button';
 import CustomAlert from './CustomAlert';
 import { updateProjectStatus } from '@/store';
+import { SearchForProjectOnOdooDialog } from './MyProjects';
+import { updateProjectOdooData } from '@/supabaseClient';
 
 const PriceDisplay = () => {
-  const items = useSelector((state) => state.jsonData.items);
+  const items = useSelector((state) => state.jsonData.floorplanner.items);
   const projectDetails = useSelector((state) => state.jsonData.project);
   const [isExpanded, setIsExpanded] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
@@ -17,8 +21,9 @@ const PriceDisplay = () => {
   const [alertSeverity, setAlertSeverity] = useState('success');
   const user = useSelector((state) => state.jsonData.user);
   const project = useSelector((state) => state.jsonData.project);
-  console.log('project', project);
   const dispatch = useDispatch();
+  const [openFetch, setOpenFetch] = useState(false);
+
 
   const VAT_RATE = 0.19;
   const SHIPPING_COST = 10;
@@ -28,7 +33,7 @@ const PriceDisplay = () => {
     let totalVAT = 0;
 
     items.forEach((item) => {
-      const itemPrice = item?.attributes?.price || 0;
+      const itemPrice = item?.price || 0;
       const quantity = item?.quantity || 1;
       totalPrice += itemPrice * quantity;
       totalVAT += itemPrice * VAT_RATE * quantity;
@@ -41,7 +46,11 @@ const PriceDisplay = () => {
     };
   }, [items]);
   
+  const { id } = project;
+  console.log('projectID', id); 
+
   const handleOrderClick = async () => {
+    handleOpenFetch();
     const orderPayload = {
       items: items?.map((item) => ({
         name: item?.attributes?.name || item.itemName,
@@ -51,13 +60,19 @@ const PriceDisplay = () => {
       })) || [],
       orderName: projectDetails?.title || 'Untitled Project',
       userData: user || { uid: 447, allowed_company_ids: [11] },
+      projectId: id,
     };
-
+  
     try {
-      const response = await axios.post('/api/orderSales', orderPayload);
-      // console.log('response', response);
-
-      if (response.status === 200) {
+      const { data } = await axios.post('/api/orderSales', orderPayload);
+  
+      if (data?.id) {
+        const orderId = data.id;
+        console.log('orderID', orderId); // Check if the order ID is correctly logged
+  
+        // Remove the updateProjectOdooData logic
+        // You can handle any other logic here if needed
+  
         setAlertOpen(true);
         setAlertMessage('Order placed successfully!');
         setAlertSeverity('success');
@@ -71,12 +86,23 @@ const PriceDisplay = () => {
       setAlertOpen(true); // Show alert after the order attempt
     }
   };
+  
+  
 
   const handleAlertClose = () => {
     setAlertOpen(false);
   };
+
+  const handleOpenFetch = () => {
+    setOpenFetch(true);
+  };
+
+  const handleCloseFetch = () => {
+    setOpenFetch(false);
+  };
   
   return (
+    <>
     <Box
       sx={{
         position: 'absolute',
@@ -164,7 +190,11 @@ const PriceDisplay = () => {
         onClose={handleAlertClose}
       />
     </Box>
+    <SearchForProjectOnOdooDialog open={openFetch} onClose={handleCloseFetch} />
+    </>
   );
 };
 
 export default PriceDisplay;
+
+

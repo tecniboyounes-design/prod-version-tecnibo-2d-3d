@@ -9,7 +9,6 @@ import { useSelector } from "react-redux";
 import { RoomShape } from "@/components/Otman/RoomShape/roomShape";
 import WallsStep from "@/components/Otman/UI/WallsStep";
 import PreloadGLTF from "@/HOC/PreloadGLTF";
-import ProtectedRoute from "@/HOC/ProtectedRoute";
 
 const AppContainer = styled("div")({
   display: "flex",
@@ -20,9 +19,6 @@ const AppContainer = styled("div")({
 
 const Page = () => {
   const currentStep = useSelector((state) => state.jsonData.currentStep);
-  const user = useSelector((state) => state.jsonData.user);
-  console.log('user:', user);
-  
   return (
     <>
       <PreloadGLTF />

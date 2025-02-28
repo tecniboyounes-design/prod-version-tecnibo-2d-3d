@@ -156,7 +156,7 @@ export const ProjectInfoMenu = ({ menuWidth, isDragging }) => {
 export const PricesAccordion = () => {
   const [expanded, setExpanded] = useState(false);
   const dispatch = useDispatch();
-  const items = useSelector((state) => state.jsonData.items);
+  const items = useSelector((state) => state.jsonData.floorplanner.items);
 
   const VAT_RATE = 0.19; // 19% VAT rate
   const SHIPPING_COST = 10; // Example shipping cost
@@ -177,8 +177,8 @@ export const PricesAccordion = () => {
     let totalWithVAT = 0;
 
     items.forEach((item) => {
-      const itemPrice = item?.attributes?.price || 0;
-      const quantity = item?.quantity || 1; // Assume quantity is available in the item
+      const itemPrice = item.price || 0;
+      const quantity = item?.quantity || 1;
 
       totalArticlePrice += itemPrice * quantity;
       const itemVAT = itemPrice * VAT_RATE * quantity;

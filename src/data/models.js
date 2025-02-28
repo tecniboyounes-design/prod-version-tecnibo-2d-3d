@@ -106,6 +106,7 @@ export const articles3D = [
 ];
 
 
+
 export const cloisonData = [
   {
     name: "T100",
@@ -365,6 +366,104 @@ export const cloisonStyles = [
 ];
 
 
+[
+  {
+    id: 'a3bec47e-f248-442f-9fa1-bf8352af017e',
+    name: 'Younes Attaoui',
+    avatar: 'https://i.pravatar.cc/150?img=1'
+  },
+  {
+    id: 'be504c1e-4d18-40bd-b527-a7aece5ad742',
+    name: 'Omar El Idrissi',
+    avatar: 'https://i.pravatar.cc/150?img=2'
+  },
+  {
+    id: '7607db98-89d8-4654-b019-5c80a62d3fe6',
+    name: 'Otman',
+    avatar: 'https://i.pravatar.cc/150?img=3'
+  },
+  {
+    id: '6157aaa2-2f35-4513-b37f-1064fb608851',
+    name: 'Sabrina El Khouch',
+    avatar: 'https://i.pravatar.cc/150?img=4'
+  },
+  {
+    id: '7a5bd817-e499-4db2-8f4f-52cdd28d4737',
+    name: 'Rachid Benjelloun',
+    avatar: 'https://i.pravatar.cc/150?img=5'
+  },
+  {
+    id: 'ce79d38f-5129-435a-bd0e-22b8b4120ee9',
+    name: 'Otman',
+    avatar: 'https://i.pravatar.cc/150?img=3'
+  },
+  {
+    id: '7c9eebbe-b012-48b4-a263-d7cf81902a77',
+    name: 'Salma Mounir',
+    avatar: 'https://i.pravatar.cc/150?img=6'
+  },
+  {
+    id: '7644cf51-082d-448f-b758-50224fe92e3e',
+    name: 'Otman',
+    avatar: 'https://i.pravatar.cc/150?img=3'
+  },
+  {
+    id: '9b72bd66-070b-4c91-8228-1b2e70b2f92f',
+    name: 'Ahmed El Amrani',
+    avatar: 'https://i.pravatar.cc/150?img=7'
+  },
+  {
+    id: '18826b3f-161b-449d-836b-6febf7b8763e',
+    name: 'Omar El Idrissi',
+    avatar: 'https://i.pravatar.cc/150?img=8'
+  },
+  {
+    id: '5ad7c364-cba9-4ecb-a6e7-4cbaac59e058',
+    name: 'Otman',
+    avatar: 'https://i.pravatar.cc/150?img=3'
+  },
+  {
+    id: 'f33ccb71-ac71-4b3f-9ec5-dfe2f7b9c8ab',
+    name: 'Sofia El Hamidi',
+    avatar: 'https://i.pravatar.cc/150?img=9'
+  },
+  {
+    id: 'b9860497-1044-412f-a59c-3501aba178d6',
+    name: 'Tariq Benali',
+    avatar: 'https://i.pravatar.cc/150?img=10'
+  },
+  {
+    id: '45980411-c652-484f-984c-8837389b39d4',
+    name: 'Amina Aouad',
+    avatar: 'https://i.pravatar.cc/150?img=11'
+  },
+  {
+    id: '8beb625b-3b96-499b-9024-2720c982451e',
+    name: 'Yassine Boushaba',
+    avatar: 'https://i.pravatar.cc/150?img=12'
+  },
+  {
+    id: 'b75a414b-2cfb-4531-a585-ae9f051c7818',
+    name: 'Imane El Messaoudi',
+    avatar: 'https://i.pravatar.cc/150?img=13'
+  },
+  {
+    id: 'ca351652-ce50-44b7-8fcd-af84f60b0230',
+    name: 'Fatiha El Ghazali',
+    avatar: 'https://i.pravatar.cc/150?img=14'
+  },
+  {
+    id: '774b2c85-bd58-4e9b-909c-3902724bb755',
+    name: 'Otman',
+    avatar: 'https://i.pravatar.cc/150?img=3'
+  },
+  {
+    id: 'd5aaac7d-39ae-473e-99a2-6794e9180ce6',
+    name: 'Otman',
+    avatar: 'https://i.pravatar.cc/150?img=3'
+  }
+]
+
 
 export const projectsData = [
   {
@@ -495,6 +594,9 @@ export const projectsData = [
     status: "in working",
   },
 ];
+
+
+
 
 
 export const dialogsData = [
@@ -651,7 +753,6 @@ export const dialogsData = [
 
 
 
-
 export const houses = [
   {
     id: uuidv4(),
@@ -799,8 +900,62 @@ export const generateUniqueProjectNumber = () => {
 };
 
 
+export const formatDate = (dateString, formatType) => {
+  if (!dateString) return 'N/A';
+
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return dateString; 
+
+  if (formatType === 'short') {
+    return date.toLocaleString('en-GB', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }).replace(',', '');
+  }
+
+  // Default long format
+  return date.toLocaleString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true,
+  });
+};
+
+
+
+
+// Function to convert corners object to an array
+export const cornersToArray = (corners) => {
+  return Object.entries(corners).map(([key, value]) => ({
+    id: key,
+    ...value,
+  }));
+};
+
+
+// Function to convert an array back to corners object
+export const arrayToCorners = (array) => {
+  return array.reduce((acc, { id, ...values }) => {
+    acc[id] = values;
+    return acc;
+  }, {});
+};
+
+
+
+
 
  
+
+
 
 
 

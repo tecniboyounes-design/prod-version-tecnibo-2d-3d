@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux"; // Assuming Redux is used to store the user data
@@ -11,41 +11,58 @@ import {
   Button,
 } from "@mui/material";
 import axios from "axios"; // You can use axios or another method to send the data
+import { generateUniqueProjectNumber } from "@/data/models";
 
 const UserDetailsComponent = () => {
   // Get the user object from the global state using Redux
   const user = useSelector((state) => state.jsonData.user); 
-  console.log("user:", user);
+  // console.log('user', user);
 
   // Loading state
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  
 
-  // Function to send user data
-  const sendUserData = async (userData) => {
+  const projectData = {
+    ...user,
+    title: "New Office Design",
+    project_number: generateUniqueProjectNumber(),
+    description: "Interior design project for a new office space.",
+    db: user?.db,
+    managers: [
+        {
+            oddo_id:230,
+            name: "Otman",
+            email: "o.abidlmerabetine@tecnibo.eu",
+            partner_id: null,
+            company_id: 11,
+        }
+    ],
+    user_id: user.uid || 447
+};
+
+  // Function to send project data
+  const sendProjectData = async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.post("/api/orderSales", {
-        ...userData, // Spread the user object to send all the data
-      });
-      console.log("User data sent successfully", response.data);
+      const response = await axios.post("/api/projects", projectData);
+      console.log("Project data sent successfully", response.data);
     } catch (error) {
-      console.error("Error sending user data", error);
-      setError("Error sending user data. Please try again.");
+      console.error("Error sending project data", error);
+      setError("Error sending project data. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  // Effect hook to send the user data when the component mounts
   useEffect(() => {
     if (user) {
-      // Send user data on mount or when user data changes
-      sendUserData(user);
+      sendProjectData();
     }
   }, [user]);
 
+  
   // If user data isn't available yet
   if (!user) {
     return (
@@ -82,15 +99,15 @@ const UserDetailsComponent = () => {
             <strong>Company ID:</strong>{" "}
             {user.user_companies?.current_company || "N/A"}
           </Typography>
-
+        
           <Button
             variant="contained"
             color="primary"
             fullWidth
-            onClick={() => sendUserData(user)}
+            onClick={sendProjectData}
             disabled={loading}
           >
-            {loading ? "Sending Data..." : "Send Data"}
+            {loading ? "Sending Data..." : "Send Project Data"}
           </Button>
 
           {error && (

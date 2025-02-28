@@ -43,6 +43,7 @@ import {
   OutlinedInput,
   ListItemText,
   InputAdornment,
+  Autocomplete,
 } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -97,12 +98,20 @@ import {
   StyledInputBase,
 } from "../../../app/styles/Themes";
 import { v4 as uuidv4 } from "uuid";
-import { generateUniqueProjectNumber } from "../../../data/models";
+import { formatDate, generateUniqueProjectNumber } from "../../../data/models";
 import axios from "axios";
 import CircularWithValueLabel from "./CircularWithValueLabel";
 import { createProject } from "@/actions/createProjectActions";
 
+import dayjs from "dayjs";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { fetchAllProjects, fetchProjects, testConnection, updateProjectOdooData } from "@/supabaseClient";
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+
 const Projects = () => {
+  const currentYear = dayjs();
   const [resultOfFilter, setResultOfFilter] = useState([]);
   const [filterOpen, setFilterOpen] = React.useState(false);
   const [status, setStatus] = useState("");
@@ -110,16 +119,25 @@ const Projects = () => {
   const [dateTo, setDateTo] = useState("");
   const [customerNumber, setCustomerNumber] = useState("");
   const [sortOption, setSortOption] = useState("");
-
   const [open, setOpen] = useState(false);
   const [onClose, setOnClose] = useState(false);
   const [openFetch, setOpenFetch] = useState(false);
   const [onCloseFetch, setOnCloseFetch] = useState(false);
-
-  const projectsData = useSelector((state) => state.jsonData.projects);
   const user = useSelector((state) => state.jsonData.user);
+  const [projectsData, setProjectsData] = useState([]);
 
-  const navigate = useRouter();
+
+  useEffect(() => {
+
+    const getData = async () => {
+      const projects = await fetchAllProjects();
+      setProjectsData(projects);
+      // console.log('projects', projects);
+    }
+
+    getData()
+  }, [])
+
 
   function SearchAppBar({ searchQuery, handleSearchChange, projectsData }) {
     const dispatch = useDispatch();
@@ -346,7 +364,12 @@ const Projects = () => {
     );
   }
 
+
+
+
+
   function FilterBar({ open, projectsData, realProjectData }) {
+
     const handleSortChange = (event) => {
       setSortOption(event.target.value);
     };
@@ -355,13 +378,11 @@ const Projects = () => {
       setState(event.target.value);
     };
 
-    const handleApplyFilters = () => {
-      setFilterOpen(true);
-    };
 
     if (!open) return null;
 
     return (
+
       <Box>
         <AppBar
           position="static"
@@ -473,29 +494,46 @@ const Projects = () => {
               </Select>
             </FormControl>
 
-            {/* Creation Date From */}
-            <TextField
-              id="creation-date-from"
-              label="Creation date from"
-              type="date"
-              InputLabelProps={{ shrink: true }}
-              size="small"
-              sx={{ minWidth: 200 }}
-              value={dateFrom}
-              onChange={(e) => handleFilterChange(e, setDateFrom)}
-            />
 
-            {/* Creation Date To */}
-            <TextField
-              id="creation-date-to"
-              label="Creation date to"
-              type="date"
-              InputLabelProps={{ shrink: true }}
-              size="small"
-              sx={{ minWidth: 200 }}
-              value={dateTo}
-              onChange={(e) => handleFilterChange(e, setDateTo)}
-            />
+
+
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Date From"
+                value={dateFrom ? dayjs(dateFrom) : null}
+                onChange={(newValue) => {
+                  setDateFrom(newValue ? newValue.format('YYYY-MM-DD') : "");
+                }}
+                views={['year', 'month', 'day']}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    size="small"
+
+                  />
+                )}
+              />
+              <DatePicker label="Date To"
+                value={dateTo ? dayjs(dateTo) : null}
+                onChange={(newValue) => {
+                  setDateTo(newValue ? newValue.format('YYYY-MM-DD') : "");
+                }}
+                views={['year', 'month', 'day']}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    size="small"
+
+                  />
+                )}
+              />
+            </LocalizationProvider>
+
+
+
+
+
+
 
             {/* Search for Customer Number */}
             <TextField
@@ -549,8 +587,17 @@ const Projects = () => {
           </Toolbar>
         </AppBar>
       </Box>
+
     );
   }
+
+
+
+
+
+
+
+
 
   function ResponsiveCardGrid() {
     const [expanded, setExpanded] = React.useState(null);
@@ -714,15 +761,15 @@ const Projects = () => {
     }, [dataToSearch, searchQuery]);
 
     const truncateText = (text, maxLength) => {
-      if (text.length > maxLength) {
-        return `${text.slice(0, maxLength)}....`;
+      if (text?.length > maxLength) {
+        return `${text?.slice(0, maxLength)}....`;
       }
       return text;
     };
 
     const handleStartEditig = (project) => {
       dispatch(pushProject(project));
-      router.push("/Create-Project");
+      router.push(`/project/${project.id}`);
     };
 
     return (
@@ -744,7 +791,7 @@ const Projects = () => {
                 <Card sx={{ maxWidth: 345 }}>
                   <CardHeader
                     avatar={
-                      project.managers.length === 1 ? (
+                      project?.managers?.length === 1 ? (
                         <Tooltip title={project.managers[0].name} arrow>
                           <Avatar
                             sx={{ bgcolor: red[500], cursor: "pointer" }}
@@ -760,7 +807,7 @@ const Projects = () => {
                         </Tooltip>
                       ) : (
                         <AvatarGroup max={2}>
-                          {project.managers.map((manager) => (
+                          {project?.managers?.map((manager) => (
                             <Tooltip
                               key={manager.id}
                               title={manager.name}
@@ -786,7 +833,7 @@ const Projects = () => {
                       </IconButton>
                     }
                     title={
-                      <Tooltip title={project.title} arrow>
+                      <Tooltip title={project?.title} arrow>
                         <div
                           style={{
                             display: "block",
@@ -797,12 +844,12 @@ const Projects = () => {
                             cursor: "pointer",
                           }}
                         >
-                          {truncateText(project.title, 16)}
+                          {truncateText(project?.title, 16)}
                         </div>
                       </Tooltip>
                     }
                     subheader={
-                      <Tooltip title={project.createdOn} arrow>
+                      <Tooltip title={project?.created_on} arrow>
                         <div
                           style={{
                             display: "block",
@@ -813,7 +860,7 @@ const Projects = () => {
                             cursor: "pointer",
                           }}
                         >
-                          {truncateText(project.createdOn, 16)}
+                          {truncateText(project?.created_on, 16)}
                         </div>
                       </Tooltip>
                     }
@@ -825,35 +872,15 @@ const Projects = () => {
                     image="Room.jpeg"
                     alt={project.title}
                   />
-                
+
                   <CardContent>
                     <StatusChip status={project.status} />
 
-                    <div style={{ marginTop: 8 }}>
-                      <div
-                        style={{
-                          fontSize: "0.875rem",
-                          color: "text.secondary",
-                        }}
-                      >
-                        <strong>Project Number:</strong> {project.projectNumber}
-                      </div>
-                      <div
-                        style={{
-                          fontSize: "0.875rem",
-                          color: "text.secondary",
-                        }}
-                      >
-                        <strong>Created at:</strong> {project.createdOn}
-                      </div>
-                      <div
-                        style={{
-                          fontSize: "0.875rem",
-                          color: "text.secondary",
-                        }}
-                      >
-                        <strong>Last Updated:</strong> {project.changedOn}
-                      </div>
+                    <div style={{ marginTop: 8 }}><div><strong>Project Number:</strong> {project.project_number}</div>
+                      <div ><strong>Created at: </strong><span>{formatDate(project.created_on, 'short')}</span></div>
+                      <div><strong>Last Updated: </strong><span>{formatDate(project.changed_on, 'short')}</span></div>
+
+
                     </div>
                   </CardContent>
 
@@ -890,10 +917,9 @@ const Projects = () => {
                     unmountOnExit
                   >
                     <CardContent>
-                      <div>
-                        Here are additional details about the project...
-                      </div>
+                      {project?.description || 'fallback'}
                     </CardContent>
+
                   </Collapse>
                 </Card>
 
@@ -1045,6 +1071,7 @@ const Projects = () => {
     );
   }
 
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -1083,6 +1110,26 @@ const Projects = () => {
   );
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const ConfirmDeleteDialog = ({
   openDialog,
   handleCloseDialog,
@@ -1115,6 +1162,8 @@ const ConfirmDeleteDialog = ({
   );
 };
 
+
+// project creation flow 
 const ProjectDialog = ({ open, onClose }) => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -1125,12 +1174,18 @@ const ProjectDialog = ({ open, onClose }) => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const user = useSelector((state) => state.jsonData.user);
+  console.log('user:', user);
+
 
   useEffect(() => {
     if (open) {
       setProjectNumber(generateUniqueProjectNumber());
     }
   }, [open]);
+
+
+
+
 
   const handleCloseSnackbar = () => setSnackbarOpen(false);
 
@@ -1139,18 +1194,20 @@ const ProjectDialog = ({ open, onClose }) => {
     const now = new Date().toLocaleString("fr-FR");
 
     const newProject = {
-      id: uuidv4(),
       title: projectTitle || "New Project",
-      projectNumber: generateUniqueProjectNumber(),
+      project_number: generateUniqueProjectNumber(),
       description: description || "No description provided",
-      createdOn: now,
-      changedOn: now,
+      created_on: now,
+      changed_on: now,
       managers: [
         {
-          id: uuidv4(),
-          name: "Otman",
+          name: user?.name,
           avatar: "https://i.pravatar.cc/150?img=3",
-        },
+          email: user?.username,
+          odoo_id: user?.uid,
+          company_id: user?.current_company,
+          partner_id: 0
+        }
       ],
       status: "temp",
       ...user,
@@ -1163,7 +1220,7 @@ const ProjectDialog = ({ open, onClose }) => {
       if (response) {
         setSnackbarMessage("Project saved successfully!");
         setSnackbarSeverity("success");
-        router.push("/Create-Project");
+        router.push("/project");
       } else {
         throw new Error("Project creation failed.");
       }
@@ -1174,6 +1231,7 @@ const ProjectDialog = ({ open, onClose }) => {
       setSnackbarOpen(true);
     }
   };
+
 
   return (
     <>
@@ -1276,7 +1334,10 @@ const ProjectDialog = ({ open, onClose }) => {
 };
 
 
-function SearchForProjectOnOdooDialog({ open, onClose }) {
+
+
+
+export function SearchForProjectOnOdooDialog({ open, onClose }) {
   const router = useRouter();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -1284,24 +1345,27 @@ function SearchForProjectOnOdooDialog({ open, onClose }) {
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
   const [projectPhases, setProjectPhases] = useState([]);
-  const [selectedPhase, setSelectedPhase] = useState("");
+  const [selectedPhase, setSelectedPhase] = useState(null);
+  const project = useSelector((state) => state.jsonData.project);
+  const { id } = project;
+  const inputRef = useRef(null);
+  const phaseRef = useRef(null);
+
+
+
+
+
 
   const handleDialogClose = () => onClose?.();
   const handleProjectNameChange = (e) => setProjectName(e.target.value);
-
-  const handleProjectNameKeyDown = (e) => {
-    if (e.key === "Enter" && projectName.trim()) {
-      e.preventDefault();
-      fetchProjects();
-    }
-  };
 
   const fetchProjects = async () => {
     setLoading(true);
     try {
       const { data } = await axios.post("/api/searchProject", { projectName });
       setProjects(data.records || []);
-
+      inputRef.current.focus();
+      console.log('data:', data);
       if (data.records?.length === 1) {
         const project = data.records[0];
         setSelectedProject(project);
@@ -1319,31 +1383,65 @@ function SearchForProjectOnOdooDialog({ open, onClose }) {
   };
 
   const fetchProjectPhases = async (projectId) => {
+    setLoading(true);
     try {
       const { data } = await axios.post("/api/phasesOfProject", { projectId });
       setProjectPhases(data.records || []);
+
+      // Delay focus to ensure the DOM is updated before focusing
+      setTimeout(() => {
+        if (phaseRef.current) {
+          phaseRef.current.focus();
+        }
+      }, 100);
     } catch (error) {
       console.error(`Error fetching phases for project ${projectId}:`, error);
+    } finally {
+      setLoading(false);
     }
   };
+
 
   const handleProjectSelect = async (project) => {
     setSelectedProject(project);
-    setSelectedPhase("");
+    setSelectedPhase(null);
     setProjectPhases([]);
+    setProjects([]); // Clear projects list to close autocomplete
     await fetchProjectPhases(project.id);
   };
 
-  const handleProceedToProject = () => {
+  const handleProceedToProject = async () => {
     if (selectedProject && selectedPhase) {
-      dispatch(pushProject(selectedProject));
-      router.push("/Create-Project");
+      const projectId = id;
+      const phaseId = selectedPhase.id;
+      const odooProjectId = selectedProject.id;
+
+      const result = await updateProjectOdooData({
+        projectId,
+        phaseId,
+        odooProjectId,
+      });
+
+      if (result && result.success) {
+        alert('Project and phase updated successfully!');
+      } else {
+        alert('Failed to update project and phase.');
+      }
+    } else {
+      alert('Please select a project and a phase.');
     }
   };
 
-  const handleChange = (event) => {
-    setSelectedPhase(event.target.value);
+  const handlePhaseSelect = (phase) => {
+    setSelectedPhase(phase);
   };
+
+  // Fetch projects when the dialog opens
+  useEffect(() => {
+    if (open) {
+      fetchProjects();
+    }
+  }, [open]);
 
   return (
     <Dialog open={open} onClose={handleDialogClose} fullWidth maxWidth="sm">
@@ -1354,33 +1452,31 @@ function SearchForProjectOnOdooDialog({ open, onClose }) {
             alt="Odoo Logo"
             style={{ height: 40, marginRight: 8 }}
           />
+          <AvatarGroup total={selectedProject ? 1 : projects.length}>
+            {selectedProject ? (
+              <Tooltip
+                arrow
+                title={selectedProject.user_id?.display_name || "Unknown"}
+              >
+                <Avatar sx={{ bgcolor: "primary.main", ml: 1 }}>
+                  {selectedProject.user_id?.display_name?.[0] || "?"}
+                </Avatar>
+              </Tooltip>
+            ) : (
+              projects.map((project) => (
+                <Tooltip
+                  arrow
+                  key={project.id}
+                  title={project.user_id?.display_name || "Unknown"}
+                >
+                  <Avatar sx={{ bgcolor: "primary.main", ml: 1 }}>
+                    {project.user_id?.display_name?.[0] || "?"}
+                  </Avatar>
+                </Tooltip>
+              ))
+            )}
+          </AvatarGroup>
 
-<AvatarGroup total={selectedProject ? 1 : projects.length}>
-  {selectedProject ? (
-    <Tooltip
-      arrow
-      title={selectedProject.user_id?.display_name || "Unknown"}
-    >
-      <Avatar sx={{ bgcolor: "primary.main", ml: 1 }}>
-        {selectedProject.user_id?.display_name?.[0] || "?"}
-      </Avatar>
-    </Tooltip>
-  ) : (
-    projects.map((project) => (
-      <Tooltip
-        arrow
-        key={project.id}
-        title={project.user_id?.display_name || "Unknown"}
-      >
-        <Avatar sx={{ bgcolor: "primary.main", ml: 1 }}>
-          {project.user_id?.display_name?.[0] || "?"}
-        </Avatar>
-      </Tooltip>
-    ))
-  )}
-</AvatarGroup>
-
-          {/* Display Date of Creation only if a single project is selected */}
           {selectedProject && (
             <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
               <Tooltip title="Date of Creation this Project" arrow>
@@ -1402,15 +1498,15 @@ function SearchForProjectOnOdooDialog({ open, onClose }) {
                   >
                     {selectedProject.date_start
                       ? new Intl.DateTimeFormat("en-US", {
-                          weekday: "short",
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                          second: "2-digit",
-                          hour12: false,
-                        }).format(new Date(selectedProject.date_start))
+                        weekday: "short",
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit",
+                        hour12: false,
+                      }).format(new Date(selectedProject.date_start))
                       : "N/A"}
                   </Typography>
                 </Box>
@@ -1419,8 +1515,6 @@ function SearchForProjectOnOdooDialog({ open, onClose }) {
           )}
         </Box>
 
-
-        {/* Search and Select Project */}
         <Box
           sx={{
             display: "flex",
@@ -1429,77 +1523,90 @@ function SearchForProjectOnOdooDialog({ open, onClose }) {
             alignItems: "center",
           }}
         >
-        
-          <TextField
-            label="Search by Project Name or Reference Code"
-            variant="outlined"
-            value={projectName}
-            onChange={handleProjectNameChange}
-            onKeyDown={handleProjectNameKeyDown}
-            fullWidth
-            margin="normal"
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  {loading ? (
-                    <CircularProgress size={24} color="primary" />
-                  ) : projects.length > 0 ? (
-                    <CloudDoneIcon style={{ color: "green" }} />
-                  ) : null}
-                </InputAdornment>
-              ),
+
+          <Autocomplete
+            sx={{ width: '100%' }}
+            open={projectName.length > 0 && projects.length > 0}
+            onInputChange={handleProjectNameChange}
+            options={projects}
+            getOptionLabel={(option) => option.display_name} // Just return display_name
+            loading={loading}
+            onChange={(event, newValue) => {
+              if (newValue) {
+                handleProjectSelect(newValue);
+                setProjectName(newValue.display_name);
+              }
             }}
-            sx={{ height: "56px" }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Search by Project Name or Reference Code"
+                variant="outlined"
+                value={projectName}
+                onChange={(e) => setProjectName(e.target.value)}
+                fullWidth
+                margin="normal"
+                inputRef={inputRef}
+                InputProps={{
+                  ...params.InputProps,
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      {loading ? (
+                        <CircularProgress size={24} color="primary" />
+                      ) : projects.length > 0 ? (
+                        <CloudDoneIcon style={{ color: 'green' }} />
+                      ) : null}
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{ height: '56px' }}
+              />
+            )}
+            onClose={() => setProjectName('')}
+            renderOption={(props, option) => (
+              <li {...props} key={option.id} style={{ display: 'flex', alignItems: 'center' }}>
+                <Avatar sx={{ bgcolor: 'primary.main', marginRight: 2 }}>
+                  {option.user_id?.display_name?.[0] || "?"} {/* Use the first character or a fallback */}
+                </Avatar>
+                <Typography variant="body2">{option.display_name}</Typography>
+              </li>
+            )}
           />
 
-          {/* If multiple projects, show dropdown for selection */}
-          {projects.length > 1 && (
-            <FormControl fullWidth margin="normal" sx={{ height: "56px" }}>
-              <InputLabel id="select-project-label">
-                Select a Project
-              </InputLabel>
-              <Select
-                labelId="select-project-label"
-                value={selectedProject?.id || ""}
-                onChange={(e) => {
-                  const project = projects.find((p) => p.id === e.target.value);
-                  if (project) handleProjectSelect(project);
+
+
+          <Autocomplete
+            sx={{ width: '100%' }}
+            options={projectPhases}
+            getOptionLabel={(phase) => phase.name}
+            value={selectedPhase || null}
+            onChange={(event, newValue) => {
+              handlePhaseSelect(newValue);
+            }}
+            disabled={!selectedProject || projectPhases.length === 0}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Select Project Phase"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                inputRef={phaseRef}
+                InputProps={{
+                  ...params.InputProps,
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      {loading && projectPhases.length === 0 && selectedProject && (
+                        <CircularProgress size={24} color="primary" />
+                      )}
+                    </InputAdornment>
+                  ),
                 }}
-                sx={{ height: "56px", width: "90%" }}
-              >
-                {projects.map((project) => (
-                  <MenuItem key={project.id} value={project.id}>
-                    {project.display_name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          )}
+              />
+            )}
+          />
 
-          {/* Phases Dropdown */}
-          <FormControl
-            sx={{ m: 1, width: "90%", height: "56px" }}
-            disabled={!selectedProject}
-          >
-            <InputLabel id="select-project-phase-label">
-              Select Project Phase
-            </InputLabel>
-            <Select
-              labelId="select-project-phase-label"
-              id="select-project-phase"
-              value={selectedPhase}
-              onChange={handleChange}
-              input={<OutlinedInput label="Select Project Phase" />}
-            >
-              {projectPhases.map((phase) => (
-                <MenuItem key={phase.id} value={phase.id}>
-                  <ListItemText primary={phase.name} />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
         </Box>
-
       </DialogContent>
 
       <DialogActions>

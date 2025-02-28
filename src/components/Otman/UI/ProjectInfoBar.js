@@ -26,18 +26,25 @@ import { Delete, FileDownload, PictureAsPdf } from "@mui/icons-material";
 import LinearBuffer from "./LinearBuffer";
 import { PeopleAlt } from "@mui/icons-material";
 import { StatusChip } from "@/app/styles/Themes";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from 'next/navigation'; 
 import { handleDownloadPDF, handleDownloadXML } from "@/actions/filesActions";
+import { formatDate } from "@/data/models";
+import { supabase, useFetchProjectById } from "@/supabaseClient";
+
 
 const ProjectInfoBar = () => {
   const [filterOpen, setFilterOpen] = useState(false);
   const dispatch = useDispatch();
   const selectedProject = useSelector((state) => state.jsonData.project);
   const params = useSelector((state) => state.jsonData);
-
   const [anchorEl, setAnchorEl] = useState(null);
-  const router = useRouter;
+  const router = useRouter();
   const [pathname, setPathname] = useState("");
+  const [projectId, setProjectId] = useState('');
+ 
+
+
+
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -74,14 +81,23 @@ const ProjectInfoBar = () => {
     }
   };
 
-  const handleXML = () => {
-    handleDownloadXML(params);
+  const handleXML = async () => {
+    try {
+      await handleDownloadXML(params);
+    } finally {
+      handleCloseMenu(); 
+    }
   };
 
-  const handlePDF = () => {
-    handleDownloadPDF(params);
+  const handlePDF = async () => {
+    try {
+      await handleDownloadPDF(params);
+    } finally {
+      handleCloseMenu(); 
+    }
   };
-  
+
+
   return (
     <>
       <AppBar
@@ -227,7 +243,7 @@ const ProjectInfoBar = () => {
                 >
                   <Typography variant="body2" sx={{ fontSize: "0.75rem" }}>
                     <strong>Project Number:</strong>{" "}
-                    {selectedProject?.projectNumber ||
+                    {selectedProject?.project_number ||
                       selectedProject?.display_name?.match(/\[(\d+)\]/)?.[1]}
                   </Typography>
                 </Box>
@@ -254,8 +270,9 @@ const ProjectInfoBar = () => {
                 >
                   <Typography variant="body2" sx={{ fontSize: "0.75rem" }}>
                     <strong>Created On: </strong>
-                    {selectedProject?.date || selectedProject?.createdOn}
+                    {formatDate(selectedProject?.date || selectedProject?.created_on, 'short')}
                   </Typography>
+
                 </Box>
               </Paper>
             </Box>

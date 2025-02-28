@@ -8,17 +8,17 @@ import { generateUniqueProjectNumber } from './data/models';
 
 
 
-
 // Define the initial state
 const initialState = {
-  loading:false,
+  loading: false,
   is2DView: false,
   isDrawing: false,
   wallHieght: 4,
   isClose: false,
-  projectInfo:null,
+  projectInfo: null,
   isDragging: false,
-  floorplanner: { 
+
+  floorplanner: {
     version: "2.0.1a",
     corners: {
       c1: {
@@ -81,6 +81,7 @@ const initialState = {
         name: "Square Room"
       }
     },
+    items:[],
     units: "m"
   },
   items: [],
@@ -99,177 +100,17 @@ const initialState = {
       downloadStateHint: 'Click this to download the current Redux state as a JSON file.',
     },
   },
-  
-  previewArticle:  {
-    id: uuidv4(),
-    itemName: "Main Door",
-    itemType: 7,
-    position: [632.3531265126858, 133, 500],
-    rotation: [0, -3.141592653589793, 0],
-    scale: [1, 1, 1],
-    size: [138, 266, 137],
-    fixed: true,
-    resizable: true,
-    modelURL: "models/InWallFloorItems/Door.glb",
-    isParametric: false,
-    wall: "e3a9cbc3-c4a3-9f90-08f5-d00b6036d79a,da026c08-d76a-a944-8e7b-096b752da9ed",
-    wallSide: "front",
-    wallSurfacePoint: [632.3531265126858, 133, 500],
-    mesh: ["Cube"],
-    textures: [
-      {
-        name: "Cube",
-        texture: "",
-        color: "",
-        shininess: 10,
-        size: [],
-      },
-    ],
-    innerRotation: [0, -3.141592653589793, 0],
-  },
 
 
-  projects:[
-    {
-      id: uuidv4(),
-      image:
-        "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?crop=entropy&cs=tinysrgb&fit=max&ixid=MnwzNjkzNzl8MHx8c2Vhcnx8fHx8fHx8fHwxNjcwNjU3NzQ0&ixlib=rb-1.2.1&q=80&w=1080",
-      title: "Real Project Younes Attaoui",
-      projectNumber: generateUniqueProjectNumber(),
-            createdOn: "09/01/2025, 15:12",
-      changedOn: "09/01/2025, 15:43",
-      managers: [
-        { id: uuidv4(), name: "Younes Attaoui", avatar: "https://i.pravatar.cc/150?img=1" },
-        { id: uuidv4(), name: "Omar El Idrissi", avatar: "https://i.pravatar.cc/150?img=2" },
-        { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" }, 
-      ],
-      status: "temp",
-    },
-    {
-      id: uuidv4(),
-      image:
-        "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?crop=entropy&cs=tinysrgb&fit=max&ixid=MnwzNjkzNzl8MHx8c2Vhcnx8fHx8fHx8fHwxNjcwNjU3NzQ0&ixlib=rb-1.2.1&q=80&w=1080",
-      title: "Interior Design Younes Attaoui test test test test",
-      projectNumber: generateUniqueProjectNumber(),      createdOn: "10/01/2025, 12:00",
-      changedOn: "10/01/2025, 12:45",
-      managers: [
-        { id: uuidv4(), name: "Sabrina El Khouch", avatar: "https://i.pravatar.cc/150?img=4" },
-        { id: uuidv4(), name: "Rachid Benjelloun", avatar: "https://i.pravatar.cc/150?img=5" },
-        { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" }, 
-      ],
-      status: "temp",
-      articles:[],
-    },
-    {
-      id: uuidv4(),
-      image:
-        "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?crop=entropy&cs=tinysrgb&fit=max&ixid=MnwzNjkzNzl8MHx8c2Vhcnx8fHx8fHx8fHwxNjcwNjU3NzQ0&ixlib=rb-1.2.1&q=80&w=1080",
-      title: "Modern Floor Planning",
-      projectNumber: generateUniqueProjectNumber(),      createdOn: "11/01/2025, 10:15",
-      changedOn: "11/01/2025, 10:45",
-      managers: [
-        { id: uuidv4(), name: "Salma Mounir", avatar: "https://i.pravatar.cc/150?img=6" },
-        { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" }, 
-      ],
-      status: "temp",
-      articles:[],
+  previewArticle: {},
 
-    
-    },
-    {
-      id: uuidv4(),
-      image:
-        "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?crop=entropy&cs=tinysrgb&fit=max&ixid=MnwzNjkzNzl8MHx8c2Vhcnx8fHx8fHx8fHwxNjcwNjU3NzQ0&ixlib=rb-1.2.1&q=80&w=1080",
-      title: "Large-Scale Team Project",
-      projectNumber: generateUniqueProjectNumber(),      createdOn: "12/01/2025, 09:30",
-      changedOn: "12/01/2025, 09:45",
-      managers: [
-        { id: uuidv4(), name: "Ahmed El Amrani", avatar: "https://i.pravatar.cc/150?img=7" },
-        { id: uuidv4(), name: "Omar El Idrissi", avatar: "https://i.pravatar.cc/150?img=8" },
-        { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" }, 
-      ],
-      status: "temp",
-      articles:[],
+  projects: [],
 
-    },
-    {
-      id: uuidv4(),
-      image:
-        "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?crop=entropy&cs=tinysrgb&fit=max&ixid=MnwzNjkzNzl8MHx8c2Vhcnx8fHx8fHx8fHwxNjcwNjU3NzQ0&ixlib=rb-1.2.1&q=80&w=1080",
-      title: "Unique Project 1",
-      projectNumber: generateUniqueProjectNumber(),      createdOn: "12/01/2025, 15:00",
-      changedOn: "12/01/2025, 15:30",
-      managers: [
-        { id: uuidv4(), name: "Sofia El Hamidi", avatar: "https://i.pravatar.cc/150?img=9" },
-        { id: uuidv4(), name: "Tariq Benali", avatar: "https://i.pravatar.cc/150?img=10" },
-      ],
-      status: "temp",
-      articles:[],
+  project: {},
 
-    },
-    {
-      id: uuidv4(),
-      image:
-        "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?crop=entropy&cs=tinysrgb&fit=max&ixid=MnwzNjkzNzl8MHx8c2Vhcnx8fHx8fHx8fHwxNjcwNjU3NzQ0&ixlib=rb-1.2.1&q=80&w=1080",
-      title: "Unique Project 2",
-      projectNumber: generateUniqueProjectNumber(),      createdOn: "13/01/2025, 12:00",
-      changedOn: "13/01/2025, 12:45",
-      managers: [
-        { id: uuidv4(), name: "Amina Aouad", avatar: "https://i.pravatar.cc/150?img=11" },
-        { id: uuidv4(), name: "Yassine Boushaba", avatar: "https://i.pravatar.cc/150?img=12" },
-      ],
-      status: "temp",
-      articles:[],
 
-    },
-    {
-      id: uuidv4(),
-      image:
-        "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?crop=entropy&cs=tinysrgb&fit=max&ixid=MnwzNjkzNzl8MHx8c2Vhcnx8fHx8fHx8fHwxNjcwNjU3NzQ0&ixlib=rb-1.2.1&q=80&w=1080",
-      title: "Unique Project 3",
-      projectNumber: generateUniqueProjectNumber(),      createdOn: "14/01/2025, 10:15",
-      changedOn: "14/01/2025, 10:45",
-      managers: [
-        { id: uuidv4(), name: "Imane El Messaoudi", avatar: "https://i.pravatar.cc/150?img=13" },
-      ],
-      status: "temp",
-      articles:[],
 
-    },
-    {
-      id: uuidv4(),
-      image:
-        "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?crop=entropy&cs=tinysrgb&fit=max&ixid=MnwzNjkzNzl8MHx8c2Vhcnx8fHx8fHx8fHwxNjcwNjU3NzQ0&ixlib=rb-1.2.1&q=80&w=1080",
-      title: "Unique Large Team Project",
-      projectNumber: generateUniqueProjectNumber(),      createdOn: "15/01/2025, 09:30",
-      changedOn: "15/01/2025, 09:45",
-      managers: [
-        { id: uuidv4(), name: "Fatiha El Ghazali", avatar: "https://i.pravatar.cc/150?img=14" },
-        { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" },
-      ],
-      status: "temp",
-      articles:[],
-
-    },
-    {
-      id: uuidv4(),
-      image:
-        "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?crop=entropy&cs=tinysrgb&fit=max&ixid=MnwzNjkzNzl8MHx8c2Vhcnx8fHx8fHx8fHwxNjcwNjU3NzQ0&ixlib=rb-1.2.1&q=80&w=1080",
-      title: "Project in Planning",
-      projectNumber: generateUniqueProjectNumber(),      
-      createdOn: "15/01/2025, 11:00",
-      changedOn: "15/01/2025, 11:30",
-      managers: [
-        { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" },
-      ],
-      status: "temp",
-      articles:[],
-
-    },
-  ],
-  project:{},
-
-user: {
+  user: {
     uid: 447,
     is_system: false,
     is_admin: false,
@@ -278,21 +119,21 @@ user: {
     user_context: { lang: 'en_US', tz: 'Africa/Casablanca', uid: 447 },
     db: 'tecnibo17_test',
     user_settings: {
-        id: 137,
-        user_id: {}, // Previously [Object], should be an actual object
-        is_discuss_sidebar_category_channel_open: true,
-        is_discuss_sidebar_category_chat_open: true,
-        push_to_talk_key: false,
-        use_push_to_talk: false,
-        voice_active_duration: 200,
-        volume_settings_ids: [], // Previously [Array], should be an actual array
-        homemenu_config: false,
-        voip_username: false,
-        voip_secret: false,
-        should_call_from_another_device: false,
-        external_device_number: false,
-        should_auto_reject_incoming_calls: false,
-        how_to_call_on_mobile: 'ask'
+      id: 137,
+      user_id: {}, // Previously [Object], should be an actual object
+      is_discuss_sidebar_category_channel_open: true,
+      is_discuss_sidebar_category_chat_open: true,
+      push_to_talk_key: false,
+      use_push_to_talk: false,
+      voice_active_duration: 200,
+      volume_settings_ids: [], // Previously [Array], should be an actual array
+      homemenu_config: false,
+      voip_username: false,
+      voip_secret: false,
+      should_call_from_another_device: false,
+      external_device_number: false,
+      should_auto_reject_incoming_calls: false,
+      how_to_call_on_mobile: 'ask'
     },
     server_version: '17.0+e',
     server_version_info: [17, 0, 0, 'final', 0, 'e'],
@@ -309,21 +150,21 @@ user: {
     max_file_upload_size: 134217728,
     home_action_id: false,
     cache_hashes: {
-        translations: '2d0f07866d7ab214845c343aaa5d9395740829f4',
-        load_menus: 'a567ccf72d4c92ba6bf3d20c12c1780ad9e7f8708899c18405cc2e52d1773a28'
+      translations: '2d0f07866d7ab214845c343aaa5d9395740829f4',
+      load_menus: 'a567ccf72d4c92ba6bf3d20c12c1780ad9e7f8708899c18405cc2e52d1773a28'
     },
     currencies: {
-        '1': {}, // Previously [Object], should be an actual object
-        '3': {},
-        '29': {},
-        '111': {},
-        '147': {}
+      '1': {}, // Previously [Object], should be an actual object
+      '3': {},
+      '29': {},
+      '111': {},
+      '147': {}
     },
     bundle_params: { lang: 'en_US' },
     user_companies: {
-        current_company: 11,
-        allowed_companies: {}, // Previously [Object], should be an actual object
-        disallowed_ancestor_companies: {}
+      current_company: 11,
+      allowed_companies: {}, // Previously [Object], should be an actual object
+      disallowed_ancestor_companies: {}
     },
     show_effect: true,
     display_switch_company_menu: false,
@@ -341,19 +182,20 @@ user: {
     inbox_action: 88,
     is_quick_edit_mode_enabled: false,
     uom_ids: { '5': {} } // Previously [Object], should be an actual object
-},
+  },
 
-  
+
 };
 
 
 export const generateRoomKey = (pointIds) => { return pointIds.sort().join(',') };
 
 
-export const gatherAllCorners = (corners) => {return Object.keys(corners)};
+export const gatherAllCorners = (corners) => { return Object.keys(corners) };
 
 
-const getRandomPrice = () => Math.floor(Math.random() * (100 - 10 + 1)) + 10;
+export const getRandomPrice = () => Math.floor(Math.random() * (100 - 10 + 1)) + 10;
+
 
 const sanitizePayload = (payload) => {
   // Convert to a plain object without DOM properties
@@ -365,137 +207,151 @@ const sanitizePayload = (payload) => {
   }));
 };
 
+
 const jsonData = createSlice({
   name: 'JSONDATA',
   initialState,
 
   reducers: {
-  
+
+    updateItems: (state, action) => {
+      const items = action.payload;
+      console.log('items:', items);
+      state.floorplanner.items = items;
+    },
+
+    updateFloorPlan: (state, action) => {
+      const floorplan = action.payload;
+      console.log('floorplan', floorplan);
+    },
+
     deleteArticle: (state, action) => {
-      const itemId = action.payload; 
-      state.items = state.items.filter(item => item.id !== itemId); // Remove item with the matching ID
+      const itemId = action.payload;
+      state.floorplanner.items = state.floorplanner.items.filter(item => item.id !== itemId);
     },
 
     setUser: (state, action) => {
       const user = action.payload
       state.user = user
     },
-     
+
     pushArticles: (state, action) => {
       console.log('action payload:', action.payload);
     
-      if (!Array.isArray(state.items)) {
-        console.warn("⚠️ state.items is not an array! Initializing as an empty array.");
-        state.items = [];
+      if (!Array.isArray(state.floorplanner.items)) {
+        console.warn("⚠️ state.floorplanner.items is not an array! Initializing as an empty array.");
+        state.floorplanner.items = [];
       }
     
-      let newItem = sanitizePayload(action.payload); 
-      // Remove non-serializable values
+      let newItem = sanitizePayload(action.payload);
     
-      // Assign a unique ID if not present
+      // Assign unique ID if not present
       if (!newItem.id) {
         newItem.id = uuidv4();
       }
     
-      // Assign a random price if not present
-      if (!newItem.attributes?.price) {
-        newItem.attributes = { ...newItem.attributes, price: getRandomPrice() };
+      // Assign random price directly to item if not present
+      if (typeof newItem.price === 'undefined') {
+        newItem.price = getRandomPrice();
       }
     
-      // Ensure quantity is set to 1 by default if not provided
+      // Set default quantity
       if (!newItem.quantity) {
         newItem.quantity = 1;
       }
     
-      state.items.push(newItem);
+      state.floorplanner.items.push(newItem);
     },
-    
+
+
+
+
     updateProjectStatus: (state, action) => {
       // console.log('action', action.payload); // Log the action to check the payload
-  
+
       const { id, status } = action.payload;
-      
+
       // First, try to find the project in state.projects (array of multiple projects)
       let project = state.projects.find(p => p.id === id);
-      
+
       if (project) {
-          console.log('Found project in state.projects:', project); // Log the found project in state.projects
-          project.status = status; // Update the status in the found project
-          // console.log('Updated project in state.projects:', project); // Log the updated project
+        console.log('Found project in state.projects:', project); // Log the found project in state.projects
+        project.status = status; // Update the status in the found project
+        // console.log('Updated project in state.projects:', project); // Log the updated project
       } else {
-          // If not found in state.projects, look for the project in state.project (single project)
-          console.warn('Project not found in state.projects, looking in state.project...');
-          
-          if (state.project && state.project.id === id) {
-              // console.log('Found project in state.project:', state.project); // Log the found project in state.project
-              state.project.status = status; // Update the status in the staged project
-              // console.log('Updated project in state.project:', state.project); // Log the updated staged project
-          } else {
-              // If project is not found in either state.projects or state.project, log an error
-              console.error(`Project with id: ${id} not found in state.projects or state.project`);
-          }
+        // If not found in state.projects, look for the project in state.project (single project)
+        console.warn('Project not found in state.projects, looking in state.project...');
+
+        if (state.project && state.project.id === id) {
+          // console.log('Found project in state.project:', state.project); // Log the found project in state.project
+          state.project.status = status; // Update the status in the staged project
+          // console.log('Updated project in state.project:', state.project); // Log the updated staged project
+        } else {
+          // If project is not found in either state.projects or state.project, log an error
+          console.error(`Project with id: ${id} not found in state.projects or state.project`);
+        }
       }
-  },
-  
-      
+    },
+
+
     // Reducer to update the quantity of an item based on its ID
-     updateItemQuantity :(state, action) => {
+    updateItemQuantity: (state, action) => {
       const { id, quantity } = action.payload;
-    
+
       // Find the item by ID and update its quantity
-      const itemIndex = state.items.findIndex((item) => item.id === id);
-      
+      const itemIndex = state.floorplanner.items.findIndex((item) => item.id === id);
+
       if (itemIndex !== -1) {
-        state.items[itemIndex].quantity = quantity;
+        state.floorplanner.items[itemIndex].quantity = quantity;
       } else {
         console.warn(`⚠️ Item with ID ${id} not found.`);
       }
     },
 
-    
-    
+
+
     addProject: (state, action) => {
       const copiedProject = { ...action.payload };
       copiedProject.title = `Copied Basket: ${copiedProject.title}`;
-      copiedProject.id =  uuidv4() ; 
+      copiedProject.id = uuidv4();
       state.projects.push(copiedProject)
     },
-     
-   
+
+
     deleteProject: (state, action) => {
       const { id, type } = action.payload;
-    
+
       // If the type is 'active', clear the active project
       if (type === 'active') {
         state.project = {}; // Clear the active project
       }
-    
+
       // Find and remove the project from the projects array
       const index = state.projects.findIndex(project => project.id === id);
       if (index !== -1) {
         state.projects.splice(index, 1);
       }
     },
-    
-    
 
-    
+
+
+
 
 
     pushProject: (state, action) => {
-      state.project = action.payload; 
+      state.project = action.payload;
     },
-    
 
-    
-    
+
+
+
 
     updatePreview: (state, action) => {
-      state.previewArticle = action.payload || {}; 
+      state.previewArticle = action.payload || {};
     },
 
     clearPreview: (state) => {
-      state.previewArticle = {}; 
+      state.previewArticle = {};
     },
 
     setProjectInfo: (state, action) => {
@@ -537,7 +393,7 @@ const jsonData = createSlice({
       // console.log('Updating wall config:', action.payload);
 
       const { id, key, value } = action.payload;
-      
+
       if (id) {
         // Update specific wall by ID
         const wall = state.floorplanner.walls.find(wall => wall.id === id);
@@ -582,14 +438,14 @@ const jsonData = createSlice({
 
 
 
-  
+
     setCurrentConfig: (state, action) => {
       // console.log('Setting config:', action.payload);
       const newConfig = action.payload;
       state.currentConfig = newConfig;
     },
-  
-  
+
+
     setHouse: (state, action) => {
       const house = action.payload;
       state.floorplanner = {
@@ -615,7 +471,7 @@ const jsonData = createSlice({
     updateItemPositionAndRotation: (state, action) => {
       // console.log('updateItemPositionAndRotation', action.payload);
       const { id, newPosition, newRotation } = action.payload;
-      const item = state.items.find(item => item.id === id);
+      const item = state.floorplanner.items.find(item => item.id === id);
       if (item) {
         item.position = newPosition;
         item.rotation = newRotation;
@@ -801,7 +657,7 @@ const jsonData = createSlice({
       }
 
       // Find the item by ID
-      const item = state.items.find(item => item.id === itemId);
+      const item = state.floorplanner.items.find(item => item.id === itemId);
       if (!item) {
         console.warn(`Item with id ${itemId} not found.`);
         return;
@@ -926,7 +782,7 @@ const jsonData = createSlice({
     },
   },
 
-  
+
 });
 
 
@@ -941,7 +797,7 @@ const store = configureStore({
 
 
 // Export actions for use in components
-export const { setUser,deleteArticle,updateItemQuantity,updateProjectStatus,addProject,deleteProject,pushProject ,pushArticles ,updatePreview ,clearPreview,setLoading, setDragging,setProjectInfo,updateWallWithStarConfig, starWall, setWallConfig, updateJSONDATA, updateItems, updateCorner, setIsDrawing, setIs2DView, createPoint, createWall, updatePoints, createRoom, removePoint, updateWallWithNewCorner, updateBothCorners, selectItemForRoom, updateItemPositionAndRotation, setCurrentStep, saveProjectSetup, setHouse, setCurrentConfig, updateSettings, resetSettings } = jsonData.actions;
+export const { updateFloorPlan, setUser, deleteArticle, updateItemQuantity, updateProjectStatus, addProject, deleteProject, pushProject, pushArticles, updatePreview, clearPreview, setLoading, setDragging, setProjectInfo, updateWallWithStarConfig, starWall, setWallConfig, updateJSONDATA, updateItems, updateCorner, setIsDrawing, setIs2DView, createPoint, createWall, updatePoints, createRoom, removePoint, updateWallWithNewCorner, updateBothCorners, selectItemForRoom, updateItemPositionAndRotation, setCurrentStep, saveProjectSetup, setHouse, setCurrentConfig, updateSettings, resetSettings } = jsonData.actions;
 
 
 export default store;

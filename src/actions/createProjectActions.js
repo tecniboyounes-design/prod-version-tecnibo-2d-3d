@@ -1,6 +1,7 @@
+
 export async function createProject(projectData) {
     try {
-        const response = await fetch("/api/createProject", {
+        const response = await fetch("/api/projects", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -10,9 +11,9 @@ export async function createProject(projectData) {
 
         const result = await response.json();
         console.log("Project Creation Response:", result);
-        return result; // Return the result for further handling if needed
+        return result; 
     } catch (error) {
         console.error("Error sending request:", error);
-        throw error; // Rethrow error if you want to handle it outside
+        throw error; 
     }
 }

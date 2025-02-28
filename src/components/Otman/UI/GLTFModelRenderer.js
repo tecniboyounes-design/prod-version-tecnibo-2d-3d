@@ -5,7 +5,7 @@ import { Typography } from "@mui/material";
 
 
 const GLTFModel = React.memo(({ items }) => {
-const stagedItems = useSelector((state) => state.jsonData.items)
+const stagedItems = useSelector((state) => state.jsonData.floorplanner.items)
 const dispatch = useDispatch();
 
 console.log('staged ',stagedItems)

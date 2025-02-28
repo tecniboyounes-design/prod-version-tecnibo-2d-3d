@@ -1,7 +1,8 @@
 
 const createDataObjectFromParams = (jsonData) => {
 
-  const { project, user, items } = jsonData;
+  const { project, user } = jsonData;
+  const { items } = jsonData.floorplanner
 
   const builderList = items.map((item, index) => ({
       lineNo: (index + 1).toString(), // Line number as string
@@ -25,7 +26,7 @@ const createDataObjectFromParams = (jsonData) => {
       dispDate: "", // Optional: Display date
       basketId: "4743", // Required: Basket ID
       head: {
-          comm: `Project: ${project.display_name || "Copied Basket: My portfolio"}`, // Comment
+          comm: `Project: ${project.display_name || "My portfolio"}`, // Comment
           articleNo: project.id || "2025001602", // Article number
           customer: "", // Optional: Customer name
           retailer: "", // Optional: Retailer name

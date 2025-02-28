@@ -19,8 +19,7 @@ import { Suspense } from 'react';
 import * as THREE from "three";
 import CircularWithValueLabel from './CircularWithValueLabel';
 import { useRouter } from "next/navigation";
-
-
+import { manageFloorplanInDatabase } from '@/supabaseClient';
 
 
 const Accordion = styled((props) => (
@@ -77,8 +76,10 @@ export const ItemList = () => {
   const [hoverStates, setHoverStates] = useState({});
   const menuRef = useRef(null);
   const dispatch = useDispatch();
-  const items = useSelector((state) => state.jsonData.items);
-  const router = useRouter(); 
+  const items = useSelector((state) => state.jsonData.floorplanner.items);
+  const router = useRouter();
+  const { floorplan_id } = useSelector((state) => state.jsonData.project);
+  
 
 
 
@@ -98,7 +99,7 @@ export const ItemList = () => {
   const handleBuildClick = (id, item, event) => {
     event.stopPropagation();
     dispatch(updatePreview(item));
-  
+
     // Check if item contains modelURL
     if (!item?.modelURL) {
       // Navigate to /pngConfig if modelURL is missing
@@ -109,7 +110,7 @@ export const ItemList = () => {
       router.push(`/configurator/${id}?modelURL=${encodeURIComponent(modelURL)}`);
     }
   };
-  
+
 
   const handleOpenMenu = (id, item, event) => {
     event.stopPropagation();
@@ -122,10 +123,11 @@ export const ItemList = () => {
     setMenuItemId(null);
   };
 
-  const onDelete = () => {
-    console.log(`Delete position for item ${menuItemId}`);
+  const onDelete = async () => {
+    // console.log(`Delete position for item ${menuItemId}`);
     dispatch(deleteArticle(menuItemId));
     handleCloseMenu();
+    await manageFloorplanInDatabase('delete', floorplan_id, 'items', { id: menuItemId });
   };
 
 
@@ -141,11 +143,17 @@ export const ItemList = () => {
       [id]: { ...prev[id], [type]: isHovering },
     }));
   };
-
-  const handleQuantityChange = (itemId, value) => {
+   
+  const handleQuantityChange = async (itemId, value) => {
     const newQuantity = Math.max(1, Number(value));
     setQuantities((prev) => ({ ...prev, [itemId]: newQuantity }));
     dispatch(updateItemQuantity({ id: itemId, quantity: newQuantity }));
+    try {
+      await manageFloorplanInDatabase('update', floorplan_id, 'items', { id: itemId, quantity: newQuantity });
+      console.log(`✅ Quantity updated for item ID ${itemId} to ${newQuantity}`);
+    } catch (error) {
+      console.error("Failed to update quantity in the database:", error);
+    }
   };
 
   return (
@@ -160,10 +168,8 @@ export const ItemList = () => {
       }}
     >
       {items.map((item) => {
-        const unitPrice = item?.attributes?.price || 0;
-        const quantity = quantities[item.id] || 1;
-        const totalPrice = unitPrice * quantity;
-          
+        const totalPrice = item.price * item.quantity;
+        
         return (
           <Accordion key={item.id}>
             <AccordionSummary
@@ -172,7 +178,9 @@ export const ItemList = () => {
               expandIcon={filterOpen ? <ArrowDropDown /> : <ArrowLeft />}
               onClick={handleAccordionToggle}
             >
-              <Typography component="span">{item.attributes.name || item.itemName }</Typography>
+              <Typography component="span">
+                {item?.attributes?.name || item?.itemName || "Unnamed Item"}
+              </Typography>
 
               <Box
                 sx={{
@@ -187,7 +195,7 @@ export const ItemList = () => {
                   type="number"
                   variant="outlined"
                   size="small"
-                  value={quantity}
+                  value={item?.quantity || 1}
                   onChange={(e) => handleQuantityChange(item.id, e.target.value)}
                   inputProps={{ min: 1 }}
                   sx={{ width: "70px", marginLeft: 2 }}
@@ -219,7 +227,7 @@ export const ItemList = () => {
                 </Tooltip>
 
                 <Menu
-                  ref={menuRef} // Attach the ref to the menu
+                  ref={menuRef}
                   anchorEl={anchorEl}
                   open={Boolean(anchorEl) && menuItemId === item.id}
                   onClose={handleCloseMenu}
@@ -268,7 +276,7 @@ export const ItemList = () => {
                   }}
                 >
                   <Typography sx={{ fontSize: "0.8rem" }}>
-                    <strong>Unit Price:</strong> {unitPrice} <span>&#8364;</span>
+                    <strong>Unit Price:</strong> {item.price} <span>&#8364;</span>
                   </Typography>
                   <Typography sx={{ fontSize: "0.8rem" }}>
                     <strong>Total Price:</strong> {totalPrice} <span>&#8364;</span>
@@ -281,6 +289,7 @@ export const ItemList = () => {
           </Accordion>
         );
       })}
+
     </div>
   );
 };
@@ -309,7 +318,7 @@ const GLTFModel = () => {
   const boundingBoxRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  
+
 
   useEffect(() => {
     if (scene) {
@@ -432,7 +441,7 @@ export const PreviewImage = () => {
   const item = useSelector((state) => state.jsonData.previewArticle);
 
   if (!item || !item?.attributes?.image) return null;
-  
+
   const imageUrl = `https://tecnibo-2d-3d.onrender.com/${item?.attributes?.image}`;
 
   return (
@@ -454,7 +463,7 @@ export const PreviewImage = () => {
 export const PreviewArticle = () => {
   const item = useSelector((state) => state.jsonData.previewArticle);
   console.log('item:', item);
- 
+
 
   return (
     <>
@@ -491,8 +500,8 @@ export const PreviewArticle = () => {
 
     </>
   );
-  
-   
+
+
 
 };
 

@@ -21,7 +21,7 @@ export function prepareDataForServer(globalState) {
             isDragging: globalState.isDragging,
             isDrawing: globalState.isDrawing,
         },
-        items: globalState.items.map(item => ({
+        items: globalState.floorplanner.items.map(item => ({
             id: item.id,
             name: item.name,
             attributes: item.attributes,
