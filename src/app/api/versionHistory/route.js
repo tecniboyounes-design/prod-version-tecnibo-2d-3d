@@ -1,7 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = 'https://poyrlayjztqhyjaxbwcb.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBveXJsYXlqenRxaHlqYXhid2NiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAxMzgxMTMsImV4cCI6MjA1NTcxNDExM30.DM8Fnl0tzSp9h5Le_KWVXH0aThdzp8jZ1v9hOR6OgTQ';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
 export const fetchUserProjects = async (odooId) => {
@@ -32,7 +33,7 @@ export async function GET(req) {
 
   // Set CORS headers
   const headers = {
-    'Access-Control-Allow-Origin': '*', 
+    'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
   };
