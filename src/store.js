@@ -184,7 +184,6 @@ const initialState = {
     uom_ids: { '5': {} } // Previously [Object], should be an actual object
   },
 
-
 };
 
 
@@ -339,8 +338,10 @@ const jsonData = createSlice({
 
 
     pushProject: (state, action) => {
-      state.project = action.payload;
+      state.project = { ...action.payload };
     },
+    
+    
 
 
 

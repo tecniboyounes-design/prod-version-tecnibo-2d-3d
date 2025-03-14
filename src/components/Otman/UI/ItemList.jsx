@@ -324,7 +324,7 @@ const GLTFModel = () => {
     if (scene) {
       // console.log("Scene loaded. Preparing bounding box logic...", scene);
 
-
+      console.log('im,ran', group);
       const box = new THREE.Box3().setFromObject(scene);
       const size = new THREE.Vector3();
       const center = new THREE.Vector3();

@@ -18,7 +18,8 @@ import { Html } from '@react-three/drei';
 import CircularWithValueLabel from './CircularWithValueLabel';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useFetchProjectById } from '@/supabaseClient';
+import { manageVersionHistory, useFetchProjectById } from '@/supabaseClient';
+import { articles3D } from '@/data/models';
 
  const MainComponent = ({ currentView, menuWidth, isDragging, openedItemGrid }) => {
   const dispatch = useDispatch();
@@ -129,14 +130,44 @@ const NewProject = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
   const [droppedData, setDroppedData] = useState([]);
-  const projectInfo = useSelector((state) => state.jsonData.projectInfo);
+  const projectInfo = useSelector((state) => state);
   const items = useSelector((state) => state.jsonData.floorplanner.items);
   // console.log('items', items);
   const fetchProjectById = useFetchProjectById();
 
-  useEffect(() => {
-    fetchProjectById();
-  }, []); // Runs only on mount
+  
+useEffect(() => {
+  fetchProjectById();
+
+}, [])
+
+
+
+const handleButtonClick = async () => {
+  console.log('Fetching version history...');
+  const floorplan_id = '607d355f-46d1-461a-a238-5e581cf2a8f0';
+  const arrayType = 'items';
+  // Assuming `articles3D[0]` is the new item to add
+  const payload = articles3D[3]; 
+  const targetVersion = '1.1';
+  
+  try {
+    const res = await manageVersionHistory('C', floorplan_id, arrayType, payload, targetVersion);
+    console.log('Version history:', res);
+  } catch (error) {
+    console.error('API request failed:', error.message);
+  }
+};
+
+
+
+
+
+
+
+
+
+
   
 
   const handleClick = (event) => {
@@ -180,7 +211,7 @@ const NewProject = () => {
 
   return (
     <Container maxWidth="xl" disableGutters sx={{ height: '100vh' }}>
-
+      <Button onClick={handleButtonClick}>Fetch Version History</Button>
       <ProjectInfoBar />
 
       <Box

@@ -366,103 +366,6 @@ export const cloisonStyles = [
 ];
 
 
-[
-  {
-    id: 'a3bec47e-f248-442f-9fa1-bf8352af017e',
-    name: 'Younes Attaoui',
-    avatar: 'https://i.pravatar.cc/150?img=1'
-  },
-  {
-    id: 'be504c1e-4d18-40bd-b527-a7aece5ad742',
-    name: 'Omar El Idrissi',
-    avatar: 'https://i.pravatar.cc/150?img=2'
-  },
-  {
-    id: '7607db98-89d8-4654-b019-5c80a62d3fe6',
-    name: 'Otman',
-    avatar: 'https://i.pravatar.cc/150?img=3'
-  },
-  {
-    id: '6157aaa2-2f35-4513-b37f-1064fb608851',
-    name: 'Sabrina El Khouch',
-    avatar: 'https://i.pravatar.cc/150?img=4'
-  },
-  {
-    id: '7a5bd817-e499-4db2-8f4f-52cdd28d4737',
-    name: 'Rachid Benjelloun',
-    avatar: 'https://i.pravatar.cc/150?img=5'
-  },
-  {
-    id: 'ce79d38f-5129-435a-bd0e-22b8b4120ee9',
-    name: 'Otman',
-    avatar: 'https://i.pravatar.cc/150?img=3'
-  },
-  {
-    id: '7c9eebbe-b012-48b4-a263-d7cf81902a77',
-    name: 'Salma Mounir',
-    avatar: 'https://i.pravatar.cc/150?img=6'
-  },
-  {
-    id: '7644cf51-082d-448f-b758-50224fe92e3e',
-    name: 'Otman',
-    avatar: 'https://i.pravatar.cc/150?img=3'
-  },
-  {
-    id: '9b72bd66-070b-4c91-8228-1b2e70b2f92f',
-    name: 'Ahmed El Amrani',
-    avatar: 'https://i.pravatar.cc/150?img=7'
-  },
-  {
-    id: '18826b3f-161b-449d-836b-6febf7b8763e',
-    name: 'Omar El Idrissi',
-    avatar: 'https://i.pravatar.cc/150?img=8'
-  },
-  {
-    id: '5ad7c364-cba9-4ecb-a6e7-4cbaac59e058',
-    name: 'Otman',
-    avatar: 'https://i.pravatar.cc/150?img=3'
-  },
-  {
-    id: 'f33ccb71-ac71-4b3f-9ec5-dfe2f7b9c8ab',
-    name: 'Sofia El Hamidi',
-    avatar: 'https://i.pravatar.cc/150?img=9'
-  },
-  {
-    id: 'b9860497-1044-412f-a59c-3501aba178d6',
-    name: 'Tariq Benali',
-    avatar: 'https://i.pravatar.cc/150?img=10'
-  },
-  {
-    id: '45980411-c652-484f-984c-8837389b39d4',
-    name: 'Amina Aouad',
-    avatar: 'https://i.pravatar.cc/150?img=11'
-  },
-  {
-    id: '8beb625b-3b96-499b-9024-2720c982451e',
-    name: 'Yassine Boushaba',
-    avatar: 'https://i.pravatar.cc/150?img=12'
-  },
-  {
-    id: 'b75a414b-2cfb-4531-a585-ae9f051c7818',
-    name: 'Imane El Messaoudi',
-    avatar: 'https://i.pravatar.cc/150?img=13'
-  },
-  {
-    id: 'ca351652-ce50-44b7-8fcd-af84f60b0230',
-    name: 'Fatiha El Ghazali',
-    avatar: 'https://i.pravatar.cc/150?img=14'
-  },
-  {
-    id: '774b2c85-bd58-4e9b-909c-3902724bb755',
-    name: 'Otman',
-    avatar: 'https://i.pravatar.cc/150?img=3'
-  },
-  {
-    id: 'd5aaac7d-39ae-473e-99a2-6794e9180ce6',
-    name: 'Otman',
-    avatar: 'https://i.pravatar.cc/150?img=3'
-  }
-]
 
 
 export const projectsData = [
@@ -477,7 +380,7 @@ export const projectsData = [
     managers: [
       { id: uuidv4(), name: "Younes Attaoui", avatar: "https://i.pravatar.cc/150?img=1" },
       { id: uuidv4(), name: "Omar El Idrissi", avatar: "https://i.pravatar.cc/150?img=2" },
-      { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" }, 
+      { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" },
     ],
     status: "temp",
   },
@@ -492,7 +395,7 @@ export const projectsData = [
     managers: [
       { id: uuidv4(), name: "Sabrina El Khouch", avatar: "https://i.pravatar.cc/150?img=4" },
       { id: uuidv4(), name: "Rachid Benjelloun", avatar: "https://i.pravatar.cc/150?img=5" },
-      { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" }, 
+      { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" },
     ],
     status: "temp",
   },
@@ -506,7 +409,7 @@ export const projectsData = [
     changedOn: "11/01/2025, 10:45",
     managers: [
       { id: uuidv4(), name: "Salma Mounir", avatar: "https://i.pravatar.cc/150?img=6" },
-      { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" }, 
+      { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" },
     ],
     status: "temp",
   },
@@ -521,7 +424,7 @@ export const projectsData = [
     managers: [
       { id: uuidv4(), name: "Ahmed El Amrani", avatar: "https://i.pravatar.cc/150?img=7" },
       { id: uuidv4(), name: "Omar El Idrissi", avatar: "https://i.pravatar.cc/150?img=8" },
-      { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" }, 
+      { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" },
     ],
     status: "finished",
   },
@@ -682,8 +585,8 @@ export const dialogsData = [
     title: "Laser Tape",
     description: {
       intro: "Use a laser for a detailed measurement of two objects.",
-      units: null, 
-      note: null, 
+      units: null,
+      note: null,
     },
     image:
       "https://cdn.netshop.imos3d.com/navigram/ix-net-2019/tooltips/option-laser.png",
@@ -694,7 +597,7 @@ export const dialogsData = [
       intro:
         "Set the height of the laser to get the right snapping points of objects.",
       units: null,
-      note: null, 
+      note: null,
     },
     image:
       "https://cdn.netshop.imos3d.com/navigram/ix-net-2019/tooltips/option-laser-height.png",
@@ -714,7 +617,7 @@ export const dialogsData = [
       intro:
         "Lock the complete room e.g. for presentation. The navigation will be still available, but no other movement of objects can be done.",
       units: null,
-      note: null, 
+      note: null,
     },
     image:
       "https://cdn.netshop.imos3d.com/navigram/ix-net-2019/tooltips/option-lock.png",
@@ -724,7 +627,7 @@ export const dialogsData = [
     description: {
       intro: "Show or hide all fronts in the room.",
       units: null,
-      note: null, 
+      note: null,
     },
     image:
       "https://cdn.netshop.imos3d.com/navigram/ix-net-2019/tooltips/option-front.png",
@@ -733,22 +636,22 @@ export const dialogsData = [
     title: "Cutting Distance",
     description: {
       intro: "Value to set the cutting distance of the wall views.",
-      units: null, 
-      note: null, 
+      units: null,
+      note: null,
     },
     image:
       "https://cdn.netshop.imos3d.com/navigram/ix-net-2021-sr1/tooltips/option-cutting-distance.png",
   },
-    {
-      title: "Font Size",
-      description: {
-        intro: "The font size of the measuring for the wall views can be set by this specific value in pixels.",
-        units: null,
-        note: null 
-      },
-      image: null       
-    }
-  
+  {
+    title: "Font Size",
+    description: {
+      intro: "The font size of the measuring for the wall views can be set by this specific value in pixels.",
+      units: null,
+      note: null
+    },
+    image: null
+  }
+
 ];
 
 
@@ -904,7 +807,7 @@ export const formatDate = (dateString, formatType) => {
   if (!dateString) return 'N/A';
 
   const date = new Date(dateString);
-  if (isNaN(date.getTime())) return dateString; 
+  if (isNaN(date.getTime())) return dateString;
 
   if (formatType === 'short') {
     return date.toLocaleString('en-GB', {
@@ -917,7 +820,16 @@ export const formatDate = (dateString, formatType) => {
     }).replace(',', '');
   }
 
-  // Default long format
+  if (formatType === 'long') {
+    return date.toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour12: false,
+    }).replace(',', ''); // This will give you 'October 3, 2025'
+  }
+
+  // Default long format if no formatType is provided
   return date.toLocaleString('en-US', {
     year: 'numeric',
     month: 'long',
@@ -928,6 +840,7 @@ export const formatDate = (dateString, formatType) => {
     hour12: true,
   });
 };
+
 
 
 
@@ -952,8 +865,1528 @@ export const arrayToCorners = (array) => {
 
 
 
+[
+  {
+  
+    "doors": [
+      {
+        "id": "window-1738841866599",
+        "position": {
+          "x": 3.383,
+          "y": 0,
+          "z": -4.245
+        },
+        "rotation": 0,
+        "article_id": "window-1",
+        "name": "Standard Window",
+        "image": "/src/assets/window.png",
+        "width": 1.2,
+        "height": 2.6,
+        "wallId": "line-1738841848668-0",
+        "referencePointId": "point-1738841848668-1",
+        "referenceDistance": 3.3108564095498187
+      },
+      {
+        "id": "window-1738841870976",
+        "position": {
+          "x": -1.192,
+          "y": 0,
+          "z": -4.245
+        },
+        "rotation": 0,
+        "article_id": "window-1",
+        "name": "Standard Window",
+        "image": "/src/assets/window.png",
+        "width": 1.2,
+        "height": 2.6,
+        "wallId": "line-1738841848668-0",
+        "referencePointId": "point-1738841848668-0",
+        "referenceDistance": 4.6581525126331496
+      },
+      {
+        "id": "window-1738841875304",
+        "position": {
+          "x": 6.694,
+          "y": 0,
+          "z": -1.301
+        },
+        "rotation": 1.5707963267948966,
+        "article_id": "window-1",
+        "name": "Standard Window",
+        "image": "/src/assets/window.png",
+        "width": 1.2,
+        "height": 2.6,
+        "wallId": "line-1738841848668-1",
+        "referencePointId": "point-1738841848668-1",
+        "referenceDistance": 2.944
+      },
+      {
+        "id": "cloison-1739790738167",
+        "position": {
+          "x": 1.437,
+          "y": 0,
+          "z": 0.44799999999999995
+        },
+        "rotation": 0,
+        "article_id": "cloison-1",
+        "name": "T100-Left",
+        "dimension": {
+          "height": {
+            "min": 0.2,
+            "max": 3.1
+          },
+          "width": {
+            "min": 0.1,
+            "max": 1.2
+          }
+        },
+        "lines": {
+          "id": "cloison-1739790738167",
+          "startPointId": "point-1739790738168",
+          "endPointId": "point-1739790738169",
+          "length": 1.2,
+          "rotation": 0,
+          "thickness": 0.01,
+          "color": "#f5f5f5",
+          "texture": "default.avif",
+          "height": 3.2
+        },
+        "points": [
+          {
+            "id": "point-1739790738168",
+            "position": {
+              "x": 0.837,
+              "y": 0.01,
+              "z": 0.448
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          },
+          {
+            "id": "point-1739790738169",
+            "position": {
+              "x": 2.037,
+              "y": 0.01,
+              "z": 0.448
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          }
+        ]
+      },
+      {
+        "id": "cloison-1739790779751",
+        "position": {
+          "x": -1.815,
+          "y": 0,
+          "z": 0.9260000000000002
+        },
+        "rotation": 0,
+        "article_id": "cloison-1",
+        "name": "T100-Left",
+        "dimension": {
+          "height": {
+            "min": 0.2,
+            "max": 3.1
+          },
+          "width": {
+            "min": 0.1,
+            "max": 1.2
+          }
+        },
+        "lines": {
+          "id": "cloison-1739790779751",
+          "startPointId": "point-1739790779752",
+          "endPointId": "point-1739790779753",
+          "length": 1.2,
+          "rotation": 0,
+          "thickness": 0.01,
+          "color": "#f5f5f5",
+          "texture": "default.avif",
+          "height": 3.2
+        },
+        "points": [
+          {
+            "id": "point-1739790779752",
+            "position": {
+              "x": -2.415,
+              "y": 0.01,
+              "z": 0.926
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          },
+          {
+            "id": "point-1739790779753",
+            "position": {
+              "x": -1.215,
+              "y": 0.01,
+              "z": 0.926
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          }
+        ]
+      },
+      {
+        "id": "cloison-1740129868445",
+        "lines": {
+          "id": "cloison-1740129868445",
+          "startPointId": "point-1740129868446",
+          "endPointId": "point-1740129868447",
+          "length": 1.2,
+          "rotation": 0,
+          "thickness": 0.01,
+          "color": "RAL 1013",
+          "texture": "default.avif",
+          "height": 2.7,
+          "name": "T100-Left"
+        },
+        "points": [
+          {
+            "id": "point-1740129868446",
+            "position": {
+              "x": 24.641,
+              "y": 0.01,
+              "z": 4.403
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          },
+          {
+            "id": "point-1740129868447",
+            "position": {
+              "x": 25.841,
+              "y": 0.01,
+              "z": 4.403
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          }
+        ]
+      },
+      {
+        "id": "cloison-1740129876085",
+        "lines": {
+          "id": "cloison-1740129876085",
+          "startPointId": "point-1740129876086",
+          "endPointId": "point-1740129876087",
+          "length": 1.2,
+          "rotation": 0,
+          "thickness": 0.01,
+          "color": "RAL 1013",
+          "texture": "default.avif",
+          "height": 2.7,
+          "name": "T100-Left"
+        },
+        "points": [
+          {
+            "id": "point-1740129876086",
+            "position": {
+              "x": 25.675,
+              "y": 0.01,
+              "z": 9.968
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          },
+          {
+            "id": "point-1740129876087",
+            "position": {
+              "x": 26.875,
+              "y": 0.01,
+              "z": 9.968
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          }
+        ]
+      },
+      {
+        "id": "cloison-1740739964866",
+        "lines": {
+          "id": "cloison-1740739964866",
+          "startPointId": "point-1740739964867",
+          "endPointId": "point-1740739964868",
+          "length": 1.2,
+          "rotation": 0,
+          "thickness": 0.01,
+          "color": "RAL 3011",
+          "texture": "default.avif",
+          "height": 3.2,
+          "name": "T100",
+          "image": "P_T100_START_LEF.png"
+        },
+        "points": [
+          {
+            "id": "point-1740739964867",
+            "position": {
+              "x": 11.414,
+              "y": 0.01,
+              "z": -5.416
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          },
+          {
+            "id": "point-1740739964868",
+            "position": {
+              "x": 12.614,
+              "y": 0.01,
+              "z": -5.416
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          }
+        ]
+      },
+      {
+        "id": "cloison-1740739990795",
+        "lines": {
+          "id": "cloison-1740739990795",
+          "startPointId": "point-1740739990796",
+          "endPointId": "point-1740739990797",
+          "length": 1.2,
+          "rotation": 0,
+          "thickness": 0.01,
+          "color": "RAL 3011",
+          "texture": "default.avif",
+          "height": 3.2,
+          "name": "T100",
+          "image": "P_T100_START_LEF.png"
+        },
+        "points": [
+          {
+            "id": "point-1740739990796",
+            "position": {
+              "x": 8.835,
+              "y": 0.01,
+              "z": 7.615
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          },
+          {
+            "id": "point-1740739990797",
+            "position": {
+              "x": 10.035,
+              "y": 0.01,
+              "z": 7.615
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          }
+        ]
+      },
+      {
+        "id": "cloison-1740740025570",
+        "lines": {
+          "id": "cloison-1740740025570",
+          "startPointId": "point-1740740025571",
+          "endPointId": "point-1740740025572",
+          "length": 1.2,
+          "rotation": 0,
+          "thickness": 0.01,
+          "color": "RAL 1013",
+          "texture": "default.avif",
+          "height": 2.7,
+          "name": "T100-Left",
+          "image": "P_T100_START_LEF_HAAS_RIG.png"
+        },
+        "points": [
+          {
+            "id": "point-1740740025571",
+            "position": {
+              "x": 14.48,
+              "y": 0.01,
+              "z": 2.528
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          },
+          {
+            "id": "point-1740740025572",
+            "position": {
+              "x": 15.68,
+              "y": 0.01,
+              "z": 2.528
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          }
+        ]
+      },
+      {
+        "id": "door-1741090314293",
+        "position": {
+          "x": 1.553,
+          "y": -1.7763568394002505e-15,
+          "z": -1.628
+        },
+        "rotation": 1.5707963267948966,
+        "article_id": "door-1",
+        "name": "Basic Entry",
+        "image": "/src/assets/BasicEntry.webp",
+        "width": 1,
+        "height": 2.4,
+        "doorType": "single",
+        "pivotDirection": "left",
+        "setDirection": "in",
+        "color": "white",
+        "texture": "default.avif",
+        "type": "Type 03",
+        "wallId": "cloison-1740739964866",
+        "referencePointId": "point-1740739964867",
+        "referenceDistance": 2.624,
+        "material": "Wood",
+        "doorDecoration": "Type 01",
+        "baseFinish": "#f5f5f5",
+        "frameType": "Type 01"
+      }
+    ],
+    "floors": [
+      {
+        "id": "floor-room1",
+        "color": "#fff",
+        "texture": "EG_F204.jpg"
+      }
+    ],
+    "walls": [
+      {
+        "id": "line-1738841848668-0",
+        "startPointId": "point-1738841848668-0",
+        "endPointId": "point-1738841848668-1",
+        "length": 12.54,
+        "rotation": 3.141592653589793,
+        "thickness": 0.012,
+        "color": "#f5f5f5",
+        "texture": "default.avif",
+        "height": 4,
+        "angles": [
+          {
+            "internalAngle": 1.5707963267948966,
+            "externalAngle": 4.71238898038469,
+            "internalAngleDeg": 90,
+            "externalAngleDeg": 270,
+            "connectedLineId": "line-1738841848668-3",
+            "pointId": "point-1738841848668-0",
+            "startAngle": 0,
+            "direction": 1
+          }
+        ]
+      },
+      {
+        "id": "line-1738841848668-1",
+        "startPointId": "point-1738841848668-1",
+        "endPointId": "point-1738841848668-2",
+        "length": 9.11,
+        "rotation": -1.5707963267948966,
+        "thickness": 0.012,
+        "color": "#f5f5f5",
+        "texture": "default.avif",
+        "height": 4,
+        "angles": [
+          {
+            "internalAngle": 1.5707963267948966,
+            "externalAngle": 4.71238898038469,
+            "internalAngleDeg": 90,
+            "externalAngleDeg": 270,
+            "connectedLineId": "line-1738841848668-2",
+            "pointId": "point-1738841848668-2",
+            "startAngle": -1.5707963267948966,
+            "direction": -1
+          }
+        ]
+      },
+      {
+        "id": "line-1738841848668-2",
+        "startPointId": "point-1738841848668-2",
+        "endPointId": "point-1738841848668-3",
+        "length": 12.54,
+        "rotation": 0,
+        "thickness": 0.012,
+        "color": "#f5f5f5",
+        "texture": "default.avif",
+        "height": 4,
+        "angles": [
+          {
+            "internalAngle": 1.5707963267948966,
+            "externalAngle": 4.71238898038469,
+            "internalAngleDeg": 90,
+            "externalAngleDeg": 270,
+            "connectedLineId": "line-1738841848668-1",
+            "pointId": "point-1738841848668-2",
+            "startAngle": -1.5707963267948966,
+            "direction": -1
+          }
+        ]
+      },
+      {
+        "id": "line-1738841848668-3",
+        "startPointId": "point-1738841848668-3",
+        "endPointId": "point-1738841848668-0",
+        "length": 9.11,
+        "rotation": 1.5707963267948966,
+        "thickness": 0.012,
+        "color": "#f5f5f5",
+        "texture": "default.avif",
+        "height": 4,
+        "angles": [
+          {
+            "internalAngle": 1.5707963267948966,
+            "externalAngle": 4.71238898038469,
+            "internalAngleDeg": 90,
+            "externalAngleDeg": 270,
+            "connectedLineId": "line-1738841848668-0",
+            "pointId": "point-1738841848668-0",
+            "startAngle": 0,
+            "direction": 1
+          }
+        ]
+      },
+      {
+        "id": "cloison-1740739964866",
+        "startPointId": "point-1740739964867",
+        "endPointId": "point-1740739964868",
+        "length": 5.55,
+        "rotation": -1.5707963267948966,
+        "thickness": 0.01,
+        "color": {
+          "code": "RAL 9016",
+          "finish": "Mat"
+        },
+        "texture": "default.avif",
+        "height": 3.2,
+        "name": "T100",
+        "image": "P_T100_START_LEF.png",
+        "quantity": 1,
+        "estimate": false,
+        "acoustic_performance": "Rw = 45 dB",
+        "ceiling_type": "Gyproc ceiling",
+        "floor_type": "Raised floor (plancher)",
+        "links": {
+          "top": "Coated steel profile U",
+          "left": "Wall or Gyproc (Coated steel profile)",
+          "right": "Wall or Gyproc (Coated steel profile)"
+        },
+        "dimensions": {
+          "height": 3.2,
+          "width": 5.18,
+          "thickness": 0.1
+        },
+        "material": {
+          "producer": "Unilin",
+          "category": "DE",
+          "group": "Uni",
+          "substrate": "MDFGR 18.0 mm",
+          "substrateProperty": "Water-resistant",
+          "decor": "UN_0L103_SM1",
+          "profile": "UN_DE_HGW_MDFGR_0L103_SM1_18",
+          "preGluedProfile": "Unilim Evola 025 CST 0.3mm préencollé",
+          "differentSides": false
+        },
+        "angles": [
+          {
+            "internalAngle": 1.5707963267948966,
+            "externalAngle": 4.71238898038469,
+            "internalAngleDeg": 90,
+            "externalAngleDeg": 270,
+            "connectedLineId": "cloison-1740740025570",
+            "pointId": "point-1740739964868",
+            "startAngle": -1.5707963267948966,
+            "direction": -1
+          }
+        ]
+      },
+      {
+        "id": "cloison-1740739990795",
+        "startPointId": "point-1740739990796",
+        "endPointId": "point-1740739990797",
+        "length": 3.56,
+        "rotation": 1.5707963267948966,
+        "thickness": 0.01,
+        "color": {
+          "code": "RAL 9016",
+          "finish": "Mat"
+        },
+        "texture": "default.avif",
+        "height": 3.2,
+        "name": "T100",
+        "image": "P_T100_START_LEF.png",
+        "quantity": 1,
+        "estimate": false,
+        "acoustic_performance": "Rw = 45 dB",
+        "ceiling_type": "Gyproc ceiling",
+        "floor_type": "Raised floor (plancher)",
+        "links": {
+          "top": "Coated steel profile U",
+          "left": "Wall or Gyproc (Coated steel profile)",
+          "right": "Wall or Gyproc (Coated steel profile)"
+        },
+        "dimensions": {
+          "height": 3.2,
+          "width": 3.17,
+          "thickness": 0.1
+        },
+        "material": {
+          "producer": "Unilin",
+          "category": "Evola",
+          "group": "Uni",
+          "substrate": "Particle Board 18.0 mm",
+          "substrateProperty": "Water-resistant",
+          "decor": "UN_00025_CST",
+          "profile": "Unilim Evola 025 CST 0.3mm",
+          "preGluedProfile": "Unilim Evola 025 CST 0.3mm préencollé",
+          "differentSides": false
+        },
+        "angles": [
+          {
+            "internalAngle": 1.4986914229693395,
+            "externalAngle": 4.784493884210247,
+            "internalAngleDeg": 85.86869332859888,
+            "externalAngleDeg": 274.1313066714011,
+            "connectedLineId": "cloison-1740740025570",
+            "pointId": "point-1740739990797",
+            "startAngle": 1.5707963267948966,
+            "direction": -1
+          }
+        ]
+      },
+      {
+        "id": "cloison-1740740025570",
+        "startPointId": "point-1740739964868",
+        "endPointId": "point-1740739990797",
+        "length": 4.84,
+        "rotation": 0,
+        "thickness": 0.01,
+        "color": {
+          "code": "RAL 9016",
+          "finish": "Mat"
+        },
+        "texture": "default.avif",
+        "height": 2.7,
+        "name": "T100-Left",
+        "image": "P_T100_START_LEF_HAAS_RIG.png",
+        "quantity": 1,
+        "estimate": false,
+        "acoustic_performance": "Rw = 45 dB",
+        "ceiling_type": "Gyproc ceiling",
+        "floor_type": "Raised floor (plancher)",
+        "links": {
+          "top": "Coated steel profile U",
+          "left": "Wall or Gyproc (Coated steel profile)",
+          "right": "Wall or Gyproc (Coated steel profile)"
+        },
+        "dimensions": {
+          "height": 2.7,
+          "width": 6.13,
+          "thickness": 0.1
+        },
+        "material": {
+          "producer": "Unilin",
+          "category": "Evola",
+          "group": "Uni",
+          "substrate": "Particle Board 18.0 mm",
+          "substrateProperty": "Water-resistant",
+          "decor": "UN_00025_CST",
+          "profile": "Unilim Evola 025 CST 0.3mm",
+          "preGluedProfile": "Unilim Evola 025 CST 0.3mm préencollé",
+          "differentSides": false
+        },
+        "angles": [
+          {
+            "internalAngle": 1.5707963267948966,
+            "externalAngle": 4.71238898038469,
+            "internalAngleDeg": 90,
+            "externalAngleDeg": 270,
+            "connectedLineId": "cloison-1740739964866",
+            "pointId": "point-1740739964868",
+            "startAngle": -1.5707963267948966,
+            "direction": -1
+          }
+        ]
+      }
+    ],
+    "points": [
+      {
+        "id": "point-1738841848668-0",
+        "position": {
+          "x": -5.85,
+          "y": 0.01,
+          "z": -4.245
+        },
+        "rotation": 0,
+        "snapAngle": 0
+      },
+      {
+        "id": "point-1738841848668-1",
+        "position": {
+          "x": 6.694,
+          "y": 0.01,
+          "z": -4.245
+        },
+        "rotation": 0,
+        "snapAngle": 0
+      },
+      {
+        "id": "point-1738841848668-2",
+        "position": {
+          "x": 6.694,
+          "y": 0.01,
+          "z": 4.862
+        },
+        "rotation": 0,
+        "snapAngle": 0
+      },
+      {
+        "id": "point-1738841848668-3",
+        "position": {
+          "x": -5.85,
+          "y": 0.01,
+          "z": 4.862
+        },
+        "rotation": 0,
+        "snapAngle": 0
+      },
+      {
+        "id": "point-1740739964867",
+        "position": {
+          "x": 1.553,
+          "y": 0.01,
+          "z": -4.245
+        },
+        "rotation": 0,
+        "snapAngle": 0
+      },
+      {
+        "id": "point-1740739964868",
+        "position": {
+          "x": 1.553,
+          "y": 0.01,
+          "z": 1.304
+        },
+        "rotation": 0,
+        "snapAngle": 0
+      },
+      {
+        "id": "point-1740739990796",
+        "position": {
+          "x": -3.285,
+          "y": 0.01,
+          "z": 4.862
+        },
+        "rotation": 0,
+        "snapAngle": 0
+      },
+      {
+        "id": "point-1740739990797",
+        "position": {
+          "x": -3.285,
+          "y": 0.01,
+          "z": 1.304
+        },
+        "rotation": 0,
+        "snapAngle": 0
+      }
+    ],
+    "version": "1.0",
+    "created": "2025-02-06T11:36:26.605Z",
+    "lastModified": "2025-03-04T13:34:05.568Z"
+  },
+  {
+    "lines": [
+      {
+        "id": "line-1738841848668-0",
+        "startPointId": "point-1738841848668-0",
+        "endPointId": "point-1738841848668-1",
+        "length": 12.54,
+        "rotation": 3.141592653589793,
+        "thickness": 0.012,
+        "color": "#f5f5f5",
+        "texture": "default.avif",
+        "height": 4,
+        "angles": [
+          {
+            "internalAngle": 1.5707963267948966,
+            "externalAngle": 4.71238898038469,
+            "internalAngleDeg": 90,
+            "externalAngleDeg": 270,
+            "connectedLineId": "line-1738841848668-3",
+            "pointId": "point-1738841848668-0",
+            "startAngle": 0,
+            "direction": 1
+          }
+        ]
+      },
+      {
+        "id": "line-1738841848668-1",
+        "startPointId": "point-1738841848668-1",
+        "endPointId": "point-1738841848668-2",
+        "length": 9.11,
+        "rotation": -1.5707963267948966,
+        "thickness": 0.012,
+        "color": "#f5f5f5",
+        "texture": "default.avif",
+        "height": 4,
+        "angles": [
+          {
+            "internalAngle": 1.5707963267948966,
+            "externalAngle": 4.71238898038469,
+            "internalAngleDeg": 90,
+            "externalAngleDeg": 270,
+            "connectedLineId": "line-1738841848668-2",
+            "pointId": "point-1738841848668-2",
+            "startAngle": -1.5707963267948966,
+            "direction": -1
+          }
+        ]
+      },
+      {
+        "id": "line-1738841848668-2",
+        "startPointId": "point-1738841848668-2",
+        "endPointId": "point-1738841848668-3",
+        "length": 12.54,
+        "rotation": 0,
+        "thickness": 0.012,
+        "color": "#f5f5f5",
+        "texture": "default.avif",
+        "height": 4,
+        "angles": [
+          {
+            "internalAngle": 1.5707963267948966,
+            "externalAngle": 4.71238898038469,
+            "internalAngleDeg": 90,
+            "externalAngleDeg": 270,
+            "connectedLineId": "line-1738841848668-1",
+            "pointId": "point-1738841848668-2",
+            "startAngle": -1.5707963267948966,
+            "direction": -1
+          }
+        ]
+      },
+      {
+        "id": "line-1738841848668-3",
+        "startPointId": "point-1738841848668-3",
+        "endPointId": "point-1738841848668-0",
+        "length": 9.11,
+        "rotation": 1.5707963267948966,
+        "thickness": 0.012,
+        "color": "#f5f5f5",
+        "texture": "default.avif",
+        "height": 4,
+        "angles": [
+          {
+            "internalAngle": 1.5707963267948966,
+            "externalAngle": 4.71238898038469,
+            "internalAngleDeg": 90,
+            "externalAngleDeg": 270,
+            "connectedLineId": "line-1738841848668-0",
+            "pointId": "point-1738841848668-0",
+            "startAngle": 0,
+            "direction": 1
+          }
+        ]
+      },
+      {
+        "id": "cloison-1740739964866",
+        "startPointId": "point-1740739964867",
+        "endPointId": "point-1740739964868",
+        "length": 5.18,
+        "rotation": -1.5707963267948968,
+        "thickness": 0.01,
+        "color": {
+          "code": "RAL 1013",
+          "finish": "Mat"
+        },
+        "texture": "default.avif",
+        "height": 3.2,
+        "name": "T100",
+        "image": "P_T100_START_LEF.png",
+        "quantity": 1,
+        "estimate": false,
+        "acoustic_performance": "Rw = 45 dB",
+        "ceiling_type": "Gyproc ceiling",
+        "floor_type": "Raised floor (plancher)",
+        "links": {
+          "top": "Coated steel profile U",
+          "left": "Wall or Gyproc (Coated steel profile)",
+          "right": "Wall or Gyproc (Coated steel profile)"
+        },
+        "dimensions": {
+          "height": 3.2,
+          "width": 5.18,
+          "thickness": 0.1
+        },
+        "material": {
+          "producer": "Unilin",
+          "category": "DE",
+          "group": "Uni",
+          "substrate": "MDFGR 18.0 mm",
+          "substrateProperty": "Water-resistant",
+          "decor": "UN_0L103_SM1",
+          "profile": "UN_DE_HGW_MDFGR_0L103_SM1_18",
+          "preGluedProfile": "Unilim Evola 025 CST 0.3mm préencollé",
+          "differentSides": false
+        }
+      },
+      {
+        "id": "cloison-1740739990795",
+        "startPointId": "point-1740739990796",
+        "endPointId": "point-1740739990797",
+        "length": 3.17,
+        "rotation": 1.5707963267948966,
+        "thickness": 0.01,
+        "color": {
+          "0": "R",
+          "1": "A",
+          "2": "L",
+          "3": " ",
+          "4": "3",
+          "5": "0",
+          "6": "1",
+          "7": "1",
+          "code": "RAL 3009",
+          "finish": "Mat"
+        },
+        "texture": "default.avif",
+        "height": 3.2,
+        "name": "T100",
+        "image": "P_T100_START_LEF.png",
+        "quantity": 1,
+        "estimate": false,
+        "acoustic_performance": "Rw = 45 dB",
+        "ceiling_type": "Gyproc ceiling",
+        "floor_type": "Raised floor (plancher)",
+        "links": {
+          "top": "Coated steel profile U",
+          "left": "Wall or Gyproc (Coated steel profile)",
+          "right": "Wall or Gyproc (Coated steel profile)"
+        },
+        "dimensions": {
+          "height": 3.2,
+          "width": 3.17,
+          "thickness": 0.1
+        },
+        "material": {
+          "producer": "Unilin",
+          "category": "Evola",
+          "group": "Uni",
+          "substrate": "Particle Board 18.0 mm",
+          "substrateProperty": "Water-resistant",
+          "decor": "UN_00025_CST",
+          "profile": "Unilim Evola 025 CST 0.3mm",
+          "preGluedProfile": "Unilim Evola 025 CST 0.3mm préencollé",
+          "differentSides": false
+        }
+      },
+      {
+        "id": "cloison-1740740025570",
+        "startPointId": "point-1740740025571",
+        "endPointId": "point-1740740025572",
+        "length": 6.13,
+        "rotation": -1.4489044367049354e-16,
+        "thickness": 0.01,
+        "color": {
+          "code": "RAL 1013",
+          "finish": "Mat"
+        },
+        "texture": "default.avif",
+        "height": 2.7,
+        "name": "T100-Left",
+        "image": "P_T100_START_LEF_HAAS_RIG.png",
+        "quantity": 1,
+        "estimate": false,
+        "acoustic_performance": "Rw = 45 dB",
+        "ceiling_type": "Gyproc ceiling",
+        "floor_type": "Raised floor (plancher)",
+        "links": {
+          "top": "Coated steel profile U",
+          "left": "Wall or Gyproc (Coated steel profile)",
+          "right": "Wall or Gyproc (Coated steel profile)"
+        },
+        "dimensions": {
+          "height": 2.7,
+          "width": 6.13,
+          "thickness": 0.1
+        },
+        "material": {
+          "producer": "Unilin",
+          "category": "Evola",
+          "group": "Uni",
+          "substrate": "Particle Board 18.0 mm",
+          "substrateProperty": "Water-resistant",
+          "decor": "UN_00025_CST",
+          "profile": "Unilim Evola 025 CST 0.3mm",
+          "preGluedProfile": "Unilim Evola 025 CST 0.3mm préencollé",
+          "differentSides": false
+        }
+      },
+      {
+        "id": "cloison-1740745325673",
+        "startPointId": "point-1740745325674",
+        "endPointId": "point-1740745325675",
+        "length": 4.46,
+        "rotation": 3.141592653589793,
+        "thickness": 0.01,
+        "color": {
+          "code": "RAL 1013",
+          "finish": "Mat"
+        },
+        "texture": "default.avif",
+        "height": 2.7,
+        "name": "T100-Left",
+        "image": "P_T100_START_LEF_HAAS_RIG.png",
+        "quantity": 1,
+        "estimate": false,
+        "acoustic_performance": "Rw = 45 dB",
+        "ceiling_type": "Gyproc ceiling",
+        "floor_type": "Raised floor (plancher)",
+        "links": {
+          "top": "Coated steel profile U",
+          "left": "Wall or Gyproc (Coated steel profile)",
+          "right": "Wall or Gyproc (Coated steel profile)"
+        },
+        "dimensions": {
+          "height": 2.7,
+          "width": 4.46,
+          "thickness": 0.1
+        },
+        "material": {
+          "producer": "Unilin",
+          "category": "DE",
+          "group": "Uni",
+          "substrate": "MDFBL 18.0 mm",
+          "substrateProperty": "Water-resistant",
+          "decor": "UN_0L100_HG1",
+          "profile": "UN_DE_HGW_MDFBL_0L100_HG1_18",
+          "preGluedProfile": "Unilim Evola 025 CST 0.3mm préencollé",
+          "differentSides": false
+        }
+      }
+    ],
+    "points": [
+      {
+        "id": "point-1738841848668-0",
+        "position": {
+          "x": -5.85,
+          "y": 0.01,
+          "z": -4.245
+        },
+        "rotation": 0,
+        "snapAngle": 0
+      },
+      {
+        "id": "point-1738841848668-1",
+        "position": {
+          "x": 6.694,
+          "y": 0.01,
+          "z": -4.245
+        },
+        "rotation": 0,
+        "snapAngle": 0
+      },
+      {
+        "id": "point-1738841848668-2",
+        "position": {
+          "x": 6.694,
+          "y": 0.01,
+          "z": 4.862
+        },
+        "rotation": 0,
+        "snapAngle": 0
+      },
+      {
+        "id": "point-1738841848668-3",
+        "position": {
+          "x": -5.85,
+          "y": 0.01,
+          "z": 4.862
+        },
+        "rotation": 0,
+        "snapAngle": 0
+      },
+      {
+        "id": "point-1740739964867",
+        "position": {
+          "x": 1.5529999999999997,
+          "y": 0.01,
+          "z": -4.244
+        },
+        "rotation": 0,
+        "snapAngle": 0
+      },
+      {
+        "id": "point-1740739964868",
+        "position": {
+          "x": 1.5530000000000002,
+          "y": 0.01,
+          "z": 0.9359999999999999
+        },
+        "rotation": 0,
+        "snapAngle": 0
+      },
+      {
+        "id": "point-1740739990796",
+        "position": {
+          "x": -2.799,
+          "y": 0.01,
+          "z": 4.859500000000001
+        },
+        "rotation": 0,
+        "snapAngle": 0
+      },
+      {
+        "id": "point-1740739990797",
+        "position": {
+          "x": -2.799,
+          "y": 0.01,
+          "z": 1.6895000000000002
+        },
+        "rotation": 0,
+        "snapAngle": 0
+      },
+      {
+        "id": "point-1740740025571",
+        "position": {
+          "x": 6.6915,
+          "y": 0.01,
+          "z": 2.3749999999999996
+        },
+        "rotation": 0,
+        "snapAngle": 0
+      },
+      {
+        "id": "point-1740740025572",
+        "position": {
+          "x": 0.5615000000000001,
+          "y": 0.01,
+          "z": 2.3750000000000004
+        },
+        "rotation": 0,
+        "snapAngle": 0
+      },
+      {
+        "id": "point-1740745325674",
+        "position": {
+          "x": -1.3904999999999998,
+          "y": 0.01,
+          "z": -0.7340000000000002
+        },
+        "rotation": 0,
+        "snapAngle": 0
+      },
+      {
+        "id": "point-1740745325675",
+        "position": {
+          "x": -5.8505,
+          "y": 0.01,
+          "z": -0.7339999999999998
+        },
+        "rotation": 0,
+        "snapAngle": 0
+      }
+    ],
+    "doors": [
+      {
+        "id": "window-1738841866599",
+        "position": {
+          "x": 3.383,
+          "y": 0,
+          "z": -4.245
+        },
+        "rotation": 0,
+        "article_id": "window-1",
+        "name": "Standard Window",
+        "image": "/src/assets/window.png",
+        "width": 1.2,
+        "height": 2.6,
+        "wallId": "line-1738841848668-0",
+        "referencePointId": "point-1738841848668-1",
+        "referenceDistance": 3.3108564095498187
+      },
+      {
+        "id": "window-1738841870976",
+        "position": {
+          "x": -1.192,
+          "y": 0,
+          "z": -4.245
+        },
+        "rotation": 0,
+        "article_id": "window-1",
+        "name": "Standard Window",
+        "image": "/src/assets/window.png",
+        "width": 1.2,
+        "height": 2.6,
+        "wallId": "line-1738841848668-0",
+        "referencePointId": "point-1738841848668-0",
+        "referenceDistance": 4.6581525126331496
+      },
+      {
+        "id": "window-1738841875304",
+        "position": {
+          "x": 6.694,
+          "y": 0,
+          "z": -1.301
+        },
+        "rotation": 1.5707963267948966,
+        "article_id": "window-1",
+        "name": "Standard Window",
+        "image": "/src/assets/window.png",
+        "width": 1.2,
+        "height": 2.6,
+        "wallId": "line-1738841848668-1",
+        "referencePointId": "point-1738841848668-1",
+        "referenceDistance": 2.944
+      },
+      {
+        "id": "cloison-1739790738167",
+        "position": {
+          "x": 1.437,
+          "y": 0,
+          "z": 0.44799999999999995
+        },
+        "rotation": 0,
+        "article_id": "cloison-1",
+        "name": "T100-Left",
+        "dimension": {
+          "height": {
+            "min": 0.2,
+            "max": 3.1
+          },
+          "width": {
+            "min": 0.1,
+            "max": 1.2
+          }
+        },
+        "lines": {
+          "id": "cloison-1739790738167",
+          "startPointId": "point-1739790738168",
+          "endPointId": "point-1739790738169",
+          "length": 1.2,
+          "rotation": 0,
+          "thickness": 0.01,
+          "color": "#f5f5f5",
+          "texture": "default.avif",
+          "height": 3.2
+        },
+        "points": [
+          {
+            "id": "point-1739790738168",
+            "position": {
+              "x": 0.837,
+              "y": 0.01,
+              "z": 0.448
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          },
+          {
+            "id": "point-1739790738169",
+            "position": {
+              "x": 2.037,
+              "y": 0.01,
+              "z": 0.448
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          }
+        ]
+      },
+      {
+        "id": "cloison-1739790779751",
+        "position": {
+          "x": -1.815,
+          "y": 0,
+          "z": 0.9260000000000002
+        },
+        "rotation": 0,
+        "article_id": "cloison-1",
+        "name": "T100-Left",
+        "dimension": {
+          "height": {
+            "min": 0.2,
+            "max": 3.1
+          },
+          "width": {
+            "min": 0.1,
+            "max": 1.2
+          }
+        },
+        "lines": {
+          "id": "cloison-1739790779751",
+          "startPointId": "point-1739790779752",
+          "endPointId": "point-1739790779753",
+          "length": 1.2,
+          "rotation": 0,
+          "thickness": 0.01,
+          "color": "#f5f5f5",
+          "texture": "default.avif",
+          "height": 3.2
+        },
+        "points": [
+          {
+            "id": "point-1739790779752",
+            "position": {
+              "x": -2.415,
+              "y": 0.01,
+              "z": 0.926
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          },
+          {
+            "id": "point-1739790779753",
+            "position": {
+              "x": -1.215,
+              "y": 0.01,
+              "z": 0.926
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          }
+        ]
+      },
+      {
+        "id": "cloison-1740129868445",
+        "lines": {
+          "id": "cloison-1740129868445",
+          "startPointId": "point-1740129868446",
+          "endPointId": "point-1740129868447",
+          "length": 1.2,
+          "rotation": 0,
+          "thickness": 0.01,
+          "color": "RAL 1013",
+          "texture": "default.avif",
+          "height": 2.7,
+          "name": "T100-Left"
+        },
+        "points": [
+          {
+            "id": "point-1740129868446",
+            "position": {
+              "x": 24.641,
+              "y": 0.01,
+              "z": 4.403
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          },
+          {
+            "id": "point-1740129868447",
+            "position": {
+              "x": 25.841,
+              "y": 0.01,
+              "z": 4.403
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          }
+        ]
+      },
+      {
+        "id": "cloison-1740129876085",
+        "lines": {
+          "id": "cloison-1740129876085",
+          "startPointId": "point-1740129876086",
+          "endPointId": "point-1740129876087",
+          "length": 1.2,
+          "rotation": 0,
+          "thickness": 0.01,
+          "color": "RAL 1013",
+          "texture": "default.avif",
+          "height": 2.7,
+          "name": "T100-Left"
+        },
+        "points": [
+          {
+            "id": "point-1740129876086",
+            "position": {
+              "x": 25.675,
+              "y": 0.01,
+              "z": 9.968
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          },
+          {
+            "id": "point-1740129876087",
+            "position": {
+              "x": 26.875,
+              "y": 0.01,
+              "z": 9.968
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          }
+        ]
+      },
+      {
+        "id": "cloison-1740739964866",
+        "lines": {
+          "id": "cloison-1740739964866",
+          "startPointId": "point-1740739964867",
+          "endPointId": "point-1740739964868",
+          "length": 1.2,
+          "rotation": 0,
+          "thickness": 0.01,
+          "color": "RAL 3011",
+          "texture": "default.avif",
+          "height": 3.2,
+          "name": "T100",
+          "image": "P_T100_START_LEF.png"
+        },
+        "points": [
+          {
+            "id": "point-1740739964867",
+            "position": {
+              "x": 11.414,
+              "y": 0.01,
+              "z": -5.416
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          },
+          {
+            "id": "point-1740739964868",
+            "position": {
+              "x": 12.614,
+              "y": 0.01,
+              "z": -5.416
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          }
+        ]
+      },
+      {
+        "id": "cloison-1740739990795",
+        "lines": {
+          "id": "cloison-1740739990795",
+          "startPointId": "point-1740739990796",
+          "endPointId": "point-1740739990797",
+          "length": 1.2,
+          "rotation": 0,
+          "thickness": 0.01,
+          "color": "RAL 3011",
+          "texture": "default.avif",
+          "height": 3.2,
+          "name": "T100",
+          "image": "P_T100_START_LEF.png"
+        },
+        "points": [
+          {
+            "id": "point-1740739990796",
+            "position": {
+              "x": 8.835,
+              "y": 0.01,
+              "z": 7.615
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          },
+          {
+            "id": "point-1740739990797",
+            "position": {
+              "x": 10.035,
+              "y": 0.01,
+              "z": 7.615
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          }
+        ]
+      },
+      {
+        "id": "cloison-1740740025570",
+        "lines": {
+          "id": "cloison-1740740025570",
+          "startPointId": "point-1740740025571",
+          "endPointId": "point-1740740025572",
+          "length": 1.2,
+          "rotation": 0,
+          "thickness": 0.01,
+          "color": "RAL 1013",
+          "texture": "default.avif",
+          "height": 2.7,
+          "name": "T100-Left",
+          "image": "P_T100_START_LEF_HAAS_RIG.png"
+        },
+        "points": [
+          {
+            "id": "point-1740740025571",
+            "position": {
+              "x": 14.48,
+              "y": 0.01,
+              "z": 2.528
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          },
+          {
+            "id": "point-1740740025572",
+            "position": {
+              "x": 15.68,
+              "y": 0.01,
+              "z": 2.528
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          }
+        ]
+      },
+      {
+        "id": "cloison-1740745325673",
+        "lines": {
+          "id": "cloison-1740745325673",
+          "startPointId": "point-1740745325674",
+          "endPointId": "point-1740745325675",
+          "length": 1.2,
+          "rotation": 0,
+          "thickness": 0.01,
+          "color": "RAL 1013",
+          "texture": "default.avif",
+          "height": 2.7,
+          "name": "T100-Left",
+          "image": "P_T100_START_LEF_HAAS_RIG.png"
+        },
+        "points": [
+          {
+            "id": "point-1740745325674",
+            "position": {
+              "x": 10.802,
+              "y": 0.01,
+              "z": 2.311
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          },
+          {
+            "id": "point-1740745325675",
+            "position": {
+              "x": 12.002,
+              "y": 0.01,
+              "z": 2.311
+            },
+            "rotation": 0,
+            "snapAngle": 0
+          }
+        ]
+      }
+    ],
+    "floors": [
+      {
+        "id": "floor-room1",
+        "color": "#fff",
+        "texture": "EG_F204.jpg"
+      }
+    ],
+    "version": "1.1",
+    "created": "2025-02-28T12:21:51.574Z",
+    "lastModified": "2025-03-03T12:23:12.997Z",
+    "versionDescription": "Cloned from v1.0"
+  }
+]
 
- 
 
 
 

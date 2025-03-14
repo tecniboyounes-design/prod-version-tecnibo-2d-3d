@@ -6,8 +6,8 @@ export async function POST(req) {
     try {
         console.log('req', req)
         const { format, data } = await req.json(); 
-        console.log('Received format:', format);
-        console.log('Received data:', data);
+        // console.log('Received format:', format);
+        // console.log('Received data:', data);
 
         // Validate input
         if (!format || !data) {
@@ -15,7 +15,7 @@ export async function POST(req) {
         }
 
         let responseData;
-
+        
         // Handle the format and call the appropriate function
         switch (format) {
             case 'xml':

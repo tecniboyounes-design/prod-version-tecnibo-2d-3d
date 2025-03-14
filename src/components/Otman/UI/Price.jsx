@@ -47,7 +47,7 @@ const PriceDisplay = () => {
   }, [items]);
   
   const { id } = project;
-  console.log('projectID', id); 
+  // console.log('projectID', id); 
 
   const handleOrderClick = async () => {
     handleOpenFetch();
@@ -68,7 +68,7 @@ const PriceDisplay = () => {
   
       if (data?.id) {
         const orderId = data.id;
-        console.log('orderID', orderId); // Check if the order ID is correctly logged
+        // console.log('orderID', orderId); // Check if the order ID is correctly logged
   
         // Remove the updateProjectOdooData logic
         // You can handle any other logic here if needed

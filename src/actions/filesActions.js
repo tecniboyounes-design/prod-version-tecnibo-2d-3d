@@ -1,84 +1,98 @@
 
+/**
+ * Creates a structured data object from the given JSON input.
+ * 
+ * @param {Object} jsonData - The input JSON containing project, user, and floorplanner details.
+ * @param {Object} jsonData.project - Project details.
+ * @param {string} jsonData.project.id - Project ID.
+ * @param {string} [jsonData.project.display_name] - Project display name.
+ * @param {string} [jsonData.project.title] - Project title.
+ * @param {Object} jsonData.user - User details.
+ * @param {string} jsonData.user.username - User email or username.
+ * @param {string} [jsonData.user.name] - User's full name.
+ * @param {Object} jsonData.floorplanner - Floorplanner data.
+ * @param {Array} jsonData.floorplanner.items - List of items.
+ * @returns {Object} - The structured order data object.
+ */
 const createDataObjectFromParams = (jsonData) => {
-
   const { project, user } = jsonData;
-  const { items } = jsonData.floorplanner
-
+  const { items } = jsonData.floorplanner || { items: [] };
+  // console.log("items", project, user, items);
   const builderList = items.map((item, index) => ({
-      lineNo: (index + 1).toString(), // Line number as string
-      hierarchicalPos: (index + 1).toString(), // Hierarchical position as string
-      pName: item.attributes.name, // Product name from item attributes
-      count: item.quantity.toString(), // Count from item quantity
-      uid: item.id, // Unique ID from item
-      program: "2124_4", // Example program, adjust as needed
-      pVarString: `ART_NAME:=${item.attributes.name}|...`, // Example variable string, adjust as needed
-      refId: item.id, // Reference ID from item
-      articleTextInfo1: item.attributes.name, // Article text info from item attributes
-      articlePriceInfo1: item.attributes.price.toString(), // Article price info from item attributes
-      articlePriceInfo2: item.attributes.price.toString(), // Article price info from item attributes
-      articlePriceInfo3: item.attributes.price.toString(), // Article price info from item attributes
-      articlePriceInfo4: "19", // Example VAT percentage, adjust as needed
-      articlePriceInfo5: "116.91" // Example article price info, adjust as needed
+    lineNo: (index + 1).toString(),
+    hierarchicalPos: (index + 1).toString(),
+    pName: item?.attributes?.name ?? item?.itemName ?? "Unknown",
+    count: item?.quantity?.toString() ?? "1",
+    uid: item?.id ?? uuidv4(),
+    program: "2124_4",
+    pVarString: `ART_NAME:=${item?.attributes?.name ?? item?.itemName ?? "Unknown"}|...`,
+    refId: item?.id ?? uuidv4(),
+    articleTextInfo1: item?.attributes?.name ?? item?.itemName ?? "Unknown",
+    articlePriceInfo1: item?.attributes?.price?.toString() ?? "0",
+    articlePriceInfo2: item?.attributes?.price?.toString() ?? "0",
+    articlePriceInfo3: item?.attributes?.price?.toString() ?? "0",
+    articlePriceInfo4: "19",
+    articlePriceInfo5: "116.91"
   }));
 
   return {
-      orderNo: project.id || "2025001602", // Use project ID or default
-      dispDate: "", // Optional: Display date
-      basketId: "4743", // Required: Basket ID
-      head: {
-          comm: `Project: ${project.display_name || "My portfolio"}`, // Comment
-          articleNo: project.id || "2025001602", // Article number
-          customer: "", // Optional: Customer name
-          retailer: "", // Optional: Retailer name
-          client: user.username || "y.attaoui@tecnibo.com", // Client email
-          program: "", // Optional: Program
-          employee: user.name || "Younes Attaoui", // Employee name
-          textLong: "new project test in dev mode", // Long text description
-          textShort: project.display_name || "Copied Basket: My portfolio", // Short description
-          createDate: new Date().toLocaleDateString("de-DE"), // Current date in German format
-          deliveryDate: "", // Optional: Delivery date
-          shippingDate: "", // Optional: Shipping date
-          colour1: "", // Optional: Colour 1
-          colour2: "", // Optional: Colour 2
-          colour3: "", // Optional: Colour 3
-          colour4: "", // Optional: Colour 4
-          colour5: "", // Optional: Colour 5
-          info1: user.name || "Younes Attaoui", // Info 1
-          info2: "", // Optional: Info 2
-          info3: "", // Optional: Info 3
-          info4: "", // Optional: Info 4
-          info5: "", // Optional: Info 5
-          info6: "", // Optional: Info 6
-          info7: "", // Optional: Info 7
-          info8: user.username || "y.attaoui@tecnibo.com", // Username
-          info9: "", // Optional: Info 9
-          info10: "", // Optional: Info 10
-          info11: "", // Optional: Info 11
-          info12: "", // Optional: Info 12
-          editor1: user.name || "Younes Attaoui ", // Editor 1
-          editor2: "", // Optional: Editor 2
-          editor3: "", // Optional: Editor 3
-          editor4: "", // Optional: Editor 4
-          editor5: "", // Optional: Editor 5
-          editor6: "", // Optional: Editor 6
-          editor7: "", // Optional: Editor 7
-          editor8: user.username || "y.attaoui@tecnibo.com", // Editor 8
-          orderPriceInfo1: "615.31", // Example price info
-          orderPriceInfo2: "0", // Example shipping cost
-          orderPriceInfo3: "615.31", // Example total cost
-          orderPriceInfo4: "116.91", // Example VAT amount
-          orderPriceInfo5: "732.22", // Example gross total
-          customInfo1: "1", // Example custom info
-          customInfo2: "1", // Example custom info
-          fileList: [
-              "https://example.com/file1.jpg", // Example file URL
-              "https://example.com/file2.jpg"  // Example file URL
-          ]
-      },
-      builderList // Include the mapped builderList
+    orderNo: project?.project_number || "2025001602",
+    dispDate: "",
+    basketId: "4743",
+    head: {
+      comm: `Project: ${project?.display_name || project?.title}`,
+      articleNo: project?.id || "2025001602",
+      customer: "",
+      retailer: "",
+      client: user?.username || "y.attaoui@tecnibo.com",
+      program: "",
+      employee: user?.name || "Younes Attaoui",
+      textLong: "new project test in dev mode",
+      textShort: project?.display_name || project?.title,
+      createDate: new Date().toLocaleDateString("de-DE"),
+      deliveryDate: "",
+      shippingDate: "",
+      colour1: "",
+      colour2: "",
+      colour3: "",
+      colour4: "",
+      colour5: "",
+      info1: user?.name || "Younes Attaoui",
+      info2: "",
+      info3: "",
+      info4: "",
+      info5: "",
+      info6: "",
+      info7: "",
+      info8: user?.username || "y.attaoui@tecnibo.com",
+      info9: "",
+      info10: "",
+      info11: "",
+      info12: "",
+      editor1: user?.name || "Younes Attaoui",
+      editor2: "",
+      editor3: "",
+      editor4: "",
+      editor5: "",
+      editor6: "",
+      editor7: "",
+      editor8: user?.username || "y.attaoui@tecnibo.com",
+      orderPriceInfo1: "615.31",
+      orderPriceInfo2: "0",
+      orderPriceInfo3: "615.31",
+      orderPriceInfo4: "116.91",
+      orderPriceInfo5: "732.22",
+      customInfo1: "1",
+      customInfo2: "1",
+      fileList: [
+        "https://example.com/file1.jpg",
+        "https://example.com/file2.jpg"
+      ]
+    },
+    builderList
   };
-
 };
+
 
 
 const handleDownloadFile = async (url, data, fileType) => {
@@ -111,7 +125,7 @@ const handleDownloadFile = async (url, data, fileType) => {
 
 export const handleDownloadXML = (jsonData) => {
   const data = createDataObjectFromParams(jsonData);
-  const requestData = { format: 'xml', data }; 
+  const requestData = { format: 'xml', data };
   handleDownloadFile("/api/filesController", requestData, "xml");
 };
 

@@ -1,4 +1,5 @@
-import puppeteer from 'puppeteer';
+import { formatDate } from "@/data/models";
+import puppeteer from "puppeteer";
 
 export const generatePDF = async (data) => {
   const browser = await puppeteer.launch();
@@ -6,11 +7,14 @@ export const generatePDF = async (data) => {
 
   // Destructure data for easy access
   const { orderNo, head, builderList } = data;
+  // console.log('head', head)
+  // console.log('builderList', builderList)
+  console.log("orderNo", orderNo);
 
   // Static header and footer information
-  const companyInfo = 
-  "Tecnibo Lux • 68 Rue de Koerich • Steinfort 8437 • Luxembourg • +352 26 10 80 77 • info@tecnibo.com";  
-  
+  const companyInfo =
+    "Tecnibo Lux • 68 Rue de Koerich • Steinfort 8437 • Luxembourg • +352 26 10 80 77 • info@tecnibo.com";
+
   // Construct HTML content for the PDF
   const html = `
     <!DOCTYPE html>
@@ -86,22 +90,35 @@ export const generatePDF = async (data) => {
           .head-data {
             margin-left: 20px; /* Spacing between image and text */
           }
+            .project-header {
+  display: flex;
+  justify-content: space-between; /* Ensures equal space between elements */
+  align-items: center; /* Aligns text vertically */
+  font-size: 18px;
+  border-bottom: 1px solid #0056b3;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
         </style>
       </head>
       <body>
-      <h2>Project Number: ${orderNo} | Create Date: ${head.createDate}</h2>
+<div class="project-header">
+  <span>Project Number: ${orderNo}</span>
+  <span>Create Date: ${formatDate(head.createDate, 'long')}</span>
+</div>
 
         <div class="header">
           <img class="logo" src="https://tecnibo-2d-3d.vercel.app/Room.jpeg" alt="Company Logo" />
           <div class="head-data">
             <h2>Head Data</h2>
-            <p>Company Name: ${head.customer || 'N/A'}</p>
+            <p>Company Name: ${head.customer || "N/A"}</p>
             <p>Email: ${head.client}</p>
             <p>Description: ${head.textLong}</p>
           </div>
         </div>
         
-        <h1>Project: ${head.textShort}</h1>
+        <h1>${head.comm}</h1>
       
         <h2>Article List</h2>
         <table>
@@ -111,7 +128,9 @@ export const generatePDF = async (data) => {
             <th>Details</th>
             <th>Count</th>
           </tr>
-          ${builderList.map((item, index) => `
+          ${builderList
+      .map(
+        (item, index) => `
             <tr>
               <td>${index + 1}</td>
               <td>${item.pName}</td>
@@ -121,7 +140,9 @@ export const generatePDF = async (data) => {
               </td>
               <td>${item.count}</td>
             </tr>
-          `).join('')}
+          `
+      )
+      .join("")}
         </table>
   
         <h2>Costs</h2>
@@ -152,16 +173,12 @@ export const generatePDF = async (data) => {
       </body>
     </html>
   `;
-  
-
-  
-  
 
   await page.setContent(html);
-  const pdfBuffer = await page.pdf({ format: 'A4', printBackground: true });
-  
+  const pdfBuffer = await page.pdf({ format: "A4", printBackground: true });
+
   await browser.close();
-  
+
   console.log("PDF generated successfully");
   return pdfBuffer;
 };

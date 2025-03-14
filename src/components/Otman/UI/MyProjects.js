@@ -98,7 +98,7 @@ import {
   StyledInputBase,
 } from "../../../app/styles/Themes";
 import { v4 as uuidv4 } from "uuid";
-import { formatDate, generateUniqueProjectNumber } from "../../../data/models";
+import { articles3D, formatDate, generateUniqueProjectNumber } from "../../../data/models";
 import axios from "axios";
 import CircularWithValueLabel from "./CircularWithValueLabel";
 import { createProject } from "@/actions/createProjectActions";
@@ -107,12 +107,12 @@ import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { fetchAllProjects, fetchProjects, testConnection, updateProjectOdooData } from "@/supabaseClient";
+import { fetchProjects, fetchUserProjects, manageVersionHistory, testConnection, updateProjectOdooData } from "@/supabaseClient";
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 
 const Projects = () => {
   const currentYear = dayjs();
-  const [resultOfFilter, setResultOfFilter] = useState([]);
+  const [resultOfFilter] = useState([]);
   const [filterOpen, setFilterOpen] = React.useState(false);
   const [status, setStatus] = useState("");
   const [dateFrom, setDateFrom] = useState("");
@@ -123,20 +123,26 @@ const Projects = () => {
   const [onClose, setOnClose] = useState(false);
   const [openFetch, setOpenFetch] = useState(false);
   const [onCloseFetch, setOnCloseFetch] = useState(false);
-  const user = useSelector((state) => state.jsonData.user);
+  const user = useSelector((state) => state.jsonData.user);  
   const [projectsData, setProjectsData] = useState([]);
+  
+
+ 
+  
 
 
   useEffect(() => {
-
     const getData = async () => {
-      const projects = await fetchAllProjects();
+      if (!user?.uid) {
+        console.warn("⚠️ No Odoo ID found in global state.");
+        return;
+      }
+      const projects = await fetchUserProjects(user.uid);
       setProjectsData(projects);
-      // console.log('projects', projects);
-    }
-
-    getData()
-  }, [])
+    };
+    getData();
+  }, [user?.uid]);
+  
 
 
   function SearchAppBar({ searchQuery, handleSearchChange, projectsData }) {
@@ -590,11 +596,6 @@ const Projects = () => {
 
     );
   }
-
-
-
-
-
 
 
 
@@ -1072,6 +1073,7 @@ const Projects = () => {
   }
 
 
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -1084,6 +1086,7 @@ const Projects = () => {
   const handleOpenFetch = () => {
     setOpenFetch(true);
   };
+
 
   const handleCloseFetch = () => {
     setOpenFetch(false);
@@ -1109,23 +1112,6 @@ const Projects = () => {
     </>
   );
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

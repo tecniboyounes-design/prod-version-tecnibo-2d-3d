@@ -7,15 +7,14 @@ import * as THREE from "three";
 
 const GLTFDoor = ({ walls }) => {
   const { modelURL } = useSelector((state) => state.jsonData.previewArticle);
-  const { scene, nodes } = useGLTF(modelURL, true);
+  const { scene, nodes } = useGLTF(modelURL || '/models/InWallFloorItems/Door.glb' , true);
   const group = useRef();
-
-  // States for door position and rotation
+  
   const [position, setPosition] = useState(new THREE.Vector3(3, 1.5, 0));
   const [isDragging, setIsDragging] = useState(false);
-  const [isOpen, setIsOpen] = useState(false); // Tracks if the door is open
+  const [isOpen, setIsOpen] = useState(false);
 
-  const PLANE_SIZE = 10; // Defines the movement boundaries
+  const PLANE_SIZE = 10; 
 
   /**
    * Handles when the user starts dragging the door.
@@ -35,6 +34,7 @@ const GLTFDoor = ({ walls }) => {
   /**
    * Handles door movement within the plane boundaries.
    */
+
   const handlePointerMove = (e) => {
     if (isDragging) {
       const newPosition = new THREE.Vector3(
@@ -77,7 +77,6 @@ const GLTFDoor = ({ walls }) => {
           onPointerMove={handlePointerMove}
         >
           
-
           {/* Door frame */}
           {nodes["Door_"] && (
             <mesh geometry={nodes["Door_"].geometry} material={nodes["Door_"].material} />

@@ -1,4 +1,9 @@
-import { supabase } from "@/supabaseClient";
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
+
 
 export async function GET(req) {
   const { data, error } = await supabase.from("projects").select("*");
@@ -12,40 +17,66 @@ export async function GET(req) {
 }
 
 
+/**
+ * POST endpoint to create a project and its associated version, floorplan components, and settings.
+ *
+ * The request body should be a JSON object with the following structure:
+ *
+ * {
+ *   title: string,          // (optional) The title of the project (default: "New Office Design").
+ *   project_number: string, // (required) Unique identifier for the project.
+ *   description: string,    // (optional) Description of the project.
+ *   managers: [             // (required) An array of manager objects, each containing:
+ *     {
+ *       name: string,       // Manager's name.
+ *       avatar: string,     // URL of the manager's avatar.
+ *       email: string,      // Manager's email address.
+ *       odoo_id: number,    // Manager's Odoo ID.
+ *       partner_id: number  // Manager's partner ID.
+ *     }
+ *   ],
+ *   uid: number|string,     // (required) The user's Odoo ID used for checking/creating a user.
+ *   version: string,        // (optional) The version string for the project floorplan (default: "1.0.0").
+ *   db: string,             // (optional) Database identifier.
+ *   units: string,          // (optional) Measurement unit for project settings (default: "m").
+ *   username: string        // (optional) Username for new user creation if needed.
+ * }
+ *
+ * @param {Request} req - The HTTP request object containing the JSON body with project data.
+ * @returns {Promise<Response>} A promise that resolves to an HTTP response with a JSON object:
+ *   On success: { message: string, project_id: UUID, version_id: UUID, user_id: UUID }
+ *   On error: { error: string }
+ */
 
 
 
 export async function POST(req) {
-  // console.log("Incoming request:", req);
+
   const projectData = await req.json();
   console.log("Project Data:", projectData);
 
   const userId = projectData.uid;
 
-  // Check if user already exists
+  // Check if user already exists using odoo_id
   const { data: existingUser, error: userError } = await supabase
     .from("users")
     .select("id")
     .eq("odoo_id", userId)
     .single();
 
-  let createdUserId = userId; 
-
+  let createdUserId = userId;
   if (userError || !existingUser) {
-    // console.log("User not found, creating a new one...");
-
     const userInsertData = {
       name: projectData?.name || "Unknown User",
       email: projectData.username || `user${Date.now()}@example.com`,
-      odoo_id: userId, 
-      preferred_unit: 'm'
+      odoo_id: userId,
     };
 
     const { data: newUser, error: newUserError } = await supabase
       .from("users")
       .insert([userInsertData])
       .select()
-      .single(); // Ensure we get a single user record
+      .single();
 
     if (newUserError) {
       console.error("Error creating user:", newUserError.message);
@@ -53,61 +84,26 @@ export async function POST(req) {
         status: 400,
       });
     }
-
-    createdUserId = newUser.id; 
+    createdUserId = newUser.id;
   } else {
-    console.log("Existing User ID:", existingUser.id);
-    createdUserId = existingUser.id; // Use existing user ID
+    createdUserId = existingUser.id;
   }
-
-  // console.log("User ID:", userId); // userId remains constant from Odoo
-
-  // Step 2: Insert a new floorplan
-  const floorplanInsertData = {
-    points: JSON.stringify({ coordinates: [] }),
-    walls: JSON.stringify({ count: 0 }),
-    rooms: JSON.stringify({ count: 0 }),
-    items: JSON.stringify({ count: 0 }),
-    units: "m",
-  };
-
-  const { data: floorplanData, error: floorplanError } = await supabase
-    .from("floorplans")
-    .insert([floorplanInsertData])
-    .select()
-    .single(); // Ensure we get a single floorplan record
-
-  if (floorplanError) {
-    console.error("Error creating floorplan:", floorplanError.message);
-    return new Response(JSON.stringify({ error: floorplanError.message }), {
-      status: 400,
-    });
-  }
-
-  const createdFloorplanId = floorplanData.id;
-  // console.log("Created Floorplan ID:", createdFloorplanId);
-
+  
+  // Insert a new project
   const projectInsertData = {
     title: projectData.title || "New Office Design",
     project_number: projectData.project_number,
-    description:
-      projectData.description ||
-      "Interior design project for a new office space.",
-    managers: projectData.managers, 
-    user_id: userId, 
-    floorplan_id: createdFloorplanId,
+    description: projectData.description || "Interior design project.",
+    // managers: projectData.managers,
+    user_id: projectData.uid,
     db: projectData?.db,
-    image_url: 'https://tecnibo-2d-3d.vercel.app/Room.jpeg'
   };
-  
-
-  // console.log("Inserting Project Data:", projectInsertData);
 
   const { data: projectDataResponse, error: projectError } = await supabase
     .from("projects")
     .insert([projectInsertData])
     .select()
-    .single(); // Ensure we get a single project record
+    .single();
 
   if (projectError) {
     console.error("Error creating project:", projectError.message);
@@ -117,49 +113,127 @@ export async function POST(req) {
   }
 
   const createdProjectId = projectDataResponse.id;
-  // console.log("Created Project ID:", createdProjectId);
 
-  // Step 4: Update the floorplan with the new project ID
-  const { error: updateFloorplanError } = await supabase
-    .from("floorplans")
-    .update({ project_id: createdProjectId })
-    .eq("id", createdFloorplanId);
+  const managerData = {
+    project_id: createdProjectId,
+    name: "Manager Name",
+    avatar: "path/to/avatar.jpg",
+    email: "manager@example.com",
+    odoo_id: 447,
+    partner_id: 67890,
+    company_id: 11,
+    timezone: "Africa/Casablanca",
+  };
 
-  if (updateFloorplanError) {
-    console.error("Error updating floorplan:", updateFloorplanError.message);
-    return new Response(
-      JSON.stringify({ error: updateFloorplanError.message }),
-      { status: 400 }
-    );
+  // Insert manager data without specifying the `id` column.
+  const { error: managerError } = await supabase
+    .from("managers")
+    .insert([managerData]);
+
+  if (managerError) {
+    console.error("Error creating manager:", managerError);
+    return;
   }
 
-  // console.log("Floorplan successfully linked to Project ID:", createdProjectId);
+  console.log("Manager added successfully.");
 
-  // Step 5: Update the user with the new project ID
-  const updatedProjectIds = [createdProjectId]; // Update with your logic to maintain project IDs
-  const { error: updateUserError } = await supabase
-    .from("users")
-    .update({ project_ids: updatedProjectIds })
-    .eq("id", createdUserId);
-  
-  if (updateUserError) {
-    console.error("Error updating user:", updateUserError.message);
-    return new Response(JSON.stringify({ error: updateUserError.message }), {
+
+  console.log("Manager added successfully.");
+
+
+  // Create a version row for the new project
+  const versionInsertData = {
+    project_id: createdProjectId,
+    version: projectData.version || '1.0.0',
+  };
+
+  const { data: versionData, error: versionError } = await supabase
+    .from("versions")
+    .insert([versionInsertData])
+    .select()
+    .single();
+
+  if (versionError) {
+    console.error("Error creating version:", versionError.message);
+    return new Response(JSON.stringify({ error: versionError.message }), {
       status: 400,
     });
   }
 
-  // console.log("User successfully updated with Project ID:", createdProjectId);
+  const createdVersionId = versionData.id;
+
+  // Directly create a wall row linked to this version
+  const { error: wallsError } = await supabase
+    .from("walls")
+    .insert([{
+      version_id: createdVersionId,
+      length: 10.0,  
+      rotation: 0,   
+      thickness: 1,  
+      height: 2.5    
+    }]);
+
+  // Check for errors
+  if (wallsError) {
+    console.error('Error inserting into walls:', wallsError);
+  } else {
+    console.log('Wall inserted successfully!');
+  }
+
+
+  // Directly create an empty points row linked to this version
+  const { error: pointsError } = await supabase
+    .from("points")
+    .insert([{ version_id: createdVersionId, data: [] }]);
+
+  if (pointsError) {
+    console.error("Error creating points:", pointsError.message);
+    return new Response(JSON.stringify({ error: pointsError.message }), {
+      status: 400,
+    });
+  }
+
+  // Directly create an empty articles row linked to this version
+  const { error: articlesError } = await supabase
+    .from("articles")
+    .insert([{ version_id: createdVersionId, data: [] }]);
+
+  if (articlesError) {
+    console.error("Error creating articles:", articlesError.message);
+    return new Response(JSON.stringify({ error: articlesError.message }), {
+      status: 400,
+    });
+  }
+
+  // Create a settings row linked directly to the project
+  const settingsInsertData = {
+    project_id: createdProjectId,
+    config: { units: projectData.units || "m" },
+  };
+
+  const { data: settingsData, error: settingsError } = await supabase
+    .from("settings")
+    .insert([settingsInsertData])
+    .select()
+    .single();
+
+  if (settingsError) {
+    console.error("Error creating settings:", settingsError.message);
+    return new Response(JSON.stringify({ error: settingsError.message }), {
+      status: 400,
+    });
+  }
 
   return new Response(
     JSON.stringify({
-      message: "Project, floorplan, and user updated successfully",
+      message: "Project, version, settings, and floorplan components created successfully",
       project_id: createdProjectId,
-      floorplan_id: createdFloorplanId,
-      user_id: userId, // Return the constant userId from Odoo
+      version_id: createdVersionId,
+      user_id: createdUserId,
     }),
     { status: 201 }
   );
 }
+
 
 
