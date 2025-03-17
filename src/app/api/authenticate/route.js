@@ -1,8 +1,9 @@
 import { getAuthenticationUrl } from "../redirect";
 
 export async function POST(request) {
+    console.log("Received request:", request);
     const { email, password } = await request.json();
-
+    
     const loginData = {
         jsonrpc: "2.0",
         method: "call",
@@ -13,7 +14,7 @@ export async function POST(request) {
         },
         id: 1,
     };
-
+    
     try {
         const relativePath = "web/session/authenticate"; 
         const authUrl = getAuthenticationUrl(request, relativePath); 
@@ -26,7 +27,7 @@ export async function POST(request) {
             credentials: "include",
             body: JSON.stringify(loginData),
         });
-
+        
         const data = await response.json();
         const setCookie = response.headers.get("set-cookie");
         
@@ -64,6 +65,7 @@ export async function POST(request) {
                 { status: 400 }
             );
         }
+
     } catch (error) {
         console.error("Error occurred during authentication:", error);
 

@@ -16,48 +16,16 @@ export async function GET(req) {
   return new Response(JSON.stringify(data), { status: 200 });
 }
 
-
-/**
- * POST endpoint to create a project and its associated version, floorplan components, and settings.
- *
- * The request body should be a JSON object with the following structure:
- *
- * {
- *   title: string,          // (optional) The title of the project (default: "New Office Design").
- *   project_number: string, // (required) Unique identifier for the project.
- *   description: string,    // (optional) Description of the project.
- *   managers: [             // (required) An array of manager objects, each containing:
- *     {
- *       name: string,       // Manager's name.
- *       avatar: string,     // URL of the manager's avatar.
- *       email: string,      // Manager's email address.
- *       odoo_id: number,    // Manager's Odoo ID.
- *       partner_id: number  // Manager's partner ID.
- *     }
- *   ],
- *   uid: number|string,     // (required) The user's Odoo ID used for checking/creating a user.
- *   version: string,        // (optional) The version string for the project floorplan (default: "1.0.0").
- *   db: string,             // (optional) Database identifier.
- *   units: string,          // (optional) Measurement unit for project settings (default: "m").
- *   username: string        // (optional) Username for new user creation if needed.
- * }
- *
- * @param {Request} req - The HTTP request object containing the JSON body with project data.
- * @returns {Promise<Response>} A promise that resolves to an HTTP response with a JSON object:
- *   On success: { message: string, project_id: UUID, version_id: UUID, user_id: UUID }
- *   On error: { error: string }
- */
-
-
-
 export async function POST(req) {
-
+  // console.log("----- Starting Project Creation Process -----");
+  
   const projectData = await req.json();
-  console.log("Project Data:", projectData);
+  // console.log("Project Data Received:", projectData);
 
   const userId = projectData.uid;
 
   // Check if user already exists using odoo_id
+  // console.log("Checking if user exists for odoo_id:", userId);
   const { data: existingUser, error: userError } = await supabase
     .from("users")
     .select("id")
@@ -66,6 +34,7 @@ export async function POST(req) {
 
   let createdUserId = userId;
   if (userError || !existingUser) {
+    // console.log("User does not exist. Creating new user...");
     const userInsertData = {
       name: projectData?.name || "Unknown User",
       email: projectData.username || `user${Date.now()}@example.com`,
@@ -80,21 +49,21 @@ export async function POST(req) {
 
     if (newUserError) {
       console.error("Error creating user:", newUserError.message);
-      return new Response(JSON.stringify({ error: newUserError.message }), {
-        status: 400,
-      });
+      return new Response(JSON.stringify({ error: newUserError.message }), { status: 400 });
     }
     createdUserId = newUser.id;
+    // console.log("New user created successfully:", newUser);
   } else {
     createdUserId = existingUser.id;
+    // console.log("Existing user found:", existingUser);
   }
   
   // Insert a new project
+  // console.log("Creating new project...");
   const projectInsertData = {
     title: projectData.title || "New Office Design",
     project_number: projectData.project_number,
     description: projectData.description || "Interior design project.",
-    // managers: projectData.managers,
     user_id: projectData.uid,
     db: projectData?.db,
   };
@@ -107,41 +76,36 @@ export async function POST(req) {
 
   if (projectError) {
     console.error("Error creating project:", projectError.message);
-    return new Response(JSON.stringify({ error: projectError.message }), {
-      status: 400,
-    });
+    return new Response(JSON.stringify({ error: projectError.message }), { status: 400 });
   }
-
   const createdProjectId = projectDataResponse.id;
+  // console.log("Project created successfully. Project ID:", createdProjectId);
 
+  // Create a manager record based solely on the authenticated user
+  // console.log("Creating manager record...");
   const managerData = {
     project_id: createdProjectId,
-    name: "Manager Name",
-    avatar: "path/to/avatar.jpg",
-    email: "manager@example.com",
-    odoo_id: 447,
-    partner_id: 67890,
-    company_id: 11,
-    timezone: "Africa/Casablanca",
+    name: projectData.name || "Default Manager",
+    avatar: projectData.avatar || "https://i.pravatar.cc/150?img=3",
+    email: projectData.username || "default@example.com",
+    odoo_id: projectData.uid,
+    partner_id: projectData.partner_id || 0,
+    company_id: projectData.user_context?.current_company || 11,
+    timezone: projectData.user_context?.tz || "Africa/Casablanca",
   };
 
-  // Insert manager data without specifying the `id` column.
   const { error: managerError } = await supabase
     .from("managers")
     .insert([managerData]);
 
   if (managerError) {
-    console.error("Error creating manager:", managerError);
-    return;
+    console.error("Error creating manager:", managerError.message);
+    return new Response(JSON.stringify({ error: managerError.message }), { status: 400 });
   }
-
-  console.log("Manager added successfully.");
-
-
-  console.log("Manager added successfully.");
-
+  // console.log("Manager added successfully.");
 
   // Create a version row for the new project
+  // console.log("Creating version record for project...");
   const versionInsertData = {
     project_id: createdProjectId,
     version: projectData.version || '1.0.0',
@@ -155,57 +119,85 @@ export async function POST(req) {
 
   if (versionError) {
     console.error("Error creating version:", versionError.message);
-    return new Response(JSON.stringify({ error: versionError.message }), {
-      status: 400,
-    });
+    return new Response(JSON.stringify({ error: versionError.message }), { status: 400 });
   }
-
   const createdVersionId = versionData.id;
+  // console.log("Version created successfully. Version ID:", createdVersionId);
 
-  // Directly create a wall row linked to this version
-  const { error: wallsError } = await supabase
-    .from("walls")
-    .insert([{
-      version_id: createdVersionId,
-      length: 10.0,  
-      rotation: 0,   
-      thickness: 1,  
-      height: 2.5    
-    }]);
+  // Calculate and insert points for the wall.
+  // console.log("Calculating start and end points for the wall...");
+  const startPoint = {
+    x_coordinate: 0,
+    y_coordinate: 0,
+    z_coordinate: 0,
+    snapangle: 0,
+    rotation: 0,
+    version_id: createdVersionId,
+  };
 
-  // Check for errors
-  if (wallsError) {
-    console.error('Error inserting into walls:', wallsError);
-  } else {
-    console.log('Wall inserted successfully!');
-  }
+  const endPoint = {
+    x_coordinate: 10.0,
+    y_coordinate: 0,
+    z_coordinate: 0,
+    snapangle: 0,
+    rotation: 0,
+    version_id: createdVersionId,
+  };
 
-
-  // Directly create an empty points row linked to this version
-  const { error: pointsError } = await supabase
+  // console.log("Inserting points into the database...");
+  const { data: pointsData, error: pointsError } = await supabase
     .from("points")
-    .insert([{ version_id: createdVersionId, data: [] }]);
+    .insert([startPoint, endPoint])
+    .select();
 
   if (pointsError) {
     console.error("Error creating points:", pointsError.message);
-    return new Response(JSON.stringify({ error: pointsError.message }), {
-      status: 400,
-    });
+    return new Response(JSON.stringify({ error: pointsError.message }), { status: 400 });
   }
 
-  // Directly create an empty articles row linked to this version
+  const startPointId = pointsData[0].id;
+  const endPointId = pointsData[1].id;
+  // console.log("Points inserted successfully. StartPoint ID:", startPointId, "EndPoint ID:", endPointId);
+
+  // Insert a wall row that references the two points.
+  // console.log("Inserting wall that connects the two points...");
+  const { data: wallData, error: wallsError } = await supabase
+    .from("walls")
+    .insert([{
+      version_id: createdVersionId,
+      startpointid: startPointId,
+      endpointid: endPointId,
+      length: 10.0,
+      rotation: 0,
+      thickness: 1,
+      height: 2.5    
+    }])
+    .select()
+    .single();
+
+  if (wallsError) {
+    console.error("Error inserting into walls:", wallsError.message);
+    await supabase.from("points")
+      .delete()
+      .in("id", [startPointId, endPointId]);
+    return new Response(JSON.stringify({ error: wallsError.message }), { status: 400 });
+  }
+  // console.log("Wall inserted successfully:", wallData);
+
+  // Insert an empty articles row linked to this version
+  // console.log("Inserting empty articles row for the version...");
   const { error: articlesError } = await supabase
     .from("articles")
     .insert([{ version_id: createdVersionId, data: [] }]);
 
   if (articlesError) {
     console.error("Error creating articles:", articlesError.message);
-    return new Response(JSON.stringify({ error: articlesError.message }), {
-      status: 400,
-    });
+    return new Response(JSON.stringify({ error: articlesError.message }), { status: 400 });
   }
+  // console.log("Articles row created successfully.");
 
   // Create a settings row linked directly to the project
+  // console.log("Inserting settings row for the project...");
   const settingsInsertData = {
     project_id: createdProjectId,
     config: { units: projectData.units || "m" },
@@ -219,11 +211,12 @@ export async function POST(req) {
 
   if (settingsError) {
     console.error("Error creating settings:", settingsError.message);
-    return new Response(JSON.stringify({ error: settingsError.message }), {
-      status: 400,
-    });
+    return new Response(JSON.stringify({ error: settingsError.message }), { status: 400 });
   }
+  // console.log("Settings created successfully:", settingsData);
 
+  // Final log for process completion
+  console.log("----- Project Creation Process Completed Successfully -----");
   return new Response(
     JSON.stringify({
       message: "Project, version, settings, and floorplan components created successfully",
@@ -234,6 +227,3 @@ export async function POST(req) {
     { status: 201 }
   );
 }
-
-
-

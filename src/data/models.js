@@ -237,6 +237,7 @@ export const cloisonData = [
   },
 ];
 
+
 export const cloisonStyles = [
   {
     id: uuidv4(),
@@ -497,7 +498,6 @@ export const projectsData = [
     status: "in working",
   },
 ];
-
 
 
 
@@ -867,7 +867,7 @@ export const arrayToCorners = (array) => {
 
 [
   {
-  
+
     "doors": [
       {
         "id": "window-1738841866599",

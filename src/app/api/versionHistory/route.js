@@ -1,15 +1,29 @@
 import { createClient } from '@supabase/supabase-js';
+import { restructureProjectData } from './restructureData';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
+// Fetch all related data for a user's projects
 export const fetchUserProjects = async (odooId) => {
   try {
     const { data, error } = await supabase
       .from('projects')
-      .select('*, versions(*), managers(*)') 
+      .select(`
+        *,
+        versions(
+          *,
+          articles(*),
+          walls(
+            *,
+            points_start:points!walls_startpointid_fkey(*),
+            points_end:points!walls_endpointid_fkey(*)
+          )
+        ),
+        managers(*)
+      `)
       .eq('user_id', odooId);
 
     if (error) {
@@ -23,15 +37,11 @@ export const fetchUserProjects = async (odooId) => {
     console.error('Fetch error:', err.message);
     throw err;
   }
-}
+};
 
-// Named export for GET method (App Router)
 export async function GET(req) {
   console.log('Received request:', req);
 
-
-
-  // Set CORS headers
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, OPTIONS',
@@ -41,8 +51,10 @@ export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url);
     const odooId = searchParams.get('odooId');
+    const restructureParam = searchParams.get('restructure'); // Get raw param value
+    const restructure = restructureParam === 'true'; // Explicitly true, otherwise false
 
-    console.log('Received odooId:', odooId);
+    console.log('Received odooId:', odooId, 'Restructure:', restructure);
 
     if (!odooId) {
       return new Response(
@@ -52,16 +64,17 @@ export async function GET(req) {
     }
 
     const projects = await fetchUserProjects(odooId);
+    const responseData = restructure ? restructureProjectData(projects) : projects;
 
-    if (!projects) {
+    if (!responseData.length) {
       return new Response(
-        JSON.stringify({ success: false, error: 'Failed to fetch projects' }),
-        { status: 500, headers }
+        JSON.stringify({ success: false, error: 'No projects found or failed to fetch' }),
+        { status: 404, headers }
       );
     }
 
     return new Response(
-      JSON.stringify({ success: true, data: projects }),
+      JSON.stringify({ success: true, data: responseData }),
       { status: 200, headers }
     );
   } catch (error) {
@@ -71,7 +84,8 @@ export async function GET(req) {
       { status: 500, headers }
     );
   }
-}
+};
+
 
 // Named export for OPTIONS method (for CORS preflight)
 export async function OPTIONS() {
@@ -84,3 +98,6 @@ export async function OPTIONS() {
     },
   });
 }
+
+
+

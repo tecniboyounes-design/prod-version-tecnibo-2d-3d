@@ -211,7 +211,7 @@ const handleButtonClick = async () => {
 
   return (
     <Container maxWidth="xl" disableGutters sx={{ height: '100vh' }}>
-      <Button onClick={handleButtonClick}>Fetch Version History</Button>
+      {/* <Button onClick={handleButtonClick}>Fetch Version History</Button> */}
       <ProjectInfoBar />
 
       <Box

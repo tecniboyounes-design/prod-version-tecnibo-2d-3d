@@ -1206,7 +1206,7 @@ const ProjectDialog = ({ open, onClose }) => {
       if (response) {
         setSnackbarMessage("Project saved successfully!");
         setSnackbarSeverity("success");
-        router.push("/project");
+        // router.push("/project");
       } else {
         throw new Error("Project creation failed.");
       }

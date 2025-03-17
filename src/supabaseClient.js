@@ -36,12 +36,23 @@ testConnection();
 
 export const fetchUserProjects = async (odooId) => {
   try {
-    // Using join syntax to fetch projects along with their related versions and managers.
     const { data: projects, error: projectsError } = await supabase
       .from('projects')
-      .select('*, versions(*), managers(*)')
+      .select(`
+        *,
+        versions(
+          *,
+          articles(*),
+          walls(
+            *,
+            points_start:points!walls_startpointid_fkey(*),
+            points_end:points!walls_endpointid_fkey(*)
+          )
+        ),
+        managers(*)
+      `)
       .eq('user_id', odooId);
-       
+
     if (projectsError) {
       console.error('❌ Error fetching projects:', projectsError.message);
       return null;
@@ -50,7 +61,7 @@ export const fetchUserProjects = async (odooId) => {
     if (!projects || projects.length === 0) {
       console.warn(`⚠️ No projects found for Odoo ID: ${odooId}`);
     }
-    
+
     console.log('✅ Successfully fetched user projects:', projects);
     return projects;
   } catch (err) {

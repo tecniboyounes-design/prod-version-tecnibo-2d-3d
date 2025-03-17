@@ -51,14 +51,14 @@ const sendRequest = async () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password }),
         });
-
+        
         const data = await response.json();
-        console.log("data", data);
+        // console.log("data", data);
 
         if (data.result) {
             // Store session_id in cookies
             Cookies.set("session_id", data.session_id, { expires: 7, secure: true, sameSite: "Strict" });
-
+           
             // Dispatch user data to Redux
             dispatch(setUser(data.response.result));
 
