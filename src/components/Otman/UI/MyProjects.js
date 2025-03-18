@@ -1160,7 +1160,7 @@ const ProjectDialog = ({ open, onClose }) => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const user = useSelector((state) => state.jsonData.user);
-  console.log('user:', user);
+  // console.log('user:', user);
 
 
   useEffect(() => {
@@ -1203,10 +1203,13 @@ const ProjectDialog = ({ open, onClose }) => {
 
     try {
       const response = await createProject(newProject);
+      console.log('response:', response);
       if (response) {
         setSnackbarMessage("Project saved successfully!");
         setSnackbarSeverity("success");
         // router.push("/project");
+        router.replace(`/project/${response.project_id}`);
+        // window.location.href = `/project/${response.project_id}`;
       } else {
         throw new Error("Project creation failed.");
       }
