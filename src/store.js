@@ -15,7 +15,7 @@ const initialState = {
   isDrawing: false,
   wallHieght: 4,
   isClose: false,
-  projectInfo: null,
+  projectInfo: 'prices',
   isDragging: false,
 
   floorplanner: {

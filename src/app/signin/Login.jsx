@@ -29,9 +29,9 @@ const OdooLogin = () => {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.jsonData.user);
     const router = useRouter();  
+    const [authData, setAuthData] = useState(null);
     
     const validateEmail = (email) => email.includes("tecnibo");
-
 
 const sendRequest = async () => {
     if (isSending) return;
@@ -53,24 +53,28 @@ const sendRequest = async () => {
         });
         
         const data = await response.json();
-        // console.log("data", data);
-
+        // console.log("Response Data:", data);
+        const authData = {
+            session_id: data.session_id,
+            user: data.response.result,
+            // id: data.response.result.uid,
+          };
+          console.log("Authentication Data:", authData);
         if (data.result) {
             // Store session_id in cookies
             Cookies.set("session_id", data.session_id, { expires: 7, secure: true, sameSite: "Strict" });
-           
+             
             // Dispatch user data to Redux
             dispatch(setUser(data.response.result));
-
+            setRequestResult("Login Successful check console for details.");
             // Redirect after login
-            router.push("/");
-            setRequestResult("Login Successful");
+            // router.push("/");
         } else {
             setRequestResult("Login Failed");
         }
     } catch (error) {
         console.error("Error:", error);
-        setRequestResult("Request failed. Check console for details.");
+        setRequestResult("Request failed. Check console for details.", );
     } finally {
         setIsSending(false);
     }

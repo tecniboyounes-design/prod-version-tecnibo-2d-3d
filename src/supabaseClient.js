@@ -3,6 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import { useDispatch } from 'react-redux';
 import { getRandomPrice, pushProject, updateItems } from './store';
 import { v4 as uuidv4 } from "uuid";
+import { testCrypto } from './lib/crypto';
 
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -27,11 +28,6 @@ export const testConnection = async () => {
 };
 
 testConnection();
-
-
-
-
-
 
 
 export const fetchUserProjects = async (odooId) => {
@@ -69,11 +65,6 @@ export const fetchUserProjects = async (odooId) => {
     return null;
   }
 };
-
-
-
-
-
 
 
 

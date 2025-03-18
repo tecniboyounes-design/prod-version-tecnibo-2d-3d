@@ -18,6 +18,8 @@
     "@react-three/fiber": "^8.17.10",
     "@reduxjs/toolkit": "^2.5.0",
     "@supabase/supabase-js": "^2.48.1",
+    "@vercel/analytics": "^1.5.0",
+    "@vercel/speed-insights": "^1.2.0",
     "axios": "^1.7.9",
     "cors": "^2.8.5",
     "dayjs": "^1.11.13",

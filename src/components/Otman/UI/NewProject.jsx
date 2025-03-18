@@ -130,7 +130,7 @@ const NewProject = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
   const [droppedData, setDroppedData] = useState([]);
-  const projectInfo = useSelector((state) => state);
+  const projectInfo = useSelector((state) => state.jsonData.projectInfo);
   const items = useSelector((state) => state.jsonData.floorplanner.items);
   // console.log('items', items);
   const fetchProjectById = useFetchProjectById();
@@ -143,21 +143,6 @@ useEffect(() => {
 
 
 
-const handleButtonClick = async () => {
-  console.log('Fetching version history...');
-  const floorplan_id = '607d355f-46d1-461a-a238-5e581cf2a8f0';
-  const arrayType = 'items';
-  // Assuming `articles3D[0]` is the new item to add
-  const payload = articles3D[3]; 
-  const targetVersion = '1.1';
-  
-  try {
-    const res = await manageVersionHistory('C', floorplan_id, arrayType, payload, targetVersion);
-    console.log('Version history:', res);
-  } catch (error) {
-    console.error('API request failed:', error.message);
-  }
-};
 
 
 

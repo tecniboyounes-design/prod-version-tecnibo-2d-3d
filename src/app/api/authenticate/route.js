@@ -1,8 +1,9 @@
 import { getAuthenticationUrl } from "../redirect";
 
 export async function POST(request) {
-    console.log("Received request:", request);
+    // console.log("Received request:", request);
     const { email, password } = await request.json();
+    // console.log("Received email:", email, "Password:", password);
     
     const loginData = {
         jsonrpc: "2.0",
