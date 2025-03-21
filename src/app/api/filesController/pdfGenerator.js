@@ -4,17 +4,17 @@ import puppeteer from "puppeteer";
 export const generatePDF = async (data) => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-
+   
   // Destructure data for easy access
   const { orderNo, head, builderList } = data;
   // console.log('head', head)
   // console.log('builderList', builderList)
   console.log("orderNo", orderNo);
-
+  
   // Static header and footer information
   const companyInfo =
     "Tecnibo Lux • 68 Rue de Koerich • Steinfort 8437 • Luxembourg • +352 26 10 80 77 • info@tecnibo.com";
-
+    
   // Construct HTML content for the PDF
   const html = `
     <!DOCTYPE html>

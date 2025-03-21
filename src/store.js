@@ -202,7 +202,7 @@ const sanitizePayload = (payload) => {
     if (typeof value === "function" || value instanceof Node) {
       return undefined; // Remove functions and DOM elements
     }
-    return value;
+    return value;r
   }));
 };
 

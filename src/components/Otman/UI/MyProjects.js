@@ -123,12 +123,12 @@ const Projects = () => {
   const [onClose, setOnClose] = useState(false);
   const [openFetch, setOpenFetch] = useState(false);
   const [onCloseFetch, setOnCloseFetch] = useState(false);
-  const user = useSelector((state) => state.jsonData.user);  
+  const user = useSelector((state) => state.jsonData.user);
   const [projectsData, setProjectsData] = useState([]);
-  
 
- 
-  
+
+
+
 
 
   useEffect(() => {
@@ -142,7 +142,7 @@ const Projects = () => {
     };
     getData();
   }, [user?.uid]);
-  
+
 
 
   function SearchAppBar({ searchQuery, handleSearchChange, projectsData }) {
@@ -640,15 +640,33 @@ const Projects = () => {
       handleMenuClose();
     };
 
-    const handleConfirmDelete = () => {
+
+
+
+    const handleConfirmDelete = async () => {
       if (selectedProjectForDeletion) {
-        dispatch(deleteProject({ id: selectedProjectForDeletion.id }));
-        dispatch(setCurrentStep(null));
-        console.log("Project deleted:", selectedProjectForDeletion.id);
+        try {
+          const result = await manageTableRow("projects", selectedProjectForDeletion.id, "D");
+          console.log('result:', result)
+          if (result.success) {
+            dispatch(deleteProject({ id: selectedProjectForDeletion.id }));
+            dispatch(setCurrentStep(null));
+            console.log("Project deleted successfully:", selectedProjectForDeletion.id);
+          } else {
+            console.error("Failed to delete project:", result.error);
+          }
+        } catch (error) {
+          console.error("Error during project deletion:", error);
+        }
       }
+
       setOpenDialog(false);
       setSelectedProjectForDeletion(null);
     };
+
+
+
+
 
     const handleCloseDialog = () => {
       setOpenDialog(false);
@@ -1175,13 +1193,81 @@ const ProjectDialog = ({ open, onClose }) => {
 
   const handleCloseSnackbar = () => setSnackbarOpen(false);
 
+  /**
+  * Handles saving a new project, including room planner data, 
+  * and dispatching it to the store while also making an API call.
+  * 
+  * @async
+  * @function handleSave
+  * @returns {Promise<void>} - A promise that resolves when the project is saved.
+  */
   const handleSave = async () => {
     onClose();
     const now = new Date().toLocaleString("fr-FR");
 
+    /** 
+     * Room planner object containing walls, doors, and points.
+     * @type {Object} 
+     */
+    const Room_Planner = {
+      doors: [
+        {
+          id: uuidv4(),
+          type: "door",
+          position: { x: 5, y: 0, z: 0 },
+          rotation: 90,
+          width: 0.9,
+          height: 2.1,
+          version_id: null,
+        },
+      ],
+      walls: [
+        {
+          startPointId: "p1", // these are temp IDs
+          endPointId: "p2",
+          length: 12.54,
+          rotation: Math.PI,
+          thickness: 0.012,
+          color: "#f5f5f5",
+          texture: "default.avif",
+          height: 4,
+          angles: [
+            {
+              internalAngle: Math.PI / 2,
+              externalAngle: (3 * Math.PI) / 2,
+              internalAngleDeg: 90,
+              externalAngleDeg: 270,
+              connectedLineId: uuidv4(),
+              pointId: "p1", // temp id reference
+              startAngle: 0,
+              direction: 1,
+            },
+          ],
+        },
+      ],
+      points: [
+        {
+          tempId: "p1", // temporary identifier
+          position: { x: -5.85, y: 0.01, z: -4.245 },
+          rotation: 0,
+          snapAngle: 0,
+        },
+        {
+          tempId: "p2",
+          position: { x: 6.694, y: 0.01, z: -4.245 },
+          rotation: 0,
+          snapAngle: 0,
+        },
+      ],
+    };
+
+    /** 
+     * New project object containing metadata and room planner data.
+     * @type {Object}
+     */
     const newProject = {
       title: projectTitle || "New Project",
-      project_number: generateUniqueProjectNumber(),
+      project_number: generateUniqueProjectNumber() || "234567887",
       description: description || "No description provided",
       created_on: now,
       changed_on: now,
@@ -1192,27 +1278,31 @@ const ProjectDialog = ({ open, onClose }) => {
           email: user?.username,
           odoo_id: user?.uid,
           company_id: user?.current_company,
-          partner_id: 0
-        }
+          partner_id: 0,
+        },
       ],
       status: "temp",
+      doors: Room_Planner.doors,
+      walls: Room_Planner.walls,
+      points: Room_Planner.points,
       ...user,
     };
 
-    dispatch(pushProject(newProject));
 
     try {
-      const response = await createProject(newProject);
-      console.log('response:', response);
-      if (response) {
+
+      const { project, project_id, user_id, version_id } = await createProject(newProject);
+
+      console.log('response:', project, project_id, user_id, version_id );
+
+      if (project && project_id && user_id && version_id) {
+        dispatch(pushProject(project));
         setSnackbarMessage("Project saved successfully!");
         setSnackbarSeverity("success");
-        // router.push("/project");
-        router.replace(`/project/${response.project_id}`);
-        // window.location.href = `/project/${response.project_id}`;
       } else {
         throw new Error("Project creation failed.");
       }
+      
     } catch (error) {
       setSnackbarMessage("Failed to save project. Please try again.");
       setSnackbarSeverity("error");
@@ -1220,6 +1310,7 @@ const ProjectDialog = ({ open, onClose }) => {
       setSnackbarOpen(true);
     }
   };
+
 
 
   return (

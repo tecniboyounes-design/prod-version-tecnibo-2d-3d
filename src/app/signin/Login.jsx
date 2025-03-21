@@ -59,6 +59,7 @@ const sendRequest = async () => {
             user: data.response.result,
             // id: data.response.result.uid,
           };
+          
           console.log("Authentication Data:", authData);
         if (data.result) {
             // Store session_id in cookies

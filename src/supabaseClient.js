@@ -48,7 +48,6 @@ export const fetchUserProjects = async (odooId) => {
         managers(*)
       `)
       .eq('user_id', odooId);
-
     if (projectsError) {
       console.error('❌ Error fetching projects:', projectsError.message);
       return null;
@@ -121,8 +120,9 @@ export const useFetchProjectById = () => {
       return null; // Return null in case of an unexpected error
     }
   };
+  
+  return fetchProjectById;
 
-  return fetchProjectById; // Return the fetch function
 };
 
 
@@ -292,122 +292,98 @@ export const updateProjectOdooData = async ({ projectId, orderId, phaseId = null
 
 
 /**
- * Manages the `version_history` array in the `floorplans` table.
+ * Manages data in a specified table and performs Create, Read, Update, or Delete actions.
  *
- * @param {'C' | 'R' | 'U' | 'D'} action - Action type: 
- *   - 'C': Create a new entry in the specified array.
- *   - 'R': Read the current version of the specified array.
- *   - 'U': Update an item in the specified array.
- *   - 'D': Delete an item from the specified array.
- * @param {string} floorplanId - ID of the floorplan record.
- * @param {string} arrayType - The JSONB key to modify (e.g., 'items', 'walls', 'points').
- * @param {object} payload - Data for the action (depends on action type):
- *   - For 'C': The object that should be added to the array.
- *   - For 'U': The object with updated fields to replace the existing one.
- *   - For 'D': The object with the ID of the item to delete.
- *   - For 'R': No payload needed; returns the current version.
- * @param {string} [versiontoUpdate] - The version to update. If provided, the function will attempt to update the specified version in the `version_history`. If not provided, the latest version will be used. 
- * @returns {Promise<object>} - Response from Supabase:
- *   - Success: Returns an object with `success: true` and the updated `version_history`.
+ * @param {string} tableName - The name of the table to perform the action on.
+ * @param {string} rowId - The ID of the row to target for the action.
+ * @param {'C' | 'R' | 'U' | 'D'} action - Action type:
+ *   - 'C': Create a new row in the table.
+ *   - 'R': Read the current row in the table.
+ *   - 'U': Update an existing row in the table.
+ *   - 'D': Delete the row from the table.
+ * @param {object} [payload] - The data for Create or Update actions.
+ *   - For 'C': Data to insert as a new row.
+ *   - For 'U': Data to update in the existing row.
+ * @returns {Promise<object>} - Response from the database:
+ *   - Success: Returns an object with `success: true` and the resulting row.
  *   - Failure: Returns an object with `success: false` and an error message.
  */
 
 
-export const manageVersionHistory = async (action, floorplanId, arrayType, payload, versiontoUpdate) => {
+export const manageTableRow = async (tableName, rowId, action, payload) => {
   try {
-    console.log(`🧐 Action: ${action} | Floorplan ID: ${floorplanId} | Array Type: ${arrayType} | Payload:`, payload);
+    console.log(`🧐 Action: ${action} | Table: ${tableName} | Row ID: ${rowId} | Payload:`, payload);
     
-    // Fetch the current version history from Supabase
-    const { data, error } = await supabase
-      .from('floorplans')
-      .select('version_history')
-      .eq('id', floorplanId)
-      .single();  
+    // Handle Create (C) action
+    if (action === 'C') {
+      // Create a new row in the specified table
+      const { data, error } = await supabase
+        .from(tableName)
+        .insert([payload]);
+     
+      if (error) {
+        console.error('Error creating row:', error);
+        return { success: false, error: error.message };
+      }
 
-    if (error) {
-      console.error('Error fetching version history:', error);
-      return { success: false, error: error.message };
-    }
-    console.log('Version history:', data);
-
-    let versionHistory = data.version_history || [];
-
-    // If a specific version is provided, search for that version in the history
-    let targetVersion = versionHistory.find(version => version.version === versiontoUpdate);
-
-    // If the version exists, use that version
-    if (targetVersion) {
-      console.log(`Found version ${versiontoUpdate}, applying changes.`);
-    } else {
-      console.log(`Version ${versiontoUpdate} not found, creating a new version.`);
-      // If the version doesn't exist, create a new version (similar to before)
-      targetVersion = versionHistory.length
-        ? versionHistory[versionHistory.length - 1]
-        : { version: '1.0.0', items: [], walls: [], points: [] };
+      console.log('Row created successfully:', data);
+      return { success: true, data };
     }
 
-    if (!payload.version || targetVersion) {
-      const newVersion = (parseFloat(targetVersion.version) + 0.1).toFixed(1);
-      payload.version = newVersion;  
+    // Handle Read (R) action
+    if (action === 'R') {
+      // Fetch the row based on the rowId
+      const { data, error } = await supabase
+        .from(tableName)
+        .select('*')
+        .eq('id', rowId)
+        .single();
+
+      if (error) {
+        console.error('Error reading row:', error);
+        return { success: false, error: error.message };
+      }
+
+      console.log('Row data:', data);
+      return { success: true, data };
     }
 
-    switch (action) {
-      case 'C': 
+    // Handle Update (U) action
+    if (action === 'U') {
+      // Update the specified row with the provided payload
+      const { data, error } = await supabase
+        .from(tableName)
+        .update(payload)
+        .eq('id', rowId);
 
-        targetVersion[arrayType] = targetVersion[arrayType] || [];
-        
-        if (!payload.id) payload.id = uuidv4();
+      if (error) {
+        console.error('Error updating row:', error);
+        return { success: false, error: error.message };
+      }
 
-        targetVersion[arrayType].push(payload);
-        
-        break;
-
-      case 'R': // Read current version
-        console.log('🔍 Reading current version...');
-        return targetVersion;
-
-      case 'U': // Update item in array
-        console.log('✏️ Updating item in array...');
-        targetVersion[arrayType] = targetVersion[arrayType]?.map(item =>
-          item.id === payload.id ? { ...item, ...payload } : item
-        );
-        break;
-
-      case 'D': // Delete item from array
-        console.log('🗑️ Deleting item from array...');
-        targetVersion[arrayType] = targetVersion[arrayType]?.filter(item => item.id !== payload.id);
-        break;
-
-      default:
-        console.error('❌ Invalid action type');
-        throw new Error('Invalid action type');
+      console.log('Row updated successfully:', data);
+      return { success: true, data };
     }
 
-    // Create a new version entry with the specified version or generated version
-    const newVersion = {
-      ...targetVersion,
-      version: payload.version,  
-    };
+    // Handle Delete (D) action
+    if (action === 'D') {
+      // Delete the specified row
+      const { data, error } = await supabase
+        .from(tableName)
+        .delete()
+        .eq('id', rowId);
 
-    // Update the version history with the new or modified version
-    versionHistory.push(newVersion);
+      if (error) {
+        console.error('Error deleting row:', error);
+        return { success: false, error: error.message };
+      }
 
-    console.log('📜 New Version History:', versionHistory);
-
-    // Update the version history in Supabase
-    const { error: updateError } = await supabase
-      .from('floorplans')
-      .update({ version_history: versionHistory })
-      .eq('id', floorplanId);
-
-    if (updateError) {
-      console.error(`❌ Error updating version history: ${updateError.message}`);
-      throw new Error(`Error updating version history: ${updateError.message}`);
+      console.log('Row deleted successfully:', data);
+      return { success: true, data };
     }
 
-    console.log('✅ Version history updated successfully!');
-    return { success: true, version_history: versionHistory };
-
+    // If the action is invalid, throw an error
+    throw new Error('Invalid action type');
   } catch (error) {
     console.error(`❌ Error: ${error.message}`);
     return { success: false, error: error.message };

@@ -866,6 +866,7 @@ export const arrayToCorners = (array) => {
 
 
 [
+
   {
 
     "doors": [
@@ -1252,6 +1253,7 @@ export const arrayToCorners = (array) => {
       }
     ],
     "walls": [
+
       {
         "id": "line-1738841848668-0",
         "startPointId": "point-1738841848668-0",
@@ -1274,7 +1276,9 @@ export const arrayToCorners = (array) => {
             "direction": 1
           }
         ]
+
       },
+
       {
         "id": "line-1738841848668-1",
         "startPointId": "point-1738841848668-1",
@@ -1593,6 +1597,38 @@ export const arrayToCorners = (array) => {
     "created": "2025-02-06T11:36:26.605Z",
     "lastModified": "2025-03-04T13:34:05.568Z"
   },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   {
     "lines": [
       {
@@ -2397,6 +2433,29 @@ export const arrayToCorners = (array) => {
 
 
 
+
+const data = {
+  state: {
+    interventions: [
+      {
+        id: 1742395859979,
+        timestamp: "2025-03-19T14:50:59.979Z",
+        action: "Opened project \"T10P10\" version 1.0",
+        projectName: "T10P10",
+        version: "1.0",
+        intervener: {
+          id: "1",
+          firstName: "Rabie",
+          lastName: "ELMA",
+          role: "Design Manager"
+        },
+        metadata: {}
+      }
+    ],
+    isLoading: false
+  },
+  version: 0
+};
 
 
 

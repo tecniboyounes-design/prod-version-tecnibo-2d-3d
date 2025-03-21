@@ -1,12 +1,12 @@
 import { createClient } from '@supabase/supabase-js';
-import { restructureProjectData } from './restructureData';
+import { restructureProjectData, transformProjectsData } from './restructureData';
+import { getCorsHeaders } from '../authenticate/route';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Fetch all related data for a user's projects
 export const fetchUserProjects = async (odooId) => {
   try {
     const { data, error } = await supabase
@@ -31,7 +31,36 @@ export const fetchUserProjects = async (odooId) => {
       throw new Error(`Failed to fetch projects: ${error.message}`);
     }
 
-    console.log(`Fetched ${data.length} projects for user_id ${odooId}:`, data);
+    const userResponse = await supabase
+      .from('users')
+      .select('*')
+      .eq('odoo_id', odooId)
+      .single();
+
+    if (userResponse.error) {
+      throw new Error(`Failed to fetch user data: ${userResponse.error.message}`);
+    }
+
+    console.log('Fetched user data:', userResponse.data);
+
+    const versionIds = data.flatMap(project => project.versions.map(version => version.id));
+    const interventionsResponse = await supabase
+      .from('interventions')
+      .select('*')
+      .in('version_id', versionIds);
+
+    if (interventionsResponse.error) {
+      throw new Error(`Failed to fetch interventions: ${interventionsResponse.error.message}`);
+    }
+
+    const interventions = interventionsResponse.data;
+
+    data.forEach(project => {
+      project.versions.forEach(version => {
+        version.interventions = interventions.filter(intervention => intervention.version_id === version.id);
+      });
+    });
+
     return data || [];
   } catch (err) {
     console.error('Fetch error:', err.message);
@@ -40,64 +69,51 @@ export const fetchUserProjects = async (odooId) => {
 };
 
 export async function GET(req) {
-  console.log('Received request:', req);
-
-  const headers = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
-  };
-
+  const origin = req.headers.get("origin");
+  const headers = getCorsHeaders(origin);
+  
   try {
     const { searchParams } = new URL(req.url);
     const odooId = searchParams.get('odooId');
-    const restructureParam = searchParams.get('restructure'); // Get raw param value
-    const restructure = restructureParam === 'true'; // Explicitly true, otherwise false
-
+    const restructureParam = searchParams.get('restructure');
+    const restructure = restructureParam === 'true'; 
+    
     console.log('Received odooId:', odooId, 'Restructure:', restructure);
-
+    
     if (!odooId) {
       return new Response(
         JSON.stringify({ success: false, error: 'Missing odooId parameter' }),
         { status: 400, headers }
       );
     }
-
+    
     const projects = await fetchUserProjects(odooId);
-    const responseData = restructure ? restructureProjectData(projects) : projects;
-
+    const responseData = restructure ? transformProjectsData(projects) : projects;
+    
     if (!responseData.length) {
       return new Response(
         JSON.stringify({ success: false, error: 'No projects found or failed to fetch' }),
         { status: 404, headers }
       );
     }
-
+    
+    // console.log('Project data:', responseData);
+     
+    return new Response(JSON.stringify(responseData), {
+      status: 200,
+      statusText: 'OK',
+      headers: new Headers({ 'Content-Type': 'application/json' })
+    });
+    
+  } catch (err) {
+    console.error('Error during data transformation:', err.message);
     return new Response(
-      JSON.stringify({ success: true, data: responseData }),
-      { status: 200, headers }
-    );
-  } catch (error) {
-    console.error('API route error:', error.message);
-    return new Response(
-      JSON.stringify({ success: false, error: 'Internal Server Error' }),
+      JSON.stringify({ success: false, error: `Failed to transform data: ${err.message}` }),
       { status: 500, headers }
     );
   }
 };
 
-
-// Named export for OPTIONS method (for CORS preflight)
-export async function OPTIONS() {
-  return new Response(null, {
-    status: 200,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
-    },
-  });
-}
 
 
 

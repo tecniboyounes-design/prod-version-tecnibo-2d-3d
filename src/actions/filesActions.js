@@ -14,10 +14,14 @@
  * @param {Array} jsonData.floorplanner.items - List of items.
  * @returns {Object} - The structured order data object.
  */
+
+
 const createDataObjectFromParams = (jsonData) => {
+  console.log("jsonData", jsonData);
   const { project, user } = jsonData;
   const { items } = jsonData.floorplanner || { items: [] };
   // console.log("items", project, user, items);
+  
   const builderList = items.map((item, index) => ({
     lineNo: (index + 1).toString(),
     hierarchicalPos: (index + 1).toString(),
@@ -34,7 +38,7 @@ const createDataObjectFromParams = (jsonData) => {
     articlePriceInfo4: "19",
     articlePriceInfo5: "116.91"
   }));
-
+    
   return {
     orderNo: project?.project_number || "2025001602",
     dispDate: "",
@@ -91,9 +95,12 @@ const createDataObjectFromParams = (jsonData) => {
     },
     builderList
   };
+
 };
 
 
+// we will sent the data to the server to generate the file with params url api ,  project_id user_id, fileType
+// the server will return the file as a blob
 
 const handleDownloadFile = async (url, data, fileType) => {
   try {
@@ -108,7 +115,7 @@ const handleDownloadFile = async (url, data, fileType) => {
     if (!response.ok) {
       throw new Error(`Failed to download ${fileType}`);
     }
-
+    
     const blob = await response.blob();
     const fileURL = window.URL.createObjectURL(blob);
     const link = document.createElement("a");
