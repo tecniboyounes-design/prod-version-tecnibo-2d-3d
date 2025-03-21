@@ -1,5 +1,5 @@
 export function getAuthenticationUrl(req, relativePath) {
-    // console.log('request:', req);
+    console.log('request:', req);
     const host = req.headers.get("host");
     const isLocalhost = host.includes("localhost") || host.includes("192.168.");
 

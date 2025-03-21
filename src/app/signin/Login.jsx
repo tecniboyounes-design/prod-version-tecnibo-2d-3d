@@ -1,14 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, Button, Box, Typography, CircularProgress, Alert, IconButton } from "@mui/material";
 import { styled } from '@mui/system';
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "@/store";
 import { ArrowBack } from "@mui/icons-material";
-import { useRouter } from 'next/navigation'; 
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Cookies from "js-cookie";
+import axios from "axios";
 
 
 const Background = styled(Box)({
@@ -28,58 +29,63 @@ const OdooLogin = () => {
     const [showPassword, setShowPassword] = useState(false);
     const dispatch = useDispatch();
     const user = useSelector((state) => state.jsonData.user);
-    const router = useRouter();  
+    const router = useRouter();
     const [authData, setAuthData] = useState(null);
-    
+
+
+
+
+
+
+
     const validateEmail = (email) => email.includes("tecnibo");
 
-const sendRequest = async () => {
-    if (isSending) return;
+    const sendRequest = async () => {
+        if (isSending) return;
 
-    if (!validateEmail(email)) {
-        setErrorMessage("Invalid email. It should contain 'tecnibo'.");
-        return;
-    }
-
-    setIsSending(true);
-    setRequestResult(null);
-    setErrorMessage("");
-
-    try {
-        const response = await fetch("/api/authenticate", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password }),
-        });
-        
-        const data = await response.json();
-        // console.log("Response Data:", data);
-        const authData = {
-            session_id: data.session_id,
-            user: data.response.result,
-            // id: data.response.result.uid,
-          };
-          
-          console.log("Authentication Data:", authData);
-        if (data.result) {
-            // Store session_id in cookies
-            Cookies.set("session_id", data.session_id, { expires: 7, secure: true, sameSite: "Strict" });
-             
-            // Dispatch user data to Redux
-            dispatch(setUser(data.response.result));
-            setRequestResult("Login Successful check console for details.");
-            // Redirect after login
-            // router.push("/");
-        } else {
-            setRequestResult("Login Failed");
+        if (!validateEmail(email)) {
+            setErrorMessage("Invalid email. It should contain 'tecnibo'.");
+            return;
         }
-    } catch (error) {
-        console.error("Error:", error);
-        setRequestResult("Request failed. Check console for details.", );
-    } finally {
-        setIsSending(false);
-    }
-};
+
+        setIsSending(true);
+        setRequestResult(null);
+        setErrorMessage("");
+
+        try {
+            const response = await axios.post("/api/authenticate", { email, password }, {
+                headers: { "Content-Type": "application/json" }
+              });
+
+
+            // const data = await response.json();
+            console.log("Response Data:", response.data);
+            const authData = {
+                session_id: data.session_id,
+                user: data.response.result,
+                // id: data.response.result.uid,
+            };
+            
+            console.log("Authentication Data:", authData);
+            if (data.result) {
+                // Store session_id in cookies
+                Cookies.set("session_id", data.session_id, { expires: 7, secure: true, sameSite: "Strict" });
+
+                // Dispatch user data to Redux
+                dispatch(setUser(data.response.result));
+                setRequestResult("Login Successful check console for details.");
+                // Redirect after login
+                // router.push("/");
+            } else {
+                setRequestResult("Login Failed");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            setRequestResult("Request failed. Check console for details.",);
+        } finally {
+            setIsSending(false);
+        }
+    };
 
 
 
@@ -89,7 +95,9 @@ const sendRequest = async () => {
             sendRequest();
         }
     };
-    
+
+
+
 
 
     return (

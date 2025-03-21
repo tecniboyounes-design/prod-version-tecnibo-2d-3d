@@ -40,7 +40,7 @@ export async function POST(req) {
             default:
                 return NextResponse.json({ error: 'Unsupported format' }, { status: 400 });
         }
-
+        
     } catch (error) {
         console.error('Error handling request:', error);
         return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
