@@ -1,7 +1,125 @@
-import { formatDate } from "@/data/models";
 import puppeteer from "puppeteer";
+import { formatDate } from "@/data/models";
 
-export const generatePDF = async (data) => {
+
+
+
+
+/**
+ * Transforms raw project data into the structure expected by the PDF generator.
+ *
+ * @param {object} projectData - Raw project JSON object.
+ * @param {string} versionId - The specific version ID to use.
+ * @returns {object} An object containing { orderNo, head, builderList }.
+ */
+export function transformProjectData(projectData, versionId) {
+  console.log('projectData', projectData)
+  if (!projectData) {
+    console.error('transformProjectData: projectData is undefined or null');
+    throw new Error('Invalid project data received');
+  }
+  
+  console.log('Starting to transform project data...');
+  console.log('Project data keys:', Object.keys(projectData));
+
+  // Use the project_number as the order number.
+  const orderNo = projectData.project_number;
+  if (!orderNo) {
+    console.warn('Warning: project_number is missing from the project data');
+  }
+  console.log(`Order number: ${orderNo}`);
+
+  // Create head data using project details.
+  const head = {
+    customer: projectData.title || 'No title provided',
+    // Use the email from the first manager, if available.
+    client:
+      projectData.managers && projectData.managers.length > 0
+        ? projectData.managers[0].email
+        : 'N/A',
+    textLong: projectData.description || 'No description provided',
+    comm: 'Project Communication Placeholder', // Customize as needed.
+    createDate: projectData.created_on,
+    // Price info placeholders – update these if needed.
+    orderPriceInfo1: 0,
+    orderPriceInfo2: 0,
+    orderPriceInfo4: 0,
+    orderPriceInfo5: 0,
+  };
+
+  console.log('Head data created:', head);
+
+  // Find the specific version using the versionId.
+  const version =
+    projectData.versions && projectData.versions.find((v) => v.id === versionId);
+  
+  if (!version) {
+    console.error(`Error: Version with ID ${versionId} not found for the project`);
+    throw new Error('Version not found for the project');
+  }
+  console.log(`Found version: ${version.version || 'Version property missing'}`);
+
+  // Transform articles into the builderList.
+  let builderList = [];
+  try {
+    builderList = version.articles.reduce((acc, article) => {
+      if (!Array.isArray(article.data)) {
+        console.warn(`Warning: Article with ID ${article.id} does not have a valid data array`);
+        return acc;
+      }
+
+      const items = article.data.map((item) => {
+        if (!item.type || item.height == null || item.width == null) {
+          console.warn(`Warning: Item data in article ${article.id} is missing required fields`);
+        }
+        return {
+          // Use the item type as the article name.
+          pName: item.type || 'Unknown',
+          // Map dimensions from the item.
+          articlePriceInfo5: item.height,
+          articlePriceInfo4: item.width,
+          // Set default count to 1.
+          count: 1,
+        };
+      });
+
+      return acc.concat(items);
+    }, []);
+    console.log('Builder list created:', builderList);
+  } catch (error) {
+    console.error('Error processing articles:', error);
+    throw new Error('Error transforming articles data');
+  }
+
+  return { orderNo, head, builderList };
+}
+
+/**
+ * Main function: Fetches the project by its ID and then transforms it using the provided version ID.
+ *
+ * @param {string} projectId - The project ID.
+ * @param {string} versionId - The specific version ID.
+ * @returns {Promise<object>} - Resolves with { orderNo, head, builderList }.
+ */
+
+
+export async function getAndTransformProject(
+  projectId = "d6854054-02d7-462d-90ea-4f7178eb6d97",
+  versionId = "a45446d7-ee60-45f7-9747-b5d8aa1bf143"
+) {
+  try {
+    const projectData = await fetchProjectWithRelations(projectId);
+    console.log('Project Data received for transformation:', JSON.stringify(projectData, null, 2));
+    return transformProjectData(projectData, versionId);
+  } catch (error) {
+    console.error('Error in getAndTransformProject:', error);
+    throw error;
+  }
+}
+
+
+
+export const generatePDF = async (data, project) => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 

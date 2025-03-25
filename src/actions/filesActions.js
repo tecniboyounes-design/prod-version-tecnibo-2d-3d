@@ -99,8 +99,6 @@ const createDataObjectFromParams = (jsonData) => {
 };
 
 
-// we will sent the data to the server to generate the file with params url api ,  project_id user_id, fileType
-// the server will return the file as a blob
 
 const handleDownloadFile = async (url, data, fileType) => {
   try {

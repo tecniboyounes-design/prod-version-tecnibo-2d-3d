@@ -33,11 +33,6 @@ const OdooLogin = () => {
     const [authData, setAuthData] = useState(null);
 
 
-
-
-
-
-
     const validateEmail = (email) => email.includes("tecnibo");
 
     const sendRequest = async () => {
@@ -86,7 +81,6 @@ const OdooLogin = () => {
             setIsSending(false);
         }
     };
-
 
 
 

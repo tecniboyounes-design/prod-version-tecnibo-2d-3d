@@ -6,6 +6,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+
 export const fetchProjectWithRelations = async (odooId, projectId) => {
   try {
     // Fetch the project with all its relations (versions, walls, articles, points, managers, and interventions)
@@ -41,7 +42,6 @@ export const fetchProjectWithRelations = async (odooId, projectId) => {
     throw err;
   }
 };
-
 
 
 

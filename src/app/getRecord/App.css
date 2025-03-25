@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+#root {
+    width: 80%;
+    align-items: center;
+    margin: auto;
+}
