@@ -69,10 +69,7 @@ const PriceDisplay = () => {
       if (data?.id) {
         const orderId = data.id;
         // console.log('orderID', orderId); // Check if the order ID is correctly logged
-  
-        // Remove the updateProjectOdooData logic
-        // You can handle any other logic here if needed
-  
+    
         setAlertOpen(true);
         setAlertMessage('Order placed successfully!');
         setAlertSeverity('success');

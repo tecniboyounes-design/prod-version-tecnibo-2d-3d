@@ -17,7 +17,7 @@ export function getCorsHeaders(origin) {
   }
   // Always return a plain object for headers.
   return {
-    "Access-Control-Allow-Origin": "null",
+    "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "POST, GET",
     "Access-Control-Allow-Headers": "Content-Type",
     "Content-Type": "application/json",
