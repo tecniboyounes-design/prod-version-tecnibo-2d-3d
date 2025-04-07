@@ -2,13 +2,28 @@ import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 import xml2js from "xml2js";
-import { getCorsHeaders } from "../authenticate/route";
+
+export const cors = (req) => {
+  const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001'];
+  const origin = req.headers.get("origin");
+
+  const allowedOrigin = allowedOrigins.includes(origin) ? origin : '*';
+  
+  const headers = {
+    "Access-Control-Allow-Origin": allowedOrigin, // Allow valid origins or wildcard
+    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS", // Allowed HTTP methods
+    "Access-Control-Allow-Headers": "Content-Type, Authorization", // Allowed headers
+    "Access-Control-Allow-Credentials": "true", // Enable credentials if needed
+  };
+
+  return headers;
+};
 
 const xmlFilePath = path.join(process.cwd(), "public", "data", "Quinquailleries.xml");
 
+
 // Function to recursively search for a category by name
 const findCategory = (categories, targetName) => {
-  // Ensure categories is an array:
   const cats = Array.isArray(categories) ? categories : [categories];
   console.log(`🔍 Searching for category: ${targetName}`);
   for (let category of cats) {
@@ -17,7 +32,6 @@ const findCategory = (categories, targetName) => {
       return category;
     }
     if (category.category) {
-      // Wrap subcategories in an array if needed:
       const subCats = Array.isArray(category.category) ? category.category : [category.category];
       const found = findCategory(subCats, targetName);
       if (found) return found;
@@ -30,24 +44,21 @@ const findCategory = (categories, targetName) => {
 
 // Next.js API Route Handler
 export async function GET(req) {
-  const origin = req.headers.get("origin");
-  const corsHeaders = getCorsHeaders(origin);
-
+  const corsHeaders = cors(req); // Apply CORS headers here
+  
   try {
     console.log(`📥 Received request: ${req.url}`);
-
+    
     const { searchParams } = new URL(req.url);
     const categoryName = searchParams.get("category");
     const fetchAll = searchParams.get("fetchAll") === "true";
-
+    
     console.log(`🔎 Query Params -> category: ${categoryName}, fetchAll: ${fetchAll}`);
 
     // Read XML file
-    console.log(`📂 Reading XML file from: ${xmlFilePath}`);
     const xmlData = fs.readFileSync(xmlFilePath, "utf8");
 
     // Parse XML
-    console.log("🛠️ Parsing XML data...");
     const parsedData = await xml2js.parseStringPromise(xmlData, { explicitArray: false });
 
     // Ensure catalog is always an array
@@ -55,10 +66,7 @@ export async function GET(req) {
       ? parsedData.Catalog.category
       : [parsedData.Catalog.category];
 
-    console.log(`📦 Parsed catalog with ${catalog.length} top-level categories`);
-
     if (!categoryName) {
-      console.log("📋 Returning top-level categories...");
       const topCategories = catalog.map(cat => ({
         name: cat.$.name,
         label: cat.$.label,
@@ -68,27 +76,21 @@ export async function GET(req) {
     }
 
     // Search for the requested category
-    console.log(`🔍 Searching for category: ${categoryName}`);
     const category = findCategory(catalog, categoryName);
     if (!category) {
-      console.warn(`⚠️ Category '${categoryName}' not found`);
       return NextResponse.json({ error: "Category not found" }, { status: 404, headers: corsHeaders });
     }
 
-    // Return either only direct children or full hierarchy
     const response = fetchAll ? category : category.category || category.object || [];
-    console.log(`✅ Returning ${fetchAll ? "full category" : "direct children"} for '${categoryName}'`);
-
     return NextResponse.json(response, { status: 200, headers: corsHeaders });
   } catch (error) {
     console.error("❌ Error fetching categories:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500, headers: corsHeaders });
   }
-} 
+}
 
-
+// OPTIONS handler for pre-flight requests
 export async function OPTIONS(req) {
-  const origin = req.headers.get("origin");
-  const corsHeaders = getCorsHeaders(origin);
+  const corsHeaders = cors(req); // Apply CORS headers here
   return new Response(null, { status: 204, headers: corsHeaders });
 }
