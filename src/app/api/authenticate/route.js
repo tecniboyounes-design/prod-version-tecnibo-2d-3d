@@ -1,9 +1,10 @@
-import { getAuthenticationUrl } from "../redirect";
+// import { getAuthenticationUrl } from "../redirect";
 
 const DATABASE_NAME = "tecnibo17_test"; 
 
 // Allowed origins
 const allowedOrigins = ['*'];
+
 
 export function getCorsHeaders(origin) {
   // When allowedOrigins contains "*", allow every origin.
@@ -39,8 +40,8 @@ export async function POST(request) {
   
   try {
     const { email, password } = await request.json();
-    // console.log("Received email:", email);
-    // console.log("Received password:", password);
+    console.log("Received email:", email);
+    console.log("Received password:", password);
 
     if (!email || !password) {
       return new Response(
@@ -112,7 +113,6 @@ export async function POST(request) {
     );
   }
 }
-
 
     
 export async function OPTIONS(request) { 

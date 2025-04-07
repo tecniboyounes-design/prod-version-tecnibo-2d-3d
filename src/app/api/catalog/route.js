@@ -84,7 +84,8 @@ export async function GET(req) {
     console.error("❌ Error fetching categories:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500, headers: corsHeaders });
   }
-}
+} 
+
 
 export async function OPTIONS(req) {
   const origin = req.headers.get("origin");

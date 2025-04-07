@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import { useDispatch } from 'react-redux';
 import { getRandomPrice, pushProject, updateItems } from './store';
 import { v4 as uuidv4 } from "uuid";
-import { testCrypto } from './lib/crypto';
+import { testCrypto } from '../lib/crypto';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;

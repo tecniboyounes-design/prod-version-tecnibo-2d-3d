@@ -10,6 +10,7 @@ import InteractivePointMenu from '../UI/InteractivePointMenu';
 import FloorPlane from '../Floor/Floor';
 import { FloatingSpeedDial } from '../RoomShape/roomShape';
 import GLTFDoor from '../Articles/Articles';
+import { ScreenshotHandler } from '@/HOC/useScreenshotUpload';
 
 
 const Points = () => {
@@ -270,6 +271,7 @@ const handleEmptySpaceClick = (e) => {
   {/* Lighting */}
   <ambientLight intensity={0.5} />
   <directionalLight position={[5, 5, 5]} intensity={1} />
+  <ScreenshotHandler projectId={"071d6afb-223b-4cf6-b77a-03b503f60fc4"} />
 </Canvas>
 
 

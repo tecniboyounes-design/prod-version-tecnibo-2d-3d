@@ -120,13 +120,13 @@ const initialState = {
     db: 'tecnibo17_test',
     user_settings: {
       id: 137,
-      user_id: {}, // Previously [Object], should be an actual object
+      user_id: {}, 
       is_discuss_sidebar_category_channel_open: true,
       is_discuss_sidebar_category_chat_open: true,
       push_to_talk_key: false,
       use_push_to_talk: false,
       voice_active_duration: 200,
-      volume_settings_ids: [], // Previously [Array], should be an actual array
+      volume_settings_ids: [], 
       homemenu_config: false,
       voip_username: false,
       voip_secret: false,

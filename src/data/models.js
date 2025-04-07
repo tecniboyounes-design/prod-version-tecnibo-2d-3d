@@ -1600,35 +1600,6 @@ export const arrayToCorners = (array) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   {
     "lines": [
       {
@@ -2422,15 +2393,6 @@ export const arrayToCorners = (array) => {
     "versionDescription": "Cloned from v1.0"
   }
 ]
-
-
-
-
-
-
-
-
-
 
 
 

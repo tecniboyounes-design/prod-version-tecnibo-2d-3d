@@ -4,7 +4,7 @@ import { createIntervention } from './createIntervention';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+export const supabase = createClient(supabaseUrl, supabaseKey);
 
 
 export const fetchProjectWithRelations = async (odooId, projectId) => {
@@ -58,7 +58,6 @@ export async function POST(req) {
   const doors = projectData.doors;
   const wallsFromPayload = projectData.walls; 
   const pointsFromPayload = projectData.points; 
-
   // Check if user exists or create one...
   const { data: existingUser, error: userError } = await supabase
     .from("users")
@@ -274,5 +273,6 @@ export async function POST(req) {
     { status: 201, headers }
   );
 }
+
 
 

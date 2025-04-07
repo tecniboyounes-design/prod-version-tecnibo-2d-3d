@@ -5,6 +5,8 @@
     <!--    <global_change file="KICA_GLOBAL_CHANGE"/>-->
     <tooltip file="KICA_TOOLTIP"/>
     <translate file="2017_1.xlf"/>
+   
+   <category name="handle_kitchen" label="Kitchen" info="Kitchen" image="img/new_img/catalog/kitchen/Kitchen_section_01.jpg" >
 
     <category name="HANDLELESS_KITCHEN" label="Handleless Kitchen" image="img/new_img/catalog/kitchen/Kitchen_section_01.jpg">
         <category name="HLKI_RAIL_CAT" label="Handleless profiles" image="img/new_img/catalog/kitchen/Front_Left_Right.jpg">
@@ -215,5 +217,7 @@
             <object model="KI_CR_S1100_P0X00_VAR" name="KI_CR_S1100_P0X00_VAR" label="{translate:Crown S1100 P0X00|Crown S1100 P0X00}" info="Crown S1100 P0X00" image="img/new_img/catalog/kitchen/KI_BA_S1100_P0X00_VAR.png"/>
         </category>
     </category>
+
+   </category>
 
 </Catalog>
