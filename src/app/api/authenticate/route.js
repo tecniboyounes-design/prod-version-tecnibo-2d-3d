@@ -5,23 +5,13 @@ const DATABASE_NAME = "tecnibo17_test";
 // Allowed origins
 const allowedOrigins = ['*'];
 
-
 export function getCorsHeaders(origin) {
-  // When allowedOrigins contains "*", allow every origin.
-  if (allowedOrigins.includes("*") || (origin && allowedOrigins.includes(origin))) {
-    return {
-      "Access-Control-Allow-Origin": origin || "*",
-      "Access-Control-Allow-Methods": "POST, GET",
-      "Access-Control-Allow-Headers": "Content-Type",
-      "Content-Type": "application/json",
-    };
-  }
-  // Always return a plain object for headers.
+  // Allow requests from any origin by returning "*" for the Access-Control-Allow-Origin header
   return {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "POST, GET",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",  // Allow all origins
+    "Access-Control-Allow-Methods": "POST, GET, OPTIONS",  // Allow specific methods (POST, GET, and OPTIONS)
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",  // Allow specific headers
+    "Content-Type": "application/json",  // Set the response content type
   };
 }
 
@@ -40,8 +30,8 @@ export async function POST(request) {
   
   try {
     const { email, password } = await request.json();
-    console.log("Received email:", email);
-    console.log("Received password:", password);
+    // console.log("Received email:", email);
+    // console.log("Received password:", password);
 
     if (!email || !password) {
       return new Response(
