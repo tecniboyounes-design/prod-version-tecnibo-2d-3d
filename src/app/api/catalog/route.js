@@ -1,11 +1,10 @@
-//building routes again
 import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 import xml2js from "xml2js";
-import { getCorsHeaders } from "../authenticate/route";
 
 const xmlFilePath = path.join(process.cwd(), "public", "data", "Quinquailleries.xml");
+
 
 // Function to recursively search for a category by name
 const findCategory = (categories, targetName) => {
@@ -86,6 +85,13 @@ export async function GET(req) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500, headers: corsHeaders });
   }
 } 
+
+
+export const getCorsHeaders = () => ({
+  "Access-Control-Allow-Origin": "*", // Allow from any origin
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+});
 
 
 export async function OPTIONS(req) {
