@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { promisify } from 'util';
+import updateProjectImage from './updateProjectImage';
 
 const writeFile = promisify(fs.writeFile);
 const mkdir = promisify(fs.mkdir);
@@ -9,10 +10,11 @@ export async function POST(req) {
   // Read and parse the request body
   const body = await req.json();
   console.log('POST request received:', body);
-
+  
   // Extract projectId and screenshot from the parsed body
   const { projectId, screenshot } = body;
-
+  console.log('Parsed data:', { projectId, screenshot });
+  
   // Validate inputs
   if (!projectId || !screenshot) {
     return new Response(JSON.stringify({ error: 'Missing projectId or screenshot' }), {
@@ -52,17 +54,19 @@ export async function POST(req) {
     });
   }
   
-  // Write the image file to the file system
+  
 
   try {
     await writeFile(filePath, buffer);
     
     // Get the origin from the request (e.g., http://localhost:3000);
-
+    
     const origin = new URL(req.url, `http://${req.headers.get('host')}`).origin;
     
     // Construct the full public URL with origin
     const url = `${origin}/screenshots/${projectId}/${fileName}`;
+    
+    await updateProjectImage(projectId, url);
 
     return new Response(JSON.stringify({ url }), {
       status: 200,
@@ -76,4 +80,7 @@ export async function POST(req) {
       headers: { 'Content-Type': 'application/json' },
     });
   }
+
+
 }
+

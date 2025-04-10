@@ -19,6 +19,7 @@ export const cors = (req) => {
   return headers;
 };
 
+
 const xmlFilePath = path.join(process.cwd(), "public", "data", "Quinquailleries.xml");
 
 
@@ -89,6 +90,7 @@ export async function GET(req) {
   }
 }
 
+  
 // OPTIONS handler for pre-flight requests
 export async function OPTIONS(req) {
   const corsHeaders = cors(req); // Apply CORS headers here

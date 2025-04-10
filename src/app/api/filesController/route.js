@@ -48,10 +48,11 @@ export async function POST(req) {
         { status: 400, headers: corsHeaders }
       );
     }
-
+    
     console.log(`Received request: projectId=${projectId}, versionId=${versionId}, format=${format}`);
 
     const projectData = await fetchProjectWithRelations(projectId);
+    console.log('Project data fetched:', JSON.stringify(projectData, null, 2));
     const transformedData = transformProjectData(projectData, versionId);
     console.log('Transformed data:', transformedData);
 
