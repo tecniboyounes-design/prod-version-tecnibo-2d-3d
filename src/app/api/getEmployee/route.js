@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { createEmployeePayload } from './odooPayload';
 
-export async function PO(req) {
+export async function POST(req) {
 
     const { employeeId } = req.body;
     
@@ -15,6 +15,7 @@ export async function PO(req) {
     }
     
     const sessionId = '966f8b986aa440d31e580967efaeb059f9e13367'
+    
     
     try {
         // Send request to Odoo server using Axios

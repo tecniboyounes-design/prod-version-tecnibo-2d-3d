@@ -1,8 +1,3 @@
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 /**
  * Inserts an intervention record into the database using a minimal payload.
@@ -15,9 +10,11 @@ const supabase = createClient(supabaseUrl, supabaseKey);
  * @returns {Promise<Object>} - The inserted intervention object.
  */
 
+import { supabase } from "../filesController/route";
+
 
 export async function createIntervention(payload) {
-  console.log("🟢 [createIntervention] - Received minimal payload:", JSON.stringify(payload, null, 2));
+  // console.log("🟢 [createIntervention] - Received minimal payload:", JSON.stringify(payload, null, 2));
 
   const { action, project_id, version_id, intervenerId } = payload;
   
@@ -43,7 +40,7 @@ export async function createIntervention(payload) {
     console.error("🚨 [Project Lookup Error] -", projectError?.message);
     throw new Error("Project lookup failed.");
   }
-  console.log("✅ [Project Data] -", JSON.stringify(projectData, null, 2));
+  // console.log("✅ [Project Data] -", JSON.stringify(projectData, null, 2));
 
   // Lookup version data
   const { data: versionData, error: versionError } = await supabase
@@ -56,12 +53,12 @@ export async function createIntervention(payload) {
     console.error("🚨 [Version Lookup Error] -", versionError?.message);
     throw new Error("Version lookup failed.");
   }
-  console.log("✅ [Version Data] -", JSON.stringify(versionData, null, 2));
+  // console.log("✅ [Version Data] -", JSON.stringify(versionData, null, 2));
 
   // Lookup intervener data (Check if intervenerId is UUID or odoo_id)
   let intervenerQuery = supabase.from("users").select("id, name, avatar, email, odoo_id");
 
-  if (intervenerId.length === 36) { // Assuming UUID is 36 characters long
+  if (intervenerId.length === 36) {
     intervenerQuery = intervenerQuery.eq("id", intervenerId);
   } else {
     intervenerQuery = intervenerQuery.eq("odoo_id", intervenerId);
@@ -73,7 +70,7 @@ export async function createIntervention(payload) {
     console.error("🚨 [Intervener Lookup Error] -", intervenerError?.message);
     throw new Error("Intervener lookup failed.");
   }
-  console.log("✅ [Intervener Data] -", JSON.stringify(intervenerData, null, 2));
+  // console.log("✅ [Intervener Data] -", JSON.stringify(intervenerData, null, 2));
 
   // Build the intervention record
   const interventionRecord = {
@@ -87,7 +84,7 @@ export async function createIntervention(payload) {
     metadata: {} // Default metadata (can be extended)
   };
 
-  console.log("📌 [Database] - Inserting intervention record:", JSON.stringify(interventionRecord, null, 2));
+  // console.log("📌 [Database] - Inserting intervention record:", JSON.stringify(interventionRecord, null, 2));
 
   // Insert the intervention record
   const { data: insertedData, error: insertError } = await supabase
@@ -101,7 +98,7 @@ export async function createIntervention(payload) {
     throw new Error(insertError.message);
   }
 
-  console.log("✅ [Database Success] - Intervention inserted successfully:", JSON.stringify(insertedData, null, 2));
+  // console.log("✅ [Database Success] - Intervention inserted successfully:", JSON.stringify(insertedData, null, 2));
 
   return {
     id: insertedData.id,
@@ -113,4 +110,6 @@ export async function createIntervention(payload) {
     metadata: {}
   };
 }
+
+
 

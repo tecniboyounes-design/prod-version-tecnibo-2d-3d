@@ -7,10 +7,11 @@ export const corsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 };
 
+
 export async function POST(req) {
   try {
     // Log the incoming request body
-    const body = await req.json(); // Since Next.js API routes use `req.json()`
+    const body = await req.json(); 
     console.log('Received request:', body);
 
     // Extract session_id from request body
@@ -131,5 +132,4 @@ export async function POST(req) {
     return NextResponse.json({ error: 'An error occurred while communicating with Odoo' }, { status: 500, headers: corsHeaders });
   }
 }
-
 

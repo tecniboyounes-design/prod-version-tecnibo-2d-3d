@@ -1,0 +1,4 @@
+CREATE TRIGGER trg_sync_point_geom
+BEFORE INSERT OR UPDATE ON points
+FOR EACH ROW
+EXECUTE FUNCTION sync_point_geom();

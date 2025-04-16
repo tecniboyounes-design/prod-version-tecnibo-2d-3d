@@ -3,8 +3,9 @@ import fs from "fs";
 import path from "path";
 import xml2js from "xml2js";
 
+
 export const cors = (req) => {
-  const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001'];
+  const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:5173/'];
   const origin = req.headers.get("origin");
 
   const allowedOrigin = allowedOrigins.includes(origin) ? origin : '*';
@@ -19,9 +20,7 @@ export const cors = (req) => {
   return headers;
 };
 
-
 const xmlFilePath = path.join(process.cwd(), "public", "data", "Quinquailleries.xml");
-
 
 // Function to recursively search for a category by name
 const findCategory = (categories, targetName) => {
@@ -41,7 +40,6 @@ const findCategory = (categories, targetName) => {
   console.warn(`⚠️ Category not found: ${targetName}`);
   return null;
 };
-
 
 // Next.js API Route Handler
 export async function GET(req) {
@@ -90,8 +88,6 @@ export async function GET(req) {
   }
 }
 
-  
-// OPTIONS handler for pre-flight requests
 export async function OPTIONS(req) {
   const corsHeaders = cors(req); // Apply CORS headers here
   return new Response(null, { status: 204, headers: corsHeaders });

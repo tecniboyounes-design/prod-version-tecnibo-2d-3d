@@ -19,7 +19,7 @@ const fetchOdooData = async () => {
       const sessionId = '4df991ca5e9041c58510381ef0f87fc74f73870e';
       // Send request to the backend
 
-      const response = await axios.post('/api/createPurchase', { session_id: sessionId });
+      const response = await axios.post('/api/createPurchase', { session_id: sessionId } );
       setResponseData(response.data);
 
       console.log('Odoo Response:', response.data);

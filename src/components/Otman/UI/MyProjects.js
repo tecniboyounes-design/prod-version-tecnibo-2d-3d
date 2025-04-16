@@ -1201,6 +1201,8 @@ const ProjectDialog = ({ open, onClose }) => {
   * @function handleSave
   * @returns {Promise<void>} - A promise that resolves when the project is saved.
   */
+
+
   const handleSave = async () => {
     onClose();
     const now = new Date().toLocaleString("fr-FR");
@@ -1221,11 +1223,56 @@ const ProjectDialog = ({ open, onClose }) => {
           version_id: null,
         },
       ],
+
       walls: [
         {
-          startPointId: "p1", // these are temp IDs
+          startPointId: "p1",
           endPointId: "p2",
-          length: 12.54,
+          length: 12.544, // you can calculate it using the distance formula
+          rotation: 0,
+          thickness: 0.012,
+          color: "#f5f5f5",
+          texture: "default.avif",
+          height: 4,
+          angles: [
+            {
+              pointId: "p1",
+              internalAngle: Math.PI / 2,
+              externalAngle: (3 * Math.PI) / 2,
+              internalAngleDeg: 90,
+              externalAngleDeg: 270,
+              connectedLineId: uuidv4(),
+              startAngle: 0,
+              direction: 1,
+            },
+          ],
+        },
+        {
+          startPointId: "p2",
+          endPointId: "p3",
+          length: 8.49,
+          rotation: Math.PI / 2,
+          thickness: 0.012,
+          color: "#f5f5f5",
+          texture: "default.avif",
+          height: 4,
+          angles: [
+            {
+              pointId: "p2",
+              internalAngle: Math.PI / 2,
+              externalAngle: (3 * Math.PI) / 2,
+              internalAngleDeg: 90,
+              externalAngleDeg: 270,
+              connectedLineId: uuidv4(),
+              startAngle: 0,
+              direction: 1,
+            },
+          ],
+        },
+        {
+          startPointId: "p3",
+          endPointId: "p4",
+          length: 12.544,
           rotation: Math.PI,
           thickness: 0.012,
           color: "#f5f5f5",
@@ -1233,44 +1280,64 @@ const ProjectDialog = ({ open, onClose }) => {
           height: 4,
           angles: [
             {
+              pointId: "p3",
               internalAngle: Math.PI / 2,
               externalAngle: (3 * Math.PI) / 2,
               internalAngleDeg: 90,
               externalAngleDeg: 270,
               connectedLineId: uuidv4(),
-              pointId: "p1", // temp id reference
+              startAngle: 0,
+              direction: 1,
+            },
+          ],
+        },
+        {
+          startPointId: "p4",
+          endPointId: "p1",
+          length: 8.49,
+          rotation: -Math.PI / 2,
+          thickness: 0.012,
+          color: "#f5f5f5",
+          texture: "default.avif",
+          height: 4,
+          angles: [
+            {
+              pointId: "p4",
+              internalAngle: Math.PI / 2,
+              externalAngle: (3 * Math.PI) / 2,
+              internalAngleDeg: 90,
+              externalAngleDeg: 270,
+              connectedLineId: uuidv4(),
               startAngle: 0,
               direction: 1,
             },
           ],
         },
       ],
+
+
       points: [
-        {
-          tempId: "p1", // temporary identifier
-          position: { x: -5.85, y: 0.01, z: -4.245 },
-          rotation: 0,
-          snapAngle: 0,
-        },
-        {
-          tempId: "p2",
-          position: { x: 6.694, y: 0.01, z: -4.245 },
-          rotation: 0,
-          snapAngle: 0,
-        },
-      ],
+        { tempId: "p1", position: { x: -5.85, y: 0.01, z: -4.245 }, rotation: 0, snapAngle: 0 },
+        { tempId: "p2", position: { x: 6.694, y: 0.01, z: -4.245 }, rotation: 0, snapAngle: 0 },
+        { tempId: "p3", position: { x: 6.694, y: 0.01, z: 4.245 }, rotation: 0, snapAngle: 0 },
+        { tempId: "p4", position: { x: -5.85, y: 0.01, z: 4.245 }, rotation: 0, snapAngle: 0 },
+      ]
+
+
     };
 
     /** 
      * New project object containing metadata and room planner data.
      * @type {Object}
-     */
+    */
+
     const newProject = {
       title: projectTitle || "New Project",
       project_number: generateUniqueProjectNumber() || "234567887",
       description: description || "No description provided",
       created_on: now,
       changed_on: now,
+      image_url: 'https://cdn.andro4all.com/andro4all/2022/07/Planner-5D.jpg',
       managers: [
         {
           name: user?.name,
@@ -1290,29 +1357,36 @@ const ProjectDialog = ({ open, onClose }) => {
 
 
     try {
-
+      const startTime = performance.now();
+    
       const { project, project_id, user_id, version_id } = await createProject(newProject);
-
-      console.log('response:', project, project_id, user_id, version_id );
-
+    
+      const endTime = performance.now();
+      const duration = endTime - startTime;
+    
+      console.log(`[DEBUG] Project creation took ${duration.toFixed(2)} ms`);
+    
       if (project && project_id && user_id && version_id) {
         dispatch(pushProject(project));
-        setSnackbarMessage("Project saved successfully!");
+        setSnackbarMessage(`Project saved in ${duration.toFixed(2)} ms!`);
         setSnackbarSeverity("success");
       } else {
         throw new Error("Project creation failed.");
       }
-      
+    
     } catch (error) {
       setSnackbarMessage("Failed to save project. Please try again.");
       setSnackbarSeverity("error");
     } finally {
       setSnackbarOpen(true);
     }
+    
+
+
   };
 
-
-
+ 
+ 
   return (
     <>
       <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
@@ -1430,10 +1504,6 @@ export function SearchForProjectOnOdooDialog({ open, onClose }) {
   const { id } = project;
   const inputRef = useRef(null);
   const phaseRef = useRef(null);
-
-
-
-
 
 
   const handleDialogClose = () => onClose?.();

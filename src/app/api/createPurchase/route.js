@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { corsHeaders } from "../purchase/route";
+import { corsHeaders } from "../getPurchases/route";
 import axios from "axios";
 import { formatOrderLinesFromCart, wrapPurchaseOrderPayload } from "./createPurchaseOrderPayload";
 import { cors } from "../catalog/route";

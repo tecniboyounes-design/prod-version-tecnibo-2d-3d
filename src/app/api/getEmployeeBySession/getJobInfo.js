@@ -68,23 +68,23 @@ export async function getJobPositionDetails(uid, session_id) {
     };
 
     try {
-      console.log("🚀 Sending request to Odoo...");
+      // console.log("🚀 Sending request to Odoo...");
       const response = await fetch("http://192.168.30.33:8069/web/dataset/call_kw/hr.employee/search_read", options);
       
-      console.log("🔄 Response Object:", response);
+      // console.log("🔄 Response Object:", response);
       
       if (!response.ok) { 
         console.error(`❌ HTTP error! Status: ${response.status}`);
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      console.log("✅ Response received! Parsing data...");
+      // console.log("✅ Response received! Parsing data...");
       const text = await response.text();
-      console.log("📜 Raw Response Text:", text);
+      // console.log("📜 Raw Response Text:", text);
 
       const data = JSON.parse(text);
       
-      console.log("📦 Parsed Response Data:", data);
+      // console.log("📦 Parsed Response Data:", data);
 
       if (data.error) {
         console.error("⚠️ Odoo API Error:", data.error.message);

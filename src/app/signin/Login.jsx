@@ -48,6 +48,7 @@ const OdooLogin = () => {
         setErrorMessage("");
 
         try {
+            
             const response = await axios.post("/api/authenticate", { email, password }, {
                 headers: { "Content-Type": "application/json" }
               });
@@ -65,7 +66,7 @@ const OdooLogin = () => {
             if (data.result) {
                 // Store session_id in cookies
                 Cookies.set("session_id", data.session_id, { expires: 7, secure: true, sameSite: "Strict" });
-
+                
                 // Dispatch user data to Redux
                 dispatch(setUser(data.response.result));
                 setRequestResult("Login Successful check console for details.");
@@ -75,7 +76,7 @@ const OdooLogin = () => {
                 setRequestResult("Login Failed");
             }
         } catch (error) {
-            console.error("Error:", error);
+            console.error("Error:", error); 
             setRequestResult("Request failed. Check console for details.",);
         } finally {
             setIsSending(false);

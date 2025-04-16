@@ -12,7 +12,7 @@ import { generateUniqueProjectNumber } from './data/models';
 const initialState = {
   loading: false,
   is2DView: false,
-  isDrawing: false,
+  isDrawing: true,
   wallHieght: 4,
   isClose: false,
   projectInfo: 'prices',
@@ -785,7 +785,6 @@ const jsonData = createSlice({
 
 
 });
-
 
 
 // Configure the store
