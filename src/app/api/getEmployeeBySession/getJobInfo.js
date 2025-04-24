@@ -62,7 +62,7 @@ export async function getJobPositionDetails(uid, session_id) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Cookie": `session_id=${session_id}` // Ensure session authentication
+        "Cookie": `session_id=${session_id}` 
       },
       body: JSON.stringify(payload)
     };
@@ -72,7 +72,7 @@ export async function getJobPositionDetails(uid, session_id) {
       const response = await fetch("http://192.168.30.33:8069/web/dataset/call_kw/hr.employee/search_read", options);
       
       // console.log("🔄 Response Object:", response);
-      
+       
       if (!response.ok) { 
         console.error(`❌ HTTP error! Status: ${response.status}`);
         throw new Error(`HTTP error! Status: ${response.status}`);

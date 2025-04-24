@@ -41,17 +41,18 @@ export const fetchUserProjects = async (odooId) => {
     }
 
     const userResponse = await supabase
-      .from('users')
-      .select('*')
-      .eq('odoo_id', odooId)
-      .single();
+    .from('users')
+    .select('*')
+    .eq('odoo_id', odooId)
+    .select()
+  
 
     if (userResponse.error) {
       throw new Error(`Failed to fetch user data: ${userResponse.error.message}`);
     }
 
-    console.log('Fetched user data:', userResponse.data);
-
+    // console.log('Fetched user data:', userResponse.data);
+    
     const versionIds = data.flatMap(project => project.versions.map(version => version.id));
     const interventionsResponse = await supabase
       .from('interventions')
@@ -80,7 +81,7 @@ export const fetchUserProjects = async (odooId) => {
 export async function GET(req) {
   const origin = req.headers.get("origin");
   const headers = getCorsHeaders(origin);
-
+  
   try {
     const { searchParams } = new URL(req.url);
     const odooId = searchParams.get('odooId');
@@ -88,16 +89,30 @@ export async function GET(req) {
     const restructure = restructureParam === 'true';
 
     console.log('Received odooId:', odooId, 'Restructure:', restructure);
-
+    
     if (!odooId) {
       return new Response(
         JSON.stringify({ success: false, error: 'Missing odooId parameter' }),
         { status: 400, headers }
       );
     }
+    
 
     const projects = await fetchUserProjects(odooId);
-    const responseData = restructure ? transformProjectsData(projects) : projects;
+    
+     
+    const author = {
+      id: "39a18b31-b21a-4c52-b745-abb16a141e6d",
+      firstName: "Rabie",
+      lastName: "ELMA",
+      role: "Project Manager"
+    };   
+
+
+    
+    
+    const responseData = restructure ? transformProjectsData(projects, author) : projects;
+    
 
     if (!responseData.length) {
       return new Response(
@@ -111,6 +126,7 @@ export async function GET(req) {
       statusText: 'OK',
       headers: { ...headers, 'Content-Type': 'application/json' }
     });
+     
   } catch (err) {
     console.error('Error during data transformation:', err.message);
     return new Response(
@@ -118,6 +134,7 @@ export async function GET(req) {
       { status: 500, headers }
     );
   }
+
 };
 
 export async function OPTIONS(req) {

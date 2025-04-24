@@ -1,4 +1,3 @@
-
 export function transformProjectData(input) {
 
   const formatDate = (isoDate) => {
@@ -13,22 +12,23 @@ export function transformProjectData(input) {
     }).replace(',', '');
   };
 
-  const userResult = input.user?.result || {};
-
+  const sessionInfo = input.user?.session_info || {};
+  console.log("Session Info:", sessionInfo);
   return {
     title: input.projectName || 'Untitled Project',
-    project_number: Math.floor(Math.random() * 900000000 + 100000000).toString(), // Random 9-digit number
+    project_number: Math.floor(Math.random() * 900000000 + 100000000).toString(),
     description: `Auto-generated for ${input.projectName} P.N => ${Math.floor(Math.random() * 900000000 + 100000000)}`,
     created_on: formatDate(input.created),
     changed_on: formatDate(input.lastModified),
+    
     image_url: input.plan2DImage || 'https://cdn.andro4all.com/andro4all/2022/07/Planner-5D.jpg',
     managers: [
       {
-        name: userResult.name || `${input.author.firstName || 'fallback user name'} ${input.author.lastName || 'fallback last name'}`,
+        name: sessionInfo.name || `${input.author.firstName || 'fallback'} ${input.author.lastName || ''}`,
         avatar: 'https://i.pravatar.cc/150?img=3',
-        email: userResult.username || '',
-        odoo_id: userResult.uid || 0,
-        partner_id: userResult.partner_id || 0
+        email: sessionInfo.username || '',
+        odoo_id: sessionInfo.uid,
+        partner_id: sessionInfo.partner_id
       }
     ],
     status: input.status?.toLowerCase() || 'draft',
@@ -58,8 +58,6 @@ export function transformProjectData(input) {
       rotation: pt.rotation || 0,
       snapAngle: pt.snapAngle || 0
     })),
-    ...userResult 
+    ...sessionInfo,
   };
-
-
 }

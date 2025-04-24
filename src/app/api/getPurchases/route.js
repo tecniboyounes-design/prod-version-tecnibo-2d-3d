@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { NextResponse } from 'next/server'; 
 
+
 export const corsHeaders = {
   'Access-Control-Allow-Origin': '*', 
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
@@ -8,12 +9,12 @@ export const corsHeaders = {
 };
 
 
+
 export async function POST(req) {
   try {
     // Log the incoming request body
     const body = await req.json(); 
     console.log('Received request:', body);
-
     // Extract session_id from request body
     const { session_id } = body;
 
@@ -113,7 +114,7 @@ export async function POST(req) {
 
     // Odoo endpoint
     const url = 'http://192.168.30.33:8069/web/dataset/call_kw/purchase.order/web_search_read';
-
+    
     // Send POST request to Odoo
     const response = await axios.post(url, payload, { headers });
      console.log('Odoo response:', response.data); // Log the response from Odoo

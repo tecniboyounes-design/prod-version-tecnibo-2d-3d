@@ -1,12 +1,8 @@
-import { createClient } from '@supabase/supabase-js';
 import { getCorsHeaders } from '../authenticate/route';
 import { createIntervention } from './createIntervention';
 import { transformProjectData } from './transformProjectData';
-
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-export const supabase = createClient(supabaseUrl, supabaseKey);
+import { transformProjectsData } from '../versionHistory/restructureData';
+import { supabase } from '../filesController/route';
 
 
 /**
@@ -19,6 +15,7 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
  * @returns {Promise<Object>} The project object with all relations.
  * @throws {Error} If the project cannot be fetched.
  */
+
 
 
 export const fetchProjectWithRelations = async (odooId, projectId) => {
@@ -49,13 +46,14 @@ export const fetchProjectWithRelations = async (odooId, projectId) => {
       throw new Error(`Failed to fetch project: ${error.message}`);
     }
 
-    // console.log(`Fetched project with all relations:`, data);
+    console.log(`Fetched project with all relations:`, data);
     return data; // Return the project data along with all its relations, including interventions
   } catch (err) {
     console.error('Fetch error:', err.message);
     throw err;
   }
 };
+
 
 /**
  * Handles POST request to create a new project with nested data including
@@ -66,6 +64,7 @@ export const fetchProjectWithRelations = async (odooId, projectId) => {
  * @param {Request} req - The request object from the route handler.
  * @returns {Promise<Response>} The response indicating success or failure.
  */
+
 
 
 export const cors = (req) => {
@@ -79,45 +78,32 @@ export const cors = (req) => {
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     'Access-Control-Allow-Credentials': 'true',
   };
+
+
 };
-
-
-
-export async function OPTIONS(req) {
-  // Handle CORS preflight request
-  return new Response(null, {
-    status: 204,
-    headers: cors(req),
-  });
-}
 
 
 
 export async function POST(req) {
   const origin = req.headers.get("origin");
+  console.log('Origin:', origin);
   const headers = getCorsHeaders(origin);
-  // console.log('origin is :' , origin);
-  // console.log("----- Starting Project Creation Process -----");
-  
+
+
+
   const data = await req.json();
   // console.log('Received data:', data);
-  
-  let projectData;
 
-  if (origin === "http://localhost:5173") {
-    projectData = transformProjectData(data);
-  } else {
-    // console.log("Skipping transformProjectData for localhost...");
-    projectData = data;
-  }
+  const projectData = transformProjectData(data);
+  // console.log('Transformed project data:', projectData);
   
-  // console.log("Project Data Received:", projectData);
 
   const userId = projectData.uid;
   const doors = projectData.doors;
-  const wallsFromPayload = projectData.walls; 
-  const pointsFromPayload = projectData.points; 
-
+  const wallsFromPayload = projectData.walls;
+  const pointsFromPayload = projectData.points;
+  
+  // Check if user exists or create one...
   const { data: existingUser, error: userError } = await supabase
     .from("users")
     .select("id")
@@ -125,11 +111,14 @@ export async function POST(req) {
     .single();
     
   let createdUserId = userId;
+
   if (userError || !existingUser) {
+    // If no existing user, create one
     const userInsertData = {
       name: projectData?.name || "Unknown User",
       email: projectData.username || `user${Date.now()}@example.com`,
       odoo_id: userId,
+      role: data?.user?.job_position?.result?.records?.[0]?.job_title
     };
 
     const { data: newUser, error: newUserError } = await supabase
@@ -137,16 +126,19 @@ export async function POST(req) {
       .insert([userInsertData])
       .select()
       .single();
-
+  
     if (newUserError) {
-      // console.error("Error creating user:", newUserError.message);
+      console.error("Error creating user:", newUserError.message);
       return new Response(JSON.stringify({ error: newUserError.message }), { status: 400, headers });
     }
+
     createdUserId = newUser.id;
   } else {
     createdUserId = existingUser.id;
   }
 
+     
+  // Insert project
   const projectInsertData = {
     title: projectData.title || "New Office Design",
     project_number: projectData.project_number,
@@ -156,19 +148,21 @@ export async function POST(req) {
     image_url: projectData?.image_url || 'https://cdn.andro4all.com/andro4all/2022/07/Planner-5D.jpg',
   };
 
+
   const { data: projectDataResponse, error: projectError } = await supabase
     .from("projects")
     .insert([projectInsertData])
     .select()
     .single();
-    
+
   if (projectError) {
-    // console.error("Error creating project:", projectError.message);
+    console.error("Error creating project:", projectError.message);
     return new Response(JSON.stringify({ error: projectError.message }), { status: 400, headers });
   }
-
+  
   const createdProjectId = projectDataResponse.id;
-
+  
+  // Insert manager record
   const managerData = {
     project_id: createdProjectId,
     name: projectData.name || "Default Manager",
@@ -183,29 +177,33 @@ export async function POST(req) {
   const { error: managerError } = await supabase
     .from("managers")
     .insert([managerData]);
-    
+
   if (managerError) {
-    // console.error("Error creating manager:", managerError.message);
+    console.error("Error creating manager:", managerError.message);
     return new Response(JSON.stringify({ error: managerError.message }), { status: 400, headers });
   }
-
+  
+  // Create a version row for the project
   const versionInsertData = {
     project_id: createdProjectId,
-    version: projectData.version || '1.0.0',
+    version: projectData.version || '1.0',
   };
-
+  
   const { data: versionData, error: versionError } = await supabase
     .from("versions")
     .insert([versionInsertData])
     .select()
     .single();
-
+  
   if (versionError) {
-    // console.error("Error creating version:", versionError.message);
+    console.error("Error creating version:", versionError.message);
     return new Response(JSON.stringify({ error: versionError.message }), { status: 400, headers });
   }
+
   const createdVersionId = versionData.id;
 
+
+  // Do not include an 'id' so that the DB generates one.
   const pointsToInsert = pointsFromPayload.map(pt => ({
     x_coordinate: pt.position.x,
     y_coordinate: pt.position.y,
@@ -214,16 +212,17 @@ export async function POST(req) {
     rotation: pt.rotation,
     version_id: createdVersionId,
   }));
-
+  
   const { data: insertedPoints, error: pointsError } = await supabase
     .from("points")
     .insert(pointsToInsert)
     .select();
 
   if (pointsError) {
-    // console.error("Error creating points:", pointsError.message);
+    console.error("Error creating points:", pointsError.message);
     return new Response(JSON.stringify({ error: pointsError.message }), { status: 400, headers });
   }
+
 
   const pointIdMapping = {};
   insertedPoints.forEach((pt, index) => {
@@ -231,6 +230,8 @@ export async function POST(req) {
     pointIdMapping[tempId] = pt.id;
   });
 
+
+  // Update walls payload: replace client temp IDs with DB-generated UUIDs.
   const wallsToInsert = wallsFromPayload.map(wall => ({
     startpointid: pointIdMapping[wall.startPointId],
     endpointid: pointIdMapping[wall.endPointId],
@@ -249,11 +250,13 @@ export async function POST(req) {
     .select();
 
   if (wallsError) {
-    // console.error("Error inserting walls:", wallsError.message);
+    console.error("Error inserting walls:", wallsError.message);
+    // Optionally clean up inserted points:
     await supabase.from("points").delete().in("id", insertedPoints.map(pt => pt.id));
     return new Response(JSON.stringify({ error: wallsError.message }), { status: 400, headers });
   }
 
+  // --- Insert Doors (Articles) ---
   const doorsToInsert = doors.map(door => ({
     version_id: createdVersionId,
     data: [door] || [],
@@ -264,10 +267,11 @@ export async function POST(req) {
     .insert(doorsToInsert);
 
   if (doorsError) {
-    // console.error("Error inserting doors:", doorsError.message);
+    console.error("Error inserting doors:", doorsError.message);
     return new Response(JSON.stringify({ error: doorsError.message }), { status: 400, headers });
   }
 
+  // --- Insert Settings ---
   const settingsInsertData = {
     project_id: createdProjectId,
     config: { units: projectData.units || "m" },
@@ -280,42 +284,65 @@ export async function POST(req) {
     .single();
 
   if (settingsError) {
-    // console.error("Error creating settings:", settingsError.message);
+    console.error("Error creating settings:", settingsError.message);
     return new Response(JSON.stringify({ error: settingsError.message }), { status: 400, headers });
   }
-  
+
   const interventionPayload = {
     action: `Created project "${projectData.title}"`,
     project_id: createdProjectId,
     version_id: createdVersionId,
-    intervenerId: createdUserId  
+    intervenerId: createdUserId
   };
-  
+
   let interventionRecord;
-  
+
   try {
     interventionRecord = await createIntervention(interventionPayload);
   } catch (error) {
-    // console.error("Error creating intervention:", error.message);
+    console.error("Error creating intervention:", error.message);
   }
-  
-  // console.log("Intervention record created:", interventionRecord);
-  // console.log("----- Project Creation Process Completed Successfully -----");
+
 
   const project = await fetchProjectWithRelations(userId, createdProjectId);
-  // console.log("Project with relations fetched:", project);
+
+
+  const author = {
+    id: userId,
+    firstName: data?.author?.firstName || 'fallback first name',
+    lastName: data?.author?.lastName || 'fallback last name',
+    role: data?.user?.job_position?.result?.records?.[0]?.job_title || 'fallback role',
+  };
+
+  const transformedProject = transformProjectsData(project, author);
+
+
+
+   console.log('Transformed project data:', transformedProject);
 
   return new Response(
     JSON.stringify({
       message: "🎊 Awesome! Project, version, settings, and Room_Planner components created successfully! 🎉",
-      project: project,
+      project: transformedProject,
       project_id: createdProjectId,
       version_id: createdVersionId,
       user_id: createdUserId,
+      projectName: transformedProject[0].projectName || 'Untitled Project',
+      version: '1.0',
     }),
     { status: 201, headers }
   );
+
+
 }
 
 
+
+export async function OPTIONS(req) {
+  // Handle CORS preflight request
+  return new Response(null, {
+    status: 204,
+    headers: cors(req),
+  });
+}
 
