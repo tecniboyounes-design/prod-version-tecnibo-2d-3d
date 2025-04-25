@@ -1,0 +1,19 @@
+We’re integrating the Room Planner with our local server on Ubuntu 24 LTS, linked to Odoo for project and purchase order management. 
+This server is accessible to all our clients, including via the iOS Room Planner app and other connected platforms. 
+It streamlines everything from project creation to order tracking.
+
+For authentication, we’re using session IDs and permissions to ensure secure access.
+
+We’re also working on syncing the Room Planner with IMOS R3F, 
+where we’ll store articles in the database for easier material and product management.
+
+We’re adding real-world pricing by integrating the price list for products and materials, 
+so the Room Planner can give accurate pricing for items used in interior design projects.
+
+I’ll be working with Hamza and Rabie3 to integrate articles into the Room Planner so users can easily place them into designs.
+
+We’ll also create an endpoint to receive room dimensions from the iPhone Room Planner app. 
+This will create a project in our local Room Planner DB, which will then be connected to Odoo in production mode, 
+making the process smoother from concept to execution.
+
+Additionally, we’re running the local server so our DM team can work with the Room Planner locally for testing and collecting feedback.

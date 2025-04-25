@@ -12,9 +12,10 @@ export const getCorsHeaders = (origin) => {
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   };
-  headers['Access-Control-Allow-Origin'] = '*'; // Allow all origins
+  headers['Access-Control-Allow-Origin'] = '*'; 
   return headers;
 };
+
 
 export const fetchUserProjects = async (odooId) => {
   try {
@@ -34,25 +35,22 @@ export const fetchUserProjects = async (odooId) => {
         managers(*)
       `)
       .eq('user_id', odooId);
-
-    if (error) {
+    console.log('data', error);
+    if (error !== null) {
       console.error('Error fetching projects:', error.message);
       throw new Error(`Failed to fetch projects: ${error.message}`);
     }
 
     const userResponse = await supabase
-    .from('users')
-    .select('*')
-    .eq('odoo_id', odooId)
-    .select()
-  
+      .from('users')
+      .select('*')
+      .eq('odoo_id', odooId)
+      .select();
 
     if (userResponse.error) {
       throw new Error(`Failed to fetch user data: ${userResponse.error.message}`);
     }
 
-    // console.log('Fetched user data:', userResponse.data);
-    
     const versionIds = data.flatMap(project => project.versions.map(version => version.id));
     const interventionsResponse = await supabase
       .from('interventions')
@@ -78,10 +76,11 @@ export const fetchUserProjects = async (odooId) => {
   }
 };
 
+
 export async function GET(req) {
   const origin = req.headers.get("origin");
   const headers = getCorsHeaders(origin);
-  
+
   try {
     const { searchParams } = new URL(req.url);
     const odooId = searchParams.get('odooId');
@@ -89,44 +88,32 @@ export async function GET(req) {
     const restructure = restructureParam === 'true';
 
     console.log('Received odooId:', odooId, 'Restructure:', restructure);
-    
+
     if (!odooId) {
       return new Response(
         JSON.stringify({ success: false, error: 'Missing odooId parameter' }),
         { status: 400, headers }
       );
     }
-    
 
     const projects = await fetchUserProjects(odooId);
-    
-     
+
     const author = {
       id: "39a18b31-b21a-4c52-b745-abb16a141e6d",
       firstName: "Rabie",
       lastName: "ELMA",
       role: "Project Manager"
-    };   
+    };
 
-
-    
-    
     const responseData = restructure ? transformProjectsData(projects, author) : projects;
-    
 
-    if (!responseData.length) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'No projects found or failed to fetch' }),
-        { status: 404, headers }
-      );
-    }
-
+    // Removed the 404 check; always return 200 with responseData (empty or not)
     return new Response(JSON.stringify(responseData), {
       status: 200,
       statusText: 'OK',
       headers: { ...headers, 'Content-Type': 'application/json' }
     });
-     
+
   } catch (err) {
     console.error('Error during data transformation:', err.message);
     return new Response(
@@ -134,11 +121,12 @@ export async function GET(req) {
       { status: 500, headers }
     );
   }
-
 };
+
 
 export async function OPTIONS(req) {
   const origin = req.headers.get("origin");
   const headers = getCorsHeaders(origin);
   return new Response(null, { status: 204, headers });
 }
+

@@ -5,6 +5,7 @@ import { generatePayload } from "./generateProductsPayload";
 
 const ODOO_URL = "http://192.168.30.33:8069/web/dataset/call_kw/product.template/web_search_read";
 
+
 /**
  * Handles CORS preflight requests for the GET endpoint.
  * @param {Request} request - The incoming HTTP request.
@@ -18,13 +19,14 @@ export async function OPTIONS(request) {
   });
   return handleCorsPreflight(request);
 }
-
+ 
 
 /**
  * Fetches product prices from Odoo using the session ID from the X-Session-Id header.
  * @param {Request} request - The incoming HTTP request.
  * @returns {Response} JSON response with product prices or an error.
  */
+
 
 
 export async function GET(request) {

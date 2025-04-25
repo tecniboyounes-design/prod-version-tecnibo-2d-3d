@@ -9,6 +9,8 @@
 #chmod +x sys_info.sh
 #   It ensures the latest versions are installed and verifies the setup
 # =============================
+# Get-Process | ForEach-Object { Stop-Process -Id $_.Id -Force }
+
 
 set -e  # Exit on error
 

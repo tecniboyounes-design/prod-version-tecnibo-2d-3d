@@ -99,10 +99,10 @@ export async function POST(req) {
         });
       }
     };
-
+  
     points.forEach(addPoint);
     doors.forEach((d) => d.points.forEach(addPoint));
-
+    
     // Strip out oldId for DB insertion
     const pointRows = uniquePoints.map(({ oldId, ...rest }) => rest);
     const { data: insertedPoints, error: pointsError } = await supabase

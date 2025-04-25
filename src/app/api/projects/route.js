@@ -65,6 +65,13 @@ export const fetchProjectWithRelations = async (odooId, projectId) => {
  * @returns {Promise<Response>} The response indicating success or failure.
  */
 
+export async function OPTIONS(req) {
+  // Handle CORS preflight request
+  return new Response(null, {
+    status: 204,
+    headers: cors(req),
+  });
+}
 
 
 export const cors = (req) => {
@@ -86,18 +93,18 @@ export const cors = (req) => {
 
 export async function POST(req) {
   const origin = req.headers.get("origin");
-  console.log('Origin:', origin);
+  // console.log('Origin:', origin);
   const headers = getCorsHeaders(origin);
 
 
-
+  
   const data = await req.json();
   // console.log('Received data:', data);
 
   const projectData = transformProjectData(data);
   // console.log('Transformed project data:', projectData);
   
-
+  
   const userId = projectData.uid;
   const doors = projectData.doors;
   const wallsFromPayload = projectData.walls;
@@ -111,7 +118,7 @@ export async function POST(req) {
     .single();
     
   let createdUserId = userId;
-
+  
   if (userError || !existingUser) {
     // If no existing user, create one
     const userInsertData = {
@@ -120,18 +127,17 @@ export async function POST(req) {
       odoo_id: userId,
       role: data?.user?.job_position?.result?.records?.[0]?.job_title
     };
-
+    
     const { data: newUser, error: newUserError } = await supabase
       .from("users")
       .insert([userInsertData])
       .select()
       .single();
-  
+      
     if (newUserError) {
       console.error("Error creating user:", newUserError.message);
       return new Response(JSON.stringify({ error: newUserError.message }), { status: 400, headers });
     }
-
     createdUserId = newUser.id;
   } else {
     createdUserId = existingUser.id;
@@ -338,11 +344,6 @@ export async function POST(req) {
 
 
 
-export async function OPTIONS(req) {
-  // Handle CORS preflight request
-  return new Response(null, {
-    status: 204,
-    headers: cors(req),
-  });
-}
+
+
 
