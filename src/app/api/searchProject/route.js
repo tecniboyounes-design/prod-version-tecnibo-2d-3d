@@ -1,7 +1,6 @@
 import axios from "axios";
 import { createPayload } from "./searchProjectPayload";
 import { getSessionId } from "../sessionMiddleware";
-import { getAuthenticationUrl } from "../redirect";
 
 export async function POST(req) {
   try {

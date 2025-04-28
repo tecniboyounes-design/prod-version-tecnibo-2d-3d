@@ -8,7 +8,6 @@ export async function OPTIONS(req) {
   return handleCorsPreflight(req);
 }
 
-
 // Handle POST requests with CORS headers
 export async function POST(req) {
   try {
@@ -20,7 +19,7 @@ export async function POST(req) {
         { status: 400, headers: getCorsHeaders(req) }
       );
     }
-   
+    
     // Get session ID from request headers
     const sessionId = req.headers.get("x-session-id");
     if (!sessionId) {
@@ -29,7 +28,7 @@ export async function POST(req) {
         { status: 400, headers: getCorsHeaders(req) }
       );
     }
-  
+    
     // Define the Odoo endpoint URL
     const url = "http://192.168.30.33:8069/web/dataset/call_kw/product.template/web_search_read";
 
@@ -71,7 +70,7 @@ export async function POST(req) {
       throw new Error("Network response was not ok");
     }
     
-    
+      
     // Parse and return the response data
     const data = await response.json();
     return NextResponse.json(data, { status: 200, headers: getCorsHeaders(req) });
@@ -83,3 +82,4 @@ export async function POST(req) {
     );
   }
 }
+

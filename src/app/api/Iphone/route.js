@@ -44,16 +44,17 @@ function multiplyMatrixVectorOrchestrator(data) {
         if (!transform || transform.length !== 16) {
             console.warn(`⚠️ Wall ${index} has invalid transform matrix`);
         }
+        
         if (!wall.dimensions || wall.dimensions.length < 2) {
             console.warn(`⚠️ Wall ${index} has invalid dimensions`);
         }
-     
+        
         // Local points: start at (0,0,0), end at (length,0,0)
         const startLocal = [0, 0, 0, 1];
         const endLocal = [length, 0, 0, 1];
         console.log(`Wall ${index} local start point:`, startLocal);
         console.log(`Wall ${index} local end point:`, endLocal);
-  
+        
         // World coordinates
         const startWorld = multiplyMatrixVector(transform, startLocal);
         const endWorld = multiplyMatrixVector(transform, endLocal);

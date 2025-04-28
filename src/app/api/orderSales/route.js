@@ -1,10 +1,10 @@
 import axios from "axios";
 import { createOrderPayload } from "./CreateOrderPayload";
 import { getSessionId } from "../sessionMiddleware";
-import { getAuthenticationUrl } from "../redirect";
 import { createClient } from '@supabase/supabase-js';
 import { getCorsHeaders } from "../authenticate/route";
 import { generateUpdateOrderPayload } from "./updateOrder";
+
 // Initialize Supabase Client
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
