@@ -1,11 +1,9 @@
-
 export const transformProjectsData = (projects, userData) => {
-  // console.log('Transforming project data:', projects, userData);
 
   // Validate input
   if (!Array.isArray(projects)) {
     console.warn('⚠️ No valid project data array provided, wrapping the object in an array');
-
+  
     // If it's an object, wrap it inside an array
     if (typeof projects === 'object' && projects !== null) {
       projects = [projects];
@@ -44,36 +42,38 @@ export const transformProjectsData = (projects, userData) => {
       versionDescription: project.description || 'Initial version',
       versions: [],
     };
-
-
+    
     // Transform versions array
     if (project.versions && Array.isArray(project.versions)) {
       transformedProject.versions = project.versions.map((version) => {
+      
         // Transform walls into lines
         const lines = version.walls.map((wall) => ({
+          client_id: wall.client_id,
           id: wall.id,
           startPointId: wall.startpointid,
           endPointId: wall.endpointid,
           length: wall.length,
           rotation: wall.rotation || 0,
-          thickness: wall.thickness || 0.01, // Default thickness if not provided
-          color: wall.color || '#f5f5f5', // Default color as per desired output
-          texture: wall.texture || 'default.avif', // Default texture as per desired output
-          height: wall.height || 2.5, // Use provided height or default
-          type: 'WALL', // Fixed type as per desired output
+          thickness: wall.thickness || 0.01,
+          color: wall.color || '#f5f5f5',
+          texture: wall.texture || 'default.avif',
+          height: wall.height || 2.5,
+          type: 'WALL',
           connections: {
-            left: null, // Default null, no connection data in input
-            right: null, // Default null, no connection data in input
+            left: null,
+            right: null,
           },
-          angles: [], // Default empty array, no angle data in input
+          angles: [],
         }));
-
+        
         // Collect unique points from walls
         const pointsMap = new Map();
         version.walls.forEach((wall) => {
           if (wall.points_start) {
             pointsMap.set(wall.points_start.id, {
               id: wall.points_start.id,
+              client_id: wall.points_start.client_id,
               position: {
                 x: wall.points_start.x_coordinate || 0,
                 y: wall.points_start.y_coordinate || 0,
@@ -86,62 +86,64 @@ export const transformProjectsData = (projects, userData) => {
           if (wall.points_end) {
             pointsMap.set(wall.points_end.id, {
               id: wall.points_end.id,
+              client_id: wall.points_end.client_id,
               position: {
                 x: wall.points_end.x_coordinate || 0,
                 y: wall.points_end.y_coordinate || 0,
                 z: wall.points_end.z_coordinate || 0,
               },
+
               rotation: wall.points_end.rotation || 0,
               snapAngle: wall.points_end.snapangle || 0,
             });
           }
         });
-        const points = Array.from(pointsMap.values());
 
+        const points = Array.from(pointsMap.values());
+        
         // Transform articles into doors
         const doors = (version.articles || []).map((article) => {
           const articleData = article.data || {};
           return {
             id: article.id,
-            position: articleData.position || { x: 0, y: 0, z: 0 }, // Default position if not provided
+            client_id: article.client_id,
+            position: articleData.position || { x: 0, y: 0, z: 0 },
             rotation: articleData.rotation || 0,
             article_id: articleData.article_id || null,
-            name: articleData.name || 'Unknown', // Default name if not provided
-            image: articleData.image || '', // Default empty string if not provided
+            name: articleData.name || 'Unknown',
+            image: articleData.image || '',
             width: articleData.width || null,
             height: articleData.height || null,
-            doorType: articleData.doorType || 'single', // Default as per desired output
-            pivotDirection: articleData.pivotDirection || 'left', // Default as per desired output
-            setDirection: articleData.setDirection || 'in', // Default as per desired output
-            color: articleData.color || 'white', // Default as per desired output
-            texture: articleData.texture || 'default.avif', // Default as per desired output
-            type: articleData.type || 'simple', // Default as per desired output
+            doorType: articleData.doorType || 'single',
+            pivotDirection: articleData.pivotDirection || 'left',
+            setDirection: articleData.setDirection || 'in',
+            color: articleData.color || 'white',
+            texture: articleData.texture || 'default.avif',
+            type: articleData.type || 'simple',
             wallId: article.wall_id || null,
             referencePointId: articleData.referencePointId || null,
             referenceDistance: articleData.referenceDistance || null,
           };
         });
-
+        
         // Floors (not provided in input, default to empty array or minimal example)
-        const floors = []; // Default empty array, extend if floor data is added later
-
+        const floors = [];
+        
         return {
+          id: version.id, 
           lines,
           points,
           doors,
           floors,
-          version: version.version || '1.0', // Use version number or default
+          version: version.version || '1.0',
           created: version.created_on || project.created_on || new Date().toISOString(),
           lastModified: project.changed_on || new Date().toISOString(),
         };
       });
     }
-
-    // console.log('Transformed project:', transformedProject);
-
+     
     return transformedProject;
-  }
+
+  });
   
-);
-  
-}; 
+};

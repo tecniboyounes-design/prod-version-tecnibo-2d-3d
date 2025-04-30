@@ -1,4 +1,3 @@
-// src/supabaseClient.js
 import { createClient } from '@supabase/supabase-js';
 import { useDispatch } from 'react-redux';
 import { getRandomPrice, pushProject, updateItems } from './store';
@@ -9,6 +8,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
 
 
 // Function to test the connection
@@ -309,12 +309,13 @@ export const updateProjectOdooData = async ({ projectId, orderId, phaseId = null
  */
 
 
+
+
 export const manageTableRow = async (tableName, rowId, action, payload) => {
   try {
     console.log(`🧐 Action: ${action} | Table: ${tableName} | Row ID: ${rowId} | Payload:`, payload);
     
-    // Handle Create (C) action
-    if (action === 'C') {
+   if (action === 'C') {
       // Create a new row in the specified table
       const { data, error } = await supabase
         .from(tableName)
@@ -324,10 +325,11 @@ export const manageTableRow = async (tableName, rowId, action, payload) => {
         console.error('Error creating row:', error);
         return { success: false, error: error.message };
       }
-
+      
       console.log('Row created successfully:', data);
       return { success: true, data };
-    }
+    } // Handle Create (C) action
+    
 
     // Handle Read (R) action
     if (action === 'R') {
