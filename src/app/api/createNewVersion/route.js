@@ -148,11 +148,11 @@ export async function POST(request) {
 
   try {
     const payload = await request.json();
-    console.log('Payload:', payload);
+    // console.log('Payload:', payload);
     const { project_id, user_id, ...versionData } = payload;
 
     // Step 1: Get latest version
-    console.log(`Fetching latest version for project_id: ${project_id}`);
+    // console.log(`Fetching latest version for project_id: ${project_id}`);
     const { data: versions, error: versionError } = await supabase
       .from('versions')
       .select('version')
@@ -164,7 +164,7 @@ export async function POST(request) {
       console.error('Version fetch error:', versionError);
       throw versionError;
     }
-    console.log('Fetched versions:', versions);
+    // console.log('Fetched versions:', versions);
 
     let newVersion = '1.0';
     if (versions?.length > 0) {
@@ -175,7 +175,7 @@ export async function POST(request) {
     }
 
     // Step 2: Insert new version
-    console.log(`Inserting new version: "${newVersion}" for project_id: ${project_id}`);
+    // console.log(`Inserting new version: "${newVersion}" for project_id: ${project_id}`);
     const { data: newVersionData, error: insertError } = await supabase
       .from('versions')
       .insert({
@@ -190,12 +190,12 @@ export async function POST(request) {
       console.error('Version insert error:', insertError);
       throw insertError;
     }
-    console.log('Inserted new version:', newVersionData);
+    // console.log('Inserted new version:', newVersionData);
 
     const version_id = newVersionData.id;
 
     // Step 3: Insert related data (points, walls, articles)
-    console.log(`Inserting version data for version_id: ${version_id}`);
+    // console.log(`Inserting version data for version_id: ${version_id}`);
     await insertVersionData({
       supabase,
       version_id,
@@ -203,7 +203,7 @@ export async function POST(request) {
     });
 
     // Step 4: Fetch full user info
-    console.log(`Fetching user info for user_id: ${user_id}`);
+    // console.log(`Fetching user info for user_id: ${user_id}`);
     const { data: userData, error: userError } = await supabase
       .from('users')
       .select('*')
@@ -214,7 +214,7 @@ export async function POST(request) {
       console.error('User fetch error:', userError || 'No user data');
       throw new Error('User not found');
     }
-    console.log('Fetched user data:', userData);
+    // console.log('Fetched user data:', userData);
 
     // Step 5: Construct author from user name
     const [firstName, ...lastNameParts] = userData.name?.trim().split(' ') || [];
@@ -224,17 +224,14 @@ export async function POST(request) {
       lastName: lastNameParts.join(' ') || '',
       role: userData.role || null,
     };
-    console.log('Constructed author:', author);
 
-    // Step 6: Fetch full updated project with all relations
-    console.log(`Fetching project with relations for odoo_id: ${userData.odoo_id}, project_id: ${project_id}`);
     const updatedProject = await fetchProjectWithRelations(userData.odoo_id, project_id);
-    console.log('Fetched project with relations:', updatedProject);
+    // console.log('Fetched project with relations:', updatedProject);
 
     // Step 7: Transform project + return response
-    console.log('Transforming project data');
+    // console.log('Transforming project data');
     const transformed = transformProjectsData(updatedProject, author);
-    console.log('Transformed project data:', transformed);
+    // console.log('Transformed project data:', transformed);
 
     return new Response(
       JSON.stringify({

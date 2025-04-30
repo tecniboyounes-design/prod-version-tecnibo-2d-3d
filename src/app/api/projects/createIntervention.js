@@ -11,10 +11,11 @@ import { supabase } from "../filesController/route";
  * @param {Object} [payload.metadata] - Optional metadata.
  * @returns {Promise<Object>} - The inserted intervention object.
  */
+
 export async function createIntervention(payload) {
-  console.log('paylaod in createIntervention',payload);
+  // console.log('paylaod in createIntervention',payload);
   const { action, project_id, version_id, intervenerId, metadata } = payload;
-  console.log('metadata',metadata);
+  // console.log('metadata',metadata);
 
   // Validate required fields
   const missingFields = [];
@@ -38,7 +39,7 @@ export async function createIntervention(payload) {
     console.error("🚨 [Project Lookup Error] -", projectError?.message);
     throw new Error("Project lookup failed.");
   }
-
+  
   // Lookup version data
   const { data: versionData, error: versionError } = await supabase
     .from("versions")

@@ -3,7 +3,7 @@ export const transformProjectsData = (projects, userData) => {
   // Validate input
   if (!Array.isArray(projects)) {
     console.warn('⚠️ No valid project data array provided, wrapping the object in an array');
-  
+    
     // If it's an object, wrap it inside an array
     if (typeof projects === 'object' && projects !== null) {
       projects = [projects];
@@ -128,7 +128,16 @@ export const transformProjectsData = (projects, userData) => {
         
         // Floors (not provided in input, default to empty array or minimal example)
         const floors = [];
-        
+
+        const planParameters = (version.plan_parameters || []).map((param) => ({
+          id: param.id,
+          scaleFactor: param.scale_factor,
+          rotation: param.rotation,
+          xOffset: param.x_offset,
+          yOffset: param.y_offset,
+          refLength: param.ref_length,
+        }));
+
         return {
           id: version.id, 
           lines,
@@ -138,12 +147,13 @@ export const transformProjectsData = (projects, userData) => {
           version: version.version || '1.0',
           created: version.created_on || project.created_on || new Date().toISOString(),
           lastModified: project.changed_on || new Date().toISOString(),
+          planParameters,
         };
       });
     }
      
     return transformedProject;
-
+    
   });
   
 };

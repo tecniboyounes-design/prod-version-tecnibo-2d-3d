@@ -1,59 +1,8 @@
-import { getCorsHeaders } from '../authenticate/route';
-import { createIntervention } from './createIntervention';
-import { transformProjectData } from './transformProjectData';
-import { transformProjectsData } from '../versionHistory/restructureData';
-import { supabase } from '../filesController/route';
-
-/**
- * Fetches a single project and all its related data from Supabase.
- *
- * @async
- * @function
- * @param {string} odooId - The Odoo user ID.
- * @param {string} projectId - The ID of the project to fetch.
- * @returns {Promise<Object>} The project object with all relations.
- * @throws {Error} If the project cannot be fetched.
- */
-
-
-
-export const fetchProjectWithRelations = async (odooId, projectId) => {
-  try {
-    // Fetch the project with all its relations (versions, walls, articles, points, managers, and interventions)
-    const { data, error } = await supabase
-      .from('projects')
-      .select(`
-        *,
-        versions(
-          *,
-          articles(*),
-          walls(
-            *,
-            points_start:points!walls_startpointid_fkey(*),
-            points_end:points!walls_endpointid_fkey(*)
-          ),
-          interventions(*)
-        ),
-        managers(*)
-      `)
-      .eq('user_id', odooId)
-      .eq('id', projectId)
-      .single();
-
-    if (error) {
-      console.error('Error fetching project with relations:', error.message);
-      throw new Error(`Failed to fetch project: ${error.message}`);
-    }
-
-    // console.log(`Fetched project with all relations:`, data);
-    return data; // Return the project data along with all its relations, including interventions
-  } catch (err) {
-    console.error('Fetch error:', err.message);
-    throw err;
-  }
-};
-
-
+import { getCorsHeaders } from "../authenticate/route";
+import { createIntervention } from "./createIntervention";
+import { transformProjectData } from "./transformProjectData";
+import { transformProjectsData } from "../versionHistory/restructureData";
+import { supabase } from "../filesController/route";
 
 /**
  * Handles POST request to create a new project with nested data including
@@ -66,7 +15,6 @@ export const fetchProjectWithRelations = async (odooId, projectId) => {
  */
 
 
-
 export async function OPTIONS(req) {
   // Handle CORS preflight request
   return new Response(null, {
@@ -77,33 +25,92 @@ export async function OPTIONS(req) {
 
 
 export const cors = (req) => {
-  const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:5173'];
-  const origin = req.headers.get('origin');
-  const allowedOrigin = allowedOrigins.includes(origin) ? origin : '*';
+  const allowedOrigins = [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://localhost:5173",
+  ];
+  const origin = req.headers.get("origin");
+  const allowedOrigin = allowedOrigins.includes(origin) ? origin : "*";
 
   return {
-    'Access-Control-Allow-Origin': allowedOrigin,
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    'Access-Control-Allow-Credentials': 'true',
+    "Access-Control-Allow-Origin": allowedOrigin,
+    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    "Access-Control-Allow-Credentials": "true",
   };
-
-
 };
 
 
+/**
+ * Fetches a single project and all its related data from Supabase.
+ *
+ * @async
+ * @function
+ * @param {Number} odooId - The Odoo user ID.
+ * @param {string} projectId - The ID of the project to fetch.
+ * @returns {Promise<Object>} The project object with all relations.
+ * @throws {Error} If the project cannot be fetched.
+ */
+
+
+
+export const fetchProjectWithRelations = async (odooId, projectId) => {
+  try {
+    const { data, error } = await supabase
+      .from("projects")
+      .select(
+        `
+        *,
+        versions (
+          *,
+          articles(*),
+          plan_parameters(*),
+          walls (
+            *,
+            points_start:points!walls_startpointid_fkey(*),
+            points_end:points!walls_endpointid_fkey(*)
+          ),
+          interventions(*)
+        ),
+        managers(*)
+      `
+      )
+      .eq("user_id", odooId)
+      .eq("id", projectId)
+      .single();
+
+    if (error) {
+      console.error("Error fetching project with relations:", error.message);
+      throw new Error(`Failed to fetch project: ${error.message}`);
+    }
+
+    // console.log('Fetched project with all relations:', data);
+    return data;
+  } catch (err) {
+    console.error("Fetch error:", err.message);
+    throw err;
+  }
+};
+
+
+
+
 export async function POST(req) {
-  const origin  = req.headers.get("origin");
+  const origin = req.headers.get("origin");
   const headers = getCorsHeaders(origin);
 
-  const data        = await req.json();
+  const data = await req.json();
   const projectData = transformProjectData(data);
-  console.log("Transformed project data:", projectData);
+  // console.log("Transformed project data:", projectData);
 
-  // Destructure for clarity
-  const { uid, doors, walls: wallsFromPayload, points: pointsFromPayload } = projectData;
+  const {
+    uid,
+    doors,
+    walls: wallsFromPayload,
+    points: pointsFromPayload,
+  } = projectData;
 
-  // Define the planTransform as specified
   const planTransform = {
     scale: 1.0,
     rotation: 0,
@@ -111,7 +118,6 @@ export async function POST(req) {
     offsetY: 0,
   };
 
-  // — 1) Ensure user exists or create it
   let createdUserId;
   const { data: existingUser, error: userError } = await supabase
     .from("users")
@@ -122,30 +128,37 @@ export async function POST(req) {
   if (!existingUser || userError) {
     const { data: newUser, error: newUserError } = await supabase
       .from("users")
-      .insert([{
-        name:    projectData.name   || "Unknown User",
-        email:   projectData.username || `user${Date.now()}@example.com`,
-        odoo_id: uid,
-        role:    data?.user?.job_position?.result?.records?.[0]?.job_title
-      }])
-      .select().single();
+      .insert([
+        {
+          name: projectData.name || "Unknown User",
+          email: projectData.username || `user${Date.now()}@example.com`,
+          odoo_id: uid,
+          role: data?.user?.job_position?.result?.records?.[0]?.job_title,
+        },
+      ])
+      .select()
+      .single();
     if (newUserError) {
-      console.error("Error creating user:", newUserError.message);
-      return new Response(JSON.stringify({ error: newUserError.message }), { status: 400, headers });
+      // console.error("Error creating user:", newUserError.message);
+      return new Response(JSON.stringify({ error: newUserError.message }), {
+        status: 400,
+        headers,
+      });
     }
     createdUserId = newUser.id;
   } else {
     createdUserId = existingUser.id;
   }
 
-  // Insert project with corrected user_id
   const projectInsertData = {
     title: projectData.title || "New Office Design",
     project_number: projectData.project_number,
     description: projectData.description || "Interior design project.",
-    user_id: uid, // Use UUID from users table
+    user_id: uid,
     db: projectData?.db,
-    image_url: projectData?.image_url || 'https://cdn.andro4all.com/andro4all/2022/07/Planner-5D.jpg',
+    image_url:
+      projectData?.image_url ||
+      "https://cdn.andro4all.com/andro4all/2022/07/Planner-5D.jpg",
   };
 
   const { data: projectDataResponse, error: projectError } = await supabase
@@ -155,13 +168,15 @@ export async function POST(req) {
     .single();
 
   if (projectError) {
-    console.error("Error creating project:", projectError.message);
-    return new Response(JSON.stringify({ error: projectError.message }), { status: 400, headers });
+    // console.error("Error creating project:", projectError.message);
+    return new Response(JSON.stringify({ error: projectError.message }), {
+      status: 400,
+      headers,
+    });
   }
-  
+
   const createdProjectId = projectDataResponse.id;
-  
-  // Insert manager record
+
   const managerData = {
     project_id: createdProjectId,
     name: projectData.name || "Default Manager",
@@ -172,42 +187,46 @@ export async function POST(req) {
     company_id: projectData.user_context?.current_company || 11,
     timezone: projectData.user_context?.tz || "Africa/Casablanca",
   };
-  
+
   const { error: managerError } = await supabase
     .from("managers")
     .insert([managerData]);
 
   if (managerError) {
-    console.error("Error creating manager:", managerError.message);
-    return new Response(JSON.stringify({ error: managerError.message }), { status: 400, headers });
+    // console.error("Error creating manager:", managerError.message);
+    return new Response(JSON.stringify({ error: managerError.message }), {
+      status: 400,
+      headers,
+    });
   }
-  
-  // Create a version row for the project
+
   const versionInsertData = {
     project_id: createdProjectId,
-    version: projectData.version || '1.0',
+    version: projectData.version || "1.0",
   };
-  
+
   const { data: versionData, error: versionError } = await supabase
     .from("versions")
     .insert([versionInsertData])
     .select()
     .single();
-  
+
   if (versionError) {
-    console.error("Error creating version:", versionError.message);
-    return new Response(JSON.stringify({ error: versionError.message }), { status: 400, headers });
+    // console.error("Error creating version:", versionError.message);
+    return new Response(JSON.stringify({ error: versionError.message }), {
+      status: 400,
+      headers,
+    });
   }
 
   const createdVersionId = versionData.id;
 
-  // Initialize plan_parameters with corrected column names
   const planParamsInsertData = {
     version_id: createdVersionId,
-    scale_factor: planTransform.scale, // Matches schema: scale_factor
-    rotation: planTransform.rotation,  // Matches schema: rotation
-    x_offset: planTransform.offsetX,   // Matches schema: x_offset
-    y_offset: planTransform.offsetY,   // Matches schema: y_offset
+    scale_factor: planTransform.scale,
+    rotation: planTransform.rotation,
+    x_offset: planTransform.offsetX,
+    y_offset: planTransform.offsetY,
   };
 
   const { error: planParamsError } = await supabase
@@ -215,19 +234,21 @@ export async function POST(req) {
     .insert([planParamsInsertData]);
 
   if (planParamsError) {
-    console.error("Error creating plan_parameters:", planParamsError.message);
-    return new Response(JSON.stringify({ error: planParamsError.message }), { status: 400, headers });
+    // console.error("Error creating plan_parameters:", planParamsError.message);
+    return new Response(JSON.stringify({ error: planParamsError.message }), {
+      status: 400,
+      headers,
+    });
   }
-  
-  // — 3) Insert POINTS with payload id → client_id
-  const pointsToInsert = pointsFromPayload.map(pt => ({
+
+  const pointsToInsert = pointsFromPayload.map((pt) => ({
     x_coordinate: pt.position.x,
     y_coordinate: pt.position.y,
     z_coordinate: pt.position.z,
-    snapangle:    pt.snapAngle,
-    rotation:     pt.rotation,
-    version_id:   createdVersionId,
-    client_id:    pt.id
+    snapangle: pt.snapAngle,
+    rotation: pt.rotation,
+    version_id: createdVersionId,
+    client_id: pt.id,
   }));
   const { data: insertedPoints, error: pointsError } = await supabase
     .from("points")
@@ -235,29 +256,30 @@ export async function POST(req) {
     .select();
 
   if (pointsError) {
-    console.error("Error inserting points:", pointsError.message);
-    return new Response(JSON.stringify({ error: pointsError.message }), { status: 400, headers });
+    // console.error("Error inserting points:", pointsError.message);
+    return new Response(JSON.stringify({ error: pointsError.message }), {
+      status: 400,
+      headers,
+    });
   }
 
-  // Build lookup: client_id → real DB PK
   const pointIdMapping = {};
-  insertedPoints.forEach(pt => {
+  insertedPoints.forEach((pt) => {
     pointIdMapping[pt.client_id] = pt.id;
-    console.log(`Point inserted: client_id=${pt.client_id} → id=${pt.id}`);
+    // console.log(`Point inserted: client_id=${pt.client_id} → id=${pt.id}`);
   });
 
-  // — 4) Insert WALLS with payload id → client_id
-  const wallsToInsert = wallsFromPayload.map(wall => ({
+  const wallsToInsert = wallsFromPayload.map((wall) => ({
     startpointid: pointIdMapping[wall.startPointId],
-    endpointid:   pointIdMapping[wall.endPointId],
-    length:       wall.length,
-    rotation:     wall.rotation,
-    thickness:    wall.thickness,
-    color:        wall.color,
-    texture:      wall.texture,
-    height:       wall.height,
-    version_id:   createdVersionId,
-    client_id:    wall.id
+    endpointid: pointIdMapping[wall.endPointId],
+    length: wall.length,
+    rotation: wall.rotation,
+    thickness: wall.thickness,
+    color: wall.color,
+    texture: wall.texture,
+    height: wall.height,
+    version_id: createdVersionId,
+    client_id: wall.id,
   }));
 
   const { data: wallsData, error: wallsError } = await supabase
@@ -266,19 +288,21 @@ export async function POST(req) {
     .select();
 
   if (wallsError) {
-    console.error("Error inserting walls:", wallsError.message);
-    return new Response(JSON.stringify({ error: wallsError.message }), { status: 400, headers });
+    // console.error("Error inserting walls:", wallsError.message);
+    return new Response(JSON.stringify({ error: wallsError.message }), {
+      status: 400,
+      headers,
+    });
   }
 
-  wallsData.forEach(w => {
-    console.log(`Wall inserted: client_id=${w.client_id} → id=${w.id}`);
+  wallsData.forEach((w) => {
+    // console.log(`Wall inserted: client_id=${w.client_id} → id=${w.id}`);
   });
 
-  // — 5) Insert DOORS as ARTICLES with payload id → client_id
-  const doorsToInsert = doors.map(door => ({
+  const doorsToInsert = doors.map((door) => ({
     version_id: createdVersionId,
-    client_id:  door.id,
-    data:       [door]
+    client_id: door.id,
+    data: [door],
   }));
   const { data: doorsData, error: doorsError } = await supabase
     .from("articles")
@@ -286,43 +310,69 @@ export async function POST(req) {
     .select();
 
   if (doorsError) {
-    console.error("Error inserting doors:", doorsError.message);
-    return new Response(JSON.stringify({ error: doorsError.message }), { status: 400, headers });
+    // console.error("Error inserting doors:", doorsError.message);
+    return new Response(JSON.stringify({ error: doorsError.message }), {
+      status: 400,
+      headers,
+    });
   }
-  
+
   try {
     const interventionPayload = {
       action: "Project initialized",
       project_id: createdProjectId,
       version_id: createdVersionId,
-      intervenerId: uid.toString(), // Convert odoo_id to string
+      intervenerId: uid.toString(),
       metadata: {
         project_title: projectData.title || "New Office Design",
         project_number: projectData.project_number,
         intervener_name: projectData.name || "Unknown User",
-        intervener_email: projectData.username || `user${Date.now()}@example.com`,
+        intervener_email:
+          projectData.username || `user${Date.now()}@example.com`,
       },
     };
 
     const interventionResult = await createIntervention(interventionPayload);
-    console.log("Intervention created:", interventionResult);
+    // console.log("Intervention created:", interventionResult);
   } catch (interventionError) {
-    console.error("Error creating intervention:", interventionError.message);
+    // console.error("Error creating intervention:", interventionError.message);
     return new Response(
-      JSON.stringify({ error: "Failed to create intervention", details: interventionError.message }),
+      JSON.stringify({
+        error: "Failed to create intervention",
+        details: interventionError.message,
+      }),
       { status: 500, headers }
     );
   }
-   
-  doorsData.forEach(d => {
-    console.log(`Door(article) inserted: client_id=${d.client_id} → id=${d.id}`);
-  });
 
-  // — 6) Return response
+  const userData = {
+    id: projectData.uid,
+    firstName: projectData.name.split(" ")[0],
+    lastName: projectData.name.split(" ").slice(1).join(" "),
+    role: projectData.role || "Unknown",
+  };
+
+  const projectWithRelations = await fetchProjectWithRelations(
+    uid,
+    createdProjectId
+  );
+  const transformedProjectData = transformProjectsData(
+    [projectWithRelations],
+    userData
+  );
+
   return new Response(
-    JSON.stringify({ message: "✓ Inserted all with real client_id!" }),
-    { status: 201, headers }
+    JSON.stringify({
+      success: true,
+      projectWithRelations: projectWithRelations,
+      transformedProjectData: transformedProjectData[0],
+      projectId: createdProjectId,
+      versionId: createdVersionId,
+      message: `Project ${createdProjectId} created successfully—version ${createdVersionId} and all related entities (points, walls, articles, plan parameters, managers, interventions) have been persisted.`,
+    }),
+    {
+      status: 200,
+      headers,
+    }
   );
 }
-
-
