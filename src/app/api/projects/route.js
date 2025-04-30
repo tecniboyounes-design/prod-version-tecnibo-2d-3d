@@ -289,8 +289,31 @@ export async function POST(req) {
     console.error("Error inserting doors:", doorsError.message);
     return new Response(JSON.stringify({ error: doorsError.message }), { status: 400, headers });
   }
-
   
+  try {
+    const interventionPayload = {
+      action: "Project initialized",
+      project_id: createdProjectId,
+      version_id: createdVersionId,
+      intervenerId: uid.toString(), // Convert odoo_id to string
+      metadata: {
+        project_title: projectData.title || "New Office Design",
+        project_number: projectData.project_number,
+        intervener_name: projectData.name || "Unknown User",
+        intervener_email: projectData.username || `user${Date.now()}@example.com`,
+      },
+    };
+
+    const interventionResult = await createIntervention(interventionPayload);
+    console.log("Intervention created:", interventionResult);
+  } catch (interventionError) {
+    console.error("Error creating intervention:", interventionError.message);
+    return new Response(
+      JSON.stringify({ error: "Failed to create intervention", details: interventionError.message }),
+      { status: 500, headers }
+    );
+  }
+   
   doorsData.forEach(d => {
     console.log(`Door(article) inserted: client_id=${d.client_id} → id=${d.id}`);
   });
