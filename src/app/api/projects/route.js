@@ -92,7 +92,6 @@ export const cors = (req) => {
 };
 
 
-// ─── pages/api/projects/route.ts ─────────────────────────────────────────────
 export async function POST(req) {
   const origin  = req.headers.get("origin");
   const headers = getCorsHeaders(origin);
@@ -103,6 +102,14 @@ export async function POST(req) {
 
   // Destructure for clarity
   const { uid, doors, walls: wallsFromPayload, points: pointsFromPayload } = projectData;
+
+  // Define the planTransform as specified
+  const planTransform = {
+    scale: 1.0,
+    rotation: 0,
+    offsetX: 0,
+    offsetY: 0,
+  };
 
   // — 1) Ensure user exists or create it
   let createdUserId;
@@ -131,17 +138,15 @@ export async function POST(req) {
     createdUserId = existingUser.id;
   }
 
-     
-  // Insert project
+  // Insert project with corrected user_id
   const projectInsertData = {
     title: projectData.title || "New Office Design",
     project_number: projectData.project_number,
     description: projectData.description || "Interior design project.",
-    user_id: projectData.uid,
+    user_id: uid, // Use UUID from users table
     db: projectData?.db,
     image_url: projectData?.image_url || 'https://cdn.andro4all.com/andro4all/2022/07/Planner-5D.jpg',
   };
-
 
   const { data: projectDataResponse, error: projectError } = await supabase
     .from("projects")
@@ -196,8 +201,23 @@ export async function POST(req) {
 
   const createdVersionId = versionData.id;
 
+  // Initialize plan_parameters with corrected column names
+  const planParamsInsertData = {
+    version_id: createdVersionId,
+    scale_factor: planTransform.scale, // Matches schema: scale_factor
+    rotation: planTransform.rotation,  // Matches schema: rotation
+    x_offset: planTransform.offsetX,   // Matches schema: x_offset
+    y_offset: planTransform.offsetY,   // Matches schema: y_offset
+  };
 
-  // Do not include an 'id' so that the DB generates one.
+  const { error: planParamsError } = await supabase
+    .from("plan_parameters")
+    .insert([planParamsInsertData]);
+
+  if (planParamsError) {
+    console.error("Error creating plan_parameters:", planParamsError.message);
+    return new Response(JSON.stringify({ error: planParamsError.message }), { status: 400, headers });
+  }
   
   // — 3) Insert POINTS with payload id → client_id
   const pointsToInsert = pointsFromPayload.map(pt => ({
@@ -207,7 +227,7 @@ export async function POST(req) {
     snapangle:    pt.snapAngle,
     rotation:     pt.rotation,
     version_id:   createdVersionId,
-    client_id:    pt.id               // ← **actual** front-end point ID**
+    client_id:    pt.id
   }));
   const { data: insertedPoints, error: pointsError } = await supabase
     .from("points")
@@ -237,7 +257,7 @@ export async function POST(req) {
     texture:      wall.texture,
     height:       wall.height,
     version_id:   createdVersionId,
-    client_id:    wall.id           // ← **actual** front-end wall ID**
+    client_id:    wall.id
   }));
 
   const { data: wallsData, error: wallsError } = await supabase
@@ -247,7 +267,6 @@ export async function POST(req) {
 
   if (wallsError) {
     console.error("Error inserting walls:", wallsError.message);
-    // roll back points if desired…
     return new Response(JSON.stringify({ error: wallsError.message }), { status: 400, headers });
   }
 
@@ -258,7 +277,7 @@ export async function POST(req) {
   // — 5) Insert DOORS as ARTICLES with payload id → client_id
   const doorsToInsert = doors.map(door => ({
     version_id: createdVersionId,
-    client_id:  door.id,            // ← **actual** front-end door ID**
+    client_id:  door.id,
     data:       [door]
   }));
   const { data: doorsData, error: doorsError } = await supabase
@@ -270,19 +289,17 @@ export async function POST(req) {
     console.error("Error inserting doors:", doorsError.message);
     return new Response(JSON.stringify({ error: doorsError.message }), { status: 400, headers });
   }
+
+  
   doorsData.forEach(d => {
     console.log(`Door(article) inserted: client_id=${d.client_id} → id=${d.id}`);
   });
 
-  // — 6) …settings, intervention, fetch and return…
+  // — 6) Return response
   return new Response(
     JSON.stringify({ message: "✓ Inserted all with real client_id!" }),
     { status: 201, headers }
   );
 }
-
-
-
-
 
 

@@ -39,10 +39,13 @@ export async function POST(request) {
       { status: 403, headers: corsHeaders }
     );
   }
-
+  
   try {
     const { email, password } = await request.json();
-  
+    console.log("Received email:", email);
+    console.log("Received password:", password);
+    console.log("Request body:", await request.text());
+    
     if (!email || !password) {
       return new Response(
         JSON.stringify({ message: "Missing email or password", result: false }),
