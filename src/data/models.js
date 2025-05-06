@@ -864,6 +864,18 @@ export const arrayToCorners = (array) => {
 
 
 
+// target object : {
+//   "UN_DE_HGW_MDFBL_0L100_SA1_18:3:2.5": {
+//     "material": "Decorative 0L100 SA1 sur MDF black WR",
+//     "width": 3,
+//     "height": 2.5,
+//     "area": 7.5,
+//     "pricePerUnit": 1,
+//     "totalPrice": 7.5,
+//     "unitOfMeasure": "M2"
+//   }
+// } 
+
 
 [
 
@@ -1659,6 +1671,7 @@ export const arrayToCorners = (array) => {
     "lastModified": "2025-03-03T12:23:12.997Z",
     "versionDescription": "Cloned from v1.0"
   }
+  
 ]
 
 

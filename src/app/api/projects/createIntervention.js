@@ -1,5 +1,6 @@
 import { supabase } from "../filesController/route";
 
+
 /**
  * Inserts an intervention record into the database using a minimal payload.
  * 
@@ -11,6 +12,8 @@ import { supabase } from "../filesController/route";
  * @param {Object} [payload.metadata] - Optional metadata.
  * @returns {Promise<Object>} - The inserted intervention object.
  */
+
+
 
 export async function createIntervention(payload) {
   // console.log('paylaod in createIntervention',payload);
@@ -100,3 +103,4 @@ export async function createIntervention(payload) {
   };
   
 }
+

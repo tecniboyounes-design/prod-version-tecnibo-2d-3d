@@ -11,7 +11,7 @@ const allowedOrigins = [
 export function getCorsHeaders(origin) {
   const cleanOrigin = origin?.replace(/\/$/, ""); 
   const isAllowed = allowedOrigins.includes(cleanOrigin);
-
+  
   return {
     "Access-Control-Allow-Origin": isAllowed ? origin : "null",
     "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
@@ -19,6 +19,7 @@ export function getCorsHeaders(origin) {
     "Access-Control-Allow-Credentials": "true",
     "Content-Type": "application/json",
   };
+
 }
 
 
@@ -32,14 +33,8 @@ export async function OPTIONS(request) {
 export async function POST(request) {
   const origin = request.headers.get("origin");
   const corsHeaders = getCorsHeaders(origin);
-
-  if (corsHeaders["Access-Control-Allow-Origin"] === "null") {
-    return new Response(
-      JSON.stringify({ message: "Forbidden: Origin not allowed" }),
-      { status: 403, headers: corsHeaders }
-    );
-  }
   
+
   try {
     const { email, password } = await request.json();
     console.log("Received email:", email);
@@ -52,6 +47,7 @@ export async function POST(request) {
         { status: 400, headers: corsHeaders }
       );
     }
+    
 
     const loginData = {
       jsonrpc: "2.0",
@@ -63,14 +59,14 @@ export async function POST(request) {
       },
       id: 1,
     };
-
+    
     const response = await fetch('http://192.168.30.33:8069/web/session/authenticate', {
       method: "POST",
       headers: {  "Content-Type": "application/json",  Accept: "application/json"},
       credentials: "include",
       body: JSON.stringify(loginData),
     });
-
+    
     const data = await response.json();
     const setCookie = response.headers.get("set-cookie");
     let sessionId = null;
@@ -81,6 +77,7 @@ export async function POST(request) {
         sessionId = match[1];
       }
     }
+
     
     if (data?.result) {
       return new Response(
@@ -98,6 +95,7 @@ export async function POST(request) {
           },
         }
       );
+
     } else {
       return new Response(
         JSON.stringify({ message: "Request failed", result: false, response: data }),

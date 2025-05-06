@@ -16,7 +16,7 @@ export async function POST(req) {
       .from('walls')
       .select('id, startpointid, endpointid')
       .eq('version_id', version_id);
-
+      
     if (wallsError || !wallsData || wallsData.length === 0) {
       return NextResponse.json({ message: 'No walls found for this version' }, { status: 404 });
     }
@@ -42,7 +42,7 @@ export async function POST(req) {
           point_id_2: pointId2,
         }
       );
-
+      
       if (distanceError) {
         console.error(`Error for wall ${wallId}:`, distanceError);
         results.push({

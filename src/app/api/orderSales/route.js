@@ -23,7 +23,7 @@ export async function POST(req) {
     const userData = request.userData;
     const projectId = request.projectId;  
     const payload = createOrderPayload(items, orderName, userData);
-    console.log('projectId', projectId);
+    // console.log('projectId', projectId);
       
     const relativePath = "web/dataset/call_kw/sale.order/web_save";
     const url = getAuthenticationUrl(req, relativePath);
@@ -41,14 +41,14 @@ export async function POST(req) {
         Cookie: `session_id=${session_id}; frontend_lang=fr_BE; tz=Africa/Casablanca`,
       },
     });
-
+    
     // console.log("Response from Odoo server:", response);
     // console.log("Response data:", response.data.result);
 
     const orderId = response.data.result[0]?.id; 
-
+    
    // console.log("Response data ID:", orderId);
-
+  
     // Step 4: Check for Odoo error (if any)
     if (response.data.error) {
       console.error("Error details:", response.data.error);
@@ -108,13 +108,13 @@ export async function PUT(req) {
 
   try {
     // Log the method, headers, and the body of the request
-    console.log("Request Method:", req.method);
-    console.log("Request Headers:", req.headers);
+    // console.log("Request Method:", req.method);
+    // console.log("Request Headers:", req.headers);
 
     // Parse and log the request body if it's a JSON request
     const requestBody = await req.json();
-    console.log("Request Body:", requestBody);
-
+    // console.log("Request Body:", requestBody);
+  
     // Check if necessary fields are present
     if (!requestBody.orderId) {
       throw new Error("orderId is missing in the request body");
@@ -122,14 +122,14 @@ export async function PUT(req) {
 
     const { orderId, items, userData, projectId } = requestBody;
     const orderPayload = generateUpdateOrderPayload(orderId, userData, items, userData.user_companies.current_company, projectId);
-    console.log("Generated Update Order Payload:", orderPayload);
-
+    // console.log("Generated Update Order Payload:", orderPayload);
+   
     // Odoo API call setup
     const relativePath = "web/dataset/call_kw/sale.order/web_save";
     const url = getAuthenticationUrl(req, relativePath);
     
     // You might want to get session_id dynamically from the request
-    const session_id = "3bb683d26bd12b6bfeaa969e902bb12f2c74e33b"; // Replace with dynamic retrieval if possible
+    const session_id = "3bb683d26bd12b6bfeaa969e902bb12f2c74e33b";
     
     // Send POST request to Odoo with the generated payload
     const response = await axios.post(url, orderPayload, {
@@ -140,7 +140,7 @@ export async function PUT(req) {
         Cookie: `session_id=${session_id}; frontend_lang=fr_BE; tz=Africa/Casablanca`,
       },
     });
-
+   
     // Log Odoo response for debugging
     console.log("Response from Odoo server:", response.data);
 

@@ -1,5 +1,7 @@
+
+
 export function multiplyMatrixVectorOrchestrator(data) {
-  const user = data.user || { odoo_id: "default_user" };
+  const user = data.user || { odoo_id: 446 };
   const room = data.room; 
 
   // Helper to multiply 4x4 matrix by vector
@@ -22,15 +24,15 @@ export function multiplyMatrixVectorOrchestrator(data) {
     // Local points: start at (0,0,0), end at (length,0,0)
     const startLocal = [0, 0, 0, 1];
     const endLocal = [length, 0, 0, 1];
-
+    
     // World coordinates
     const startWorld = multiplyMatrixVector(transform, startLocal);
     const endWorld = multiplyMatrixVector(transform, endLocal);
-
+    
     // Rotation (around y-axis in xz-plane)
     const m11 = transform[0], m31 = transform[8];
-    const rotation = Math.atan2(-m31, m11) * (180 / Math.PI); // Degrees
-
+    const rotation = Math.atan2(-m31, m11) * (180 / Math.PI);
+    
     return {
       startPoint: { x: startWorld[0], y: startWorld[1], z: startWorld[2] },
       endPoint: { x: endWorld[0], y: endWorld[1], z: endWorld[2] },
@@ -42,12 +44,12 @@ export function multiplyMatrixVectorOrchestrator(data) {
       height
     };
   });
-
+  
   // Collect unique points
   const points = [];
   const pointMap = new Map();
   let tempIdCounter = 0;
-
+  
   walls.forEach(wall => {
     const startKey = `${wall.startPoint.x.toFixed(3)},${wall.startPoint.y.toFixed(3)},${wall.startPoint.z.toFixed(3)}`;
     const endKey = `${wall.endPoint.x.toFixed(3)},${wall.endPoint.y.toFixed(3)},${wall.endPoint.z.toFixed(3)}`;
@@ -64,16 +66,16 @@ export function multiplyMatrixVectorOrchestrator(data) {
     wall.startPointId = pointMap.get(startKey);
     wall.endPointId = pointMap.get(endKey);
   });
-
+  
   // Extract doors
   const doors = room.doors.map(door => ({
     id: door.identifier,
     position: { x: door.transform[12], y: door.transform[13], z: door.transform[14] },
     width: door.dimensions[0],
     height: door.dimensions[1],
-    rotation: 0 // Could calculate if needed
+    rotation: 0 
   }));
-
+  
   // Return transformed data
   return {
     uid: user.odoo_id,
@@ -83,6 +85,6 @@ export function multiplyMatrixVectorOrchestrator(data) {
     points,
     doors,
     version: room.version.toString(),
-    units: "m" // Default
+    units: "m" 
   };
 }

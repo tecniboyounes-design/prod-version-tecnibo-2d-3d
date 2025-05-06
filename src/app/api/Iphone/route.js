@@ -127,7 +127,7 @@ export async function POST(req) {
     try {
         const roomJson = await req.json();
         console.log('roomjson', roomJson);
-
+        
         const transformedData = multiplyMatrixVectorOrchestrator({ user: predefinedUser, room: roomJson });
         const result = await createProjectFromRoomJson(transformedData);
         return new Response(JSON.stringify(result), {

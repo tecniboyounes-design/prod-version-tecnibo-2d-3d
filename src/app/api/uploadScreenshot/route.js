@@ -43,7 +43,7 @@ export async function POST(req) {
   const fileName = `${timestamp}.png`;
   const filePath = path.join(dir, fileName);
   
-  // Convert base64 data URL to a buffer (remove "data:image/png;base64," prefix)
+  // Convert base64 data URL to a buffer (remove "data:image/png;base64," prefix);
   let buffer;
   try {
     buffer = Buffer.from(screenshot.split(',')[1], 'base64');
@@ -60,6 +60,9 @@ export async function POST(req) {
     await writeFile(filePath, buffer);
     
     // Get the origin from the request (e.g., http://localhost:3000);
+    // this we should make sure is from the same server itself to not do an problem 
+    // cause we need to make sure the url is not from another server
+    // and we should not allow that to avoid security issues
     
     const origin = new URL(req.url, `http://${req.headers.get('host')}`).origin;
     
@@ -67,7 +70,7 @@ export async function POST(req) {
     const url = `${origin}/screenshots/${projectId}/${fileName}`;
     
     await updateProjectImage(projectId, url);
-
+    
     return new Response(JSON.stringify({ url }), {
       status: 200,
       headers: { 'Content-Type': 'application/json' },

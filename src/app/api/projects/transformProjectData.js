@@ -1,5 +1,8 @@
-// ─── transformProjectData.ts ─────────────────────────────────────────────────
+import { generateProjectNumber } from "@/lib/genProNum";
+
 export function transformProjectData(input) {
+
+
   const formatDate = (isoDate) => {
     const d = new Date(isoDate);
     return d.toLocaleString('fr-FR', {
@@ -11,13 +14,14 @@ export function transformProjectData(input) {
       second: '2-digit'
     }).replace(',', '');
   };
-
+  
+  
   const sessionInfo = input.user?.session_info || {};
   const version     = input.versions?.[0] || {};
 
   return {
     title:          input.projectName || 'Untitled Project',
-    project_number: Math.floor(Math.random() * 900000000 + 100000000).toString(),
+    project_number: generateProjectNumber(),
     description:    `Auto-generated for ${input.projectName} P.N => ${Math.floor(Math.random() * 900000000 + 100000000)}`,
     created_on:     formatDate(input.created),
     changed_on:     formatDate(input.lastModified),
@@ -31,8 +35,9 @@ export function transformProjectData(input) {
         partner_id: sessionInfo.partner_id
       }
     ],
+    
     status: input.status?.toLowerCase() || 'draft',
-
+    
     // ─── doors (→ articles) ────────────────────────────────────────────────
     doors: (version.doors || []).map((door, idx) => {
       if (!door.id) throw new Error(`Missing door.id at index ${idx}`);
@@ -46,7 +51,7 @@ export function transformProjectData(input) {
         version_id: door.version_id || null
       };
     }),
-
+    
     // ─── walls ───────────────────────────────────────────────────────────────
     walls: (version.lines || []).map((line, idx) => {
       if (!line.id) throw new Error(`Missing wall.id at index ${idx}`);
@@ -80,6 +85,7 @@ export function transformProjectData(input) {
 
     ...sessionInfo
   };
+
 }
 
 

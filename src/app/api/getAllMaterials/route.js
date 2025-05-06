@@ -13,10 +13,10 @@ export async function GET(req) {
   //     headers: corsHeaders,
   //   });
   // }
-   
+  
   try {
     console.log("Fetching materials...");
-    
+
     const { data: materials, error } = await supabase
       .from("material")
       .select("*");

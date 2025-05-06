@@ -4,6 +4,7 @@ import { transformProjectData } from "./transformProjectData";
 import { transformProjectsData } from "../versionHistory/restructureData";
 import { supabase } from "../filesController/route";
 
+
 /**
  * Handles POST request to create a new project with nested data including
  * user, manager, version, points, walls, doors (articles), and settings.
@@ -117,7 +118,7 @@ export async function POST(req) {
     offsetX: 0,
     offsetY: 0,
   };
-
+  
   let createdUserId;
   const { data: existingUser, error: userError } = await supabase
     .from("users")
@@ -160,13 +161,13 @@ export async function POST(req) {
       projectData?.image_url ||
       "https://cdn.andro4all.com/andro4all/2022/07/Planner-5D.jpg",
   };
-
+  
   const { data: projectDataResponse, error: projectError } = await supabase
     .from("projects")
     .insert([projectInsertData])
     .select()
     .single();
-
+    
   if (projectError) {
     // console.error("Error creating project:", projectError.message);
     return new Response(JSON.stringify({ error: projectError.message }), {
@@ -187,11 +188,11 @@ export async function POST(req) {
     company_id: projectData.user_context?.current_company || 11,
     timezone: projectData.user_context?.tz || "Africa/Casablanca",
   };
-
+  
   const { error: managerError } = await supabase
     .from("managers")
     .insert([managerData]);
-
+    
   if (managerError) {
     // console.error("Error creating manager:", managerError.message);
     return new Response(JSON.stringify({ error: managerError.message }), {
@@ -199,12 +200,12 @@ export async function POST(req) {
       headers,
     });
   }
-
+  
   const versionInsertData = {
     project_id: createdProjectId,
     version: projectData.version || "1.0",
   };
-
+  
   const { data: versionData, error: versionError } = await supabase
     .from("versions")
     .insert([versionInsertData])
@@ -218,7 +219,7 @@ export async function POST(req) {
       headers,
     });
   }
-
+  
   const createdVersionId = versionData.id;
 
   const planParamsInsertData = {
@@ -228,11 +229,11 @@ export async function POST(req) {
     x_offset: planTransform.offsetX,
     y_offset: planTransform.offsetY,
   };
-
+  
   const { error: planParamsError } = await supabase
     .from("plan_parameters")
     .insert([planParamsInsertData]);
-
+  
   if (planParamsError) {
     // console.error("Error creating plan_parameters:", planParamsError.message);
     return new Response(JSON.stringify({ error: planParamsError.message }), {
@@ -240,7 +241,7 @@ export async function POST(req) {
       headers,
     });
   }
-
+  
   const pointsToInsert = pointsFromPayload.map((pt) => ({
     x_coordinate: pt.position.x,
     y_coordinate: pt.position.y,
@@ -250,6 +251,7 @@ export async function POST(req) {
     version_id: createdVersionId,
     client_id: pt.id,
   }));
+  
   const { data: insertedPoints, error: pointsError } = await supabase
     .from("points")
     .insert(pointsToInsert)
@@ -262,13 +264,13 @@ export async function POST(req) {
       headers,
     });
   }
-
+  
   const pointIdMapping = {};
   insertedPoints.forEach((pt) => {
     pointIdMapping[pt.client_id] = pt.id;
     // console.log(`Point inserted: client_id=${pt.client_id} → id=${pt.id}`);
   });
-
+  
   const wallsToInsert = wallsFromPayload.map((wall) => ({
     startpointid: pointIdMapping[wall.startPointId],
     endpointid: pointIdMapping[wall.endPointId],
@@ -281,12 +283,12 @@ export async function POST(req) {
     version_id: createdVersionId,
     client_id: wall.id,
   }));
-
+  
   const { data: wallsData, error: wallsError } = await supabase
     .from("walls")
     .insert(wallsToInsert)
     .select();
-
+    
   if (wallsError) {
     // console.error("Error inserting walls:", wallsError.message);
     return new Response(JSON.stringify({ error: wallsError.message }), {
@@ -294,21 +296,22 @@ export async function POST(req) {
       headers,
     });
   }
-
+  
   wallsData.forEach((w) => {
     // console.log(`Wall inserted: client_id=${w.client_id} → id=${w.id}`);
   });
-
+  
   const doorsToInsert = doors.map((door) => ({
     version_id: createdVersionId,
     client_id: door.id,
     data: [door],
   }));
+
   const { data: doorsData, error: doorsError } = await supabase
     .from("articles")
     .insert(doorsToInsert)
     .select();
-
+   
   if (doorsError) {
     // console.error("Error inserting doors:", doorsError.message);
     return new Response(JSON.stringify({ error: doorsError.message }), {
@@ -316,7 +319,7 @@ export async function POST(req) {
       headers,
     });
   }
-
+ 
   try {
     const interventionPayload = {
       action: "Project initialized",
