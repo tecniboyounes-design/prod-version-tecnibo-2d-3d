@@ -9,8 +9,12 @@
 # chmod +x sys_info.sh
 #   It ensures the latest versions are installed and verifies the setup
 # ============================
+
+
 # ssh yattaoui@192.168.30.92
 # Yattaou1
+
+
 # Get-Process | ForEach-Object { Stop-Process -Id $_.Id -Force }
 # sudo nano /etc/systemd/system/tecnipo.service
 # sudo systemctl status tecnipo.service // for check the status
@@ -54,7 +58,7 @@ fi
 
 nvm use --lts
 nvm alias default 'lts/*'
-
+ 
 echo "✅ Node installed: $(node -v)"
 echo "✅ npm installed: $(npm -v)"
 

@@ -15,3 +15,9 @@ $body = @{
 } | ConvertTo-Json
 
 Invoke-WebRequest -Uri "http://192.168.30.33:8069/web/session/authenticate" -Method POST -Headers $headers -Body $body
+
+
+
+
+
+

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
 // Initialize Supabase client
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+const supabase = createClient(process.env.SUPABASE_URL || "https://poyrlayjztqhyjaxbwcb.supabase.co", process.env.SUPABASE_KEY);
 
 // Function to fetch price from Odoo using search_read
 async function getPriceFromOdoo(name) {
