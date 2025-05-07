@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+API_BASE="http://localhost:3000/api"
+EMAIL="y.attaoui@tecnibo.com"
+PASSWORD="Y5EhmP5BX-r9Fru"
+LOGFILE="api_flow.log"
+
+# Helper: perform a curl, return "<status> <body>"
+call_api() {
+  local method=$1 url=$2 data="${3-}"
+  local resp status body
+  
+  if [[ -z "$data" ]]; then
+    resp=$(curl -sS -w "\n%{http_code}" \
+      -X "$method" "$url" \
+      -H "session_id: $session_id" \
+      -H "Content-Type: application/json")
+  else
+    resp=$(curl -sS -w "\n%{http_code}" \
+      -X "$method" "$url" \
+      -H "session_id: $session_id" \
+      -H "Content-Type: application/json" \
+      -d "$data")
+  fi
+
+  status=$(tail -n1 <<<"$resp")
+  body=$(sed '$d' <<<"$resp")
+  echo "$status" "$body"
+}
+
+echo "=== Starting API Flow ===" | tee "$LOGFILE"
+
+#
+# 1) AUTHENTICATE
+#
+echo -n "[AUTH] " | tee -a "$LOGFILE"
+read auth_code auth_body < <(
+  curl -sS -w "\n%{http_code}" \
+    -X POST "$API_BASE/authenticate" \
+    -H "Content-Type: application/json" \
+    -d "{\"email\":\"$EMAIL\",\"password\":\"$PASSWORD\"}" \
+  | { read -r body; read -r code; echo "$code $body"; }
+)
+
+if [[ "$auth_code" -ne 200 ]]; then
+  echo "FAILED (HTTP $auth_code)" | tee -a "$LOGFILE"
+  echo "$auth_body" | tee -a "$LOGFILE"
+  exit 1
+fi
+
+session_id=$(jq -r '.session_id' <<<"$auth_body")
+echo "OK, session_id=$session_id" | tee -a "$LOGFILE"
+
+#
+# 2) GET EMPLOYEE BY SESSION
+#
+echo -n "[GET SESSION INFO] " | tee -a "$LOGFILE"
+read emp_code emp_body < <(call_api "GET" "$API_BASE/getEmployeeBySession")
+
+if [[ "$emp_code" -ne 200 ]]; then
+  echo "FAILED (HTTP $emp_code)" | tee -a "$LOGFILE"
+  echo "$emp_body" | tee -a "$LOGFILE"
+  exit 1
+fi
+
+# Extract the top-level uid and job title from nested records
+emp_uid=$(jq -r '.uid' <<<"$emp_body")
+job_title=$(jq -r '.job_position.result.records[0].job_title' <<<"$emp_body")
+
+echo "OK (HTTP $emp_code)" | tee -a "$LOGFILE"
+echo "  → uid: $emp_uid" | tee -a "$LOGFILE"
+echo "  → job_position: $job_title" | tee -a "$LOGFILE"
+
+# You can now use $session_id, $emp_uid, $job_title in subsequent calls...
+# e.g. call_api "POST" "$API_BASE/projects" '{"name":"New Project"}'
+
+echo "=== Flow Completed ===" | tee -a "$LOGFILE"

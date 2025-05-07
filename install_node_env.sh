@@ -25,7 +25,7 @@
 # sudo journalctl -u tecnipo.service --since "10 minutes ago"
 
 
-
+ 
 set -e  # Exit on error
 
 echo "📦 Updating system packages..."

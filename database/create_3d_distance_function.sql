@@ -6,7 +6,7 @@ DECLARE
 BEGIN
   -- Fetch the geometry of the first point
   SELECT geom INTO geom1 FROM points WHERE id = point_id_1;
-
+  
   -- Fetch the geometry of the second point
   SELECT geom INTO geom2 FROM points WHERE id = point_id_2;
 

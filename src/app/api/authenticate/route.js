@@ -39,7 +39,7 @@ export async function POST(request) {
     const { email, password } = await request.json();
     console.log("Received email:", email);
     console.log("Received password:", password);
-    console.log("Request body:", await request.text());
+    // console.log("Request body:", await request.text());
     
     if (!email || !password) {
       return new Response(
