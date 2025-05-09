@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { generatePDF, transformProjectData } from "./pdfGenerator";
 import { generateXML } from "./xmlGenerator";
 import { createClient } from '@supabase/supabase-js';
-import { getCorsHeaders } from "../authenticate/route";
+import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
+
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -36,10 +37,10 @@ async function fetchProjectWithRelations(projectId) {
 }
 
 export async function POST(req) {
-  const origin = req.headers.get("origin");
-  const corsHeaders = getCorsHeaders(origin);
+  const corsHeaders = getCorsHeaders(req); 
 
   try {
+    
     const { projectId, versionId, format } = await req.json();
 
     if (!projectId || !versionId || !format) {
@@ -95,7 +96,5 @@ export async function POST(req) {
 }
 
 export async function OPTIONS(req) {
-  const origin = req.headers.get("origin");
-  const corsHeaders = getCorsHeaders(origin);
-  return new Response(null, { status: 204, headers: corsHeaders });
+  return handleCorsPreflight(req); 
 }

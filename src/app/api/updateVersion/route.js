@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '../filesController/route';
 import { fetchProjectWithRelations } from '../projects/route';
-import { transformProjectsData } from '../versionHistory/restructureData';
+import { transformProjectsData } from '../../../lib/restructureData';
 import { validate } from 'uuid'; 
 
 

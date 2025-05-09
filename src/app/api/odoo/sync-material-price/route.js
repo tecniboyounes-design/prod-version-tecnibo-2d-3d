@@ -1,48 +1,51 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors"; 
+import { supabase } from "../../filesController/route";
 
-// Initialize Supabase client
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_KEY
-);
+
 
 export async function POST(req) {
-  const startTime = Date.now(); // Record start time
+  const startTime = Date.now();
+  const corsHeaders = getCorsHeaders(req); 
 
   try {
     // Check authorization header for security
     const authHeader = req.headers.get("authorization");
+   
     if (!authHeader || authHeader !== `Bearer ${process.env.UPDATE_TOKEN}`) {
-      return NextResponse.json(
-        { error: "Unauthorized", durationMs: Date.now() - startTime },
-        { status: 403 }
-      );
+      return new NextResponse(JSON.stringify({ error: "Unauthorized", durationMs: Date.now() - startTime }), {
+        status: 403,
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "application/json",
+        },
+      });
     }
-
+   
     // Parse the request body to get product name and price
     const { name, price } = await req.json();
-
+     
     // Validate input data
     if (!name || typeof name !== "string") {
-      return NextResponse.json(
-        {
-          error: "Invalid or missing name",
-          durationMs: Date.now() - startTime,
+      return new NextResponse(JSON.stringify({ error: "Invalid or missing name", durationMs: Date.now() - startTime }), {
+        status: 400,
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "application/json",
         },
-        { status: 400 }
-      );
+      });
     }
     if (typeof price !== "number" || isNaN(price)) {
-      return NextResponse.json(
-        {
-          error: "Invalid or missing price",
-          durationMs: Date.now() - startTime,
+      return new NextResponse(JSON.stringify({ error: "Invalid or missing price", durationMs: Date.now() - startTime }), {
+        status: 400,
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "application/json",
         },
-        { status: 400 }
-      );
+      });
     }
-
+    
     // Update the material price in Supabase
     const { data, error } = await supabase
       .from("material")
@@ -53,39 +56,54 @@ export async function POST(req) {
     // Handle database errors
     if (error) {
       console.error("Supabase update error:", error);
-      return NextResponse.json(
-        { error: "Failed to update price", durationMs: Date.now() - startTime },
-        { status: 500 }
-      );
+      return new NextResponse(JSON.stringify({ error: "Failed to update price", durationMs: Date.now() - startTime }), {
+        status: 500,
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "application/json",
+        },
+      });
     }
 
     // Check if material was found and updated
     if (data.length === 0) {
-      return NextResponse.json(
-        { error: "Material not found", durationMs: Date.now() - startTime },
-        { status: 404 }
-      );
+      return new NextResponse(JSON.stringify({ error: "Material not found", durationMs: Date.now() - startTime }), {
+        status: 404,
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "application/json",
+        },
+      });
     }
 
     // Log success for debugging
-    // Log success for debugging
     console.log(`Updated price for material ${name} to ${price}`);
     const durationMs = Date.now() - startTime;
-    return NextResponse.json(
-      {
-        message: `Price updated successfully for material ${name} to ${price}`,
-        name,
-        price,
-        durationMs,
+    return new NextResponse(JSON.stringify({
+      message: `Price updated successfully for material ${name} to ${price}`,
+      name,
+      price,
+      durationMs,
+    }), {
+      status: 200,
+      headers: {
+        ...corsHeaders,
+        "Content-Type": "application/json",
       },
-      { status: 200 }
-    );
+    });
   } catch (error) {
     console.error("Error in sync-material-price route:", error);
     const durationMs = Date.now() - startTime;
-    return NextResponse.json(
-      { error: "Internal Server Error", durationMs },
-      { status: 500 }
-    );
+    return new NextResponse(JSON.stringify({ error: "Internal Server Error", durationMs }), {
+      status: 500,
+      headers: {
+        ...corsHeaders,
+        "Content-Type": "application/json",
+      },
+    });
   }
+}
+
+export async function OPTIONS(req) {
+  return handleCorsPreflight(req);
 }

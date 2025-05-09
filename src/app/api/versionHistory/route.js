@@ -1,20 +1,6 @@
-import { createClient } from '@supabase/supabase-js';
-import { restructureProjectData, transformProjectsData } from './restructureData';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-export const supabase = createClient(supabaseUrl, supabaseKey);
-
-// Function to get CORS headers
-export const getCorsHeaders = (origin) => {
-  const headers = {
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  };
-  headers['Access-Control-Allow-Origin'] = '*'; 
-  return headers;
-};
+import { restructureProjectData, transformProjectsData } from '../../../lib/restructureData';
+import { getCorsHeaders, handleCorsPreflight } from '@/lib/cors';
+import { supabase } from '../filesController/route';
 
 
 export const fetchUserProjects = async (odooId) => {
@@ -76,23 +62,21 @@ export const fetchUserProjects = async (odooId) => {
   }
 };
 
-
 export async function GET(req) {
-  const origin = req.headers.get("origin");
-  const headers = getCorsHeaders(origin);
+  const corsHeaders = getCorsHeaders(req); 
 
   try {
     const { searchParams } = new URL(req.url);
     const odooId = searchParams.get('odooId');
     const restructureParam = searchParams.get('restructure');
     const restructure = restructureParam === 'true';
-
+    
     console.log('Received odooId:', odooId, 'Restructure:', restructure);
 
     if (!odooId) {
       return new Response(
         JSON.stringify({ success: false, error: 'Missing odooId parameter' }),
-        { status: 400, headers }
+        { status: 400, headers: corsHeaders }
       );
     }
 
@@ -107,26 +91,20 @@ export async function GET(req) {
 
     const responseData = restructure ? transformProjectsData(projects, author) : projects;
 
-    // Removed the 404 check; always return 200 with responseData (empty or not)
     return new Response(JSON.stringify(responseData), {
       status: 200,
       statusText: 'OK',
-      headers: { ...headers, 'Content-Type': 'application/json' }
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-
   } catch (err) {
     console.error('Error during data transformation:', err.message);
     return new Response(
       JSON.stringify({ success: false, error: `Failed to transform data: ${err.message}` }),
-      { status: 500, headers }
+      { status: 500, headers: corsHeaders }
     );
   }
-};
-
-
-export async function OPTIONS(req) {
-  const origin = req.headers.get("origin");
-  const headers = getCorsHeaders(origin);
-  return new Response(null, { status: 204, headers });
 }
 
+export async function OPTIONS(req) {
+  return handleCorsPreflight(req);
+}

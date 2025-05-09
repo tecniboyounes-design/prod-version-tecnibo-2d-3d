@@ -22,7 +22,7 @@
 # sudo systemctl stop tecnipo.service // for stop the service
 # sudo systemctl restart tecnipo.service // for restart the service
 # journalctl -u tecnipo.service -b -e 
-# sudo journalctl -u tecnipo.service --since "10 minutes ago"
+# sudo journalctl -u tecnipo.service --since "10 minutes ago"                                 
 
 
  

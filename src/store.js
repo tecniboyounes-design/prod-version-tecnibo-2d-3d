@@ -87,6 +87,7 @@ const initialState = {
   items: [],
   currentConfig: { type: 'room', id: '' },
   currentStep: null,
+  
   settings: {
     gridSize: 40,
     gridColor: '#008000',
@@ -107,8 +108,6 @@ const initialState = {
   projects: [],
 
   project: {},
-
-
 
   user: {
     uid: 447,

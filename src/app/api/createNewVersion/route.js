@@ -1,10 +1,8 @@
 import { incrementVersion } from "@/lib/versioning";
 import { supabase } from "../filesController/route";
 import { fetchProjectWithRelations } from "../projects/route";
-import { transformProjectsData } from "../versionHistory/restructureData";
-
-
-
+import { transformProjectsData } from "../../../lib/restructureData";
+import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
 
 async function insertVersionData({
   supabase,
@@ -99,60 +97,20 @@ async function insertVersionData({
   if (articlesError) throw new Error('Failed to insert articles');
 }
 
-
-
-
-  
-// -- CORS Setup --
-const allowedOrigins = [
-  'http://localhost:5173',
-  'http://localhost:3000',
-  'http://localhost:3001',
-  "https://f732-87-66-1-181.ngrok-free.app"
-];
-
-
-
-
-export function getCorsHeaders(origin) {
-  const cleanOrigin = origin?.replace(/\/$/, '');
-  const isAllowed = allowedOrigins.includes(cleanOrigin);
-
-  return {
-    'Access-Control-Allow-Origin': isAllowed ? origin : 'null',
-    'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Credentials': 'true',
-    'Content-Type': 'application/json',
-  };
-}
-
-
-
 // -- OPTIONS Handler --
 export async function OPTIONS(req) {
-  const origin = req.headers.get('origin');
-  const headers = getCorsHeaders(origin);
-
-  return new Response(null, {
-    status: 204,
-    headers,
-  });
+  return handleCorsPreflight(req);
 }
 
-
-
+// -- POST Handler --
 export async function POST(request) {
-  const origin = request.headers.get('origin');
-  const headers = getCorsHeaders(origin);
+  const headers = getCorsHeaders(request); 
 
   try {
     const payload = await request.json();
-    // console.log('Payload:', payload);
     const { project_id, user_id, ...versionData } = payload;
 
     // Step 1: Get latest version
-    // console.log(`Fetching latest version for project_id: ${project_id}`);
     const { data: versions, error: versionError } = await supabase
       .from('versions')
       .select('version')
@@ -164,7 +122,6 @@ export async function POST(request) {
       console.error('Version fetch error:', versionError);
       throw versionError;
     }
-    // console.log('Fetched versions:', versions);
 
     let newVersion = '1.0';
     if (versions?.length > 0) {
@@ -175,7 +132,6 @@ export async function POST(request) {
     }
 
     // Step 2: Insert new version
-    // console.log(`Inserting new version: "${newVersion}" for project_id: ${project_id}`);
     const { data: newVersionData, error: insertError } = await supabase
       .from('versions')
       .insert({
@@ -190,12 +146,10 @@ export async function POST(request) {
       console.error('Version insert error:', insertError);
       throw insertError;
     }
-    // console.log('Inserted new version:', newVersionData);
 
     const version_id = newVersionData.id;
 
     // Step 3: Insert related data (points, walls, articles)
-    // console.log(`Inserting version data for version_id: ${version_id}`);
     await insertVersionData({
       supabase,
       version_id,
@@ -203,7 +157,6 @@ export async function POST(request) {
     });
 
     // Step 4: Fetch full user info
-    // console.log(`Fetching user info for user_id: ${user_id}`);
     const { data: userData, error: userError } = await supabase
       .from('users')
       .select('*')
@@ -214,7 +167,6 @@ export async function POST(request) {
       console.error('User fetch error:', userError || 'No user data');
       throw new Error('User not found');
     }
-    // console.log('Fetched user data:', userData);
 
     // Step 5: Construct author from user name
     const [firstName, ...lastNameParts] = userData.name?.trim().split(' ') || [];
@@ -226,12 +178,9 @@ export async function POST(request) {
     };
 
     const updatedProject = await fetchProjectWithRelations(userData.odoo_id, project_id);
-    // console.log('Fetched project with relations:', updatedProject);
 
     // Step 7: Transform project + return response
-    // console.log('Transforming project data');
     const transformed = transformProjectsData(updatedProject, author);
-    // console.log('Transformed project data:', transformed);
 
     return new Response(
       JSON.stringify({
@@ -250,6 +199,3 @@ export async function POST(request) {
     );
   }
 }
-
-  
-

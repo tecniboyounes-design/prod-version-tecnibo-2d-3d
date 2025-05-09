@@ -9,8 +9,8 @@ const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS
 const CORS_CONFIG = {
   allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowHeaders: ["Content-Type", "Authorization", "x-session-id"], 
-  allowCredentials: true, // Support authenticated requests
-  maxAge: 86400, // Cache preflight response for 24 hours
+  allowCredentials: true, 
+  maxAge: 86400, 
 };
 
 
@@ -24,6 +24,7 @@ const CORS_CONFIG = {
 
 export function getCorsHeaders(request, config = {}) {
   const origin = request.headers.get("origin") || "";
+  console.log("CORS Origin:", origin);
   const mergedConfig = { ...CORS_CONFIG, ...config };
 
   // Validate origin against allowed origins

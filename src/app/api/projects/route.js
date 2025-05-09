@@ -1,9 +1,8 @@
-import { getCorsHeaders } from "../authenticate/route";
+import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
 import { createIntervention } from "./createIntervention";
 import { transformProjectData } from "./transformProjectData";
-import { transformProjectsData } from "../versionHistory/restructureData";
+import { transformProjectsData } from "../../../lib/restructureData";
 import { supabase } from "../filesController/route";
-
 
 /**
  * Handles POST request to create a new project with nested data including
@@ -16,33 +15,6 @@ import { supabase } from "../filesController/route";
  */
 
 
-export async function OPTIONS(req) {
-  // Handle CORS preflight request
-  return new Response(null, {
-    status: 204,
-    headers: cors(req),
-  });
-}
-
-
-export const cors = (req) => {
-  const allowedOrigins = [
-    "http://localhost:3000",
-    "http://localhost:3001",
-    "http://localhost:5173",
-  ];
-  const origin = req.headers.get("origin");
-  const allowedOrigin = allowedOrigins.includes(origin) ? origin : "*";
-
-  return {
-    "Access-Control-Allow-Origin": allowedOrigin,
-    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    "Access-Control-Allow-Credentials": "true",
-  };
-};
-
-
 /**
  * Fetches a single project and all its related data from Supabase.
  *
@@ -53,8 +25,6 @@ export const cors = (req) => {
  * @returns {Promise<Object>} The project object with all relations.
  * @throws {Error} If the project cannot be fetched.
  */
-
-
 
 export const fetchProjectWithRelations = async (odooId, projectId) => {
   try {
@@ -86,7 +56,6 @@ export const fetchProjectWithRelations = async (odooId, projectId) => {
       throw new Error(`Failed to fetch project: ${error.message}`);
     }
 
-    // console.log('Fetched project with all relations:', data);
     return data;
   } catch (err) {
     console.error("Fetch error:", err.message);
@@ -95,15 +64,11 @@ export const fetchProjectWithRelations = async (odooId, projectId) => {
 };
 
 
-
-
 export async function POST(req) {
-  const origin = req.headers.get("origin");
-  const headers = getCorsHeaders(origin);
+  const corsHeaders = getCorsHeaders(req); // Use standardized CORS headers
 
   const data = await req.json();
   const projectData = transformProjectData(data);
-  // console.log("Transformed project data:", projectData);
 
   const {
     uid,
@@ -140,10 +105,9 @@ export async function POST(req) {
       .select()
       .single();
     if (newUserError) {
-      // console.error("Error creating user:", newUserError.message);
       return new Response(JSON.stringify({ error: newUserError.message }), {
         status: 400,
-        headers,
+        headers: corsHeaders,
       });
     }
     createdUserId = newUser.id;
@@ -169,10 +133,9 @@ export async function POST(req) {
     .single();
     
   if (projectError) {
-    // console.error("Error creating project:", projectError.message);
     return new Response(JSON.stringify({ error: projectError.message }), {
       status: 400,
-      headers,
+      headers: corsHeaders,
     });
   }
 
@@ -194,10 +157,9 @@ export async function POST(req) {
     .insert([managerData]);
     
   if (managerError) {
-    // console.error("Error creating manager:", managerError.message);
     return new Response(JSON.stringify({ error: managerError.message }), {
       status: 400,
-      headers,
+      headers: corsHeaders,
     });
   }
   
@@ -213,10 +175,9 @@ export async function POST(req) {
     .single();
 
   if (versionError) {
-    // console.error("Error creating version:", versionError.message);
     return new Response(JSON.stringify({ error: versionError.message }), {
       status: 400,
-      headers,
+      headers: corsHeaders,
     });
   }
   
@@ -235,10 +196,9 @@ export async function POST(req) {
     .insert([planParamsInsertData]);
   
   if (planParamsError) {
-    // console.error("Error creating plan_parameters:", planParamsError.message);
     return new Response(JSON.stringify({ error: planParamsError.message }), {
       status: 400,
-      headers,
+      headers: corsHeaders,
     });
   }
   
@@ -258,17 +218,15 @@ export async function POST(req) {
     .select();
 
   if (pointsError) {
-    // console.error("Error inserting points:", pointsError.message);
     return new Response(JSON.stringify({ error: pointsError.message }), {
       status: 400,
-      headers,
+      headers: corsHeaders,
     });
   }
   
   const pointIdMapping = {};
   insertedPoints.forEach((pt) => {
     pointIdMapping[pt.client_id] = pt.id;
-    // console.log(`Point inserted: client_id=${pt.client_id} → id=${pt.id}`);
   });
   
   const wallsToInsert = wallsFromPayload.map((wall) => ({
@@ -290,16 +248,11 @@ export async function POST(req) {
     .select();
     
   if (wallsError) {
-    // console.error("Error inserting walls:", wallsError.message);
     return new Response(JSON.stringify({ error: wallsError.message }), {
       status: 400,
-      headers,
+      headers: corsHeaders,
     });
   }
-  
-  wallsData.forEach((w) => {
-    // console.log(`Wall inserted: client_id=${w.client_id} → id=${w.id}`);
-  });
   
   const doorsToInsert = doors.map((door) => ({
     version_id: createdVersionId,
@@ -313,10 +266,9 @@ export async function POST(req) {
     .select();
    
   if (doorsError) {
-    // console.error("Error inserting doors:", doorsError.message);
     return new Response(JSON.stringify({ error: doorsError.message }), {
       status: 400,
-      headers,
+      headers: corsHeaders,
     });
   }
  
@@ -336,15 +288,13 @@ export async function POST(req) {
     };
 
     const interventionResult = await createIntervention(interventionPayload);
-    // console.log("Intervention created:", interventionResult);
   } catch (interventionError) {
-    // console.error("Error creating intervention:", interventionError.message);
     return new Response(
       JSON.stringify({
         error: "Failed to create intervention",
         details: interventionError.message,
       }),
-      { status: 500, headers }
+      { status: 500, headers: corsHeaders }
     );
   }
 
@@ -375,7 +325,12 @@ export async function POST(req) {
     }),
     {
       status: 200,
-      headers,
+      headers: corsHeaders,
     }
   );
+}
+
+export async function OPTIONS(req) {
+  console.log("OPTIONS request received for projects route.");
+  return handleCorsPreflight(req);
 }

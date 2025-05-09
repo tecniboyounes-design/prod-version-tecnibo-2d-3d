@@ -1,36 +1,9 @@
 import { getJobPositionDetails } from "./getJobInfo";
-
-const allowedOrigins = [
-  "http://localhost:5173",
-  "http://localhost:3000",
-  "http://localhost:3001",
-];
-
-
-export function getCorsHeaders(origin) {
-  const cleanOrigin = origin?.replace(/\/$/, "");
-  const isAllowed = allowedOrigins.includes(cleanOrigin);
-
-  return {
-    "Access-Control-Allow-Origin": isAllowed ? origin : "null",
-    "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, x-session-id",
-    "Access-Control-Allow-Credentials": "true",
-    "Content-Type": "application/json",
-  };
-}
-
-export async function OPTIONS(request) {
-  const origin = request.headers.get("origin");
-  const corsHeaders = getCorsHeaders(origin);
-  return new Response(null, { status: 204, headers: corsHeaders });
-}
+import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
 
 export async function GET(request) {
-  const origin = request.headers.get("origin");
-  const corsHeaders = getCorsHeaders(origin);
+  const corsHeaders = getCorsHeaders(request);
   const sessionId = request.headers.get("x-session-id");
-  // console.log("All Request Headers:", [...request.headers]);
 
   if (!sessionId) {
     console.log("Validation failed: No session ID provided");
@@ -56,7 +29,7 @@ export async function GET(request) {
 
   try {
     const response = await fetch("http://192.168.30.33:8069/web/session/get_session_info", options);
-     
+    
     if (!response.ok) {
       console.log(`HTTP request failed with status: ${response.status}`);
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -90,7 +63,7 @@ export async function GET(request) {
       status: 200,
       headers: corsHeaders,
     });
-  } catch (error) {
+  }catch (error) {
     console.log("Error occurred during request:", error.message);
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
@@ -99,3 +72,6 @@ export async function GET(request) {
   }
 }
 
+export async function OPTIONS(request) {
+  return handleCorsPreflight(request);
+}
