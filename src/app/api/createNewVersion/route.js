@@ -109,7 +109,7 @@ export async function POST(request) {
   try {
     const payload = await request.json();
     const { project_id, user_id, ...versionData } = payload;
-
+    
     // Step 1: Get latest version
     const { data: versions, error: versionError } = await supabase
       .from('versions')

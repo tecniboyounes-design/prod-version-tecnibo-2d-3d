@@ -18,7 +18,7 @@ export function transformProjectData(input) {
   
   const sessionInfo = input.user?.session_info || {};
   const version     = input.versions?.[0] || {};
-
+  
   return {
     title:          input.projectName || 'Untitled Project',
     project_number: generateProjectNumber(),
@@ -63,12 +63,14 @@ export function transformProjectData(input) {
         startPointId:  start,
         endPointId:    end,
         length:        line.length    || 1,
+        name:          line.name      || 'Wall',
         rotation:      line.rotation  || 0,
         thickness:     line.thickness || 0.012,
         color:         line.color     || '#f5f5f5',
         texture:       line.texture   || 'default.avif',
         height:        line.height    || 3,
-        angles:        line.angles    || []
+        angles:        line.angles    || [],
+        material:      line.material || {}
       };
     }),
 
@@ -87,6 +89,5 @@ export function transformProjectData(input) {
   };
 
 }
-
 
 

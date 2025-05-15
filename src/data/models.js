@@ -1,7 +1,6 @@
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 
-
 export const articles3D = [
   {
     id: uuidv4(),
@@ -104,8 +103,6 @@ export const articles3D = [
     ],
   },
 ];
-
-
 
 export const cloisonData = [
   {
@@ -237,7 +234,6 @@ export const cloisonData = [
   },
 ];
 
-
 export const cloisonStyles = [
   {
     id: uuidv4(),
@@ -366,9 +362,6 @@ export const cloisonStyles = [
   },
 ];
 
-
-
-
 export const projectsData = [
   {
     id: uuidv4(),
@@ -379,9 +372,21 @@ export const projectsData = [
     createdOn: "09/01/2025, 15:12",
     changedOn: "09/01/2025, 15:43",
     managers: [
-      { id: uuidv4(), name: "Younes Attaoui", avatar: "https://i.pravatar.cc/150?img=1" },
-      { id: uuidv4(), name: "Omar El Idrissi", avatar: "https://i.pravatar.cc/150?img=2" },
-      { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" },
+      {
+        id: uuidv4(),
+        name: "Younes Attaoui",
+        avatar: "https://i.pravatar.cc/150?img=1",
+      },
+      {
+        id: uuidv4(),
+        name: "Omar El Idrissi",
+        avatar: "https://i.pravatar.cc/150?img=2",
+      },
+      {
+        id: uuidv4(),
+        name: "Otman",
+        avatar: "https://i.pravatar.cc/150?img=3",
+      },
     ],
     status: "temp",
   },
@@ -394,9 +399,21 @@ export const projectsData = [
     createdOn: "10/01/2025, 12:00",
     changedOn: "10/01/2025, 12:45",
     managers: [
-      { id: uuidv4(), name: "Sabrina El Khouch", avatar: "https://i.pravatar.cc/150?img=4" },
-      { id: uuidv4(), name: "Rachid Benjelloun", avatar: "https://i.pravatar.cc/150?img=5" },
-      { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" },
+      {
+        id: uuidv4(),
+        name: "Sabrina El Khouch",
+        avatar: "https://i.pravatar.cc/150?img=4",
+      },
+      {
+        id: uuidv4(),
+        name: "Rachid Benjelloun",
+        avatar: "https://i.pravatar.cc/150?img=5",
+      },
+      {
+        id: uuidv4(),
+        name: "Otman",
+        avatar: "https://i.pravatar.cc/150?img=3",
+      },
     ],
     status: "temp",
   },
@@ -409,8 +426,16 @@ export const projectsData = [
     createdOn: "11/01/2025, 10:15",
     changedOn: "11/01/2025, 10:45",
     managers: [
-      { id: uuidv4(), name: "Salma Mounir", avatar: "https://i.pravatar.cc/150?img=6" },
-      { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" },
+      {
+        id: uuidv4(),
+        name: "Salma Mounir",
+        avatar: "https://i.pravatar.cc/150?img=6",
+      },
+      {
+        id: uuidv4(),
+        name: "Otman",
+        avatar: "https://i.pravatar.cc/150?img=3",
+      },
     ],
     status: "temp",
   },
@@ -423,9 +448,21 @@ export const projectsData = [
     createdOn: "12/01/2025, 09:30",
     changedOn: "12/01/2025, 09:45",
     managers: [
-      { id: uuidv4(), name: "Ahmed El Amrani", avatar: "https://i.pravatar.cc/150?img=7" },
-      { id: uuidv4(), name: "Omar El Idrissi", avatar: "https://i.pravatar.cc/150?img=8" },
-      { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" },
+      {
+        id: uuidv4(),
+        name: "Ahmed El Amrani",
+        avatar: "https://i.pravatar.cc/150?img=7",
+      },
+      {
+        id: uuidv4(),
+        name: "Omar El Idrissi",
+        avatar: "https://i.pravatar.cc/150?img=8",
+      },
+      {
+        id: uuidv4(),
+        name: "Otman",
+        avatar: "https://i.pravatar.cc/150?img=3",
+      },
     ],
     status: "finished",
   },
@@ -438,8 +475,16 @@ export const projectsData = [
     createdOn: "12/01/2025, 15:00",
     changedOn: "12/01/2025, 15:30",
     managers: [
-      { id: uuidv4(), name: "Sofia El Hamidi", avatar: "https://i.pravatar.cc/150?img=9" },
-      { id: uuidv4(), name: "Tariq Benali", avatar: "https://i.pravatar.cc/150?img=10" },
+      {
+        id: uuidv4(),
+        name: "Sofia El Hamidi",
+        avatar: "https://i.pravatar.cc/150?img=9",
+      },
+      {
+        id: uuidv4(),
+        name: "Tariq Benali",
+        avatar: "https://i.pravatar.cc/150?img=10",
+      },
     ],
     status: "finished",
   },
@@ -452,8 +497,16 @@ export const projectsData = [
     createdOn: "13/01/2025, 12:00",
     changedOn: "13/01/2025, 12:45",
     managers: [
-      { id: uuidv4(), name: "Amina Aouad", avatar: "https://i.pravatar.cc/150?img=11" },
-      { id: uuidv4(), name: "Yassine Boushaba", avatar: "https://i.pravatar.cc/150?img=12" },
+      {
+        id: uuidv4(),
+        name: "Amina Aouad",
+        avatar: "https://i.pravatar.cc/150?img=11",
+      },
+      {
+        id: uuidv4(),
+        name: "Yassine Boushaba",
+        avatar: "https://i.pravatar.cc/150?img=12",
+      },
     ],
     status: "ordered",
   },
@@ -466,7 +519,11 @@ export const projectsData = [
     createdOn: "14/01/2025, 10:15",
     changedOn: "14/01/2025, 10:45",
     managers: [
-      { id: uuidv4(), name: "Imane El Messaoudi", avatar: "https://i.pravatar.cc/150?img=13" },
+      {
+        id: uuidv4(),
+        name: "Imane El Messaoudi",
+        avatar: "https://i.pravatar.cc/150?img=13",
+      },
     ],
     status: "in planning",
   },
@@ -479,8 +536,16 @@ export const projectsData = [
     createdOn: "15/01/2025, 09:30",
     changedOn: "15/01/2025, 09:45",
     managers: [
-      { id: uuidv4(), name: "Fatiha El Ghazali", avatar: "https://i.pravatar.cc/150?img=14" },
-      { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" },
+      {
+        id: uuidv4(),
+        name: "Fatiha El Ghazali",
+        avatar: "https://i.pravatar.cc/150?img=14",
+      },
+      {
+        id: uuidv4(),
+        name: "Otman",
+        avatar: "https://i.pravatar.cc/150?img=3",
+      },
     ],
     status: "ordered",
   },
@@ -493,14 +558,15 @@ export const projectsData = [
     createdOn: "15/01/2025, 11:00",
     changedOn: "15/01/2025, 11:30",
     managers: [
-      { id: uuidv4(), name: "Otman", avatar: "https://i.pravatar.cc/150?img=3" },
+      {
+        id: uuidv4(),
+        name: "Otman",
+        avatar: "https://i.pravatar.cc/150?img=3",
+      },
     ],
     status: "in working",
   },
 ];
-
-
-
 
 export const dialogsData = [
   {
@@ -645,89 +711,223 @@ export const dialogsData = [
   {
     title: "Font Size",
     description: {
-      intro: "The font size of the measuring for the wall views can be set by this specific value in pixels.",
+      intro:
+        "The font size of the measuring for the wall views can be set by this specific value in pixels.",
       units: null,
-      note: null
+      note: null,
     },
-    image: null
-  }
-
+    image: null,
+  },
 ];
-
-
 
 export const houses = [
   {
     id: uuidv4(),
     version: "2.0.1a",
     corners: {
-      c1: { x: -5.3684328157054875, y: 0.1, z: -6.657952283074816, elevation: 3 },
+      c1: {
+        x: -5.3684328157054875,
+        y: 0.1,
+        z: -6.657952283074816,
+        elevation: 3,
+      },
       c2: { x: 3.209880439112964, y: 0.1, z: -6.657952283074816, elevation: 3 },
       c3: { x: 3.209880439112964, y: 0.1, z: 6.004291318532954, elevation: 3 },
-      c4: { x: -5.3684328157054875, y: 0.1, z: 6.004291318532954, elevation: 3 }
+      c4: {
+        x: -5.3684328157054875,
+        y: 0.1,
+        z: 6.004291318532954,
+        elevation: 3,
+      },
     },
     walls: [
-      { id: "bb1ee7cd-9738-4954-acfc-16261277c1ad", corner1: "c1", corner2: "c2", thickness: 0.2, type: "STRAIGHT" },
-      { id: "1825b075-5170-48c2-beec-7da379568f3c", corner1: "c2", corner2: "c3", thickness: 0.2, type: "STRAIGHT" },
-      { id: "6b6fd058-e464-4885-ade4-7ac9fcc1eb54", corner1: "c3", corner2: "c4", thickness: 0.2, type: "STRAIGHT" },
-      { id: "ee3e48cb-90f2-46e2-ac77-0831e36e194c", corner1: "c4", corner2: "c1", thickness: 0.2, type: "STRAIGHT" }
+      {
+        id: "bb1ee7cd-9738-4954-acfc-16261277c1ad",
+        corner1: "c1",
+        corner2: "c2",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
+      {
+        id: "1825b075-5170-48c2-beec-7da379568f3c",
+        corner1: "c2",
+        corner2: "c3",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
+      {
+        id: "6b6fd058-e464-4885-ade4-7ac9fcc1eb54",
+        corner1: "c3",
+        corner2: "c4",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
+      {
+        id: "ee3e48cb-90f2-46e2-ac77-0831e36e194c",
+        corner1: "c4",
+        corner2: "c1",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
     ],
     rooms: { "c1,c2,c3,c4": { name: "Square Room" } },
-    units: "m"
+    units: "m",
   },
   {
     id: uuidv4(),
     version: "2.0.1a",
     corners: {
-      c1: { x: -5.3684328157054875, y: 0.1, z: -0.7248577706785396, elevation: 3 },
-      c2: { x: 5.421337875779884, y: 0.1, z: -0.7248577706785396, elevation: 3 },
+      c1: {
+        x: -5.3684328157054875,
+        y: 0.1,
+        z: -0.7248577706785396,
+        elevation: 3,
+      },
+      c2: {
+        x: 5.421337875779884,
+        y: 0.1,
+        z: -0.7248577706785396,
+        elevation: 3,
+      },
       c3: { x: 5.421337875779884, y: 0.1, z: 3.4415816835248525, elevation: 3 },
-      c4: { x: -5.3684328157054875, y: 0.1, z: 3.4415816835248525, elevation: 3 }
+      c4: {
+        x: -5.3684328157054875,
+        y: 0.1,
+        z: 3.4415816835248525,
+        elevation: 3,
+      },
     },
     walls: [
-      { id: "bb1ee7cd-9738-4954-acfc-16261277c1ad", corner1: "c1", corner2: "c2", thickness: 0.2, type: "STRAIGHT" },
-      { id: "1825b075-5170-48c2-beec-7da379568f3c", corner1: "c2", corner2: "c3", thickness: 0.2, type: "STRAIGHT" },
-      { id: "6b6fd058-e464-4885-ade4-7ac9fcc1eb54", corner1: "c3", corner2: "c4", thickness: 0.2, type: "STRAIGHT" },
-      { id: "ee3e48cb-90f2-46e2-ac77-0831e36e194c", corner1: "c4", corner2: "c1", thickness: 0.2, type: "STRAIGHT" }
+      {
+        id: "bb1ee7cd-9738-4954-acfc-16261277c1ad",
+        corner1: "c1",
+        corner2: "c2",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
+      {
+        id: "1825b075-5170-48c2-beec-7da379568f3c",
+        corner1: "c2",
+        corner2: "c3",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
+      {
+        id: "6b6fd058-e464-4885-ade4-7ac9fcc1eb54",
+        corner1: "c3",
+        corner2: "c4",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
+      {
+        id: "ee3e48cb-90f2-46e2-ac77-0831e36e194c",
+        corner1: "c4",
+        corner2: "c1",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
     ],
     rooms: { "c1,c2,c3,c4": { name: "Square Room" } },
-    units: "m"
+    units: "m",
   },
   {
     id: uuidv4(),
     version: "2.0.1a",
     corners: {
       c1: { x: -4.41333051570999, y: 0.1, z: -2.765118762276721, elevation: 3 },
-      c2: { x: 3.7442898832230744, y: 0.1, z: -5.430118327798113, elevation: 3 },
-      c3: { x: 3.7442898832230744, y: 0.1, z: 3.4415816835248525, elevation: 3 },
-      c4: { x: -4.943083668154167, y: 0.1, z: 2.947856662033664, elevation: 3 }
+      c2: {
+        x: 3.7442898832230744,
+        y: 0.1,
+        z: -5.430118327798113,
+        elevation: 3,
+      },
+      c3: {
+        x: 3.7442898832230744,
+        y: 0.1,
+        z: 3.4415816835248525,
+        elevation: 3,
+      },
+      c4: { x: -4.943083668154167, y: 0.1, z: 2.947856662033664, elevation: 3 },
     },
     walls: [
-      { id: "bb1ee7cd-9738-4954-acfc-16261277c1ad", corner1: "c1", corner2: "c2", thickness: 0.2, type: "STRAIGHT" },
-      { id: "1825b075-5170-48c2-beec-7da379568f3c", corner1: "c2", corner2: "c3", thickness: 0.2, type: "STRAIGHT" },
-      { id: "6b6fd058-e464-4885-ade4-7ac9fcc1eb54", corner1: "c3", corner2: "c4", thickness: 0.2, type: "STRAIGHT" },
-      { id: "ee3e48cb-90f2-46e2-ac77-0831e36e194c", corner1: "c4", corner2: "c1", thickness: 0.2, type: "STRAIGHT" }
+      {
+        id: "bb1ee7cd-9738-4954-acfc-16261277c1ad",
+        corner1: "c1",
+        corner2: "c2",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
+      {
+        id: "1825b075-5170-48c2-beec-7da379568f3c",
+        corner1: "c2",
+        corner2: "c3",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
+      {
+        id: "6b6fd058-e464-4885-ade4-7ac9fcc1eb54",
+        corner1: "c3",
+        corner2: "c4",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
+      {
+        id: "ee3e48cb-90f2-46e2-ac77-0831e36e194c",
+        corner1: "c4",
+        corner2: "c1",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
     ],
     rooms: { "c1,c2,c3,c4": { name: "Square Room" } },
-    units: "m"
+    units: "m",
   },
   {
     id: uuidv4(),
     version: "2.0.1a",
     corners: {
-      c1: { x: -5.743446472746087, y: 0.1, z: -5.226899548661788, elevation: 3 },
+      c1: {
+        x: -5.743446472746087,
+        y: 0.1,
+        z: -5.226899548661788,
+        elevation: 3,
+      },
       c2: { x: 4.295937882625246, y: 0.1, z: -5.399604425051771, elevation: 3 },
       c3: { x: 4.295036403645025, y: 0.1, z: 3.480551190336054, elevation: 3 },
-      c4: { x: -3.159691468113007, y: 0.1, z: 3.081999292530576, elevation: 3 }
+      c4: { x: -3.159691468113007, y: 0.1, z: 3.081999292530576, elevation: 3 },
     },
     walls: [
-      { id: "bb1ee7cd-9738-4954-acfc-16261277c1ad", corner1: "c1", corner2: "c2", thickness: 0.2, type: "STRAIGHT" },
-      { id: "1825b075-5170-48c2-beec-7da379568f3c", corner1: "c2", corner2: "c3", thickness: 0.2, type: "STRAIGHT" },
-      { id: "6b6fd058-e464-4885-ade4-7ac9fcc1eb54", corner1: "c3", corner2: "c4", thickness: 0.2, type: "STRAIGHT" },
-      { id: "ee3e48cb-90f2-46e2-ac77-0831e36e194c", corner1: "c4", corner2: "c1", thickness: 0.2, type: "STRAIGHT" }
+      {
+        id: "bb1ee7cd-9738-4954-acfc-16261277c1ad",
+        corner1: "c1",
+        corner2: "c2",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
+      {
+        id: "1825b075-5170-48c2-beec-7da379568f3c",
+        corner1: "c2",
+        corner2: "c3",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
+      {
+        id: "6b6fd058-e464-4885-ade4-7ac9fcc1eb54",
+        corner1: "c3",
+        corner2: "c4",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
+      {
+        id: "ee3e48cb-90f2-46e2-ac77-0831e36e194c",
+        corner1: "c4",
+        corner2: "c1",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
     ],
     rooms: { "c1,c2,c3,c4": { name: "Square Room" } },
-    units: "m"
+    units: "m",
   },
   {
     id: uuidv4(),
@@ -736,16 +936,40 @@ export const houses = [
       c1: { x: -3.0, y: 0.1, z: -3.5, elevation: 3 },
       c2: { x: 4.0, y: 0.1, z: -3.5, elevation: 3 },
       c3: { x: 4.0, y: 0.1, z: 3.5, elevation: 3 },
-      c4: { x: -3.0, y: 0.1, z: 3.5, elevation: 3 }
+      c4: { x: -3.0, y: 0.1, z: 3.5, elevation: 3 },
     },
     walls: [
-      { id: "wall1", corner1: "c1", corner2: "c2", thickness: 0.2, type: "STRAIGHT" },
-      { id: "wall2", corner1: "c2", corner2: "c3", thickness: 0.2, type: "STRAIGHT" },
-      { id: "wall3", corner1: "c3", corner2: "c4", thickness: 0.2, type: "STRAIGHT" },
-      { id: "wall4", corner1: "c4", corner2: "c1", thickness: 0.2, type: "STRAIGHT" }
+      {
+        id: "wall1",
+        corner1: "c1",
+        corner2: "c2",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
+      {
+        id: "wall2",
+        corner1: "c2",
+        corner2: "c3",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
+      {
+        id: "wall3",
+        corner1: "c3",
+        corner2: "c4",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
+      {
+        id: "wall4",
+        corner1: "c4",
+        corner2: "c1",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
     ],
     rooms: { "c1,c2,c3,c4": { name: "Rectangular Room" } },
-    units: "m"
+    units: "m",
   },
   {
     id: uuidv4(),
@@ -754,16 +978,40 @@ export const houses = [
       c1: { x: -4.0, y: 0.1, z: -4.0, elevation: 3 },
       c2: { x: 4.0, y: 0.1, z: -4.0, elevation: 3 },
       c3: { x: 4.0, y: 0.1, z: 4.0, elevation: 3 },
-      c4: { x: -4.0, y: 0.1, z: 4.0, elevation: 3 }
+      c4: { x: -4.0, y: 0.1, z: 4.0, elevation: 3 },
     },
     walls: [
-      { id: "wall1", corner1: "c1", corner2: "c2", thickness: 0.2, type: "STRAIGHT" },
-      { id: "wall2", corner1: "c2", corner2: "c3", thickness: 0.2, type: "STRAIGHT" },
-      { id: "wall3", corner1: "c3", corner2: "c4", thickness: 0.2, type: "STRAIGHT" },
-      { id: "wall4", corner1: "c4", corner2: "c1", thickness: 0.2, type: "STRAIGHT" }
+      {
+        id: "wall1",
+        corner1: "c1",
+        corner2: "c2",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
+      {
+        id: "wall2",
+        corner1: "c2",
+        corner2: "c3",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
+      {
+        id: "wall3",
+        corner1: "c3",
+        corner2: "c4",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
+      {
+        id: "wall4",
+        corner1: "c4",
+        corner2: "c1",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
     ],
     rooms: { "c1,c2,c3,c4": { name: "Square Room" } },
-    units: "m"
+    units: "m",
   },
   {
     id: uuidv4(),
@@ -772,21 +1020,42 @@ export const houses = [
       c1: { x: -5.0, y: 0.1, z: -3.0, elevation: 3 },
       c2: { x: 5.0, y: 0.1, z: -3.0, elevation: 3 },
       c3: { x: 5.0, y: 0.1, z: 3.0, elevation: 3 },
-      c4: { x: -5.0, y: 0.1, z: 3.0, elevation: 3 }
+      c4: { x: -5.0, y: 0.1, z: 3.0, elevation: 3 },
     },
     walls: [
-      { id: "wall1", corner1: "c1", corner2: "c2", thickness: 0.2, type: "STRAIGHT" },
-      { id: "wall2", corner1: "c2", corner2: "c3", thickness: 0.2, type: "STRAIGHT" },
-      { id: "wall3", corner1: "c3", corner2: "c4", thickness: 0.2, type: "STRAIGHT" },
-      { id: "wall4", corner1: "c4", corner2: "c1", thickness: 0.2, type: "STRAIGHT" }
+      {
+        id: "wall1",
+        corner1: "c1",
+        corner2: "c2",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
+      {
+        id: "wall2",
+        corner1: "c2",
+        corner2: "c3",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
+      {
+        id: "wall3",
+        corner1: "c3",
+        corner2: "c4",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
+      {
+        id: "wall4",
+        corner1: "c4",
+        corner2: "c1",
+        thickness: 0.2,
+        type: "STRAIGHT",
+      },
     ],
     rooms: { "c1,c2,c3,c4": { name: "Rectangular Room" } },
-    units: "m"
-  }
+    units: "m",
+  },
 ];
-
-
-
 
 export const ralColors = [
   { code: "RAL 9005", name: "Jet Black" },
@@ -794,56 +1063,54 @@ export const ralColors = [
   { code: "RAL 7016", name: "Anthracite Grey" },
 ];
 
-
 export const generateUniqueProjectNumber = () => {
   const uuid = uuidv4();
-  const yearPrefix = '2025';
-  const uniquePart = parseInt(uuid.split('-')[0].slice(0, 4), 16); // Get numeric part by converting to base 16 (hexadecimal)
+  const yearPrefix = "2025";
+  const uniquePart = parseInt(uuid.split("-")[0].slice(0, 4), 16); // Get numeric part by converting to base 16 (hexadecimal)
   return `${yearPrefix}${uniquePart}`;
 };
 
-
 export const formatDate = (dateString, formatType) => {
-  if (!dateString) return 'N/A';
+  if (!dateString) return "N/A";
 
   const date = new Date(dateString);
   if (isNaN(date.getTime())) return dateString;
 
-  if (formatType === 'short') {
-    return date.toLocaleString('en-GB', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-    }).replace(',', '');
+  if (formatType === "short") {
+    return date
+      .toLocaleString("en-GB", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      })
+      .replace(",", "");
   }
 
-  if (formatType === 'long') {
-    return date.toLocaleString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour12: false,
-    }).replace(',', ''); // This will give you 'October 3, 2025'
+  if (formatType === "long") {
+    return date
+      .toLocaleString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour12: false,
+      })
+      .replace(",", ""); // This will give you 'October 3, 2025'
   }
 
   // Default long format if no formatType is provided
-  return date.toLocaleString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
+  return date.toLocaleString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
     hour12: true,
   });
 };
-
-
-
-
 
 // Function to convert corners object to an array
 export const cornersToArray = (corners) => {
@@ -853,7 +1120,6 @@ export const cornersToArray = (corners) => {
   }));
 };
 
-
 // Function to convert an array back to corners object
 export const arrayToCorners = (array) => {
   return array.reduce((acc, { id, ...values }) => {
@@ -861,7 +1127,6 @@ export const arrayToCorners = (array) => {
     return acc;
   }, {});
 };
-
 
 
 // target object : {
@@ -874,807 +1139,804 @@ export const arrayToCorners = (array) => {
 //     "totalPrice": 7.5,
 //     "unitOfMeasure": "M2"
 //   }
-// } 
+// }
 
 
-[
-
-  {
-    "lines": [
-      {
-        "id": "line-1738841848668-0",
-        "startPointId": "point-1738841848668-0",
-        "endPointId": "point-1738841848668-1",
-        "length": 12.54,
-        "rotation": 3.141592653589793,
-        "thickness": 0.012,
-        "color": "#f5f5f5",
-        "texture": "default.avif",
-        "height": 4,
-        "angles": [
-          {
-            "internalAngle": 1.5707963267948966,
-            "externalAngle": 4.71238898038469,
-            "internalAngleDeg": 90,
-            "externalAngleDeg": 270,
-            "connectedLineId": "line-1738841848668-3",
-            "pointId": "point-1738841848668-0",
-            "startAngle": 0,
-            "direction": 1
-          }
-        ]
-      },
-      {
-        "id": "line-1738841848668-1",
-        "startPointId": "point-1738841848668-1",
-        "endPointId": "point-1738841848668-2",
-        "length": 9.11,
-        "rotation": -1.5707963267948966,
-        "thickness": 0.012,
-        "color": "#f5f5f5",
-        "texture": "default.avif",
-        "height": 4,
-        "angles": [
-          {
-            "internalAngle": 1.5707963267948966,
-            "externalAngle": 4.71238898038469,
-            "internalAngleDeg": 90,
-            "externalAngleDeg": 270,
-            "connectedLineId": "line-1738841848668-2",
-            "pointId": "point-1738841848668-2",
-            "startAngle": -1.5707963267948966,
-            "direction": -1
-          }
-        ]
-      },
-      {
-        "id": "line-1738841848668-2",
-        "startPointId": "point-1738841848668-2",
-        "endPointId": "point-1738841848668-3",
-        "length": 12.54,
-        "rotation": 0,
-        "thickness": 0.012,
-        "color": "#f5f5f5",
-        "texture": "default.avif",
-        "height": 4,
-        "angles": [
-          {
-            "internalAngle": 1.5707963267948966,
-            "externalAngle": 4.71238898038469,
-            "internalAngleDeg": 90,
-            "externalAngleDeg": 270,
-            "connectedLineId": "line-1738841848668-1",
-            "pointId": "point-1738841848668-2",
-            "startAngle": -1.5707963267948966,
-            "direction": -1
-          }
-        ]
-      },
-      {
-        "id": "line-1738841848668-3",
-        "startPointId": "point-1738841848668-3",
-        "endPointId": "point-1738841848668-0",
-        "length": 9.11,
-        "rotation": 1.5707963267948966,
-        "thickness": 0.012,
-        "color": "#f5f5f5",
-        "texture": "default.avif",
-        "height": 4,
-        "angles": [
-          {
-            "internalAngle": 1.5707963267948966,
-            "externalAngle": 4.71238898038469,
-            "internalAngleDeg": 90,
-            "externalAngleDeg": 270,
-            "connectedLineId": "line-1738841848668-0",
-            "pointId": "point-1738841848668-0",
-            "startAngle": 0,
-            "direction": 1
-          }
-        ]
-      },
-      {
-        "id": "cloison-1740739964866",
-        "startPointId": "point-1740739964867",
-        "endPointId": "point-1740739964868",
-        "length": 5.18,
-        "rotation": -1.5707963267948968,
-        "thickness": 0.01,
-        "color": {
-          "code": "RAL 1013",
-          "finish": "Mat"
-        },
-        "texture": "default.avif",
-        "height": 3.2,
-        "name": "T100",
-        "image": "P_T100_START_LEF.png",
-        "quantity": 1,
-        "estimate": false,
-        "acoustic_performance": "Rw = 45 dB",
-        "ceiling_type": "Gyproc ceiling",
-        "floor_type": "Raised floor (plancher)",
-        "links": {
-          "top": "Coated steel profile U",
-          "left": "Wall or Gyproc (Coated steel profile)",
-          "right": "Wall or Gyproc (Coated steel profile)"
-        },
-        "dimensions": {
-          "height": 3.2,
-          "width": 5.18,
-          "thickness": 0.1
-        },
-        "material": {
-          "producer": "Unilin",
-          "category": "DE",
-          "group": "Uni",
-          "substrate": "MDFGR 18.0 mm",
-          "substrateProperty": "Water-resistant",
-          "decor": "UN_0L103_SM1",
-          "profile": "UN_DE_HGW_MDFGR_0L103_SM1_18",
-          "preGluedProfile": "Unilim Evola 025 CST 0.3mm préencollé",
-          "differentSides": false
+[ 
+{
+  lines: [
+    {
+      "id": "line-1738841848668-0",
+      "startPointId": "point-1738841848668-0",
+      "endPointId": "point-1738841848668-1",
+      "length": 12.54,
+      "rotation": 3.141592653589793,
+      "thickness": 0.012,
+      "color": "#f5f5f5",
+      "texture": "default.avif",
+      "height": 4,
+      "angles": [
+        {
+          "internalAngle": 1.5707963267948966,
+          "externalAngle": 4.71238898038469,
+          "internalAngleDeg": 90,
+          "externalAngleDeg": 270,
+          "connectedLineId": "line-1738841848668-3",
+          "pointId": "point-1738841848668-0",
+          "startAngle": 0,
+          "direction": 1
         }
-      },
-      {
-        "id": "cloison-1740739990795",
-        "startPointId": "point-1740739990796",
-        "endPointId": "point-1740739990797",
-        "length": 3.17,
-        "rotation": 1.5707963267948966,
-        "thickness": 0.01,
-        "color": {
-          "0": "R",
-          "1": "A",
-          "2": "L",
-          "3": " ",
-          "4": "3",
-          "5": "0",
-          "6": "1",
-          "7": "1",
-          "code": "RAL 3009",
-          "finish": "Mat"
-        },
-        "texture": "default.avif",
-        "height": 3.2,
-        "name": "T100",
-        "image": "P_T100_START_LEF.png",
-        "quantity": 1,
-        "estimate": false,
-        "acoustic_performance": "Rw = 45 dB",
-        "ceiling_type": "Gyproc ceiling",
-        "floor_type": "Raised floor (plancher)",
-        "links": {
-          "top": "Coated steel profile U",
-          "left": "Wall or Gyproc (Coated steel profile)",
-          "right": "Wall or Gyproc (Coated steel profile)"
-        },
-        "dimensions": {
-          "height": 3.2,
-          "width": 3.17,
-          "thickness": 0.1
-        },
-        "material": {
-          "producer": "Unilin",
-          "category": "Evola",
-          "group": "Uni",
-          "substrate": "Particle Board 18.0 mm",
-          "substrateProperty": "Water-resistant",
-          "decor": "UN_00025_CST",
-          "profile": "Unilim Evola 025 CST 0.3mm",
-          "preGluedProfile": "Unilim Evola 025 CST 0.3mm préencollé",
-          "differentSides": false
+      ]
+    },
+    {
+      "id": "line-1738841848668-1",
+      "startPointId": "point-1738841848668-1",
+      "endPointId": "point-1738841848668-2",
+      "length": 9.11,
+      "rotation": -1.5707963267948966,
+      "thickness": 0.012,
+      "color": "#f5f5f5",
+      "texture": "default.avif",
+      "height": 4,
+      "angles": [
+        {
+          "internalAngle": 1.5707963267948966,
+          "externalAngle": 4.71238898038469,
+          "internalAngleDeg": 90,
+          "externalAngleDeg": 270,
+          "connectedLineId": "line-1738841848668-2",
+          "pointId": "point-1738841848668-2",
+          "startAngle": -1.5707963267948966,
+          "direction": -1
         }
-      },
-      {
-        "id": "cloison-1740740025570",
-        "startPointId": "point-1740740025571",
-        "endPointId": "point-1740740025572",
-        "length": 6.13,
-        "rotation": -1.4489044367049354e-16,
-        "thickness": 0.01,
-        "color": {
-          "code": "RAL 1013",
-          "finish": "Mat"
-        },
-        "texture": "default.avif",
-        "height": 2.7,
-        "name": "T100-Left",
-        "image": "P_T100_START_LEF_HAAS_RIG.png",
-        "quantity": 1,
-        "estimate": false,
-        "acoustic_performance": "Rw = 45 dB",
-        "ceiling_type": "Gyproc ceiling",
-        "floor_type": "Raised floor (plancher)",
-        "links": {
-          "top": "Coated steel profile U",
-          "left": "Wall or Gyproc (Coated steel profile)",
-          "right": "Wall or Gyproc (Coated steel profile)"
-        },
-        "dimensions": {
-          "height": 2.7,
-          "width": 6.13,
-          "thickness": 0.1
-        },
-        "material": {
-          "producer": "Unilin",
-          "category": "Evola",
-          "group": "Uni",
-          "substrate": "Particle Board 18.0 mm",
-          "substrateProperty": "Water-resistant",
-          "decor": "UN_00025_CST",
-          "profile": "Unilim Evola 025 CST 0.3mm",
-          "preGluedProfile": "Unilim Evola 025 CST 0.3mm préencollé",
-          "differentSides": false
+      ]
+    },
+    {
+      "id": "line-1738841848668-2",
+      "startPointId": "point-1738841848668-2",
+      "endPointId": "point-1738841848668-3",
+      "length": 12.54,
+      "rotation": 0,
+      "thickness": 0.012,
+      "color": "#f5f5f5",
+      "texture": "default.avif",
+      "height": 4,
+      "angles": [
+        {
+          "internalAngle": 1.5707963267948966,
+          "externalAngle": 4.71238898038469,
+          "internalAngleDeg": 90,
+          "externalAngleDeg": 270,
+          "connectedLineId": "line-1738841848668-1",
+          "pointId": "point-1738841848668-2",
+          "startAngle": -1.5707963267948966,
+          "direction": -1
         }
+      ]
+    },
+    {
+      "id": "line-1738841848668-3",
+      "startPointId": "point-1738841848668-3",
+      "endPointId": "point-1738841848668-0",
+      "length": 9.11,
+      "rotation": 1.5707963267948966,
+      "thickness": 0.012,
+      "color": "#f5f5f5",
+      "texture": "default.avif",
+      "height": 4,
+      "angles": [
+        {
+          "internalAngle": 1.5707963267948966,
+          "externalAngle": 4.71238898038469,
+          "internalAngleDeg": 90,
+          "externalAngleDeg": 270,
+          "connectedLineId": "line-1738841848668-0",
+          "pointId": "point-1738841848668-0",
+            startAngle: 0,
+            direction: 1,
+          },
+        ],
       },
       {
-        "id": "cloison-1740745325673",
-        "startPointId": "point-1740745325674",
-        "endPointId": "point-1740745325675",
-        "length": 4.46,
-        "rotation": 3.141592653589793,
-        "thickness": 0.01,
-        "color": {
-          "code": "RAL 1013",
-          "finish": "Mat"
+        id: "cloison-1740739964866",
+        startPointId: "point-1740739964867",
+        endPointId: "point-1740739964868",
+        length: 5.18,
+        rotation: -1.5707963267948968,
+        thickness: 0.01,
+        color: {
+          code: "RAL 1013",
+          finish: "Mat",
         },
-        "texture": "default.avif",
-        "height": 2.7,
-        "name": "T100-Left",
-        "image": "P_T100_START_LEF_HAAS_RIG.png",
-        "quantity": 1,
-        "estimate": false,
-        "acoustic_performance": "Rw = 45 dB",
-        "ceiling_type": "Gyproc ceiling",
-        "floor_type": "Raised floor (plancher)",
-        "links": {
-          "top": "Coated steel profile U",
-          "left": "Wall or Gyproc (Coated steel profile)",
-          "right": "Wall or Gyproc (Coated steel profile)"
+        texture: "default.avif",
+        height: 3.2,
+        name: "T100",
+        image: "P_T100_START_LEF.png",
+        quantity: 1,
+        estimate: false,
+        acoustic_performance: "Rw = 45 dB",
+        ceiling_type: "Gyproc ceiling",
+        floor_type: "Raised floor (plancher)",
+        links: {
+          top: "Coated steel profile U",
+          left: "Wall or Gyproc (Coated steel profile)",
+          right: "Wall or Gyproc (Coated steel profile)",
         },
-        "dimensions": {
-          "height": 2.7,
-          "width": 4.46,
-          "thickness": 0.1
+        dimensions: {
+          height: 3.2,
+          width: 5.18,
+          thickness: 0.1,
         },
-        "material": {
-          "producer": "Unilin",
-          "category": "DE",
-          "group": "Uni",
-          "substrate": "MDFBL 18.0 mm",
-          "substrateProperty": "Water-resistant",
-          "decor": "UN_0L100_HG1",
-          "profile": "UN_DE_HGW_MDFBL_0L100_HG1_18",
-          "preGluedProfile": "Unilim Evola 025 CST 0.3mm préencollé",
-          "differentSides": false
-        }
-      }
+        material: {
+          id:876543456,
+          producer: "Unilin",
+          category: "DE",
+          group: "Uni",
+          substrate: "MDFGR 18.0 mm",
+          substrateProperty: "Water-resistant",
+          decor: "UN_0L103_SM1",
+          profile: "UN_DE_HGW_MDFGR_0L103_SM1_18",
+          preGluedProfile: "Unilim Evola 025 CST 0.3mm préencollé",
+          differentSides: false,
+        },
+      },
+      {
+        client_id: "cloison-1740739990795",
+        startPointId: "point-1740739990796",
+        endPointId: "point-1740739990797",
+        length: 3.17,
+        rotation: 1.5707963267948966,
+        thickness: 0.01,
+        color: {
+          0: "R",
+          1: "A",
+          2: "L",
+          3: " ",
+          4: "3",
+          5: "0",
+          6: "1",
+          7: "1",
+          code: "RAL 3009",
+          finish: "Mat",
+        },
+        texture: "default.avif",
+        height: 3.2,
+        name: "T100",
+        image: "P_T100_START_LEF.png",
+        quantity: 1,
+        estimate: false,
+        acoustic_performance: "Rw = 45 dB",
+        ceiling_type: "Gyproc ceiling",
+        floor_type: "Raised floor (plancher)",
+        links: {
+          top: "Coated steel profile U",
+          left: "Wall or Gyproc (Coated steel profile)",
+          right: "Wall or Gyproc (Coated steel profile)",
+        },
+        dimensions: {
+          height: 3.2,
+          width: 3.17,
+          thickness: 0.1,
+        },
+        material: {
+          producer: "Unilin",
+          category: "Evola",
+          group: "Uni",
+          substrate: "Particle Board 18.0 mm",
+          substrateProperty: "Water-resistant",
+          decor: "UN_00025_CST",
+          profile: "Unilim Evola 025 CST 0.3mm",
+          preGluedProfile: "Unilim Evola 025 CST 0.3mm préencollé",
+          differentSides: false,
+        },
+      },
+      {
+        id: "cloison-1740740025570",
+        startPointId: "point-1740740025571",
+        endPointId: "point-1740740025572",
+        length: 6.13,
+        rotation: -1.4489044367049354e-16,
+        thickness: 0.01,
+        color: {
+          code: "RAL 1013",
+          finish: "Mat",
+        },
+        texture: "default.avif",
+        height: 2.7,
+        name: "T100-Left",
+        image: "P_T100_START_LEF_HAAS_RIG.png",
+        quantity: 1,
+        estimate: false,
+        acoustic_performance: "Rw = 45 dB",
+        ceiling_type: "Gyproc ceiling",
+        floor_type: "Raised floor (plancher)",
+        links: {
+          top: "Coated steel profile U",
+          left: "Wall or Gyproc (Coated steel profile)",
+          right: "Wall or Gyproc (Coated steel profile)",
+        },
+        dimensions: {
+          height: 2.7,
+          width: 6.13,
+          thickness: 0.1,
+        },
+        material: {
+          producer: "Unilin",
+          category: "Evola",
+          group: "Uni",
+          substrate: "Particle Board 18.0 mm",
+          substrateProperty: "Water-resistant",
+          decor: "UN_00025_CST",
+          profile: "Unilim Evola 025 CST 0.3mm",
+          preGluedProfile: "Unilim Evola 025 CST 0.3mm préencollé",
+          differentSides: false,
+        },
+      },
+      {
+        id: "cloison-1740745325673",
+        startPointId: "point-1740745325674",
+        endPointId: "point-1740745325675",
+        length: 4.46,
+        rotation: 3.141592653589793,
+        thickness: 0.01,
+        color: {
+          code: "RAL 1013",
+          finish: "Mat",
+        },
+        texture: "default.avif",
+        height: 2.7,
+        name: "T100-Left",
+        image: "P_T100_START_LEF_HAAS_RIG.png",
+        quantity: 1,
+        estimate: false,
+        acoustic_performance: "Rw = 45 dB",
+        ceiling_type: "Gyproc ceiling",
+        floor_type: "Raised floor (plancher)",
+        links: {
+          top: "Coated steel profile U",
+          left: "Wall or Gyproc (Coated steel profile)",
+          right: "Wall or Gyproc (Coated steel profile)",
+        },
+        dimensions: {
+          height: 2.7,
+          width: 4.46,
+          thickness: 0.1,
+        },
+        material: {
+          producer: "Unilin",
+          category: "DE",
+          group: "Uni",
+          substrate: "MDFBL 18.0 mm",
+          substrateProperty: "Water-resistant",
+          decor: "UN_0L100_HG1",
+          profile: "UN_DE_HGW_MDFBL_0L100_HG1_18",
+          preGluedProfile: "Unilim Evola 025 CST 0.3mm préencollé",
+          differentSides: false,
+        },
+      },
     ],
-    "points": [
+    points: [
       {
-        "id": "point-1738841848668-0",
-        "position": {
-          "x": -5.85,
-          "y": 0.01,
-          "z": -4.245
+        id: "point-1738841848668-0",
+        position: {
+          x: -5.85,
+          y: 0.01,
+          z: -4.245,
         },
-        "rotation": 0,
-        "snapAngle": 0
+        rotation: 0,
+        snapAngle: 0,
       },
       {
-        "id": "point-1738841848668-1",
-        "position": {
-          "x": 6.694,
-          "y": 0.01,
-          "z": -4.245
+        id: "point-1738841848668-1",
+        position: {
+          x: 6.694,
+          y: 0.01,
+          z: -4.245,
         },
-        "rotation": 0,
-        "snapAngle": 0
+        rotation: 0,
+        snapAngle: 0,
       },
       {
-        "id": "point-1738841848668-2",
-        "position": {
-          "x": 6.694,
-          "y": 0.01,
-          "z": 4.862
+        id: "point-1738841848668-2",
+        position: {
+          x: 6.694,
+          y: 0.01,
+          z: 4.862,
         },
-        "rotation": 0,
-        "snapAngle": 0
+        rotation: 0,
+        snapAngle: 0,
       },
       {
-        "id": "point-1738841848668-3",
-        "position": {
-          "x": -5.85,
-          "y": 0.01,
-          "z": 4.862
+        id: "point-1738841848668-3",
+        position: {
+          x: -5.85,
+          y: 0.01,
+          z: 4.862,
         },
-        "rotation": 0,
-        "snapAngle": 0
+        rotation: 0,
+        snapAngle: 0,
       },
       {
-        "id": "point-1740739964867",
-        "position": {
-          "x": 1.5529999999999997,
-          "y": 0.01,
-          "z": -4.244
+        id: "point-1740739964867",
+        position: {
+          x: 1.5529999999999997,
+          y: 0.01,
+          z: -4.244,
         },
-        "rotation": 0,
-        "snapAngle": 0
+        rotation: 0,
+        snapAngle: 0,
       },
       {
-        "id": "point-1740739964868",
-        "position": {
-          "x": 1.5530000000000002,
-          "y": 0.01,
-          "z": 0.9359999999999999
+        id: "point-1740739964868",
+        position: {
+          x: 1.5530000000000002,
+          y: 0.01,
+          z: 0.9359999999999999,
         },
-        "rotation": 0,
-        "snapAngle": 0
+        rotation: 0,
+        snapAngle: 0,
       },
       {
-        "id": "point-1740739990796",
-        "position": {
-          "x": -2.799,
-          "y": 0.01,
-          "z": 4.859500000000001
+        id: "point-1740739990796",
+        position: {
+          x: -2.799,
+          y: 0.01,
+          z: 4.859500000000001,
         },
-        "rotation": 0,
-        "snapAngle": 0
+        rotation: 0,
+        snapAngle: 0,
       },
       {
-        "id": "point-1740739990797",
-        "position": {
-          "x": -2.799,
-          "y": 0.01,
-          "z": 1.6895000000000002
+        id: "point-1740739990797",
+        position: {
+          x: -2.799,
+          y: 0.01,
+          z: 1.6895000000000002,
         },
-        "rotation": 0,
-        "snapAngle": 0
+        rotation: 0,
+        snapAngle: 0,
       },
       {
-        "id": "point-1740740025571",
-        "position": {
-          "x": 6.6915,
-          "y": 0.01,
-          "z": 2.3749999999999996
+        id: "point-1740740025571",
+        position: {
+          x: 6.6915,
+          y: 0.01,
+          z: 2.3749999999999996,
         },
-        "rotation": 0,
-        "snapAngle": 0
+        rotation: 0,
+        snapAngle: 0,
       },
       {
-        "id": "point-1740740025572",
-        "position": {
-          "x": 0.5615000000000001,
-          "y": 0.01,
-          "z": 2.3750000000000004
+        id: "point-1740740025572",
+        position: {
+          x: 0.5615000000000001,
+          y: 0.01,
+          z: 2.3750000000000004,
         },
-        "rotation": 0,
-        "snapAngle": 0
+        rotation: 0,
+        snapAngle: 0,
       },
       {
-        "id": "point-1740745325674",
-        "position": {
-          "x": -1.3904999999999998,
-          "y": 0.01,
-          "z": -0.7340000000000002
+        id: "point-1740745325674",
+        position: {
+          x: -1.3904999999999998,
+          y: 0.01,
+          z: -0.7340000000000002,
         },
-        "rotation": 0,
-        "snapAngle": 0
+        rotation: 0,
+        snapAngle: 0,
       },
       {
-        "id": "point-1740745325675",
-        "position": {
-          "x": -5.8505,
-          "y": 0.01,
-          "z": -0.7339999999999998
+        id: "point-1740745325675",
+        position: {
+          x: -5.8505,
+          y: 0.01,
+          z: -0.7339999999999998,
         },
-        "rotation": 0,
-        "snapAngle": 0
-      }
+        rotation: 0,
+        snapAngle: 0,
+      },
     ],
-    "doors": [
+    doors: [
       {
-        "id": "window-1738841866599",
-        "position": {
-          "x": 3.383,
-          "y": 0,
-          "z": -4.245
+        id: "window-1738841866599",
+        position: {
+          x: 3.383,
+          y: 0,
+          z: -4.245,
         },
-        "rotation": 0,
-        "article_id": "window-1",
-        "name": "Standard Window",
-        "image": "/src/assets/window.png",
-        "width": 1.2,
-        "height": 2.6,
-        "wallId": "line-1738841848668-0",
-        "referencePointId": "point-1738841848668-1",
-        "referenceDistance": 3.3108564095498187
+        rotation: 0,
+        article_id: "window-1",
+        name: "Standard Window",
+        image: "/src/assets/window.png",
+        width: 1.2,
+        height: 2.6,
+        wallId: "line-1738841848668-0",
+        referencePointId: "point-1738841848668-1",
+        referenceDistance: 3.3108564095498187,
       },
       {
-        "id": "window-1738841870976",
-        "position": {
-          "x": -1.192,
-          "y": 0,
-          "z": -4.245
+        id: "window-1738841870976",
+        position: {
+          x: -1.192,
+          y: 0,
+          z: -4.245,
         },
-        "rotation": 0,
-        "article_id": "window-1",
-        "name": "Standard Window",
-        "image": "/src/assets/window.png",
-        "width": 1.2,
-        "height": 2.6,
-        "wallId": "line-1738841848668-0",
-        "referencePointId": "point-1738841848668-0",
-        "referenceDistance": 4.6581525126331496
+        rotation: 0,
+        article_id: "window-1",
+        name: "Standard Window",
+        image: "/src/assets/window.png",
+        width: 1.2,
+        height: 2.6,
+        wallId: "line-1738841848668-0",
+        referencePointId: "point-1738841848668-0",
+        referenceDistance: 4.6581525126331496,
       },
       {
-        "id": "window-1738841875304",
-        "position": {
-          "x": 6.694,
-          "y": 0,
-          "z": -1.301
+        id: "window-1738841875304",
+        position: {
+          x: 6.694,
+          y: 0,
+          z: -1.301,
         },
-        "rotation": 1.5707963267948966,
-        "article_id": "window-1",
-        "name": "Standard Window",
-        "image": "/src/assets/window.png",
-        "width": 1.2,
-        "height": 2.6,
-        "wallId": "line-1738841848668-1",
-        "referencePointId": "point-1738841848668-1",
-        "referenceDistance": 2.944
+        rotation: 1.5707963267948966,
+        article_id: "window-1",
+        name: "Standard Window",
+        image: "/src/assets/window.png",
+        width: 1.2,
+        height: 2.6,
+        wallId: "line-1738841848668-1",
+        referencePointId: "point-1738841848668-1",
+        referenceDistance: 2.944,
       },
       {
-        "id": "cloison-1739790738167",
-        "position": {
-          "x": 1.437,
-          "y": 0,
-          "z": 0.44799999999999995
+        id: "cloison-1739790738167",
+        position: {
+          x: 1.437,
+          y: 0,
+          z: 0.44799999999999995,
         },
-        "rotation": 0,
-        "article_id": "cloison-1",
-        "name": "T100-Left",
-        "dimension": {
-          "height": {
-            "min": 0.2,
-            "max": 3.1
+        rotation: 0,
+        article_id: "cloison-1",
+        name: "T100-Left",
+        dimension: {
+          height: {
+            min: 0.2,
+            max: 3.1,
           },
-          "width": {
-            "min": 0.1,
-            "max": 1.2
-          }
+          width: {
+            min: 0.1,
+            max: 1.2,
+          },
         },
-        "lines": {
-          "id": "cloison-1739790738167",
-          "startPointId": "point-1739790738168",
-          "endPointId": "point-1739790738169",
-          "length": 1.2,
-          "rotation": 0,
-          "thickness": 0.01,
-          "color": "#f5f5f5",
-          "texture": "default.avif",
-          "height": 3.2
+        lines: {
+          id: "cloison-1739790738167",
+          startPointId: "point-1739790738168",
+          endPointId: "point-1739790738169",
+          length: 1.2,
+          rotation: 0,
+          thickness: 0.01,
+          color: "#f5f5f5",
+          texture: "default.avif",
+          height: 3.2,
         },
-        "points": [
+        points: [
           {
-            "id": "point-1739790738168",
-            "position": {
-              "x": 0.837,
-              "y": 0.01,
-              "z": 0.448
+            id: "point-1739790738168",
+            position: {
+              x: 0.837,
+              y: 0.01,
+              z: 0.448,
             },
-            "rotation": 0,
-            "snapAngle": 0
+            rotation: 0,
+            snapAngle: 0,
           },
           {
-            "id": "point-1739790738169",
-            "position": {
-              "x": 2.037,
-              "y": 0.01,
-              "z": 0.448
+            id: "point-1739790738169",
+            position: {
+              x: 2.037,
+              y: 0.01,
+              z: 0.448,
             },
-            "rotation": 0,
-            "snapAngle": 0
-          }
-        ]
+            rotation: 0,
+            snapAngle: 0,
+          },
+        ],
       },
       {
-        "id": "cloison-1739790779751",
-        "position": {
-          "x": -1.815,
-          "y": 0,
-          "z": 0.9260000000000002
+        id: "cloison-1739790779751",
+        position: {
+          x: -1.815,
+          y: 0,
+          z: 0.9260000000000002,
         },
-        "rotation": 0,
-        "article_id": "cloison-1",
-        "name": "T100-Left",
-        "dimension": {
-          "height": {
-            "min": 0.2,
-            "max": 3.1
+        rotation: 0,
+        article_id: "cloison-1",
+        name: "T100-Left",
+        dimension: {
+          height: {
+            min: 0.2,
+            max: 3.1,
           },
-          "width": {
-            "min": 0.1,
-            "max": 1.2
-          }
+          width: {
+            min: 0.1,
+            max: 1.2,
+          },
         },
-        "lines": {
-          "id": "cloison-1739790779751",
-          "startPointId": "point-1739790779752",
-          "endPointId": "point-1739790779753",
-          "length": 1.2,
-          "rotation": 0,
-          "thickness": 0.01,
-          "color": "#f5f5f5",
-          "texture": "default.avif",
-          "height": 3.2
+        lines: {
+          id: "cloison-1739790779751",
+          startPointId: "point-1739790779752",
+          endPointId: "point-1739790779753",
+          length: 1.2,
+          rotation: 0,
+          thickness: 0.01,
+          color: "#f5f5f5",
+          texture: "default.avif",
+          height: 3.2,
         },
-        "points": [
+        points: [
           {
-            "id": "point-1739790779752",
-            "position": {
-              "x": -2.415,
-              "y": 0.01,
-              "z": 0.926
+            id: "point-1739790779752",
+            position: {
+              x: -2.415,
+              y: 0.01,
+              z: 0.926,
             },
-            "rotation": 0,
-            "snapAngle": 0
+            rotation: 0,
+            snapAngle: 0,
           },
           {
-            "id": "point-1739790779753",
-            "position": {
-              "x": -1.215,
-              "y": 0.01,
-              "z": 0.926
+            id: "point-1739790779753",
+            position: {
+              x: -1.215,
+              y: 0.01,
+              z: 0.926,
             },
-            "rotation": 0,
-            "snapAngle": 0
-          }
-        ]
+            rotation: 0,
+            snapAngle: 0,
+          },
+        ],
       },
       {
-        "id": "cloison-1740129868445",
-        "lines": {
-          "id": "cloison-1740129868445",
-          "startPointId": "point-1740129868446",
-          "endPointId": "point-1740129868447",
-          "length": 1.2,
-          "rotation": 0,
-          "thickness": 0.01,
-          "color": "RAL 1013",
-          "texture": "default.avif",
-          "height": 2.7,
-          "name": "T100-Left"
+        id: "cloison-1740129868445",
+        lines: {
+          id: "cloison-1740129868445",
+          startPointId: "point-1740129868446",
+          endPointId: "point-1740129868447",
+          length: 1.2,
+          rotation: 0,
+          thickness: 0.01,
+          color: "RAL 1013",
+          texture: "default.avif",
+          height: 2.7,
+          name: "T100-Left",
         },
-        "points": [
+        points: [
           {
-            "id": "point-1740129868446",
-            "position": {
-              "x": 24.641,
-              "y": 0.01,
-              "z": 4.403
+            id: "point-1740129868446",
+            position: {
+              x: 24.641,
+              y: 0.01,
+              z: 4.403,
             },
-            "rotation": 0,
-            "snapAngle": 0
+            rotation: 0,
+            snapAngle: 0,
           },
           {
-            "id": "point-1740129868447",
-            "position": {
-              "x": 25.841,
-              "y": 0.01,
-              "z": 4.403
+            id: "point-1740129868447",
+            position: {
+              x: 25.841,
+              y: 0.01,
+              z: 4.403,
             },
-            "rotation": 0,
-            "snapAngle": 0
-          }
-        ]
+            rotation: 0,
+            snapAngle: 0,
+          },
+        ],
       },
       {
-        "id": "cloison-1740129876085",
-        "lines": {
-          "id": "cloison-1740129876085",
-          "startPointId": "point-1740129876086",
-          "endPointId": "point-1740129876087",
-          "length": 1.2,
-          "rotation": 0,
-          "thickness": 0.01,
-          "color": "RAL 1013",
-          "texture": "default.avif",
-          "height": 2.7,
-          "name": "T100-Left"
+        id: "cloison-1740129876085",
+        lines: {
+          id: "cloison-1740129876085",
+          startPointId: "point-1740129876086",
+          endPointId: "point-1740129876087",
+          length: 1.2,
+          rotation: 0,
+          thickness: 0.01,
+          color: "RAL 1013",
+          texture: "default.avif",
+          height: 2.7,
+          name: "T100-Left",
         },
-        "points": [
+        points: [
           {
-            "id": "point-1740129876086",
-            "position": {
-              "x": 25.675,
-              "y": 0.01,
-              "z": 9.968
+            id: "point-1740129876086",
+            position: {
+              x: 25.675,
+              y: 0.01,
+              z: 9.968,
             },
-            "rotation": 0,
-            "snapAngle": 0
+            rotation: 0,
+            snapAngle: 0,
           },
           {
-            "id": "point-1740129876087",
-            "position": {
-              "x": 26.875,
-              "y": 0.01,
-              "z": 9.968
+            id: "point-1740129876087",
+            position: {
+              x: 26.875,
+              y: 0.01,
+              z: 9.968,
             },
-            "rotation": 0,
-            "snapAngle": 0
-          }
-        ]
+            rotation: 0,
+            snapAngle: 0,
+          },
+        ],
       },
       {
-        "id": "cloison-1740739964866",
-        "lines": {
-          "id": "cloison-1740739964866",
-          "startPointId": "point-1740739964867",
-          "endPointId": "point-1740739964868",
-          "length": 1.2,
-          "rotation": 0,
-          "thickness": 0.01,
-          "color": "RAL 3011",
-          "texture": "default.avif",
-          "height": 3.2,
-          "name": "T100",
-          "image": "P_T100_START_LEF.png"
+        id: "cloison-1740739964866",
+        lines: {
+          id: "cloison-1740739964866",
+          startPointId: "point-1740739964867",
+          endPointId: "point-1740739964868",
+          length: 1.2,
+          rotation: 0,
+          thickness: 0.01,
+          color: "RAL 3011",
+          texture: "default.avif",
+          height: 3.2,
+          name: "T100",
+          image: "P_T100_START_LEF.png",
         },
-        "points": [
+        points: [
           {
-            "id": "point-1740739964867",
-            "position": {
-              "x": 11.414,
-              "y": 0.01,
-              "z": -5.416
+            id: "point-1740739964867",
+            position: {
+              x: 11.414,
+              y: 0.01,
+              z: -5.416,
             },
-            "rotation": 0,
-            "snapAngle": 0
+            rotation: 0,
+            snapAngle: 0,
           },
           {
-            "id": "point-1740739964868",
-            "position": {
-              "x": 12.614,
-              "y": 0.01,
-              "z": -5.416
+            id: "point-1740739964868",
+            position: {
+              x: 12.614,
+              y: 0.01,
+              z: -5.416,
             },
-            "rotation": 0,
-            "snapAngle": 0
-          }
-        ]
+            rotation: 0,
+            snapAngle: 0,
+          },
+        ],
       },
       {
-        "id": "cloison-1740739990795",
-        "lines": {
-          "id": "cloison-1740739990795",
-          "startPointId": "point-1740739990796",
-          "endPointId": "point-1740739990797",
-          "length": 1.2,
-          "rotation": 0,
-          "thickness": 0.01,
-          "color": "RAL 3011",
-          "texture": "default.avif",
-          "height": 3.2,
-          "name": "T100",
-          "image": "P_T100_START_LEF.png"
+        id: "cloison-1740739990795",
+        lines: {
+          id: "cloison-1740739990795",
+          startPointId: "point-1740739990796",
+          endPointId: "point-1740739990797",
+          length: 1.2,
+          rotation: 0,
+          thickness: 0.01,
+          color: "RAL 3011",
+          texture: "default.avif",
+          height: 3.2,
+          name: "T100",
+          image: "P_T100_START_LEF.png",
         },
-        "points": [
+        points: [
           {
-            "id": "point-1740739990796",
-            "position": {
-              "x": 8.835,
-              "y": 0.01,
-              "z": 7.615
+            id: "point-1740739990796",
+            position: {
+              x: 8.835,
+              y: 0.01,
+              z: 7.615,
             },
-            "rotation": 0,
-            "snapAngle": 0
+            rotation: 0,
+            snapAngle: 0,
           },
           {
-            "id": "point-1740739990797",
-            "position": {
-              "x": 10.035,
-              "y": 0.01,
-              "z": 7.615
+            id: "point-1740739990797",
+            position: {
+              x: 10.035,
+              y: 0.01,
+              z: 7.615,
             },
-            "rotation": 0,
-            "snapAngle": 0
-          }
-        ]
+            rotation: 0,
+            snapAngle: 0,
+          },
+        ],
       },
       {
-        "id": "cloison-1740740025570",
-        "lines": {
-          "id": "cloison-1740740025570",
-          "startPointId": "point-1740740025571",
-          "endPointId": "point-1740740025572",
-          "length": 1.2,
-          "rotation": 0,
-          "thickness": 0.01,
-          "color": "RAL 1013",
-          "texture": "default.avif",
-          "height": 2.7,
-          "name": "T100-Left",
-          "image": "P_T100_START_LEF_HAAS_RIG.png"
+        id: "cloison-1740740025570",
+        lines: {
+          id: "cloison-1740740025570",
+          startPointId: "point-1740740025571",
+          endPointId: "point-1740740025572",
+          length: 1.2,
+          rotation: 0,
+          thickness: 0.01,
+          color: "RAL 1013",
+          texture: "default.avif",
+          height: 2.7,
+          name: "T100-Left",
+          image: "P_T100_START_LEF_HAAS_RIG.png",
         },
-        "points": [
+        points: [
           {
-            "id": "point-1740740025571",
-            "position": {
-              "x": 14.48,
-              "y": 0.01,
-              "z": 2.528
+            id: "point-1740740025571",
+            position: {
+              x: 14.48,
+              y: 0.01,
+              z: 2.528,
             },
-            "rotation": 0,
-            "snapAngle": 0
+            rotation: 0,
+            snapAngle: 0,
           },
           {
-            "id": "point-1740740025572",
-            "position": {
-              "x": 15.68,
-              "y": 0.01,
-              "z": 2.528
+            id: "point-1740740025572",
+            position: {
+              x: 15.68,
+              y: 0.01,
+              z: 2.528,
             },
-            "rotation": 0,
-            "snapAngle": 0
-          }
-        ]
+            rotation: 0,
+            snapAngle: 0,
+          },
+        ],
       },
       {
-        "id": "cloison-1740745325673",
-        "lines": {
-          "id": "cloison-1740745325673",
-          "startPointId": "point-1740745325674",
-          "endPointId": "point-1740745325675",
-          "length": 1.2,
-          "rotation": 0,
-          "thickness": 0.01,
-          "color": "RAL 1013",
-          "texture": "default.avif",
-          "height": 2.7,
-          "name": "T100-Left",
-          "image": "P_T100_START_LEF_HAAS_RIG.png"
+        id: "cloison-1740745325673",
+        lines: {
+          id: "cloison-1740745325673",
+          startPointId: "point-1740745325674",
+          endPointId: "point-1740745325675",
+          length: 1.2,
+          rotation: 0,
+          thickness: 0.01,
+          color: "RAL 1013",
+          texture: "default.avif",
+          height: 2.7,
+          name: "T100-Left",
+          image: "P_T100_START_LEF_HAAS_RIG.png",
         },
-        "points": [
+        points: [
           {
-            "id": "point-1740745325674",
-            "position": {
-              "x": 10.802,
-              "y": 0.01,
-              "z": 2.311
+            id: "point-1740745325674",
+            position: {
+              x: 10.802,
+              y: 0.01,
+              z: 2.311,
             },
-            "rotation": 0,
-            "snapAngle": 0
+            rotation: 0,
+            snapAngle: 0,
           },
           {
-            "id": "point-1740745325675",
-            "position": {
-              "x": 12.002,
-              "y": 0.01,
-              "z": 2.311
+            id: "point-1740745325675",
+            position: {
+              x: 12.002,
+              y: 0.01,
+              z: 2.311,
             },
-            "rotation": 0,
-            "snapAngle": 0
-          }
-        ]
-      }
+            rotation: 0,
+            snapAngle: 0,
+          },
+        ],
+      },
     ],
-    "floors": [
+    floors: [
       {
-        "id": "floor-room1",
-        "color": "#fff",
-        "texture": "EG_F204.jpg"
-      }
+        id: "floor-room1",
+        color: "#fff",
+        texture: "EG_F204.jpg",
+      },
     ],
-    "version": "1.1",
-    "created": "2025-02-28T12:21:51.574Z",
-    "lastModified": "2025-03-03T12:23:12.997Z",
-    "versionDescription": "Cloned from v1.0"
-  }
-  
-]
-
-
+    version: "1.1",
+    created: "2025-02-28T12:21:51.574Z",
+    lastModified: "2025-03-03T12:23:12.997Z",
+    versionDescription: "Cloned from v1.0",
+  },
+];
 
 const data = {
   state: {
@@ -1682,23 +1944,245 @@ const data = {
       {
         id: 1742395859979,
         timestamp: "2025-03-19T14:50:59.979Z",
-        action: "Opened project \"T10P10\" version 1.0",
+        action: 'Opened project "T10P10" version 1.0',
         projectName: "T10P10",
         version: "1.0",
         intervener: {
           id: "1",
           firstName: "Rabie",
           lastName: "ELMA",
-          role: "Design Manager"
+          role: "Design Manager",
         },
-        metadata: {}
-      }
+        metadata: {},
+      },
     ],
-    isLoading: false
+    isLoading: false,
   },
-  version: 0
+  version: 0,
 };
 
 
-
-
+const categories = {
+  walls: {
+    title: "Partitions",
+    image: "Partitions.jpg",
+    items: [
+      {
+        article_id: "cloison-2",
+        name: "T100",
+        dimension: {
+          height: { min: 0.2, max: 3.1 },
+          width: { min: 0.1, max: 1.2 },
+          thickness: { min: 0.1, max: 0.1 },
+        },
+        dimensions: { height: 3.2, width: 1.2, thickness: 0.1 },
+        height: 3.2,
+        color: {
+          code: "RAL 9005",
+          finish: "Mat",
+        },
+        lines: {
+          id: "line-1738852779523",
+          startPointId: "point-1738852778627",
+          endPointId: "point-1738852779523",
+          length: 1.2,
+          rotation: 0.0003796998020737854,
+          thickness: 0.01,
+          color: "#0A0A0A",
+          texture: "default.avif",
+          height: 3.2,
+        },
+        points: [
+          {
+            id: "point-1738852778627",
+            position: {
+              x: -4.724803390336925,
+              y: 0.01,
+              z: -1.2545439058631405,
+            },
+            rotation: 0,
+            snapAngle: 0,
+          },
+          {
+            id: "point-1738852779523",
+            position: {
+              x: -5.926,
+              y: 0.01,
+              z: -1.255,
+            },
+            rotation: 0,
+            snapAngle: 0,
+          },
+        ],
+        image: "P_T100_START_LEF.png",
+        material: {
+          profile: "Unilim Evola 025 CST 0.3mm",
+        },
+        type: "T100",
+        price: 780,
+      },
+      {
+        article_id: "cloison-1",
+        name: "T100-Left",
+        dimension: {
+          height: { min: 0.2, max: 3.1 },
+          width: { min: 0.1, max: 1.2 },
+          thickness: { min: 0.1, max: 0.1 },
+        },
+        dimensions: { height: 2.7, width: 1.2, thickness: 0.1 },
+        height: 2.7,
+        color: {
+          code: "RAL 9005",
+          finish: "Mat",
+        },
+        lines: {
+          id: "line-1738852779523",
+          startPointId: "point-1738852778627",
+          endPointId: "point-1738852779523",
+          length: 1.2,
+          rotation: 0.0003796998020737854,
+          thickness: 0.01,
+          color: "#f5f5f5",
+          texture: "default.avif",
+          height: 3.2,
+        },
+        points: [
+          {
+            id: "point-1738852778627",
+            position: {
+              x: -4.724803390336925,
+              y: 0.01,
+              z: -1.2545439058631405,
+            },
+            rotation: 0,
+            snapAngle: 0,
+          },
+          {
+            id: "point-1738852779523",
+            position: {
+              x: -5.926,
+              y: 0.01,
+              z: -1.255,
+            },
+            rotation: 0,
+            snapAngle: 0,
+          },
+        ],
+        image: "P_T100_START_LEF_HAAS_RIG.png",
+        material: {
+          profile: "Unilim Evola 025 CST 0.3mm",
+        },
+        type: "T100",
+        price: 780,
+      },
+      {
+        article_id: "cloison-3",
+        name: "ART",
+        dimension: {
+          height: { min: 0.2, max: 3.1 },
+          width: { min: 0.1, max: 1.2 },
+          thickness: { min: 0.1, max: 0.1 },
+        },
+        dimensions: { height: 2.7, width: 1.2, thickness: 0.1 },
+        height: 2.7,
+        color: {
+          code: "RAL 9005",
+          finish: "Mat",
+        },
+        lines: {
+          id: "line-1738852779523",
+          startPointId: "point-1738852778627",
+          endPointId: "point-1738852779523",
+          length: 1.2,
+          rotation: 0.0003796998020737854,
+          thickness: 0.01,
+          color: "#f5f5f5",
+          texture: "default.avif",
+          height: 3.2,
+        },
+        points: [
+          {
+            id: "point-1738852778627",
+            position: {
+              x: -4.724803390336925,
+              y: 0.01,
+              z: -1.2545439058631405,
+            },
+            rotation: 0,
+            snapAngle: 0,
+          },
+          {
+            id: "point-1738852779523",
+            position: {
+              x: -5.926,
+              y: 0.01,
+              z: -1.255,
+            },
+            rotation: 0,
+            snapAngle: 0,
+          },
+        ],
+        image: "P_ART.PNG",
+        material: {
+          profile: "Unilim Evola 025 CST 0.3mm",
+        },
+        type: "ART",
+        price: 900,
+      },
+      {
+        article_id: "cloison-4",
+        name: "V100",
+        dimension: {
+          height: { min: 0.2, max: 3.1 },
+          width: { min: 0.1, max: 1.2 },
+          thickness: { min: 0.1, max: 0.1 },
+        },
+        dimensions: { height: 2.7, width: 1.2, thickness: 0.1 },
+        height: 2.7,
+        color: {
+          code: "RAL 9005",
+          finish: "Mat",
+        },
+        lines: {
+          id: "line-1738852779523",
+          startPointId: "point-1738852778627",
+          endPointId: "point-1738852779523",
+          length: 1.2,
+          rotation: 0.0003796998020737854,
+          thickness: 0.01,
+          color: "#f5f5f5",
+          texture: "default.avif",
+          height: 3.2,
+        },
+        points: [
+          {
+            id: "point-1738852778627",
+            position: {
+              x: -4.724803390336925,
+              y: 0.01,
+              z: -1.2545439058631405,
+            },
+            rotation: 0,
+            snapAngle: 0,
+          },
+          {
+            id: "point-1738852779523",
+            position: {
+              x: -5.926,
+              y: 0.01,
+              z: -1.255,
+            },
+            rotation: 0,
+            snapAngle: 0,
+          },
+        ],
+        image: "P_V100.png",
+        material: {
+          profile: "Unilim Evola 025 CST 0.3mm",
+        },
+        type: "V100",
+        price: 820,
+      },
+    ],
+  },
+};

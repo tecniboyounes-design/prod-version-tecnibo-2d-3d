@@ -7,9 +7,8 @@ export async function OPTIONS(request) {
 }
 
 export async function POST(request) {
-  const origin = request.headers.get("origin");
-  const corsHeaders = getCorsHeaders(request); // Use standardized CORS headers
-
+  const corsHeaders = getCorsHeaders(request); 
+ 
   try {
     const { email, password } = await request.json();
     if (!email || !password) {
@@ -18,7 +17,7 @@ export async function POST(request) {
         { status: 400, headers: corsHeaders }
       );
     }
-
+    
     const loginData = {
       jsonrpc: "2.0",
       method: "call",
