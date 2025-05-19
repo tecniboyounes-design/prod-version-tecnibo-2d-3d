@@ -2,8 +2,10 @@
 // Load allowed origins from environment variables or use defaults
 const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(",")
-  : ["http://localhost:5173", "http://localhost:3000", "http://localhost:3001"];
-
+  : ["http://localhost:5173", "http://localhost:3000", "http://localhost:3001", "http://192.168.33.137:5173",
+    "http://192.168.33.138:3001"
+    ];
+  
 
 // Default CORS configuration
 const CORS_CONFIG = {
@@ -12,6 +14,7 @@ const CORS_CONFIG = {
   allowCredentials: true, 
   maxAge: 86400, 
 };
+
 
 
 /**

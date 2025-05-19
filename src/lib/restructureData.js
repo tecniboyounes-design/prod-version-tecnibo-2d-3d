@@ -106,7 +106,7 @@ export const transformProjectsData = (projects, userData) => {
         const doors = (version.articles || []).map((article) => {
 
           const articleData = article.data || {};
-          console.log("articleData", articleData);
+          // console.log("articleData", articleData);
           return {
             id: article.id,
             client_id: article.client_id,
@@ -135,7 +135,7 @@ export const transformProjectsData = (projects, userData) => {
 
         // Floors (not provided in input, default to empty array or minimal example)
         const floors = [];
-
+        
         const planParameters = (version.plan_parameters || []).map((param) => ({
           id: param.id,
           scaleFactor: param.scale_factor,
@@ -159,6 +159,7 @@ export const transformProjectsData = (projects, userData) => {
           lastModified: project.changed_on || new Date().toISOString(),
           planParameters,
         };
+        
       });
     }
 

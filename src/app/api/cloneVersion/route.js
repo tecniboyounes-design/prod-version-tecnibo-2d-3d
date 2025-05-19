@@ -109,6 +109,23 @@ export async function POST(req) {
     }
     console.log("[LOG] Inserted new version with ID:", newVersionData.id);
 
+    // Helper function to determine client_id
+    const getClientId = (entity) => {
+      if (entity.client_id) return entity.client_id;
+      if (!entity.id) {
+        console.warn(`[LOG] Entity missing id, cannot set client_id`);
+        return null;
+      }
+      if (/^(line|cloison|point|door|window)-\d+$/.test(entity.id)) {
+        return entity.id;
+      }
+      if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(entity.id)) {
+        console.warn(`[LOG] UUID detected in id (${entity.id}), client_id not provided, falling back to id`);
+        return entity.id;
+      }
+      return entity.id;
+    };
+    
     // Step 6: Clone points
     console.log("[LOG] Fetching source points for version:", version_id);
     const { data: sourcePoints, error: sourcePointsError } = await supabase
@@ -124,9 +141,19 @@ export async function POST(req) {
     }
     console.log("[LOG] Found", sourcePoints.length, "source points");
 
+    let oldToNewPointIdMap = new Map();
+    let oldToNewWallIdMap = new Map();
+
     if (sourcePoints && sourcePoints.length > 0) {
+      // Validate client_id uniqueness for points
+      const pointClientIds = sourcePoints.map(p => getClientId(p));
+      const uniquePointClientIds = new Set(pointClientIds);
+      if (uniquePointClientIds.size < pointClientIds.length) {
+        console.warn("[LOG] Duplicate client_id found in source points");
+      }
+
       const newPointsToInsert = sourcePoints.map(point => ({
-        client_id: point.client_id,
+        client_id: getClientId(point),
         x_coordinate: point.x_coordinate,
         y_coordinate: point.y_coordinate,
         z_coordinate: point.z_coordinate,
@@ -134,7 +161,7 @@ export async function POST(req) {
         rotation: point.rotation,
         version_id: newVersionData.id,
       }));
-
+      
       console.log("[LOG] Inserting", newPointsToInsert.length, "new points");
       const { data: insertedPoints, error: insertPointsError } = await supabase
         .from("points")
@@ -150,18 +177,27 @@ export async function POST(req) {
       console.log("[LOG] Cloned", insertedPoints.length, "points");
 
       // Create point ID mapping
-      const oldToNewPointIdMap = new Map();
+      oldToNewPointIdMap = new Map();
       sourcePoints.forEach(sourcePoint => {
-        const newPoint = insertedPoints.find(p => p.client_id === sourcePoint.client_id);
-        if (newPoint) oldToNewPointIdMap.set(sourcePoint.id, newPoint.id);
+        const newPoint = insertedPoints.find(p => p.client_id === getClientId(sourcePoint));
+        if (newPoint) {
+          oldToNewPointIdMap.set(sourcePoint.id, newPoint.id);
+        } else {
+          console.warn(`[LOG] No new point found for source point client_id: ${getClientId(sourcePoint)}`);
+        }
       });
       console.log("[LOG] Created point ID mapping with", oldToNewPointIdMap.size, "entries");
+
+      // Validate point mapping completeness
+      if (oldToNewPointIdMap.size < sourcePoints.length) {
+        console.warn("[LOG] Incomplete point ID mapping, some points may not be referenced correctly");
+      }
 
       // Step 7: Clone walls
       console.log("[LOG] Fetching source walls for version:", version_id);
       const { data: sourceWalls, error: sourceWallsError } = await supabase
         .from("walls")
-        .select("*")
+        .select("id, client_id, startpointid, endpointid, length, rotation, thickness, color, texture, height")
         .eq("version_id", version_id);
       if (sourceWallsError) {
         console.error("[ERROR] Error fetching source walls:", sourceWallsError);
@@ -171,11 +207,18 @@ export async function POST(req) {
         );
       }
       console.log("[LOG] Found", sourceWalls.length, "source walls");
-
+       
       if (sourceWalls && sourceWalls.length > 0) {
+        // Validate client_id uniqueness for walls
+        const wallClientIds = sourceWalls.map(w => getClientId(w));
+        const uniqueWallClientIds = new Set(wallClientIds);
+        if (uniqueWallClientIds.size < wallClientIds.length) {
+          console.warn("[LOG] Duplicate client_id found in source walls");
+        }
+
         const newWallsToInsert = sourceWalls.map(wall => ({
-          startpointid: oldToNewPointIdMap.get(wall.startpointid),
-          endpointid: oldToNewPointIdMap.get(wall.endpointid),
+          startpointid: oldToNewPointIdMap.get(wall.startpointid) || wall.startpointid,
+          endpointid: oldToNewPointIdMap.get(wall.endpointid) || wall.endpointid,
           length: wall.length,
           rotation: wall.rotation,
           thickness: wall.thickness,
@@ -183,13 +226,14 @@ export async function POST(req) {
           texture: wall.texture,
           height: wall.height,
           version_id: newVersionData.id,
-          client_id: wall.client_id,
+          client_id: getClientId(wall),
         }));
 
         console.log("[LOG] Inserting", newWallsToInsert.length, "new walls");
-        const { error: insertWallsError } = await supabase
+        const { data: insertedWalls, error: insertWallsError } = await supabase
           .from("walls")
-          .insert(newWallsToInsert);
+          .insert(newWallsToInsert)
+          .select("id, client_id");
         if (insertWallsError) {
           console.error("[ERROR] Error inserting new walls:", insertWallsError);
           return NextResponse.json(
@@ -197,49 +241,80 @@ export async function POST(req) {
             { status: 500, headers: corsHeaders }
           );
         }
-        console.log("[LOG] Cloned", newWallsToInsert.length, "walls");
-      }
+        console.log("[LOG] Cloned", insertedWalls.length, "walls");
 
-      // Step 8: Clone articles
-      console.log("[LOG] Fetching source articles for version:", version_id);
-      const { data: sourceArticles, error: sourceArticlesError } = await supabase
-        .from("articles")
-        .select("*")
-        .eq("version_id", version_id);
-      if (sourceArticlesError) {
-        console.error("[ERROR] Error fetching source articles:", sourceArticlesError);
-        return NextResponse.json(
-          { error: "Failed to fetch source articles" },
-          { status: 500, headers: corsHeaders }
-        );
-      }
-      console.log("[LOG] Found", sourceArticles.length, "source articles");
-
-      if (sourceArticles && sourceArticles.length > 0) {
-        const newArticlesToInsert = sourceArticles.map(article => {
-          const newData = { ...article.data };
-          if (newData.point_ids) {
-            newData.point_ids = newData.point_ids.map(oldId => oldToNewPointIdMap.get(oldId));
+        // Create wall ID mapping
+        oldToNewWallIdMap = new Map();
+        sourceWalls.forEach(sourceWall => {
+          const newWall = insertedWalls.find(w => w.client_id === getClientId(sourceWall));
+          if (newWall) {
+            oldToNewWallIdMap.set(sourceWall.id, newWall.id);
+          } else {
+            console.warn(`[LOG] No new wall found for source wall client_id: ${getClientId(sourceWall)}`);
           }
-          return {
-            client_id: article.client_id,
-            version_id: newVersionData.id,
-            data: newData,
-          };
         });
+        console.log("[LOG] Created wall ID mapping with", oldToNewWallIdMap.size, "entries");
 
-        console.log("[LOG] Inserting", newArticlesToInsert.length, "new articles");
-        const { error: insertArticlesError } = await supabase
+        // Validate wall mapping completeness
+        if (oldToNewWallIdMap.size < sourceWalls.length) {
+          console.warn("[LOG] Incomplete wall ID mapping, some walls may not be referenced correctly");
+        }
+
+        // Step 8: Clone articles
+        console.log("[LOG] Fetching source articles for version:", version_id);
+        const { data: sourceArticles, error: sourceArticlesError } = await supabase
           .from("articles")
-          .insert(newArticlesToInsert);
-        if (insertArticlesError) {
-          console.error("[ERROR] Error inserting new articles:", insertArticlesError);
+          .select("id, client_id, data")
+          .eq("version_id", version_id);
+        if (sourceArticlesError) {
+          console.error("[ERROR] Error fetching source articles:", sourceArticlesError);
           return NextResponse.json(
-            { error: "Failed to insert new articles" },
+            { error: "Failed to fetch source articles" },
             { status: 500, headers: corsHeaders }
           );
         }
-        console.log("[LOG] Cloned", newArticlesToInsert.length, "articles");
+        console.log("[LOG] Found", sourceArticles.length, "source articles");
+
+        if (sourceArticles && sourceArticles.length > 0) {
+          const validWallIds = new Set(sourceWalls.map(w => w.id));
+          const newArticlesToInsert = sourceArticles.map(article => {
+            const newData = { ...article.data };
+            if (newData.point_ids) {
+              newData.point_ids = newData.point_ids.map(oldId => oldToNewPointIdMap.get(oldId) || oldId);
+            }
+            if (newData.wallId && !validWallIds.has(newData.wallId)) {
+              console.warn(`[LOG] Invalid wallId ${newData.wallId} for article client_id: ${getClientId(article)}, preserving as null`);
+              newData.wallId = null;
+            } else if (newData.wallId) {
+              newData.wallId = oldToNewWallIdMap.get(newData.wallId) || newData.wallId;
+            }
+            if (newData.referencePointId) {
+              newData.referencePointId = oldToNewPointIdMap.get(newData.referencePointId) || newData.referencePointId;
+            }
+            if (newData.lines && newData.lines.startPointId) {
+              newData.lines.startPointId = oldToNewPointIdMap.get(newData.lines.startPointId) || newData.lines.startPointId;
+              newData.lines.endPointId = oldToNewPointIdMap.get(newData.lines.endPointId) || newData.lines.endPointId;
+            }
+            return {
+              client_id: getClientId(article),
+              version_id: newVersionData.id,
+              data: newData,
+            };
+          });
+
+          console.log("[LOG] Inserting", newArticlesToInsert.length, "new articles");
+          const { error: insertArticlesError } = await supabase
+            .from("articles")
+            .insert(newArticlesToInsert);
+          if (insertArticlesError) {
+            console.error("[ERROR] Error inserting new articles:", insertArticlesError);
+            return NextResponse.json(
+              { error: "Failed to insert new articles" },
+              { status: 500, headers: corsHeaders }
+            );
+          }
+          console.log("[LOG] Cloned", newArticlesToInsert.length, "articles");
+        }
       }
     }
 

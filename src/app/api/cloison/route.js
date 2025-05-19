@@ -34,6 +34,7 @@ export async function GET(req) {
     }
 
     console.log("Cloisons Fetched Successfully:", allCloisons.length);
+    console.log("Cloisons Fetched Successfully:", allCloisons);
 
     // Transform each row into an item object
     const items = allCloisons.map((row) => ({

@@ -11,8 +11,9 @@
 # ============================
 
 
-# ssh yattaoui@192.168.30.92
+ssh yattaoui@192.168.30.92
 Yattaou1
+
 
 # Get-Process | ForEach-Object { Stop-Process -Id $_.Id -Force }
 # sudo nano /etc/systemd/system/tecnipo.service
@@ -25,7 +26,6 @@ Yattaou1
 # sudo systemctl daemon-reload
 # sudo systemctl restart tecnipo.service
 sudo journalctl -u tecnipo.service -f 
-
 
 
  

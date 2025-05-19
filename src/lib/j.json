@@ -1,0 +1,188 @@
+{
+  "company": {
+    "name": "Tecnibo",
+    "locations": [
+      {
+        "entity": "Tecnibo Lux SA",
+        "address": "68 Rue de Koerich, Steinfort LU 8437, Luxembourg",
+        "phone": "+35226108077",
+        "email": "sales.lu@tecnibo.com",
+        "website": "tecnibo.com"
+      },
+      {
+        "entity": "Tecnibo Belgique SA",
+        "email": "sales.be@tecnibo.com",
+        "website": "tecnibo.eu"
+      }
+    ]
+  },
+  "catalog": {
+    "title": "Tecnibo Catalogue 2025",
+    "description": "Tecnibo, l'art de concevoir des espaces flexibles et durables, sur-mesure pour vous. This catalog showcases a complete range of high-end interior design solutions with total flexibility and personalization. Hundreds of combinations of finishes, materials, and details are offered, from glass or solid doors to partitions, with special attention to handles, locks, and other essential elements. Each project is unique, designed to meet specific client needs, and is aesthetic, functional, demountable, adjustable, and environmentally friendly. Solutions integrate sustainable materials and are designed to evolve with your spaces. Collaborating with architects, designers, and project managers, Tecnibo transforms spaces into inspiring, high-performing, and sustainable environments.",
+    "table_of_contents": {
+      "sections": [
+        { "title": "Portes", "page": 6 },
+        { "title": "Cloisons", "page": 27 },
+        { "title": "Cloisons mixtes", "page": 32 },
+        { "title": "Finitions", "page": 34 },
+        { "title": "Options serrure", "page": null },
+        { "title": "Option poignées", "page": null },
+        { "title": "Options de finition", "page": null }
+      ]
+    }
+  },
+  "products": {
+    "doors": [
+      {
+        "model": "ALU40 W400CC",
+        "description": "Porte pleine avec battant en bois de 40 mm, équipée d'un oculus vitré et d'un cadre en aluminium de 40 mm, pour une épaisseur totale de 103 mm.",
+        "specifications": {
+          "wood_panel_thickness": "40 mm",
+          "frame_material": "Aluminium",
+          "frame_thickness": "40 mm",
+          "total_thickness": "103 mm",
+          "features": ["Oculus vitré"]
+        }
+      },
+      {
+        "model": "ALU40 W40",
+        "description": "Porte pleine avec battant en bois de 40 mm, équipée d'un cadre en aluminium de 40 mm, pour une épaisseur totale de 103 mm.",
+        "specifications": {
+          "wood_panel_thickness": "40 mm",
+          "frame_material": "Aluminium",
+          "frame_thickness": "40 mm",
+          "total_thickness": "103 mm"
+        },
+        "variants": [
+          "P_5D_5D_WP_4F40_40",
+          "P_5D_ALDFG_AF40_40",
+          "P_5D_ALSOR_AF40_40",
+          "P_DD_FH_AF40_40"
+        ]
+      },
+      {
+        "model": "ALU20 W400CC",
+        "description": "Porte pleine avec battant en bois de 40 mm, équipée d'un oculus vitré et d'un cadre en aluminium de 21 mm, pour une épaisseur totale de 103 mm.",
+        "specifications": {
+          "wood_panel_thickness": "40 mm",
+          "frame_material": "Aluminium",
+          "frame_thickness": "21 mm",
+          "total_thickness": "103 mm",
+          "features": ["Oculus vitré"]
+        }
+      }
+    ],
+    "partitions": [
+      {
+        "model": "OPUSP",
+        "description": "Système de cloison amovible, pleine et modulaire, composé de deux panneaux de finitions personnalisables (mélaminé, stratifié, plaqueage), soutenus par un cadre en bois de finitions personnalisables (stratifié ou placage), avec des lisses en acier peintes époxy en haut et en bas, et un joint creux de 2 mm entre chaque module.",
+        "specifications": {
+          "panel_finishes": ["Mélaminé", "Stratifié", "Plaqueage"],
+          "frame_material": "Bois",
+          "frame_finishes": ["Stratifié", "Plaqueage"],
+          "rail_material": "Acier peint époxy",
+          "joint_gap": "2 mm",
+          "code": "P_OPP_LIN",
+          "thickness_options": ["45 mm", "49 mm", "50 mm"],
+          "height_range": ["2000 mm", "3100 mm"],
+          "width_range": ["200 mm", "1200 mm"]
+        }
+      },
+      {
+        "model": "LINEA",
+        "description": "Système de cloison amovible en simple vitrage, équipé de vitrages de 12.8 ou 16.8 mm, doté de croisillons horizontaux et verticaux, et soutenu par un cadre en aluminium recouverts de bois massif, vernis ou teinté.",
+        "specifications": {
+          "glazing_thickness": ["12.8 mm", "16.8 mm"],
+          "frame_material": "Aluminium recouvert de bois massif",
+          "frame_finishes": ["Vernis", "Teinté"],
+          "features": ["Croisillons horizontaux et verticaux"],
+          "code": "P_LINEA",
+          "thickness_options": ["36 mm", "38 mm", "39 mm", "41 mm"],
+          "height_range": ["2000 mm", "3100 mm"],
+          "min_width": "200 mm"
+        }
+      },
+      {
+        "model": "OLTA",
+        "description": "Système de cloison amovible en simple vitrage, équipé de vitrages de 12.8 ou 16.8 mm, soutenus par un cadre en aluminium recouverts de bois massif, vernis ou teinté.",
+        "specifications": {
+          "glazing_thickness": ["12.8 mm", "16.8 mm"],
+          "frame_material": "Aluminium recouvert de bois massif",
+          "frame_finishes": ["Vernis", "Teinté"],
+          "code": "P_OLTA",
+          "thickness_options": ["36 mm", "38 mm", "39 mm", "41 mm"],
+          "height_range": ["2000 mm", "3100 mm"],
+          "min_width": "200 mm"
+        }
+      }
+    ],
+    "mixed_partitions": [
+      {
+        "model": "T100/ART",
+        "description": "Système de cloison amovible mixte, combinant une partie inférieure de cloison T100 pleine et modulaire (102 mm d'épaisseur) avec une partie supérieure en double vitrage de type ART.",
+        "specifications": {
+          "lower_part": "T100 pleine et modulaire",
+          "lower_thickness": "102 mm",
+          "upper_part": "Double vitrage type ART",
+          "codes": ["P_T100_ART_LIN"],
+          "thickness_options": ["35 mm", "37 mm", "38 mm", "39 mm", "40 mm", "42 mm", "44 mm", "46 mm", "45 mm", "49 mm", "50 mm"],
+          "height_range": ["2000 mm", "3100 mm"],
+          "min_width": "200 mm"
+        }
+      },
+      {
+        "model": "T100/V100",
+        "description": "Système de cloison amovible mixte, combinant une partie inférieure en cloison T100 pleine et modulaire (102 mm d'épaisseur) et une partie supérieure en double vitrage sur cadre modulaire de type V100, pour une solution esthétique et fonctionnelle.",
+        "specifications": {
+          "lower_part": "T100 pleine et modulaire",
+          "lower_thickness": "102 mm",
+          "upper_part": "Double vitrage type V100",
+          "codes": ["P_T100_V100"],
+          "thickness_options": ["35 mm", "37 mm", "38 mm", "39 mm", "40 mm", "42 mm", "44 mm", "46 mm", "45 mm", "49 mm", "50 mm"],
+          "height_range": ["2000 mm", "3100 mm"],
+          "min_width": "200 mm"
+        }
+      },
+      {
+        "model": "T100/HAAS",
+        "description": "Système de cloison amovible mixte, combinant une partie inférieure en cloison T100 pleine et modulaire (102 mm d'épaisseur) et une partie supérieure en simple vitrage de type HAAS.",
+        "specifications": {
+          "lower_part": "T100 pleine et modulaire",
+          "lower_thickness": "102 mm",
+          "upper_part": "Simple vitrage type HAAS",
+          "codes": ["P_T100_HA_LIN"],
+          "thickness_options": ["36 mm", "38 mm", "39 mm", "41 mm", "45 mm", "49 mm", "50 mm"],
+          "height_range": ["2000 mm", "3100 mm"],
+          "min_width": "200 mm"
+        }
+      },
+      {
+        "model": "V100/T100",
+        "description": "Système de cloison amovible mixte, combinant une partie inférieure en cloison T100 pleine et modulaire (102 mm d'épaisseur) et une partie supérieure en simple vitrage de type HAAS.",
+        "specifications": {
+          "lower_part": "T100 pleine et modulaire",
+          "lower_thickness": "102 mm",
+          "upper_part": "Simple vitrage type HAAS",
+          "codes": ["P_T100_HA_LIN"],
+          "thickness_options": ["36 mm", "38 mm", "39 mm", "41 mm", "45 mm", "49 mm", "50 mm"],
+          "height_range": ["2000 mm", "3100 mm"],
+          "min_width": "200 mm"
+        }
+      }
+    ],
+    "finishes": {
+      "description": "La personnalisation est au coeur de notre démarche. Nous offrons une gamme quasi infinie d'options pour garantir que chaque projet soit unique et reflète parfaitement vos envies et votre personnalité. En plus de notre palette de couleurs toujours disponibles en stock, nous proposons également la possibilité de commander toutes les couleurs des gammes Egger, Polyrey, et Shinnoki.",
+      "options": [
+        {
+          "type": "Standard Colors",
+          "availability": "Always in stock"
+        },
+        {
+          "type": "Custom Colors",
+          "brands": ["Egger", "Polyrey", "Shinnoki"],
+          "availability": "On order"
+        }
+      ]
+    }
+  }
+}
