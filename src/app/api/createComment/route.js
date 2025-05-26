@@ -7,13 +7,14 @@ import { validate } from "uuid";
  * Handles CORS preflight requests for the POST endpoint.
  */
 export async function OPTIONS(request) {
+  console.log("OPTIONS request received for POST /api/createComment");
   return handleCorsPreflight(request);
 }
 
 /**
  * Creates a new comment associated with a specific version.
  */
-
+  
 export async function POST(req) {
   const corsHeaders = getCorsHeaders(req);
 

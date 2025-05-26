@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Canvas, useThree } from '@react-three/fiber';
 import { Html, OrbitControls } from '@react-three/drei';
 import Walls from '../Walls/Walls';
-import { setCurrentConfig, setIs2DView, setIsDrawing, updateCorner } from '../../../store';
+import { setCurrentConfig, setIs2DView, setIsDrawing, updateCorner, updateSettings } from '../../../store';
 import useDrawWall from '../../../HOC/useDrawWall';
 import InteractivePointMenu from '../UI/InteractivePointMenu';
 import FloorPlane from '../Floor/Floor';
@@ -13,6 +13,9 @@ import GLTFDoor from '../Articles/Articles';
 import { ScreenshotHandler } from '@/HOC/useScreenshotUpload';
 import { Button } from '@mui/material';
 import html2canvas from 'html2canvas';
+import { useControls } from 'leva';
+import Plan2DImage from "../Plan2DImage/Plan2DImage";
+import { WallList } from '../wallList/WallList';
 
 const Points = () => {
   const corners = useSelector((state) => state.jsonData.floorplanner.corners);
@@ -30,6 +33,42 @@ const Points = () => {
 
 
   const canvasRef = useRef(null)
+  
+
+  // Add leva control for showing/hiding the 2D plan image
+  const {
+    isDrawMode: levaDrawMode,
+    axesHelperVisible: levaAxesVisible,
+    gridHelperVisible: levaGridVisible,
+    is2DView: levaIs2DView,
+    showPlan2DImage, // <-- new leva state
+  } = useControls({
+    isDrawMode: {
+      value: isDrawMode,
+      label: 'Draw Mode',
+      onChange: (value) => dispatch(setIsDrawing(value)),
+    },
+    axesHelperVisible: {
+      value: axesHelperVisible,
+      label: 'Show Axes',
+      onChange: (value) => dispatch(updateSettings({ key: 'axesHelperVisible', value })),
+    },
+    gridHelperVisible: {
+      value: gridHelperVisible,
+      label: 'Show Grid',
+      onChange: (value) => dispatch(updateSettings({ key: 'gridHelperVisible', value })),
+    },
+    is2DView: {
+      value: is2DView,
+      label: '2D View',
+      onChange: (value) => dispatch(setIs2DView(value)),
+    },
+    showPlan2DImage: {
+      value: true,
+      label: 'Show 2D Plan Image',
+    },
+  });
+
 
 
 
@@ -61,7 +100,7 @@ const Points = () => {
 
 
 
-  const handleDragStart = (id) => setDraggedPoint(id);
+const handleDragStart = (id) => setDraggedPoint(id);
 
 
 
@@ -138,7 +177,8 @@ const Points = () => {
   const handleDoubleClick = (e) => {
     // console.log('handleDoubleClick', e);
     // console.log('group:', groupRef)
-  }
+  } 
+   
 
 
   const handleEmptySpaceClick = (e) => {
@@ -205,28 +245,28 @@ const Points = () => {
 
 
   return (
-    < >
+    <>
       <div id="screenshot-container" style={{
         position: 'relative',
         height: "100vh",
         width: "100vw",
-      }}
-      >
-
+      }}>
         <Button onClick={takeScreenshot}>Take Screenshot</Button>
-
-
         <Canvas
           ref={canvasRef}
           gl={{ preserveDrawingBuffer: true }}
           camera={{ position: [0, 5, 10], fov: 50 }}
           shadows
         >
-
-
+          {/* Conditionally render the 2D plan image */}
+          {showPlan2DImage && (
+            <Plan2DImage src="/plan2dcolor.jpg" />
+          )}
+               
           <GLTFDoor />
 
           {is2DView ? <CameraController2D /> :
+
             <>
               <directionalLight
                 position={[10, 10, 10]}
@@ -273,7 +313,7 @@ const Points = () => {
 
             {/* Points */}
             {Object.keys(positions).map((id) => (
-
+      
               <mesh
                 key={id}
                 position={positions[id]}
@@ -313,7 +353,7 @@ const Points = () => {
                     }}
                   />
                 )}
-
+                
               </mesh>
             ))}
 
@@ -329,7 +369,23 @@ const Points = () => {
           {/* Lighting */}
           <ambientLight intensity={0.5} />
           <directionalLight position={[5, 5, 5]} intensity={1} />
-
+          {/* <Html
+            style={{
+              position: 'absolute',
+              bottom: '20px',
+              right: '20px',
+              width: '300px', // Adjust width as needed
+              maxHeight: '200px', // Limit height and allow scrolling if needed
+              overflowY: 'auto',
+              backgroundColor: 'rgba(255, 255, 255, 0.8)', // Semi-transparent white background
+              padding: '10px',
+              borderRadius: '5px',
+              boxShadow: '0 2px 5px rgba(0,0,0,0.2)', // Optional: subtle shadow for depth
+            }}
+          >
+            {/* <WallList /> */}
+          {/* </Html> */}
+          
         </Canvas>
 
       </div>

@@ -82,8 +82,9 @@ export async function POST(req) {
     rotation: 0,
     offsetX: 0,
     offsetY: 0,
+    ref_length: null,
   };
-  
+
   let createdUserId;
   const { data: existingUser, error: userError } = await supabase
     .from("users")
@@ -121,17 +122,20 @@ export async function POST(req) {
     description: projectData.description || "Interior design project.",
     user_id: uid,
     db: projectData?.db,
-    image_url:
-      projectData?.image_url ||
-      "https://cdn.andro4all.com/andro4all/2022/07/Planner-5D.jpg",
+    image_url: projectData?.image_url || "https://cdn.andro4all.com/andro4all/2022/07/Planner-5D.jpg",
+    celling_type: projectData.celling_type,
+    floor_type: projectData.floor_type,
+    project_estimate: projectData.project_estimate,
+    "RAL": projectData.RAL,
+    colorProfile: projectData.colorProfile,
   };
-  
+
   const { data: projectDataResponse, error: projectError } = await supabase
     .from("projects")
     .insert([projectInsertData])
     .select()
     .single();
-    
+
   if (projectError) {
     return new Response(JSON.stringify({ error: projectError.message }), {
       status: 400,
@@ -151,23 +155,23 @@ export async function POST(req) {
     company_id: projectData.user_context?.current_company || 11,
     timezone: projectData.user_context?.tz || "Africa/Casablanca",
   };
-  
+
   const { error: managerError } = await supabase
     .from("managers")
     .insert([managerData]);
-    
+
   if (managerError) {
     return new Response(JSON.stringify({ error: managerError.message }), {
       status: 400,
       headers: corsHeaders,
     });
   }
-  
+
   const versionInsertData = {
     project_id: createdProjectId,
     version: projectData.version || "1.0",
   };
-  
+
   const { data: versionData, error: versionError } = await supabase
     .from("versions")
     .insert([versionInsertData])
@@ -180,7 +184,7 @@ export async function POST(req) {
       headers: corsHeaders,
     });
   }
-  
+
   const createdVersionId = versionData.id;
 
   const planParamsInsertData = {
@@ -189,19 +193,20 @@ export async function POST(req) {
     rotation: planTransform.rotation,
     x_offset: planTransform.offsetX,
     y_offset: planTransform.offsetY,
+    ref_length: planTransform.ref_length,
   };
   
   const { error: planParamsError } = await supabase
     .from("plan_parameters")
     .insert([planParamsInsertData]);
-  
+
   if (planParamsError) {
     return new Response(JSON.stringify({ error: planParamsError.message }), {
       status: 400,
       headers: corsHeaders,
     });
   }
-  
+
   const pointsToInsert = pointsFromPayload.map((pt) => ({
     x_coordinate: pt.position.x,
     y_coordinate: pt.position.y,
@@ -211,7 +216,7 @@ export async function POST(req) {
     version_id: createdVersionId,
     client_id: pt.id,
   }));
-  
+
   const { data: insertedPoints, error: pointsError } = await supabase
     .from("points")
     .insert(pointsToInsert)
@@ -223,12 +228,12 @@ export async function POST(req) {
       headers: corsHeaders,
     });
   }
-  
+
   const pointIdMapping = {};
   insertedPoints.forEach((pt) => {
     pointIdMapping[pt.client_id] = pt.id;
   });
-  
+
   const wallsToInsert = wallsFromPayload.map((wall) => ({
     startpointid: pointIdMapping[wall.startPointId],
     endpointid: pointIdMapping[wall.endPointId],
@@ -240,20 +245,21 @@ export async function POST(req) {
     height: wall.height,
     version_id: createdVersionId,
     client_id: wall.id,
+    type: wall.type,
   }));
-  
+
   const { data: wallsData, error: wallsError } = await supabase
     .from("walls")
     .insert(wallsToInsert)
     .select();
-    
+
   if (wallsError) {
     return new Response(JSON.stringify({ error: wallsError.message }), {
       status: 400,
       headers: corsHeaders,
     });
   }
-  
+
   const doorsToInsert = doors.map((door) => ({
     version_id: createdVersionId,
     client_id: door.id,
@@ -264,14 +270,14 @@ export async function POST(req) {
     .from("articles")
     .insert(doorsToInsert)
     .select();
-   
+
   if (doorsError) {
     return new Response(JSON.stringify({ error: doorsError.message }), {
       status: 400,
       headers: corsHeaders,
     });
   }
- 
+
   try {
     const interventionPayload = {
       action: "Project initialized",

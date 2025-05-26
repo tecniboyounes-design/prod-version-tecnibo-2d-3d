@@ -28,7 +28,7 @@ export async function DELETE(req) {
   try {
     const { searchParams } = new URL(req.url);
     const projectId = searchParams.get("projectId");
-
+  
     if (!projectId) {
       console.warn("Missing projectId in request URL params");
       return NextResponse.json(
@@ -36,7 +36,7 @@ export async function DELETE(req) {
         { status: 400, headers: corsHeaders }
       );
     }
-
+    
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
     if (!uuidRegex.test(projectId)) {
       console.warn("Invalid UUID format for projectId:", projectId);
@@ -52,7 +52,7 @@ export async function DELETE(req) {
       .select("id")
       .eq("id", projectId)
       .single();
-
+      
     if (projectError || !project) {
       console.warn("Project not found or error in lookup:", projectError);
       return NextResponse.json(
@@ -66,7 +66,7 @@ export async function DELETE(req) {
       .from("versions")
       .delete()
       .eq("project_id", projectId);
-
+      
     if (versionDeleteError) {
       console.error("Error deleting project versions:", versionDeleteError);
       return NextResponse.json(
@@ -74,7 +74,7 @@ export async function DELETE(req) {
         { status: 500, headers: corsHeaders }
       );
     }
-
+     
     console.log("Deleting project with ID:", projectId);
     const { error: deleteError } = await supabase
       .from("projects")
@@ -88,7 +88,7 @@ export async function DELETE(req) {
         { status: 500, headers: corsHeaders }
       );
     }
-
+       
     console.log(`Successfully deleted project and versions for: ${projectId}`);
     return NextResponse.json(
       {

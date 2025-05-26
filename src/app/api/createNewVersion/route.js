@@ -1,8 +1,48 @@
 import { incrementVersion } from "@/lib/versioning";
 import { supabase } from "../filesController/route";
-import { fetchProjectWithRelations } from "../projects/route";
 import { transformProjectsData } from "../../../lib/restructureData";
 import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
+
+// New fetching function for project with all relations
+export const fetchProjectWithAllRelations = async (odooId, projectId) => {
+  try {
+    const { data, error } = await supabase
+      .from("projects")
+      .select(`
+        *,
+        versions (
+          *,
+          articles(*),
+          plan_parameters(*),
+          walls (
+            *,
+            points_start:points!walls_startpointid_fkey(*),
+            points_end:points!walls_endpointid_fkey(*)
+          ),
+          interventions(*)
+        ),
+        managers(*)
+      `)
+      .eq("user_id", odooId)
+      .eq("id", projectId);
+
+    if (error) {
+      console.error("Error fetching project with relations:", error.message);
+      throw new Error(`Failed to fetch project: ${error.message}`);
+    }
+
+    if (!data || data.length === 0) {
+      throw new Error("No project found with the given criteria.");
+    }
+    if (data.length > 1) {
+      console.warn("Multiple projects found, returning the first one.");
+    }
+    return data[0];
+  } catch (err) {
+    console.error("Fetch error:", err.message);
+    throw err;
+  }
+};
 
 async function insertVersionData({
   supabase,
@@ -160,7 +200,7 @@ export async function POST(request) {
     const { data: userData, error: userError } = await supabase
       .from('users')
       .select('*')
-      .eq('id', user_id)
+      .eq('odoo_id', user_id)
       .single();
 
     if (userError || !userData) {
@@ -176,8 +216,9 @@ export async function POST(request) {
       lastName: lastNameParts.join(' ') || '',
       role: userData.role || null,
     };
-
-    const updatedProject = await fetchProjectWithRelations(userData.odoo_id, project_id);
+    
+    // Use the new fetching function here
+    const updatedProject = await fetchProjectWithAllRelations(user_id, project_id);
 
     // Step 7: Transform project + return response
     const transformed = transformProjectsData(updatedProject, author);

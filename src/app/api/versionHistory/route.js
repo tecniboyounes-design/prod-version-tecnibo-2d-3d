@@ -5,7 +5,8 @@ import { supabase } from '../filesController/route';
 
 export const fetchUserProjects = async (odooId) => {
   try {
-    const { data, error } = await supabase
+    // Fetch projects with related data
+    const { data: projects, error: projectsError } = await supabase
       .from('projects')
       .select(`
         *,
@@ -21,46 +22,55 @@ export const fetchUserProjects = async (odooId) => {
         managers(*)
       `)
       .eq('user_id', odooId);
-    console.log('data', error);
-    if (error !== null) {
-      console.error('Error fetching projects:', error.message);
-      throw new Error(`Failed to fetch projects: ${error.message}`);
+
+    if (projectsError) {
+      console.error('Error fetching projects:', projectsError.message);
+      throw new Error(`Failed to fetch projects: ${projectsError.message}`);
     }
 
-    const userResponse = await supabase
+    // Fetch user data
+    const { data: user, error: userError } = await supabase
       .from('users')
       .select('*')
       .eq('odoo_id', odooId)
-      .select();
-
-    if (userResponse.error) {
-      throw new Error(`Failed to fetch user data: ${userResponse.error.message}`);
+      .single();
+    
+    if (userError || !user) {
+      console.error('Error fetching user:', userError?.message || 'User not found');
+      throw new Error(`Failed to fetch user data: ${userError?.message || 'User not found'}`);
     }
 
-    const versionIds = data.flatMap(project => project.versions.map(version => version.id));
-    const interventionsResponse = await supabase
+    // Fetch interventions for versions
+    const versionIds = projects.flatMap(project => project.versions.map(version => version.id));
+    const { data: interventions, error: interventionsError } = await supabase
       .from('interventions')
       .select('*')
       .in('version_id', versionIds);
 
-    if (interventionsResponse.error) {
-      throw new Error(`Failed to fetch interventions: ${interventionsResponse.error.message}`);
+    if (interventionsError) {
+      console.error('Error fetching interventions:', interventionsError.message);
+      throw new Error(`Failed to fetch interventions: ${interventionsError.message}`);
     }
 
-    const interventions = interventionsResponse.data;
-
-    data.forEach(project => {
+    // Attach interventions to respective versions
+    projects.forEach(project => {
       project.versions.forEach(version => {
         version.interventions = interventions.filter(intervention => intervention.version_id === version.id);
       });
     });
 
-    return data || [];
+    // Return both projects and user data
+    return {
+      projects: projects || [],
+      user
+    };
   } catch (err) {
     console.error('Fetch error:', err.message);
     throw err;
   }
 };
+
+ 
 
 export async function GET(req) {
   const corsHeaders = getCorsHeaders(req); 
@@ -71,7 +81,7 @@ export async function GET(req) {
     const restructureParam = searchParams.get('restructure');
     const restructure = restructureParam === 'true';
     
-    console.log('Received odooId:', odooId, 'Restructure:', restructure);
+    // console.log('Received odooId:', odooId, 'Restructure:', restructure);
 
     if (!odooId) {
       return new Response(
@@ -80,13 +90,17 @@ export async function GET(req) {
       );
     }
 
-    const projects = await fetchUserProjects(odooId);
+    const { projects, user } = await fetchUserProjects(odooId);
 
+    // Parse full name into firstName and lastName
+    const [firstName = '', lastName = ''] = user.name ? user.name.split(' ', 2) : ['', ''];
+
+    // Create author object from user data
     const author = {
-      id: "39a18b31-b21a-4c52-b745-abb16a141e6d",
-      firstName: "Rabie",
-      lastName: "ELMA",
-      role: "Project Manager"
+      id: user.id,
+      firstName,
+      lastName,
+      role: user.role
     };
 
     const responseData = restructure ? transformProjectsData(projects, author) : projects;
@@ -108,3 +122,4 @@ export async function GET(req) {
 export async function OPTIONS(req) {
   return handleCorsPreflight(req);
 }
+

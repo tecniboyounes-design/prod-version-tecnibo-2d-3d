@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '../filesController/route';
-import { fetchProjectWithRelations } from '../projects/route';
 import { transformProjectsData } from '../../../lib/restructureData';
 import { validate } from 'uuid';
 import { getCorsHeaders, handleCorsPreflight } from '@/lib/cors';
@@ -9,16 +8,52 @@ export async function OPTIONS(request) {
   return handleCorsPreflight(request);
 }
 
+const fetchProjectWithRelations = async (odooId, projectId) => {
+  console.log('[LOG] Fetching project with relations for odooId:', odooId, 'and projectId:', projectId);
+  try {
+    const { data, error } = await supabase
+      .from("projects")
+      .select(
+        `
+        *,
+        versions (
+          *,
+          articles(*),
+          plan_parameters(*),
+          walls (
+            *,
+            points_start:points!walls_startpointid_fkey(*),
+            points_end:points!walls_endpointid_fkey(*)
+          ),
+          interventions(*)
+        ),
+        managers(*)
+      `
+      )
+      .eq("id", projectId)
+      .single();
+
+    if (error) {
+      console.error('[LOG] Error fetching project with relations:', error.message);
+      throw new Error(`Failed to fetch project: ${error.message}`);
+    }
+    console.log('[LOG] Project fetched successfully with relations');
+    return data;
+  } catch (err) {
+    console.error('[LOG] Fetch error in fetchProjectWithRelations:', err.message);
+    throw err;
+  }
+};
 
 export async function POST(req) {
   console.log('[LOG] Handling POST request for updateVersion');
-  const headers = getCorsHeaders(req); 
-  
+  const headers = getCorsHeaders(req);
+
   try {
     const versionData = await req.json();
     console.log('[LOG] Received version data:', versionData);
-    
-    const { projectId, versionId, lines, points, doors, userId } = versionData;
+
+const { projectId, versionId, lines, points, doors, userId, planParameters } = versionData;
 
     // Step 1: Check for required fields
     console.log('[LOG] Checking required fields...');
@@ -35,7 +70,7 @@ export async function POST(req) {
         { status: 400, headers }
       );
     }
-    
+
     // Validate UUIDs
     console.log('[LOG] Validating UUIDs...');
     if (!validate(projectId)) {
@@ -53,7 +88,6 @@ export async function POST(req) {
         { status: 400, headers }
       );
     }
-
     console.log('[LOG] UUIDs validated successfully');
 
     // Step 2: Verify version exists
@@ -65,7 +99,7 @@ export async function POST(req) {
       .single();
 
     if (versionCheckError || !versionCheck) {
-      console.error('[LOG] Version not found or error:', versionCheckError);
+      console.error('[LOG] Version not found or error:', versionCheckError?.message || 'No version data');
       return new NextResponse(
         JSON.stringify({ error: 'Version not found' }),
         { status: 404, headers }
@@ -82,9 +116,9 @@ export async function POST(req) {
       .eq('id', versionId)
       .select()
       .single();
-  
+
     if (versionError) {
-      console.error('[LOG] Version update failed:', versionError);
+      console.error('[LOG] Version update failed:', versionError.message);
       throw new Error('Failed to update version');
     }
     console.log('[LOG] Version metadata updated successfully:', versionUpdate);
@@ -93,50 +127,68 @@ export async function POST(req) {
     const getClientId = (entity) => {
       if (entity.client_id) return entity.client_id;
       if (!entity.id) {
-        console.warn(`[LOG] Entity missing id, cannot set client_id`);
+        console.warn('[LOG] Entity missing id, cannot set client_id:', entity);
         return null;
       }
       if (/^(line|cloison|point|door|window)-\d+$/.test(entity.id)) {
         return entity.id;
       }
       if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(entity.id)) {
-        console.warn(`[LOG] UUID detected in id (${entity.id}), client_id not provided, falling back to id`);
+        console.warn('[LOG] UUID detected in id, client_id not provided, falling back to id:', entity.id);
         return entity.id;
       }
       return entity.id;
     };
-
+  
     // Step 4: Delete orphaned entities
     console.log('[LOG] Deleting orphaned entities...');
-  
+    console.log('[LOG] Payload sizes - Points:', points.length, 'Lines:', lines.length, 'Doors:', doors.length);
+
     // Collect client_ids from payload
     const payloadPointClientIds = new Set(points.map(getClientId).filter(Boolean));
     const payloadWallClientIds = new Set(lines.map(getClientId).filter(Boolean));
     const payloadDoorClientIds = new Set(doors.map(getClientId).filter(Boolean));
-   
+    console.log('[LOG] Payload client_ids collected - Points:', payloadPointClientIds.size, 'Walls:', payloadWallClientIds.size, 'Doors:', payloadDoorClientIds.size);
+
     // Fetch existing entities from database
+    console.log('[LOG] Fetching existing points from database...');
     const { data: dbPoints, error: dbPointsError } = await supabase
       .from('points')
       .select('id, client_id')
       .eq('version_id', versionId);
-    if (dbPointsError) throw new Error('Failed to fetch points');
+    if (dbPointsError) {
+      console.error('[LOG] Failed to fetch points:', dbPointsError.message);
+      throw new Error('Failed to fetch points');
+    }
+    console.log('[LOG] Points fetched from db:', dbPoints.length);
 
+    console.log('[LOG] Fetching existing walls from database...');
     const { data: dbWalls, error: dbWallsError } = await supabase
       .from('walls')
       .select('id, client_id')
       .eq('version_id', versionId);
-    if (dbWallsError) throw new Error('Failed to fetch walls');
+    if (dbWallsError) {
+      console.error('[LOG] Failed to fetch walls:', dbWallsError.message);
+      throw new Error('Failed to fetch walls');
+    }
+    console.log('[LOG] Walls fetched from db:', dbWalls.length);
 
+    console.log('[LOG] Fetching existing articles from database...');
     const { data: dbArticles, error: dbArticlesError } = await supabase
       .from('articles')
       .select('id, client_id')
       .eq('version_id', versionId);
-    if (dbArticlesError) throw new Error('Failed to fetch articles');
-   
+    if (dbArticlesError) {
+      console.error('[LOG] Failed to fetch articles:', dbArticlesError.message);
+      throw new Error('Failed to fetch articles');
+    }
+    console.log('[LOG] Articles fetched from db:', dbArticles.length);
+
     // Identify orphaned entities
     const orphanedPoints = dbPoints.filter((p) => !payloadPointClientIds.has(p.client_id));
     const orphanedWalls = dbWalls.filter((w) => !payloadWallClientIds.has(w.client_id));
     const orphanedArticles = dbArticles.filter((a) => !payloadDoorClientIds.has(a.client_id));
+    console.log('[LOG] Orphaned entities - Points:', orphanedPoints.length, 'Walls:', orphanedWalls.length, 'Articles:', orphanedArticles.length);
 
     // Delete orphaned points
     if (orphanedPoints.length > 0) {
@@ -146,7 +198,11 @@ export async function POST(req) {
         .from('points')
         .delete()
         .in('id', pointIdsToDelete);
-      if (deletePointsError) throw new Error('Failed to delete orphaned points');
+      if (deletePointsError) {
+        console.error('[LOG] Failed to delete orphaned points:', deletePointsError.message);
+        throw new Error('Failed to delete orphaned points');
+      }
+      console.log('[LOG] Orphaned points deleted successfully');
     }
 
     // Delete orphaned walls
@@ -157,7 +213,11 @@ export async function POST(req) {
         .from('walls')
         .delete()
         .in('id', wallIdsToDelete);
-      if (deleteWallsError) throw new Error('Failed to delete orphaned walls');
+      if (deleteWallsError) {
+        console.error('[LOG] Failed to delete orphaned walls:', deleteWallsError.message);
+        throw new Error('Failed to delete orphaned walls');
+      }
+      console.log('[LOG] Orphaned walls deleted successfully');
     }
 
     // Delete orphaned articles
@@ -168,7 +228,11 @@ export async function POST(req) {
         .from('articles')
         .delete()
         .in('id', articleIdsToDelete);
-      if (deleteArticlesError) throw new Error('Failed to delete orphaned articles');
+      if (deleteArticlesError) {
+        console.error('[LOG] Failed to delete orphaned articles:', deleteArticlesError.message);
+        throw new Error('Failed to delete orphaned articles');
+      }
+      console.log('[LOG] Orphaned articles deleted successfully');
     }
 
     // Step 5: Upsert points
@@ -198,7 +262,7 @@ export async function POST(req) {
           version_id: versionId,
         };
 
-        // Check if point exists
+        console.log('[LOG] Checking if point exists for client_id:', clientId);
         const { data: existingPoint } = await supabase
           .from('points')
           .select('id')
@@ -215,15 +279,17 @@ export async function POST(req) {
         console.warn('[LOG] Skipping point due to invalid position:', pt);
       }
     }
+    console.log('[LOG] Points to insert:', pointRowsToInsert.length, 'Points to update:', pointRowsToUpdate.length);
 
     // Insert new points
     if (pointRowsToInsert.length > 0) {
       console.log('[LOG] Inserting new points:', pointRowsToInsert.length);
       const { error: insertError } = await supabase.from('points').insert(pointRowsToInsert);
       if (insertError) {
-        console.error('[LOG] Points insertion failed:', insertError);
+        console.error('[LOG] Points insertion failed:', insertError.message);
         throw new Error('Failed to insert points');
       }
+      console.log('[LOG] New points inserted successfully');
     }
 
     // Update existing points
@@ -244,6 +310,7 @@ export async function POST(req) {
             .eq('id', row.id)
         )
       );
+      console.log('[LOG] Existing points updated successfully');
     }
 
     // Fetch all points for mapping after upsert
@@ -254,9 +321,10 @@ export async function POST(req) {
       .eq('version_id', versionId);
 
     if (fetchPointsError) {
-      console.error('[LOG] Failed to fetch points:', fetchPointsError);
+      console.error('[LOG] Failed to fetch points for mapping:', fetchPointsError.message);
       throw new Error('Failed to fetch points');
     }
+    console.log('[LOG] Points fetched for mapping:', allPoints.length);
 
     // Create dual mapping for points
     const pointIdMap = new Map();
@@ -290,7 +358,7 @@ export async function POST(req) {
         continue;
       }
       const colorValue = typeof line.color === 'string' ? line.color : JSON.stringify(line.color);
-      console.log(`[LOG] Processing wall ${line.id} color:`, colorValue);
+      console.log(`[LOG] Processing wall with client_id ${clientId}, color:`, colorValue);
       const wallData = {
         client_id: clientId,
         startpointid: startPointDbId,
@@ -302,9 +370,10 @@ export async function POST(req) {
         texture: line.texture,
         height: line.height,
         version_id: versionId,
+        type: line.type,
       };
 
-      // Check if wall exists
+      console.log('[LOG] Checking if wall exists for client_id:', clientId);
       const { data: existingWall } = await supabase
         .from('walls')
         .select('id')
@@ -318,15 +387,17 @@ export async function POST(req) {
         wallRowsToInsert.push(wallData);
       }
     }
+    console.log('[LOG] Walls to insert:', wallRowsToInsert.length, 'Walls to update:', wallRowsToUpdate.length);
 
     // Insert new walls
     if (wallRowsToInsert.length > 0) {
       console.log('[LOG] Inserting new walls:', wallRowsToInsert.length);
       const { error: insertError } = await supabase.from('walls').insert(wallRowsToInsert);
       if (insertError) {
-        console.error('[LOG] Walls insertion failed:', insertError);
+        console.error('[LOG] Walls insertion failed:', insertError.message);
         throw new Error('Failed to insert walls');
       }
+      console.log('[LOG] New walls inserted successfully');
     }
 
     // Update existing walls
@@ -346,10 +417,12 @@ export async function POST(req) {
               texture: row.texture,
               height: row.height,
               version_id: row.version_id,
+              type: row.type,
             })
             .eq('id', row.id)
         )
       );
+      console.log('[LOG] Existing walls updated successfully');
     }
 
     // Fetch all walls for mapping after upsert
@@ -360,14 +433,16 @@ export async function POST(req) {
       .eq('version_id', versionId);
 
     if (fetchWallsError) {
-      console.error('[LOG] Failed to fetch walls:', fetchWallsError);
+      console.error('[LOG] Failed to fetch walls for mapping:', fetchWallsError.message);
       throw new Error('Failed to fetch walls');
     }
+    console.log('[LOG] Walls fetched for mapping:', allWalls.length);
 
-    // Create wall ID mapping
+    // Create dual mapping for walls to handle both client_id and database id
     const wallIdMap = new Map();
     allWalls.forEach((w) => {
-      wallIdMap.set(w.client_id, w.id);
+      wallIdMap.set(w.client_id, w.id); // Map client-generated ID to database ID
+      wallIdMap.set(w.id, w.id);        // Map database ID to itself
     });
     console.log('[LOG] Wall ID mapping completed, size:', wallIdMap.size);
 
@@ -382,10 +457,9 @@ export async function POST(req) {
         console.warn('[LOG] Skipping article due to missing client_id:', door);
         continue;
       }
-      // Get the database wall ID from the map
       const dbWallId = wallIdMap.get(door.wallId);
       if (!dbWallId) {
-        console.warn(`[LOG] No wall found in database for wallId (client_id): ${door.wallId}, skipping article`);
+        console.warn(`[LOG] No wall found in database for wallId: ${door.wallId}, skipping article`);
         continue;
       }
 
@@ -415,7 +489,7 @@ export async function POST(req) {
           image: door.image,
           width: door.width,
           height: door.height,
-          wallId: dbWallId, // Use the database-generated ID
+          wallId: dbWallId,
           referencePointId: door.referencePointId
             ? pointIdMap.get(door.referencePointId) || door.referencePointId
             : null,
@@ -427,7 +501,7 @@ export async function POST(req) {
         },
       };
 
-      // Check if article exists
+      console.log('[LOG] Checking if article exists for client_id:', clientId);
       const { data: existingArticle } = await supabase
         .from('articles')
         .select('id')
@@ -441,17 +515,19 @@ export async function POST(req) {
         articleRowsToInsert.push(articleData);
       }
     }
-   
+    console.log('[LOG] Articles to insert:', articleRowsToInsert.length, 'Articles to update:', articleRowsToUpdate.length);
+
     // Insert new articles
     if (articleRowsToInsert.length > 0) {
       console.log('[LOG] Inserting new articles:', articleRowsToInsert.length);
       const { error: insertError } = await supabase.from('articles').insert(articleRowsToInsert);
       if (insertError) {
-        console.error('[LOG] Articles insertion failed:', insertError);
+        console.error('[LOG] Articles insertion failed:', insertError.message);
         throw new Error('Failed to insert articles');
       }
+      console.log('[LOG] New articles inserted successfully');
     }
-    
+
     // Update existing articles
     if (articleRowsToUpdate.length > 0) {
       console.log('[LOG] Updating existing articles:', articleRowsToUpdate.length);
@@ -466,6 +542,7 @@ export async function POST(req) {
             .eq('id', row.id)
         )
       );
+      console.log('[LOG] Existing articles updated successfully');
     }
 
     // Step 8: Fetch user
@@ -477,10 +554,10 @@ export async function POST(req) {
       .single();
 
     if (userError) {
-      console.error('[LOG] User fetch failed:', userError);
+      console.error('[LOG] User fetch failed:', userError.message);
       throw new Error('Failed to fetch user');
     }
-    console.log('[LOG] User fetched:', userData);
+    console.log('[LOG] User fetched successfully:', userData);
 
     const [firstName, ...rest] = userData.name?.trim().split(' ') || [];
     const author = {
@@ -489,19 +566,12 @@ export async function POST(req) {
       lastName: rest.join(' ') || '',
       role: userData.role || null,
     };
-    console.log('[LOG] Author object created:', author);
 
     // Step 9: Fetch project details
-    console.log('[LOG] Fetching project details for projectId:', projectId);
     const fullProject = await fetchProjectWithRelations(userData.odoo_id, projectId);
-    console.log('[LOG] Project details fetched successfully');
 
     // Step 10: Transform and respond
-    console.log('[LOG] Transforming project data...');
-    console.log('[LOG] Full project data:', fullProject);
     const transformed = transformProjectsData(fullProject, author);
-    console.log('[LOG] Transformed project data:', transformed);
-    console.log('[LOG] Project data transformed successfully');
 
     console.log('[LOG] Preparing response...');
     return new NextResponse(
@@ -512,7 +582,7 @@ export async function POST(req) {
       { status: 200, headers }
     );
   } catch (err) {
-    console.error('[LOG] Server error occurred:', err);
+    console.error('[LOG] Server error occurred:', err.message);
     return new NextResponse(
       JSON.stringify({ error: err.message || 'Server error' }),
       { status: 500, headers }

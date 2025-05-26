@@ -9,7 +9,7 @@ export async function POST(req) {
     try {
         console.log('Updating walls for version:', versionId);
         await updateWallsInVersion(versionId);
-        
+         
         // Fetch the parent project that includes this version and all its relations (including walls)
         const { data: project, error: projectError } = await supabase
             .from("projects")

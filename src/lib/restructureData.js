@@ -1,4 +1,5 @@
 export const transformProjectsData = (projects, userData) => {
+  // console.log("Transforming projects data...", projects[0]);
   // Validate input
   if (!Array.isArray(projects)) {
     console.warn(
@@ -12,7 +13,7 @@ export const transformProjectsData = (projects, userData) => {
       return null; // Return null if it's neither an array nor an object
     }
   }
-
+  
   // Loop through each project and transform it
   return projects.map((project) => {
     // Top-level project structure
@@ -30,6 +31,10 @@ export const transformProjectsData = (projects, userData) => {
       settings: {
         selectedTools: {},
       },
+      celling_type: project.celling_type ,
+      floor_type: project.floor_type ,
+      project_estimate: project.project_estimate ,
+      RAL: project.RAL ,
       id: project?.id || "FALLBACK_ID",
       projectName: project.title || "Untitled",
       clientName: "Untitled",
@@ -49,7 +54,10 @@ export const transformProjectsData = (projects, userData) => {
     if (project.versions && Array.isArray(project.versions)) {
       transformedProject.versions = project.versions.map((version) => {
         // Transform walls into lines
-        const lines = version.walls.map((wall) => ({
+        const lines = version.walls.map((wall) => (
+          // console.log("wall 123456", wall),
+          {
+          
           client_id: wall.client_id,
           id: wall.id,
           startPointId: wall.startpointid,
@@ -60,7 +68,7 @@ export const transformProjectsData = (projects, userData) => {
           color: wall.color || "#f5f5f5",
           texture: wall.texture || "default.avif",
           height: wall.height || 2.5,
-          type: "WALL",
+          type: wall.type || "simple",
           connections: {
             left: null,
             right: null,
@@ -106,7 +114,7 @@ export const transformProjectsData = (projects, userData) => {
         const doors = (version.articles || []).map((article) => {
 
           const articleData = article.data || {};
-          // console.log("articleData", articleData);
+          // console.log("articleData 12345", articleData);
           return {
             id: article.id,
             client_id: article.client_id,
@@ -127,7 +135,7 @@ export const transformProjectsData = (projects, userData) => {
             referencePointId: articleData.referencePointId || null,
             referenceDistance: articleData.referenceDistance || null,
             system: articleData.system || "cloison fallback",
-            framed: articleData.framed ||false,
+            framed: articleData.framed || false,
             glass: articleData.glass || false,
 
           };
@@ -135,7 +143,7 @@ export const transformProjectsData = (projects, userData) => {
 
         // Floors (not provided in input, default to empty array or minimal example)
         const floors = [];
-        
+
         const planParameters = (version.plan_parameters || []).map((param) => ({
           id: param.id,
           scaleFactor: param.scale_factor,
@@ -159,10 +167,11 @@ export const transformProjectsData = (projects, userData) => {
           lastModified: project.changed_on || new Date().toISOString(),
           planParameters,
         };
-        
+
       });
     }
 
-    return transformedProject;
+        return transformedProject;
   });
+  
 };

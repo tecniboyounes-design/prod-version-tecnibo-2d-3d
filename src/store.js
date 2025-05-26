@@ -12,7 +12,7 @@ import { generateUniqueProjectNumber } from './data/models';
 const initialState = {
   loading: false,
   is2DView: false,
-  isDrawing: true,
+  isDrawing: false,
   wallHieght: 4,
   isClose: false,
   projectInfo: 'prices',
@@ -51,28 +51,28 @@ const initialState = {
         id: "bb1ee7cd-9738-4954-acfc-16261277c1ad",
         corner1: "c1",
         corner2: "c2",
-        thickness: 0.5,
+        thickness: 0.2,
         type: "STRAIGHT"
       },
       {
         id: "1825b075-5170-48c2-beec-7da379568f3c",
         corner1: "c2",
         corner2: "c3",
-        thickness: 0.5,
+        thickness: 0.2,
         type: "STRAIGHT"
       },
       {
         id: "6b6fd058-e464-4885-ade4-7ac9fcc1eb54",
         corner1: "c3",
         corner2: "c4",
-        thickness: 0.5,
+        thickness: 0.2,
         type: "STRAIGHT"
       },
       {
         id: "ee3e48cb-90f2-46e2-ac77-0831e36e194c",
         corner1: "c4",
         corner2: "c1",
-        thickness: 0.5,
+        thickness: 0.2,
         type: "STRAIGHT"
       }
     ],
@@ -81,13 +81,13 @@ const initialState = {
         name: "Square Room"
       }
     },
-    items:[],
+    items: [],
     units: "m"
   },
   items: [],
   currentConfig: { type: 'room', id: '' },
   currentStep: null,
-  
+
   settings: {
     gridSize: 40,
     gridColor: '#008000',
@@ -119,13 +119,13 @@ const initialState = {
     db: 'tecnibo17_test',
     user_settings: {
       id: 137,
-      user_id: {}, 
+      user_id: {},
       is_discuss_sidebar_category_channel_open: true,
       is_discuss_sidebar_category_chat_open: true,
       push_to_talk_key: false,
       use_push_to_talk: false,
       voice_active_duration: 200,
-      volume_settings_ids: [], 
+      volume_settings_ids: [],
       homemenu_config: false,
       voip_username: false,
       voip_secret: false,
@@ -201,7 +201,7 @@ const sanitizePayload = (payload) => {
     if (typeof value === "function" || value instanceof Node) {
       return undefined; // Remove functions and DOM elements
     }
-    return value;r
+    return value; r
   }));
 };
 
@@ -235,29 +235,29 @@ const jsonData = createSlice({
 
     pushArticles: (state, action) => {
       console.log('action payload:', action.payload);
-    
+
       if (!Array.isArray(state.floorplanner.items)) {
         console.warn("⚠️ state.floorplanner.items is not an array! Initializing as an empty array.");
         state.floorplanner.items = [];
       }
-    
+
       let newItem = sanitizePayload(action.payload);
-    
+
       // Assign unique ID if not present
       if (!newItem.id) {
         newItem.id = uuidv4();
       }
-    
+
       // Assign random price directly to item if not present
       if (typeof newItem.price === 'undefined') {
         newItem.price = getRandomPrice();
       }
-    
+
       // Set default quantity
       if (!newItem.quantity) {
         newItem.quantity = 1;
       }
-    
+
       state.floorplanner.items.push(newItem);
     },
 
@@ -339,8 +339,8 @@ const jsonData = createSlice({
     pushProject: (state, action) => {
       state.project = { ...action.payload };
     },
-    
-    
+
+
 
 
 
@@ -631,19 +631,34 @@ const jsonData = createSlice({
 
 
 
-
-    createWall(state, action) {
-      // console.log('action Payload:',action.payload);
-      const { corner1, corner2, a, b } = action.payload;
-      const newWall = {
+    createWall: (state, action) => {
+      const {
+        id = uuidv4(),
         corner1,
         corner2,
-        a: {},
-        b: {}
+        thickness = 0.2,
+        type = "STRAIGHT",
+        name = "T100",
+        material = {},
+        length = 0,
+        ...otherProps
+      } = action.payload;
 
+      const newWall = {
+        id,
+        corner1,
+        corner2,
+        thickness,
+        type,
+        name,
+        material,
+        length,
+        ...otherProps,
       };
+
       state.floorplanner.walls.push(newWall);
     },
+
 
     selectItemForRoom: (state, action) => {
       // console.log('Selected item:', action.payload);
@@ -695,9 +710,9 @@ const jsonData = createSlice({
 
     setIsDrawing(state, action) {
       state.isDrawing = action.payload;
-      if (action.payload) {
-        state.is2DView = true;
-      }
+      // if (action.payload) {
+      //   state.is2DView = true;
+      // }
     },
 
 

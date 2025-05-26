@@ -1,11 +1,10 @@
-
 // Load allowed origins from environment variables or use defaults
 const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(",")
   : ["http://localhost:5173", "http://localhost:3000", "http://localhost:3001", "http://192.168.33.137:5173",
     "http://192.168.33.138:3001"
     ];
-  
+    
 
 // Default CORS configuration
 const CORS_CONFIG = {
@@ -14,7 +13,7 @@ const CORS_CONFIG = {
   allowCredentials: true, 
   maxAge: 86400, 
 };
-
+ 
 
 
 /**
@@ -26,14 +25,15 @@ const CORS_CONFIG = {
 
 
 export function getCorsHeaders(request, config = {}) {
+  // Accept both 'origin' and 'referer' headers for CORS checks
   const origin = request.headers.get("origin") || "";
-  console.log("CORS Origin:", origin);
+  console.log("CORS Origin:", origin);  
   const mergedConfig = { ...CORS_CONFIG, ...config };
-
+   
   // Validate origin against allowed origins
   const cleanOrigin = origin.replace(/\/$/, "");
   const isAllowed = ALLOWED_ORIGINS.includes(cleanOrigin);
-
+   
   return {
     "Access-Control-Allow-Origin": isAllowed ? origin : "null", // Restrict to allowed origins
     "Access-Control-Allow-Methods": mergedConfig.allowMethods.join(", "),
