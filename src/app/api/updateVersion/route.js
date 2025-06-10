@@ -45,6 +45,7 @@ const fetchProjectWithRelations = async (odooId, projectId) => {
   }
 };
 
+
 export async function POST(req) {
   console.log('[LOG] Handling POST request for updateVersion');
   const headers = getCorsHeaders(req);
@@ -53,7 +54,7 @@ export async function POST(req) {
     const versionData = await req.json();
     console.log('[LOG] Received version data:', versionData);
 
-const { projectId, versionId, lines, points, doors, userId, planParameters } = versionData;
+    const { projectId, versionId, lines, points, doors, userId, planParameters } = versionData;
 
     // Step 1: Check for required fields
     console.log('[LOG] Checking required fields...');
@@ -97,7 +98,7 @@ const { projectId, versionId, lines, points, doors, userId, planParameters } = v
       .select('id')
       .eq('id', versionId)
       .single();
-
+    
     if (versionCheckError || !versionCheck) {
       console.error('[LOG] Version not found or error:', versionCheckError?.message || 'No version data');
       return new NextResponse(
@@ -123,6 +124,71 @@ const { projectId, versionId, lines, points, doors, userId, planParameters } = v
     }
     console.log('[LOG] Version metadata updated successfully:', versionUpdate);
 
+    // Step 4: Upsert planParameters
+    if (planParameters) {
+      console.log('[LOG] Processing planParameters:', planParameters);
+      const { scale, rotation, offsetX, offsetY, refLength } = planParameters;
+
+      // Validate planParameters fields (optional, but ensure they are numbers if provided)
+      const planParamsData = {
+        scale_factor: typeof scale === 'number' ? scale : null,
+        rotation: typeof rotation === 'number' ? rotation : null,
+        x_offset: typeof offsetX === 'number' ? offsetX : null,
+        y_offset: typeof offsetY === 'number' ? offsetY : null,
+        ref_length: typeof refLength === 'number' ? refLength : null,
+        version_id: versionId,
+      };
+
+      // Check if plan_parameters record exists for this version
+      console.log('[LOG] Checking for existing plan_parameters for versionId:', versionId);
+      const { data: existingPlanParams, error: fetchPlanParamsError } = await supabase
+        .from('plan_parameters')
+        .select('id')
+        .eq('version_id', versionId)
+        .single();
+
+      if (fetchPlanParamsError && fetchPlanParamsError.code !== 'PGRST116') {
+        // PGRST116 means no rows found, which is fine; other errors are problematic
+        console.error('[LOG] Failed to fetch plan_parameters:', fetchPlanParamsError.message);
+        throw new Error('Failed to fetch plan_parameters');
+      }
+
+      if (existingPlanParams) {
+        // Update existing plan_parameters
+        console.log('[LOG] Updating existing plan_parameters for versionId:', versionId);
+        const { error: updatePlanParamsError } = await supabase
+          .from('plan_parameters')
+          .update({
+            scale_factor: planParamsData.scale_factor,
+            rotation: planParamsData.rotation,
+            x_offset: planParamsData.x_offset,
+            y_offset: planParamsData.y_offset,
+            ref_length: planParamsData.ref_length,
+          })
+          .eq('id', existingPlanParams.id);
+
+        if (updatePlanParamsError) {
+          console.error('[LOG] Failed to update plan_parameters:', updatePlanParamsError.message);
+          throw new Error('Failed to update plan_parameters');
+        }
+        console.log('[LOG] plan_parameters updated successfully');
+      } else {
+        // Insert new plan_parameters
+        console.log('[LOG] Inserting new plan_parameters for versionId:', versionId);
+        const { error: insertPlanParamsError } = await supabase
+          .from('plan_parameters')
+          .insert(planParamsData);
+
+        if (insertPlanParamsError) {
+          console.error('[LOG] Failed to insert plan_parameters:', insertPlanParamsError.message);
+          throw new Error('Failed to insert plan_parameters');
+        }
+        console.log('[LOG] plan_parameters inserted successfully');
+      }
+    } else {
+      console.log('[LOG] No planParameters provided, skipping upsert');
+    }
+
     // Helper function to determine client_id
     const getClientId = (entity) => {
       if (entity.client_id) return entity.client_id;
@@ -139,8 +205,8 @@ const { projectId, versionId, lines, points, doors, userId, planParameters } = v
       }
       return entity.id;
     };
-  
-    // Step 4: Delete orphaned entities
+
+    // Step 5: Delete orphaned entities
     console.log('[LOG] Deleting orphaned entities...');
     console.log('[LOG] Payload sizes - Points:', points.length, 'Lines:', lines.length, 'Doors:', doors.length);
 
@@ -235,7 +301,7 @@ const { projectId, versionId, lines, points, doors, userId, planParameters } = v
       console.log('[LOG] Orphaned articles deleted successfully');
     }
 
-    // Step 5: Upsert points
+    // Step 6: Upsert points
     console.log('[LOG] Preparing to upsert points...');
     const pointRowsToInsert = [];
     const pointRowsToUpdate = [];
@@ -338,7 +404,7 @@ const { projectId, versionId, lines, points, doors, userId, planParameters } = v
     });
     console.log('[LOG] Point ID mapping completed, size:', pointIdMap.size);
 
-    // Step 6: Upsert walls
+    // Step 7: Upsert walls
     console.log('[LOG] Preparing to upsert walls...');
     const wallRowsToInsert = [];
     const wallRowsToUpdate = [];
@@ -446,7 +512,7 @@ const { projectId, versionId, lines, points, doors, userId, planParameters } = v
     });
     console.log('[LOG] Wall ID mapping completed, size:', wallIdMap.size);
 
-    // Step 7: Upsert articles (doors)
+    // Step 8: Upsert articles (doors)
     console.log('[LOG] Preparing to upsert articles (doors)...');
     const articleRowsToInsert = [];
     const articleRowsToUpdate = [];
@@ -545,7 +611,7 @@ const { projectId, versionId, lines, points, doors, userId, planParameters } = v
       console.log('[LOG] Existing articles updated successfully');
     }
 
-    // Step 8: Fetch user
+    // Step 9: Fetch user
     console.log('[LOG] Fetching user with odoo_id:', userId);
     const { data: userData, error: userError } = await supabase
       .from('users')
@@ -567,11 +633,11 @@ const { projectId, versionId, lines, points, doors, userId, planParameters } = v
       role: userData.role || null,
     };
 
-    // Step 9: Fetch project details
+    // Step 10: Fetch project details
     const fullProject = await fetchProjectWithRelations(userData.odoo_id, projectId);
 
-    // Step 10: Transform and respond
-    const transformed = transformProjectsData(fullProject, author);
+    // Step 11: Transform and respond
+    const transformed = transformProjectsData([fullProject], author);
 
     console.log('[LOG] Preparing response...');
     return new NextResponse(
