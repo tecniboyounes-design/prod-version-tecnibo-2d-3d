@@ -161,7 +161,7 @@ const handleDragStart = (id) => setDraggedPoint(id);
       orbitRef.current.minPolarAngle = 0;
       orbitRef.current.maxPolarAngle = 0;
       orbitRef.current.enableRotate = false;
-      camera.position.set(0, 20, 0); // 2D Top-Down View
+      camera.position.set(0, 50, 0); // 2D Top-Down View
       camera.lookAt(0, 0, 0);
     }, [camera, is2DView]);
 

@@ -190,7 +190,7 @@ export const generateRoomKey = (pointIds) => { return pointIds.sort().join(',') 
 
 
 export const gatherAllCorners = (corners) => { return Object.keys(corners) };
-
+ 
 
 export const getRandomPrice = () => Math.floor(Math.random() * (100 - 10 + 1)) + 10;
 
@@ -209,7 +209,6 @@ const sanitizePayload = (payload) => {
 const jsonData = createSlice({
   name: 'JSONDATA',
   initialState,
-
   reducers: {
 
     updateItems: (state, action) => {
@@ -795,6 +794,30 @@ const jsonData = createSlice({
         };
       }
     },
+
+    // New reducer: setWallPrice
+    setWallPrice: (state, action) => {
+      const { wallId, totalPrice } = action.payload;
+      // Find the wall by ID and update its total_price
+      const wall = state.floorplanner.walls.find(w => w.id === wallId);
+      if (wall) {
+        wall.total_price = totalPrice;
+        console.log(`Wall price updated in state: wallId=${wallId}, totalPrice=${totalPrice}`);
+      } else {
+        console.warn(`Wall with id ${wallId} not found in state.`);
+      }
+    },
+
+
+    // New reducer: setWallInfo
+    setWallInfo: (state, action) => {
+      // action.payload should be an object: { wallId, info }
+      const { wallId, info } = action.payload;
+      state.wallInfo[wallId] = info;
+      console.log(`Wall info updated in state: wallId=${wallId}`, info);
+    },
+
+    
   },
 
 
@@ -812,7 +835,8 @@ const store = configureStore({
 
 
 // Export actions for use in components
-export const { updateFloorPlan, setUser, deleteArticle, updateItemQuantity, updateProjectStatus, addProject, deleteProject, pushProject, pushArticles, updatePreview, clearPreview, setLoading, setDragging, setProjectInfo, updateWallWithStarConfig, starWall, setWallConfig, updateJSONDATA, updateItems, updateCorner, setIsDrawing, setIs2DView, createPoint, createWall, updatePoints, createRoom, removePoint, updateWallWithNewCorner, updateBothCorners, selectItemForRoom, updateItemPositionAndRotation, setCurrentStep, saveProjectSetup, setHouse, setCurrentConfig, updateSettings, resetSettings } = jsonData.actions;
+export const {
+  updateFloorPlan, setUser, deleteArticle, updateItemQuantity, updateProjectStatus, addProject, deleteProject, pushProject, pushArticles, updatePreview, clearPreview, setLoading, setDragging, setProjectInfo, updateWallWithStarConfig, starWall, setWallConfig, updateJSONDATA, updateItems, updateCorner, setIsDrawing, setIs2DView, createPoint, createWall, updatePoints, createRoom, removePoint, updateWallWithNewCorner, updateBothCorners, selectItemForRoom, updateItemPositionAndRotation, setCurrentStep, saveProjectSetup, setHouse, setCurrentConfig, updateSettings, resetSettings, setWallPrice, setWallInfo } = jsonData.actions;
 
 
 export default store;

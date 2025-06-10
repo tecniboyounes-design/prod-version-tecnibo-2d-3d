@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { supabase } from "../filesController/route"; 
 import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors"; 
 import { validate } from "uuid";
+import { supabase } from "../../filesController/route";
 
 /**
  * Handles CORS preflight requests for the POST endpoint.
@@ -17,7 +17,7 @@ export async function OPTIONS(request) {
   
 export async function POST(req) {
   const corsHeaders = getCorsHeaders(req);
-
+  
   try {
     const payload = await req.json();
     const { versionId, comment } = payload;
@@ -88,11 +88,13 @@ export async function POST(req) {
   }
 }
 
-const commentObject = {
+
+
+const commentObjectDataStructure = {
   name: "Untitled",
   versions: [
     {
-      version: "1.0",
+      versionId: "1.0",
       comments: [
         {
           id: "1747237788610",
@@ -115,5 +117,10 @@ const commentObject = {
     },
   ],
 };
+
+
+
+
+
 
 

@@ -106,7 +106,7 @@ const useDrawWall = () => {
 
     } else {
       const firstPoint = pointsList[0].position;
-
+       
       if (arePointsExact(firstPoint, { x, z }) || arePointsNear(firstPoint, { x, z })) {
         finalizeRoom(firstPoint.x, firstPoint.z);
       } else {
@@ -116,7 +116,7 @@ const useDrawWall = () => {
         // Calculate length between currentRealPointId and new point
         const prevPoint = pointsList[pointsList.length - 1].position;
         const length = Math.sqrt((x - prevPoint.x) ** 2 + (z - prevPoint.z) ** 2);
-
+      
         const wallData = {
           id: wallId,
           corner1: currentVirtualPointId,
@@ -125,18 +125,14 @@ const useDrawWall = () => {
           material: { id: 15912 }, // Example material ID
           length,
           height: 3, // Default height
-        };
-
+        }; 
+    
         dispatch(createWall(wallData));
 
         // Calculate price after wall creation
         try {
           const price = await calculateWallPrice(wallData);
           console.log("Calculated wall price:", price);
-          // dispatch({
-          //   type: "UPDATE_WALL_PRICE",
-          //   payload: { wallId, price },
-          // });
         } catch (error) {
           console.error("Error calculating wall price:", error);
         }

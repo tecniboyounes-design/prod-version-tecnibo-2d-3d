@@ -7,6 +7,7 @@ export async function OPTIONS(req) {
 
 export async function PUT(req) {
   const corsHeaders = getCorsHeaders(req);
+  
   try {
     const { projectId, status } = await req.json();
 
@@ -16,7 +17,7 @@ export async function PUT(req) {
         { status: 400, headers: corsHeaders }
       );
     }
-
+   
     const { data, error } = await supabase
       .from("projects")
       .update({ status })

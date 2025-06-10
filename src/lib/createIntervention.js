@@ -1,4 +1,4 @@
-import { supabase } from "../filesController/route";
+import { supabase } from "../app/api/filesController/route";
 
 
 /**
@@ -54,8 +54,8 @@ export async function createIntervention(payload) {
     console.error("🚨 [Version Lookup Error] -", versionError?.message);
     throw new Error("Version lookup failed.");
   }
-
-  // Lookup intervener data
+  
+  // Lookup intervener data 
   let intervenerQuery = supabase.from("users").select("id, name, avatar, email, odoo_id");
   intervenerQuery = intervenerId.length === 36
     ? intervenerQuery.eq("id", intervenerId)

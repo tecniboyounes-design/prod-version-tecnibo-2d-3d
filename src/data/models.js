@@ -1142,96 +1142,96 @@ export const arrayToCorners = (array) => {
 // }
 
 
-[ 
-{
-  lines: [
-    {
-      "id": "line-1738841848668-0",
-      "startPointId": "point-1738841848668-0",
-      "endPointId": "point-1738841848668-1",
-      "length": 12.54,
-      "rotation": 3.141592653589793,
-      "thickness": 0.012,
-      "color": "#f5f5f5",
-      "texture": "default.avif",
-      "height": 4,
-      "angles": [
-        {
-          "internalAngle": 1.5707963267948966,
-          "externalAngle": 4.71238898038469,
-          "internalAngleDeg": 90,
-          "externalAngleDeg": 270,
-          "connectedLineId": "line-1738841848668-3",
-          "pointId": "point-1738841848668-0",
-          "startAngle": 0,
-          "direction": 1
-        }
-      ]
-    },
-    {
-      "id": "line-1738841848668-1",
-      "startPointId": "point-1738841848668-1",
-      "endPointId": "point-1738841848668-2",
-      "length": 9.11,
-      "rotation": -1.5707963267948966,
-      "thickness": 0.012,
-      "color": "#f5f5f5",
-      "texture": "default.avif",
-      "height": 4,
-      "angles": [
-        {
-          "internalAngle": 1.5707963267948966,
-          "externalAngle": 4.71238898038469,
-          "internalAngleDeg": 90,
-          "externalAngleDeg": 270,
-          "connectedLineId": "line-1738841848668-2",
-          "pointId": "point-1738841848668-2",
-          "startAngle": -1.5707963267948966,
-          "direction": -1
-        }
-      ]
-    },
-    {
-      "id": "line-1738841848668-2",
-      "startPointId": "point-1738841848668-2",
-      "endPointId": "point-1738841848668-3",
-      "length": 12.54,
-      "rotation": 0,
-      "thickness": 0.012,
-      "color": "#f5f5f5",
-      "texture": "default.avif",
-      "height": 4,
-      "angles": [
-        {
-          "internalAngle": 1.5707963267948966,
-          "externalAngle": 4.71238898038469,
-          "internalAngleDeg": 90,
-          "externalAngleDeg": 270,
-          "connectedLineId": "line-1738841848668-1",
-          "pointId": "point-1738841848668-2",
-          "startAngle": -1.5707963267948966,
-          "direction": -1
-        }
-      ]
-    },
-    {
-      "id": "line-1738841848668-3",
-      "startPointId": "point-1738841848668-3",
-      "endPointId": "point-1738841848668-0",
-      "length": 9.11,
-      "rotation": 1.5707963267948966,
-      "thickness": 0.012,
-      "color": "#f5f5f5",
-      "texture": "default.avif",
-      "height": 4,
-      "angles": [
-        {
-          "internalAngle": 1.5707963267948966,
-          "externalAngle": 4.71238898038469,
-          "internalAngleDeg": 90,
-          "externalAngleDeg": 270,
-          "connectedLineId": "line-1738841848668-0",
-          "pointId": "point-1738841848668-0",
+[
+  {
+    lines: [
+      {
+        "id": "line-1738841848668-0",
+        "startPointId": "point-1738841848668-0",
+        "endPointId": "point-1738841848668-1",
+        "length": 12.54,
+        "rotation": 3.141592653589793,
+        "thickness": 0.012,
+        "color": "#f5f5f5",
+        "texture": "default.avif",
+        "height": 4,
+        "angles": [
+          {
+            "internalAngle": 1.5707963267948966,
+            "externalAngle": 4.71238898038469,
+            "internalAngleDeg": 90,
+            "externalAngleDeg": 270,
+            "connectedLineId": "line-1738841848668-3",
+            "pointId": "point-1738841848668-0",
+            "startAngle": 0,
+            "direction": 1
+          }
+        ]
+      },
+      {
+        "id": "line-1738841848668-1",
+        "startPointId": "point-1738841848668-1",
+        "endPointId": "point-1738841848668-2",
+        "length": 9.11,
+        "rotation": -1.5707963267948966,
+        "thickness": 0.012,
+        "color": "#f5f5f5",
+        "texture": "default.avif",
+        "height": 4,
+        "angles": [
+          {
+            "internalAngle": 1.5707963267948966,
+            "externalAngle": 4.71238898038469,
+            "internalAngleDeg": 90,
+            "externalAngleDeg": 270,
+            "connectedLineId": "line-1738841848668-2",
+            "pointId": "point-1738841848668-2",
+            "startAngle": -1.5707963267948966,
+            "direction": -1
+          }
+        ]
+      },
+      {
+        "id": "line-1738841848668-2",
+        "startPointId": "point-1738841848668-2",
+        "endPointId": "point-1738841848668-3",
+        "length": 12.54,
+        "rotation": 0,
+        "thickness": 0.012,
+        "color": "#f5f5f5",
+        "texture": "default.avif",
+        "height": 4,
+        "angles": [
+          {
+            "internalAngle": 1.5707963267948966,
+            "externalAngle": 4.71238898038469,
+            "internalAngleDeg": 90,
+            "externalAngleDeg": 270,
+            "connectedLineId": "line-1738841848668-1",
+            "pointId": "point-1738841848668-2",
+            "startAngle": -1.5707963267948966,
+            "direction": -1
+          }
+        ]
+      },
+      {
+        "id": "line-1738841848668-3",
+        "startPointId": "point-1738841848668-3",
+        "endPointId": "point-1738841848668-0",
+        "length": 9.11,
+        "rotation": 1.5707963267948966,
+        "thickness": 0.012,
+        "color": "#f5f5f5",
+        "texture": "default.avif",
+        "height": 4,
+        "angles": [
+          {
+            "internalAngle": 1.5707963267948966,
+            "externalAngle": 4.71238898038469,
+            "internalAngleDeg": 90,
+            "externalAngleDeg": 270,
+            "connectedLineId": "line-1738841848668-0",
+            "pointId": "point-1738841848668-0",
             startAngle: 0,
             direction: 1,
           },
@@ -1268,7 +1268,7 @@ export const arrayToCorners = (array) => {
           thickness: 0.1,
         },
         material: {
-          id:876543456,
+          id: 876543456,
           producer: "Unilin",
           category: "DE",
           group: "Uni",
@@ -2186,3 +2186,96 @@ const categories = {
     ],
   },
 };
+
+
+[
+  {
+    "article_id": "cloison-custom-1748943397249",
+    "name": "Custom-T100-1748943397245",
+    "dimension": {
+      "height": {
+        "min": 0.2,
+        "max": 3.1
+      },
+      "width": {
+        "min": 0.1,
+        "max": 1.2
+      },
+      "thickness": {
+        "min": 0.1,
+        "max": 0.1
+      }
+    },
+    "dimensions": {
+      "height": 3.2,
+      "width": 1.2,
+      "thickness": 0.1
+    },
+    "height": 3.2,
+    "color": {
+      "color": "RAL 3009",
+      "colorFinish": "Glossy"
+    },
+    "lines": {
+      "id": "line-1738852779523",
+      "startPointId": "point-1738852778627",
+      "endPointId": "point-1738852779523",
+      "length": 1.2,
+      "rotation": 0.0003796998020737854,
+      "thickness": 0.01,
+      "color": "#0A0A0A",
+      "texture": "default.avif",
+      "height": 3.2
+    },
+    "points": [
+      {
+        "id": "point-1738852778627",
+        "position": {
+          "x": -4.724803390336925,
+          "y": 0.01,
+          "z": -1.2545439058631405
+        },
+        "rotation": 0,
+        "snapAngle": 0
+      },
+      {
+        "id": "point-1738852779523",
+        "position": {
+          "x": -5.926,
+          "y": 0.01,
+          "z": -1.255
+        },
+        "rotation": 0,
+        "snapAngle": 0
+      }
+    ],
+    "image": "P_T100_START_LEF.png",
+    "material": {
+      "producer": "Unilin",
+      "category": "DE",
+      "group": "Uni",
+      "substrate": "MDFBL 18.0 mm",
+      "substrateProperty": "Water-resistant",
+      "decor": "UN_0L100_HG1",
+      "profile": "UN_DE_HGW_MDFBL_0L100_HG1_18",
+      "preGluedProfile": "Unilim Evola 025 CST 0.3mm préencollé",
+      "differentSides": false
+    },
+    "type": "T100",
+    "price": 780,
+    "isCustom": true,
+    "templateType": "T100",
+    "createdAt": "2025-06-03T09:36:37.245Z",
+    "quantity": 1,
+    "estimate": false,
+    "acoustic_performance": "Rw = 50 dB",
+    "ceiling_type": "Gyproc ceiling",
+    "floor_type": "Raised floor (plancher)",
+    "links": {
+      "top": "Coated steel profile U",
+      "left": "Wall or Gyproc (Coated steel profile)",
+      "right": "Wall or Gyproc (Coated steel profile)"
+    },
+    "id": "cloison-1748943397249"
+  }
+]

@@ -12,6 +12,7 @@ export const fetchUserProjects = async (odooId) => {
         *,
         versions(
           *,
+          plan_parameters(*),
           articles(*),
           walls(
             *,
@@ -34,14 +35,16 @@ export const fetchUserProjects = async (odooId) => {
       .select('*')
       .eq('odoo_id', odooId)
       .single();
-    
+
     if (userError || !user) {
       console.error('Error fetching user:', userError?.message || 'User not found');
       throw new Error(`Failed to fetch user data: ${userError?.message || 'User not found'}`);
     }
 
-    // Fetch interventions for versions
+    // Get version IDs
     const versionIds = projects.flatMap(project => project.versions.map(version => version.id));
+
+    // Fetch interventions
     const { data: interventions, error: interventionsError } = await supabase
       .from('interventions')
       .select('*')
@@ -59,39 +62,58 @@ export const fetchUserProjects = async (odooId) => {
       });
     });
 
-    // Return both projects and user data
+    // ✅ Fetch and attach custom_articles per project
+    const projectIds = projects.map(p => p.id);
+    const { data: customArticles, error: customArticlesError } = await supabase
+      .from('custom_articles')
+      .select('*')
+      .in('project_id', projectIds);
+
+    if (customArticlesError) {
+      console.error('Error fetching custom articles:', customArticlesError.message);
+      throw new Error(`Failed to fetch custom articles: ${customArticlesError.message}`);
+    }
+
+    // Attach custom_articles to each project
+    projects.forEach(project => {
+      project.custom_articles = customArticles.filter(article => article.project_id === project.id);
+    });
+
+    // Return combined result
     return {
       projects: projects || [],
       user
     };
+
   } catch (err) {
     console.error('Fetch error:', err.message);
     throw err;
   }
 };
 
- 
+
 
 export async function GET(req) {
-  const corsHeaders = getCorsHeaders(req); 
+
+  const corsHeaders = getCorsHeaders(req);
 
   try {
     const { searchParams } = new URL(req.url);
     const odooId = searchParams.get('odooId');
     const restructureParam = searchParams.get('restructure');
     const restructure = restructureParam === 'true';
-    
-    // console.log('Received odooId:', odooId, 'Restructure:', restructure);
 
+    // console.log('Received odooId:', odooId, 'Restructure:', restructure);
+    
     if (!odooId) {
       return new Response(
         JSON.stringify({ success: false, error: 'Missing odooId parameter' }),
         { status: 400, headers: corsHeaders }
       );
     }
-
+    
     const { projects, user } = await fetchUserProjects(odooId);
-
+    
     // Parse full name into firstName and lastName
     const [firstName = '', lastName = ''] = user.name ? user.name.split(' ', 2) : ['', ''];
 
@@ -103,8 +125,9 @@ export async function GET(req) {
       role: user.role
     };
 
+   
     const responseData = restructure ? transformProjectsData(projects, author) : projects;
-
+   
     return new Response(JSON.stringify(responseData), {
       status: 200,
       statusText: 'OK',
@@ -118,6 +141,7 @@ export async function GET(req) {
     );
   }
 }
+
 
 export async function OPTIONS(req) {
   return handleCorsPreflight(req);

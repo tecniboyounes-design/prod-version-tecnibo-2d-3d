@@ -14,6 +14,7 @@
 ssh yattaoui@192.168.30.92
 Yattaou1
 
+
 Get-Process | ForEach-Object { Stop-Process -Id $_.Id -Force }
 sudo nano /etc/systemd/system/tecnipo.service
 sudo systemctl status tecnipo.service // for check the status
@@ -25,8 +26,10 @@ sudo journalctl -u tecnipo.service --since "10 minutes ago"
 sudo systemctl daemon-reload
 sudo systemctl restart tecnipo.service
 sudo journalctl -u tecnipo.service -f 
+scp -r "C:\Users\Huawei\OneDrive\Desktop\tecnipo\new-ui-version" yattaoui@192.168.30.92:/home/yattaoui/
 
 
+ 
 set -e  # Exit on error
 
 echo "📦 Updating system packages..." 

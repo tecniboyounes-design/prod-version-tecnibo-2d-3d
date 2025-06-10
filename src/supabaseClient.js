@@ -180,7 +180,7 @@ export const manageFloorplanInDatabase = async (action, floorplanId, arrayType, 
     if (fetchError) {
       throw new Error(`Error fetching floorplan: ${fetchError.message}`);
     }
-
+  
     switch (action) {
 
       case 'add':

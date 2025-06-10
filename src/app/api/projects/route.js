@@ -1,5 +1,5 @@
 import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
-import { createIntervention } from "./createIntervention";
+import { createIntervention } from "../../../lib/createIntervention";
 import { transformProjectData } from "./transformProjectData";
 import { transformProjectsData } from "../../../lib/restructureData";
 import { supabase } from "../filesController/route";

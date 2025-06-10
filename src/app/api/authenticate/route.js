@@ -16,7 +16,7 @@ export async function POST(request) {
         JSON.stringify({ message: "Missing email or password", result: false }),
         { status: 400, headers: corsHeaders }
       );
-    }
+    } 
     
     const loginData = {
       jsonrpc: "2.0",
@@ -28,18 +28,18 @@ export async function POST(request) {
       },
       id: 1,
     };
-
+ 
     const response = await fetch('http://192.168.30.33:8069/web/session/authenticate', {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       credentials: "include",
       body: JSON.stringify(loginData),
     });
-
+    
     const data = await response.json();
     const setCookie = response.headers.get("set-cookie");
     let sessionId = null;
-
+   
     if (setCookie) {
       const match = setCookie.match(/session_id=([^;]+)/);
       if (match) {

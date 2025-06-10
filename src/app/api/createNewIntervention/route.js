@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createIntervention } from "../projects/createIntervention";
+import { createIntervention } from "../../../lib/createIntervention";
 import { getCorsHeaders } from "../../../lib/cors";
 
 export async function OPTIONS(req) {

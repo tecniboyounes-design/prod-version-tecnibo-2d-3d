@@ -10,7 +10,7 @@ export async function OPTIONS(request) {
 
 export async function POST(req) {
   const corsHeaders = getCorsHeaders(req);
-
+   
   try {
     const payload = await req.json();
     console.log("[LOG] Received payload:", payload);
@@ -49,11 +49,11 @@ export async function POST(req) {
     }
     console.log("[LOG] Project exists with ID:", project_id);
 
-    // Step 2: Verify source version exists
+    // Step 2: Verify source version exists and fetch plan2DImage
     console.log("[LOG] Verifying source version with ID:", version_id);
     const { data: sourceVersion, error: sourceVersionError } = await supabase
       .from("versions")
-      .select("id, version, created_on, lastModified")
+      .select("id, version, created_on, lastModified, plan2DImage")
       .eq("project_id", project_id)
       .eq("id", version_id)
       .single();
@@ -88,7 +88,7 @@ export async function POST(req) {
     const newVersion = latestVersion?.version ? incrementVersion(latestVersion.version) : "1.0";
     console.log("[LOG] New version number:", newVersion);
 
-    // Step 5: Insert new version
+    // Step 5: Insert new version with plan2DImage
     console.log("[LOG] Inserting new version with version:", newVersion);
     const { data: newVersionData, error: insertError } = await supabase
       .from("versions")
@@ -97,6 +97,7 @@ export async function POST(req) {
         version: newVersion,
         created_on: new Date().toISOString(),
         lastModified: new Date().toISOString(),
+        plan2DImage: sourceVersion.plan2DImage,
       })
       .select()
       .single();
@@ -108,6 +109,37 @@ export async function POST(req) {
       );
     }
     console.log("[LOG] Inserted new version with ID:", newVersionData.id);
+
+    // Step 6: Clone plan_parameters
+    console.log("[LOG] Fetching source plan_parameters for version:", version_id);
+    const { data: sourcePlanParams, error: sourcePlanParamsError } = await supabase
+      .from("plan_parameters")
+      .select("*")
+      .eq("version_id", version_id)
+      .single();
+    if (sourcePlanParamsError && sourcePlanParamsError.code !== "PGRST116") {
+      console.error("[ERROR] Error fetching source plan_parameters:", sourcePlanParamsError);
+      return NextResponse.json(
+        { error: "Failed to fetch source plan_parameters" },
+        { status: 500, headers: corsHeaders }
+      );
+    }
+    if (sourcePlanParams) {
+      const { id, ...rest } = sourcePlanParams;
+      const newPlanParams = { ...rest, version_id: newVersionData.id };
+      console.log("[LOG] Inserting new plan_parameters for new version:", newVersionData.id);
+      const { error: insertPlanParamsError } = await supabase
+        .from("plan_parameters")
+        .insert(newPlanParams);
+      if (insertPlanParamsError) {
+        console.error("[ERROR] Error inserting new plan_parameters:", insertPlanParamsError);
+        return NextResponse.json(
+          { error: "Failed to insert new plan_parameters" },
+          { status: 500, headers: corsHeaders }
+        );
+      }
+      console.log("[LOG] Cloned plan_parameters successfully");
+    }
 
     // Helper function to determine client_id
     const getClientId = (entity) => {
@@ -126,7 +158,7 @@ export async function POST(req) {
       return entity.id;
     };
     
-    // Step 6: Clone points
+    // Step 7: Clone points
     console.log("[LOG] Fetching source points for version:", version_id);
     const { data: sourcePoints, error: sourcePointsError } = await supabase
       .from("points")
@@ -145,7 +177,6 @@ export async function POST(req) {
     let oldToNewWallIdMap = new Map();
 
     if (sourcePoints && sourcePoints.length > 0) {
-      // Validate client_id uniqueness for points
       const pointClientIds = sourcePoints.map(p => getClientId(p));
       const uniquePointClientIds = new Set(pointClientIds);
       if (uniquePointClientIds.size < pointClientIds.length) {
@@ -174,9 +205,9 @@ export async function POST(req) {
           { status: 500, headers: corsHeaders }
         );
       }
-      console.log("[LOG] Cloned", insertedPoints.length, "points");
 
-      // Create point ID mapping
+      console.log("[LOG] Cloned", insertedPoints.length, "points");
+      
       oldToNewPointIdMap = new Map();
       sourcePoints.forEach(sourcePoint => {
         const newPoint = insertedPoints.find(p => p.client_id === getClientId(sourcePoint));
@@ -188,16 +219,15 @@ export async function POST(req) {
       });
       console.log("[LOG] Created point ID mapping with", oldToNewPointIdMap.size, "entries");
 
-      // Validate point mapping completeness
       if (oldToNewPointIdMap.size < sourcePoints.length) {
         console.warn("[LOG] Incomplete point ID mapping, some points may not be referenced correctly");
       }
 
-      // Step 7: Clone walls
+      // Step 8: Clone walls
       console.log("[LOG] Fetching source walls for version:", version_id);
       const { data: sourceWalls, error: sourceWallsError } = await supabase
         .from("walls")
-        .select("id, client_id, startpointid, endpointid, length, rotation, thickness, color, texture, height")
+        .select("id, client_id, startpointid, endpointid, length, rotation, thickness, color, texture, height, type")
         .eq("version_id", version_id);
       if (sourceWallsError) {
         console.error("[ERROR] Error fetching source walls:", sourceWallsError);
@@ -209,7 +239,6 @@ export async function POST(req) {
       console.log("[LOG] Found", sourceWalls.length, "source walls");
        
       if (sourceWalls && sourceWalls.length > 0) {
-        // Validate client_id uniqueness for walls
         const wallClientIds = sourceWalls.map(w => getClientId(w));
         const uniqueWallClientIds = new Set(wallClientIds);
         if (uniqueWallClientIds.size < wallClientIds.length) {
@@ -227,6 +256,7 @@ export async function POST(req) {
           height: wall.height,
           version_id: newVersionData.id,
           client_id: getClientId(wall),
+          type: wall.type || "simple",
         }));
 
         console.log("[LOG] Inserting", newWallsToInsert.length, "new walls");
@@ -243,7 +273,6 @@ export async function POST(req) {
         }
         console.log("[LOG] Cloned", insertedWalls.length, "walls");
 
-        // Create wall ID mapping
         oldToNewWallIdMap = new Map();
         sourceWalls.forEach(sourceWall => {
           const newWall = insertedWalls.find(w => w.client_id === getClientId(sourceWall));
@@ -255,12 +284,11 @@ export async function POST(req) {
         });
         console.log("[LOG] Created wall ID mapping with", oldToNewWallIdMap.size, "entries");
 
-        // Validate wall mapping completeness
         if (oldToNewWallIdMap.size < sourceWalls.length) {
           console.warn("[LOG] Incomplete wall ID mapping, some walls may not be referenced correctly");
         }
 
-        // Step 8: Clone articles
+        // Step 9: Clone articles
         console.log("[LOG] Fetching source articles for version:", version_id);
         const { data: sourceArticles, error: sourceArticlesError } = await supabase
           .from("articles")
@@ -295,12 +323,13 @@ export async function POST(req) {
               newData.lines.startPointId = oldToNewPointIdMap.get(newData.lines.startPointId) || newData.lines.startPointId;
               newData.lines.endPointId = oldToNewPointIdMap.get(newData.lines.endPointId) || newData.lines.endPointId;
             }
+            
             return {
               client_id: getClientId(article),
               version_id: newVersionData.id,
               data: newData,
             };
-          });
+          });  
 
           console.log("[LOG] Inserting", newArticlesToInsert.length, "new articles");
           const { error: insertArticlesError } = await supabase
@@ -318,7 +347,7 @@ export async function POST(req) {
       }
     }
 
-    // Step 9: Prepare response
+    // Step 10: Prepare response
     console.log("[LOG] Preparing response");
     return NextResponse.json(
       {
