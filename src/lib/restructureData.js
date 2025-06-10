@@ -61,9 +61,9 @@ export const transformProjectsData = (projects, userData) => {
       clientName: "Untitled",
       projectType: "residential",
       dimensions: {
-        width: "1.2",
-        length: "0.2",
-        height: "3",
+        width: project.dimensions?.width || "3",
+        length: project.dimensions?.length || "3",
+        height: project.dimensions?.height || "3",
       },
       plan2DImage: "",
       notes: "",

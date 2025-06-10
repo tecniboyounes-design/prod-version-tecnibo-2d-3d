@@ -41,6 +41,11 @@ export function transformProjectData(input) {
     "RAL": input.RAL || {},
     colorProfile: input.colorProfile || {},
     status: input.status?.toLowerCase() || 'draft',
+    dimensions: {
+      width: input.dimensions?.width || 0,
+      length: input.dimensions?.length || 0,
+      height: input.dimensions?.height || 0
+    },
 
     // ─── doors (→ articles) ────────────────────────────────────────────────
     doors: (version.doors || []).map((door, idx) => {

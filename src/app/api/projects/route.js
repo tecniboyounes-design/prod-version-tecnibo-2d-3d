@@ -65,7 +65,7 @@ export const fetchProjectWithRelations = async (odooId, projectId) => {
 
 
 export async function POST(req) {
-  const corsHeaders = getCorsHeaders(req); // Use standardized CORS headers
+  const corsHeaders = getCorsHeaders(req); 
 
   const data = await req.json();
   const projectData = transformProjectData(data);
@@ -128,6 +128,7 @@ export async function POST(req) {
     project_estimate: projectData.project_estimate,
     "RAL": projectData.RAL,
     colorProfile: projectData.colorProfile,
+    dimensions: projectData.dimensions || { width: 0, height: 0, depth: 0 },
   };
 
   const { data: projectDataResponse, error: projectError } = await supabase

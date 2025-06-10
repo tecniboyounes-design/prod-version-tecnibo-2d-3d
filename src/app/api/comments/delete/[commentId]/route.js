@@ -24,6 +24,7 @@ export async function DELETE(req, { params }) {
     const corsHeaders = getCorsHeaders(req);
     const commentId = params?.commentId;
     
+
     // Validate that commentId is provided
     if (!commentId) {
         return NextResponse.json(
