@@ -58,11 +58,13 @@ function createEmployeePayload(uid, companyId) {
   };
 }
 
+
 /**
  * GET handler to fetch all employees from Odoo.
  * @param {Request} request - The incoming HTTP request.
  * @returns {Response} The list of employees or an error response.
  */
+
 
 export async function GET(request) {
 const corsHeaders = getCorsHeaders(request);  

@@ -1,7 +1,7 @@
-import { supabase } from "../filesController/route";
 import { NextResponse } from "next/server";
 import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
 import { validate } from "uuid";
+import { supabase } from "@/app/api/filesController/route";
 
 /**
  * Handles CORS preflight requests for the interventions by project endpoint.
