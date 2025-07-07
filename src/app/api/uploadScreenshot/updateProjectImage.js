@@ -18,7 +18,7 @@ export const updateProjectImage = async (projectId, imageUrl) => {
     if (error) {
       throw error;
     }
-
+   
     return data; 
   } catch (error) {
     console.error('Error updating project image:', error);

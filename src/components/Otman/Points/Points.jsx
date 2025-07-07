@@ -220,7 +220,7 @@ const handleDragStart = (id) => setDraggedPoint(id);
     console.log('📤 Uploading screenshot to backend...');
 
     try {
-      const response = await fetch('/api/uploadScreenshot', {
+      const response = await fetch('http://192.168.30.92:3000/api/uploadScreenshot', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

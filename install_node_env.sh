@@ -15,6 +15,7 @@ ssh yattaoui@192.168.30.92
 Yattaou1
 
 
+
 Get-Process | ForEach-Object { Stop-Process -Id $_.Id -Force }
 sudo nano /etc/systemd/system/tecnipo.service
 sudo systemctl status tecnipo.service // for check the status

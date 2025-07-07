@@ -67,7 +67,9 @@ export const transformProjectsData = (projects, userData) => {
       },
       plan2DImage: "",
       notes: "",
+      projectImage: project.image_url || "fall back image url",
       description: project.description || "Initial version",
+      managers: Array.isArray(project.managers) ? project.managers : [],
       versions: [],
     };
 

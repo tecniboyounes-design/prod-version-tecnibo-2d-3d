@@ -3,9 +3,10 @@
 const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(",")
   : ["http://localhost:5173", "http://localhost:3000", "http://localhost:3001", "http://192.168.33.137:5173",
-    "http://192.168.33.138:3001","http://192.168.30.92:3006", "http://192.168.30.92:5173"
+    "http://192.168.33.138:3001","http://192.168.30.92:3006", "http://192.168.30.92:5173", "http://rp.tecnibo.com", "https://rp.tecnibo.com"
     ];
   
+    
 
 // Default CORS configuration
 const CORS_CONFIG = {
@@ -28,8 +29,9 @@ const CORS_CONFIG = {
 export function getCorsHeaders(request, config = {}) {
   const origin = request.headers.get("origin") || "";
   console.log("CORS Origin:", origin);
+  console.log(`Allowed Origins: ${ALLOWED_ORIGINS.join(", ")}`);
   const mergedConfig = { ...CORS_CONFIG, ...config };
-
+ 
   // Validate origin against allowed origins
   const cleanOrigin = origin.replace(/\/$/, "");
   const isAllowed = ALLOWED_ORIGINS.includes(cleanOrigin);
@@ -42,7 +44,10 @@ export function getCorsHeaders(request, config = {}) {
     "Access-Control-Max-Age": mergedConfig.maxAge.toString(),
     "Content-Type": "application/json", // Default content type
   };
+
+  
 }
+
 
 /**
  * Handles CORS preflight (OPTIONS) requests.

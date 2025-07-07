@@ -1,5 +1,3 @@
-// lib/plan2DImageHandler.js
-
 import axios from "axios";
 import fs from "fs";
 import path from "path";
@@ -12,14 +10,8 @@ import { supabase } from "@/app/api/filesController/route";
 export async function savePdfLocally(base64Pdf, versionId, timestamp) {
   const storageDir = path.join(process.cwd(), "storage", "plan2d");
   const versionDir = path.join(storageDir, versionId);
-
-  if (!fs.existsSync(storageDir)) {
-    fs.mkdirSync(storageDir, { recursive: true });
-  }
-  if (!fs.existsSync(versionDir)) {
-    fs.mkdirSync(versionDir, { recursive: true });
-  }
-
+  if (!fs.existsSync(storageDir)) fs.mkdirSync(storageDir, { recursive: true });
+  if (!fs.existsSync(versionDir)) fs.mkdirSync(versionDir, { recursive: true });
   const filename = `${versionId}-${timestamp}.pdf`;
   const filePath = path.join(versionDir, filename);
   fs.writeFileSync(filePath, base64Pdf, "base64");
@@ -27,20 +19,25 @@ export async function savePdfLocally(base64Pdf, versionId, timestamp) {
 }
 
 /**
- * Converts a base64‐PDF to PNG, but now we pass in `timestamp`.
- *   1. savePdfLocally(…, timestamp)
- *   2. POST to microservice
- *   3. savePlan2DImage(…, timestamp)
+ * Saves a DWG with a timestamped filename:
+ *   storage/plan2d/<versionId>/<versionId>-<timestamp>.dwg
  */
-export async function convertPdfViaMicroservice(
-  base64Pdf,
-  versionId,
-  timestamp
-) {
-  // 1) Save the PDF with the shared timestamp
-  const pdfPath = await savePdfLocally(base64Pdf, versionId, timestamp);
+export async function saveDwgLocally(base64Dwg, versionId, timestamp) {
+  const storageDir = path.join(process.cwd(), "storage", "plan2d");
+  const versionDir = path.join(storageDir, versionId);
+  if (!fs.existsSync(storageDir)) fs.mkdirSync(storageDir, { recursive: true });
+  if (!fs.existsSync(versionDir)) fs.mkdirSync(versionDir, { recursive: true });
+  const filename = `${versionId}-${timestamp}.dwg`;
+  const filePath = path.join(versionDir, filename);
+  fs.writeFileSync(filePath, base64Dwg, "base64");
+  return filePath;
+}
 
-  // 2) Send that PDF (or base64Pdf) to microservice:
+/**
+ * Converts a base64-PDF to PNG with a shared timestamp.
+ */
+export async function convertPdfViaMicroservice(base64Pdf, versionId, timestamp) {
+  const pdfPath = await savePdfLocally(base64Pdf, versionId, timestamp);
   const { data, status } = await axios.post(
     "http://192.168.30.92:9000/convertPdfToImg",
     { base64Pdf },
@@ -51,24 +48,50 @@ export async function convertPdfViaMicroservice(
     }
   );
   if (status !== 200 || !data.base64Png) {
-    throw new Error(
-      `Microservice conversion failed: status=${status}. payload= ${JSON.stringify(
-        data
-      )}`
-    );
+    throw new Error(`Microservice conversion failed: status=${status}. payload=${JSON.stringify(data)}`);
   }
-
-  // 3) Save the PNG using the same timestamp:
   return await savePlan2DImage(data.base64Png, versionId, timestamp);
 }
 
 /**
- * Saves a PNG (base64) with the same timestamped filename:
- *   storage/plan2d/<versionId>/<versionId>-<timestamp>.png
- * and updates Supabase → versions.plan2DImage.
+ * Converts a base64-DWG to PNG, saving the DWG locally first.
+ */
+export async function convertDwgViaMicroservice(base64Dwg, versionId, timestamp) {
+  try {
+    // Save DWG locally with the same timestamp
+    await saveDwgLocally(base64Dwg, versionId, timestamp);
+    const { data, status } = await axios.post(
+      "http://192.168.30.92:9001/process-dwg",
+      { file: base64Dwg },
+      {
+        headers: { "Content-Type": "application/json" },
+        responseType: "json",
+        timeout: 50_000,
+      }
+    );
+    if (status !== 200 || !data.plan2DImage) {
+      throw new Error(`Microservice conversion failed: status=${status}. payload=${JSON.stringify(data)}`);
+    }
+    const { plan2DImage, points, lines } = data;
+    
+    const { accessUrl } = await savePlan2DImage(plan2DImage, versionId, timestamp);
+    const { error } = await supabase
+      .from("versions")
+      .update({ plan2DImage: accessUrl })
+      .eq("id", versionId);
+    if (error) throw error;
+    return { accessUrl };
+  } catch (error) {
+    console.error("Error in convertDwgViaMicroservice:", error);
+    throw error;
+  }
+}
+
+/**
+ * Saves an image (e.g., PNG) with a timestamped filename:
+ *   storage/plan2d/<versionId>/<versionId>-<timestamp>.<extension>
  */
 export async function savePlan2DImage(base64Image, versionId, timestamp) {
-  // extract extension + base64 payload
   let imageData, extension;
   const match = base64Image.match(/^data:image\/(\w+);base64,(.+)$/);
   if (match) {
@@ -78,31 +101,19 @@ export async function savePlan2DImage(base64Image, versionId, timestamp) {
     extension = "png";
     imageData = base64Image;
   }
-
   const storageDir = path.join(process.cwd(), "storage", "plan2d");
   const versionDir = path.join(storageDir, versionId);
-  if (!fs.existsSync(storageDir)) {
-    fs.mkdirSync(storageDir, { recursive: true });
-  }
-  if (!fs.existsSync(versionDir)) {
-    fs.mkdirSync(versionDir, { recursive: true });
-  }
-
+  if (!fs.existsSync(storageDir)) fs.mkdirSync(storageDir, { recursive: true });
+  if (!fs.existsSync(versionDir)) fs.mkdirSync(versionDir, { recursive: true });
   const filename = `${versionId}-${timestamp}.${extension}`;
   const filePath = path.join(versionDir, filename);
   fs.writeFileSync(filePath, imageData, "base64");
-
-  // Now build a URL pointing to exactly that `<versionId>-<timestamp>.<ext>`
-  const accessUrl =
-    `http://192.168.30.92:3000/api/plan2dimage`
-    + `?versionId=${versionId}`
-    + `&file=${encodeURIComponent(filename)}`;
-
+  const accessUrl = `https://backend.tecnibo.com/api/plan2dimage?versionId=${versionId}&file=${encodeURIComponent(filename)}`;
   const { error } = await supabase
     .from("versions")
     .update({ plan2DImage: accessUrl })
     .eq("id", versionId);
   if (error) throw error;
-
   return { filePath, accessUrl };
 }
+

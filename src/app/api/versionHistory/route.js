@@ -5,7 +5,36 @@ import { supabase } from '../filesController/route';
 
 export const fetchUserProjects = async (odooId) => {
   try {
-    // Fetch projects with related data
+    // Step 1: Fetch project IDs where user_id = odooId (owner)
+    const { data: ownedProjects, error: ownedError } = await supabase
+      .from('projects')
+      .select('id')
+      .eq('user_id', odooId);
+
+    if (ownedError) {
+      console.error('Error fetching owned projects:', ownedError.message);
+      throw new Error(`Failed to fetch owned projects: ${ownedError.message}`);
+    }
+
+    const ownedProjectIds = ownedProjects.map(p => p.id);
+
+    // Step 2: Fetch project IDs where odoo_id = odooId (manager)
+    const { data: managedProjects, error: managedError } = await supabase
+      .from('managers')
+      .select('project_id')
+      .eq('odoo_id', odooId);
+
+    if (managedError) {
+      console.error('Error fetching managed projects:', managedError.message);
+      throw new Error(`Failed to fetch managed projects: ${managedError.message}`);
+    }
+
+    const managedProjectIds = managedProjects.map(m => m.project_id);
+
+    // Step 3: Combine project IDs and remove duplicates
+    const allProjectIds = [...new Set([...ownedProjectIds, ...managedProjectIds])];
+
+    // Step 4: Fetch projects with related data for all project IDs
     const { data: projects, error: projectsError } = await supabase
       .from('projects')
       .select(`
@@ -22,14 +51,14 @@ export const fetchUserProjects = async (odooId) => {
         ),
         managers(*)
       `)
-      .eq('user_id', odooId);
+      .in('id', allProjectIds);
 
     if (projectsError) {
       console.error('Error fetching projects:', projectsError.message);
       throw new Error(`Failed to fetch projects: ${projectsError.message}`);
     }
 
-    // Fetch user data
+    // Fetch user data for the given odooId
     const { data: user, error: userError } = await supabase
       .from('users')
       .select('*')
@@ -62,7 +91,7 @@ export const fetchUserProjects = async (odooId) => {
       });
     });
 
-    // ✅ Fetch and attach custom_articles per project
+    // Fetch and attach custom_articles per project
     const projectIds = projects.map(p => p.id);
     const { data: customArticles, error: customArticlesError } = await supabase
       .from('custom_articles')
@@ -124,8 +153,7 @@ export async function GET(req) {
       lastName,
       role: user.role
     };
-
-   
+  
     const responseData = restructure ? transformProjectsData(projects, author) : projects;
    
     return new Response(JSON.stringify(responseData), {

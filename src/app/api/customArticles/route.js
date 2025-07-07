@@ -238,7 +238,7 @@ export async function PUT(request) {
     }
 
     const body = await request.json();
-
+    
     if (!body || typeof body !== "object") {
       return new Response(
         JSON.stringify({ error: "Invalid request body" }),

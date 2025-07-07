@@ -155,8 +155,9 @@ export async function POST(req) {
     partner_id: projectData.partner_id || 0,
     company_id: projectData.user_context?.current_company || 11,
     timezone: projectData.user_context?.tz || "Africa/Casablanca",
+    access_level: "admin", // Default access level
   };
-
+  
   const { error: managerError } = await supabase
     .from("managers")
     .insert([managerData]);
