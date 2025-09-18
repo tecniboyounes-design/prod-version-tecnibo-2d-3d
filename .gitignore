@@ -17,6 +17,14 @@
 /.next/
 /out/
 
+
+#data 
+/data
+
+#database
+/database
+
+
 # production
 /build
 
@@ -38,3 +46,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
+#vscode
+/.vscode*
+auth-logs.json
+
+# project logs
+/auth-logs.json
