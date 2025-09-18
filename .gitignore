@@ -49,8 +49,16 @@ next-env.d.ts
 
 
 #vscode
-/.vscode*
+/.vscode
 auth-logs.json
 
 # project logs
 /auth-logs.json
+
+/storage
+auth-logs-backup.json
+src/configurator/data/datafromBackend.json
+curl (1).ps1
+
+# local app storage (screenshots, exports, etc.)
+/storage/
