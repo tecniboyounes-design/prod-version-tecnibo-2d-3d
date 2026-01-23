@@ -1,9 +1,12 @@
 import axios from 'axios';
 import { getSessionId } from '../sessionMiddleware';
 
+const ODOO_URL = process.env.ODOO_URL
+  ? `${process.env.ODOO_URL}/mail/thread/data`
+  : null;
+if (!ODOO_URL) throw new Error("[getRecord] ODOO_URL env is required");
+
 export async function POST(req) {
-    // Set the URL for the API request
-    const url = "http://192.168.30.33:8069/mail/thread/data";
     
     // Set the payload for the API request
     const payload = {
@@ -24,7 +27,7 @@ export async function POST(req) {
 
     try {
         // Send the POST request with credentials (cookies)
-        const response = await axios.post(url, payload, {
+        const response = await axios.post(ODOO_URL, payload, {
             withCredentials: true,  
             headers: {
                 "Content-Type": "application/json",

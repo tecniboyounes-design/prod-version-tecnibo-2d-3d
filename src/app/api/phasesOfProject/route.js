@@ -1,60 +1,75 @@
-import axios from 'axios';
-import { createPayload } from './preparePhasesPayload';
-import { getSessionId } from '../sessionMiddleware';
+import axios from "axios";
+import { createPayload } from "./preparePhasesPayload";
+import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
+
+const ODOO_URL = process.env.ODOO_URL
+  ? `${process.env.ODOO_URL}/web/dataset/call_kw/project.phase/web_search_read`
+  : null;
+if (!ODOO_URL) throw new Error("[phasesOfProject] ODOO_URL env is required");
+
+  
+export async function OPTIONS(request) {
+  return handleCorsPreflight(request);
+}
 
 export async function POST(req) {
-    console.log("Incoming request:", req);
+  const corsHeaders = getCorsHeaders(req);
+  console.log("Incoming request:", req);
 
-    try {
-        const requestData = await req.json();
-        
-        // Extract parameters from the request
-        const { projectId } = requestData;
-        
-        console.log("Received request data:", requestData);
+  try {
+    const requestData = await req.json().catch(() => ({}));
 
-        // Generate the payload for the request
-        const payload = createPayload(projectId);
-        
-        console.log("Generated payload:", payload);
-        
-        // Odoo server URL (adjust as necessary)
-        const url = "http://192.168.30.33:8069/web/dataset/call_kw/project.phase/web_search_read";
-   
-        // Example session ID (replace with actual session or handle authentication)
-    const session_id = getSessionId(req);
-    console.log('session_id', session_id);
-    
-         
-        // Send POST request to Odoo server 
-        const response = await axios.post(url, payload, {
-            withCredentials: true,
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json",
-                "Cookie": `session_id=${session_id}; frontend_lang=en_US; tz=Africa/Casablanca`
-            }
-        });
+    // Extract parameters from the request
+    const { projectId } = requestData || {};
+    console.log("Received request data:", requestData);
 
-        console.log("Odoo response received:", response.data);
+    // Generate the payload for the request
+    const payload = createPayload(projectId);
+    console.log("Generated payload:", payload);
 
-        // Check for errors in the Odoo response
-        if (response.data.error) {
-            console.error('Error details from Odoo:', response.data.error);
-            return Response.json(
-                { message: 'Error creating sale order', error: response.data.error },
-                { status: 500 }
-            );
-        }
+    // 🔹 Extract session from header (like getAllProducts + searchProject)
+    const sessionId = req.headers.get("x-session-id");
+    console.log("sessionId:", sessionId);
 
-        // Send the successful response back to the client
-        return Response.json(response.data.result, { status: 200 });
-
-    } catch (error) {
-        console.error('Caught error:', error);
-        return Response.json(
-            { message: 'Error creating sale order', error: error.message },
-            { status: 500 }
-        );
+    if (!sessionId) {
+      return Response.json(
+        { message: "Unauthorized: Missing sessionId" },
+        { status: 401, headers: corsHeaders }
+      );
     }
+
+    // Send POST request to Odoo server
+    const response = await axios.post(ODOO_URL, payload, {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Cookie: `session_id=${sessionId}; frontend_lang=en_US; tz=Africa/Casablanca`,
+        "X-Session-Id": sessionId,
+      },
+    });
+
+    console.log("Odoo response received:", response.data);
+
+    // Check for errors in the Odoo response
+    if (response.data?.error) {
+      console.error("Error details from Odoo:", response.data.error);
+      return Response.json(
+        { message: "Error creating sale order", error: response.data.error },
+        { status: 500, headers: corsHeaders }
+      );
+    }
+
+    // Send the successful response back to the client
+    return Response.json(response.data.result, {
+      status: 200,
+      headers: corsHeaders,
+    });
+  } catch (error) {
+    console.error("Caught error:", error);
+    return Response.json(
+      { message: "Error creating sale order", error: error.message },
+      { status: 500, headers: corsHeaders }
+    );
+  }
 }

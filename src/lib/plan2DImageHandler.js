@@ -1,17 +1,35 @@
+// lib/plan2DImageHandler.js  (or wherever you keep these helpers)
 import axios from "axios";
 import fs from "fs";
 import path from "path";
 import { supabase } from "@/app/api/filesController/route";
 
+/** Resolve storage root (fallback to ./storage to preserve current behavior) */
+function getStorageRoot() {
+  // absolute path hard-coded
+  return "/home/yattaoui/tecnibo-storage";
+}
+
+
+function ensureDirSync(dir) {
+  try {
+    fs.mkdirSync(dir, { recursive: true });
+  } catch (err) {
+    // mkdirSync recursive is safe — ignore if dir exists, rethrow otherwise
+    if (err && err.code !== 'EEXIST') throw err;
+  }
+}
+
+
 /**
- * Saves a PDF with a timestamped filename:
- *   storage/plan2d/<versionId>/<versionId>-<timestamp>.pdf
+ * Save a PDF to: <STORAGE_ROOT>/plan2d/<versionId>/<versionId>-<timestamp>.pdf
  */
+
+
 export async function savePdfLocally(base64Pdf, versionId, timestamp) {
-  const storageDir = path.join(process.cwd(), "storage", "plan2d");
+  const storageDir = path.join(getStorageRoot(), "plan2d");
   const versionDir = path.join(storageDir, versionId);
-  if (!fs.existsSync(storageDir)) fs.mkdirSync(storageDir, { recursive: true });
-  if (!fs.existsSync(versionDir)) fs.mkdirSync(versionDir, { recursive: true });
+  ensureDirSync(versionDir);
   const filename = `${versionId}-${timestamp}.pdf`;
   const filePath = path.join(versionDir, filename);
   fs.writeFileSync(filePath, base64Pdf, "base64");
@@ -19,14 +37,13 @@ export async function savePdfLocally(base64Pdf, versionId, timestamp) {
 }
 
 /**
- * Saves a DWG with a timestamped filename:
- *   storage/plan2d/<versionId>/<versionId>-<timestamp>.dwg
+ * Save a DWG to: <STORAGE_ROOT>/plan2d/<versionId>/<versionId>-<timestamp>.dwg
  */
+
 export async function saveDwgLocally(base64Dwg, versionId, timestamp) {
-  const storageDir = path.join(process.cwd(), "storage", "plan2d");
+  const storageDir = path.join(getStorageRoot(), "plan2d");
   const versionDir = path.join(storageDir, versionId);
-  if (!fs.existsSync(storageDir)) fs.mkdirSync(storageDir, { recursive: true });
-  if (!fs.existsSync(versionDir)) fs.mkdirSync(versionDir, { recursive: true });
+  ensureDirSync(versionDir);
   const filename = `${versionId}-${timestamp}.dwg`;
   const filePath = path.join(versionDir, filename);
   fs.writeFileSync(filePath, base64Dwg, "base64");
@@ -34,7 +51,7 @@ export async function saveDwgLocally(base64Dwg, versionId, timestamp) {
 }
 
 /**
- * Converts a base64-PDF to PNG with a shared timestamp.
+ * Converts a base64-PDF to PNG via microservice, saving files under STORAGE_PATH (same behavior).
  */
 export async function convertPdfViaMicroservice(base64Pdf, versionId, timestamp) {
   const pdfPath = await savePdfLocally(base64Pdf, versionId, timestamp);
@@ -54,11 +71,12 @@ export async function convertPdfViaMicroservice(base64Pdf, versionId, timestamp)
 }
 
 /**
- * Converts a base64-DWG to PNG, saving the DWG locally first.
+ * Convert DWG via microservice (keeps same behavior). Stores DWG using STORAGE_PATH first.
  */
+
+
 export async function convertDwgViaMicroservice(base64Dwg, versionId, timestamp) {
   try {
-    // Save DWG locally with the same timestamp
     await saveDwgLocally(base64Dwg, versionId, timestamp);
     const { data, status } = await axios.post(
       "http://192.168.30.92:9001/process-dwg",
@@ -72,8 +90,8 @@ export async function convertDwgViaMicroservice(base64Dwg, versionId, timestamp)
     if (status !== 200 || !data.plan2DImage) {
       throw new Error(`Microservice conversion failed: status=${status}. payload=${JSON.stringify(data)}`);
     }
-    const { plan2DImage, points, lines } = data;
-    
+    const { plan2DImage } = data;
+
     const { accessUrl } = await savePlan2DImage(plan2DImage, versionId, timestamp);
     const { error } = await supabase
       .from("versions")
@@ -88,8 +106,8 @@ export async function convertDwgViaMicroservice(base64Dwg, versionId, timestamp)
 }
 
 /**
- * Saves an image (e.g., PNG) with a timestamped filename:
- *   storage/plan2d/<versionId>/<versionId>-<timestamp>.<extension>
+ * Save an image (data-url or raw base64) to STORAGE_ROOT/plan2d/<versionId>/...
+ * Returns { filePath, accessUrl } (same accessUrl format you already use).
  */
 export async function savePlan2DImage(base64Image, versionId, timestamp) {
   let imageData, extension;
@@ -101,19 +119,22 @@ export async function savePlan2DImage(base64Image, versionId, timestamp) {
     extension = "png";
     imageData = base64Image;
   }
-  const storageDir = path.join(process.cwd(), "storage", "plan2d");
+
+  const storageDir = path.join(getStorageRoot(), "plan2d");
   const versionDir = path.join(storageDir, versionId);
-  if (!fs.existsSync(storageDir)) fs.mkdirSync(storageDir, { recursive: true });
-  if (!fs.existsSync(versionDir)) fs.mkdirSync(versionDir, { recursive: true });
+  ensureDirSync(versionDir);
+
   const filename = `${versionId}-${timestamp}.${extension}`;
   const filePath = path.join(versionDir, filename);
   fs.writeFileSync(filePath, imageData, "base64");
+
   const accessUrl = `https://backend.tecnibo.com/api/plan2dimage?versionId=${versionId}&file=${encodeURIComponent(filename)}`;
+
   const { error } = await supabase
     .from("versions")
     .update({ plan2DImage: accessUrl })
     .eq("id", versionId);
   if (error) throw error;
+
   return { filePath, accessUrl };
 }
-

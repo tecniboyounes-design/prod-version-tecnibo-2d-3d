@@ -1,0 +1,214 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Configurator {
+  id         Int     @id @default(autoincrement()) 
+  cpid        String  @unique @db.VarChar(100)
+  description String? @db.VarChar(500)
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  fields   Field[]
+  sections Section[]
+
+  @@map("configurators")
+}
+
+enum FieldType {
+  TEXT
+  INPUT
+  COMBOBOX
+}
+
+model Field {
+  id   Int       @id @default(autoincrement())
+  name String    @db.VarChar(100)
+  type FieldType
+
+  label    String? @db.VarChar(100)
+  info     String? @db.VarChar(500)
+  required Boolean @default(false)
+
+  // Tree ID for hierarchical fields
+  termnum       Int
+  parentTermnum Int? @map("parent_termnum")
+
+  configuratorId Int       @map("configurator_id")
+  deletedAt      DateTime? @map("deleted_at")
+
+  // Relation - references the composite unique key
+  configurator Configurator @relation(fields: [configuratorId], references: [id])
+  parent       Section?     @relation(fields: [parentTermnum, configuratorId], references: [termnum, configuratorId])
+
+  @@unique([name, configuratorId])
+  // @@unique([termnum, configuratorId])
+  @@index([configuratorId])
+  @@map("fields")
+}
+
+enum SectionType {
+  NONE
+  ACCORDION
+}
+
+model Section {
+  id   Int         @id @default(autoincrement())
+  type SectionType @default(NONE)
+
+  label       String? @db.VarChar(100)
+  description String? @db.VarChar(500)
+
+  // Tree ID for hierarchical fields
+  termnum       Int
+  parentTermnum Int? @map("parent_termnum")
+
+  configuratorId Int          @map("configurator_id")
+  configurator   Configurator @relation(fields: [configuratorId], references: [id])
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  parent   Section?  @relation("SectionToSection", fields: [parentTermnum, configuratorId], references: [termnum, configuratorId])
+  children Section[] @relation("SectionToSection")
+
+  fields Field[]
+
+  @@unique([termnum, configuratorId])
+  @@index([configuratorId])
+  @@map("sections")
+}
+
+// model ImpactedVariable {
+//   id      Int                  @id @default(autoincrement())
+//   name    String               @db.VarChar(100)
+//   path    String?              @db.VarChar(500)
+//   type    ImpactedVariableType
+//   fieldId Int                  @map("field_id")
+//   field   Field                @relation(fields: [fieldId], references: [id])
+
+//   @@unique([name, fieldId])
+//   @@index([fieldId])
+//   @@map("impacted_variables")
+// }
+
+// enum ImpactedVariableType {
+//   MAT
+//   SURF
+//   DESCR
+// }
+
+// model Description {
+//   id          Int     @id @default(autoincrement())
+//   lang        String  @default("en") @db.VarChar(10)
+//   description String? @db.VarChar(500)
+//   fieldId     Int     @map("field_id")
+//   field       Field   @relation(fields: [fieldId], references: [id])
+
+//   @@unique([lang, fieldId])
+//   @@index([fieldId])
+//   @@map("field_descriptions")
+// }
+
+// model InputField {
+//   id           Int     @id @default(autoincrement())
+//   min          Float?
+//   max          Float?
+//   type         String? @db.VarChar(50)
+//   validation   String? @db.VarChar(255)
+//   defaultValue String? @map("default_value") @db.VarChar(100)
+//   fieldId      Int     @unique @map("field_id")
+//   field        Field   @relation(fields: [fieldId], references: [id])
+//   attributes   String? @db.VarChar(500)
+
+//   @@map("input_fields")
+// }
+
+// model ComboboxField {
+//   id           Int     @id @default(autoincrement())
+//   type         String? @db.VarChar(50)
+//   code         String? @db.VarChar(50)
+//   content      String? @db.VarChar(500)
+//   source       String  @db.VarChar(255)
+//   dynamic      Boolean @default(false)
+//   defaultValue String? @map("default_value") @db.VarChar(100)
+//   fieldId      Int     @unique @map("field_id")
+//   field        Field   @relation(fields: [fieldId], references: [id])
+
+//   @@map("combobox_fields")
+// }
+
+// model Dependency {
+//   id      Int               @id @default(autoincrement())
+//   action  DependencyAction
+//   fieldId Int               @map("field_id")
+//   field   Field             @relation(fields: [fieldId], references: [id])
+//   values  DependencyValue[]
+
+//   @@index([fieldId])
+//   @@map("dependencies")
+// }
+
+// enum DependencyAction {
+//   HIDE
+//   CLEAR
+//   FILTER
+//   DISABLE
+//   REQUIRE
+// }
+
+// model DependencyValue {
+//   id           Int        @id @default(autoincrement())
+//   result       String     @db.VarChar(255)
+//   dependencyId Int        @map("dependency_id")
+//   dependency   Dependency @relation(fields: [dependencyId], references: [id])
+//   conditionId  Int        @unique @map("condition_id")
+//   condition    Condition  @relation(fields: [conditionId], references: [id])
+
+//   @@index([dependencyId, conditionId])
+//   @@map("dependency_values")
+// }
+
+// model Condition {
+//   id          Int              @id @default(autoincrement())
+//   comment     String?          @db.VarChar(255)
+//   value       DependencyValue?
+//   comparisons Comparison[]
+//   operations  Operation[]
+
+//   @@map("conditions")
+// }
+
+// model Comparison {
+//   conditionId    Int       @map("condition_id")
+//   condition      Condition @relation(fields: [conditionId], references: [id])
+//   leftValue      String    @map("left_value") @db.VarChar(255)
+//   rightValue     String    @map("right_value") @db.VarChar(255)
+//   termnum        Int
+//   parentTermnum  Int       @map("parent_termnum")
+//   comparisonType String    @map("comparison_type") @db.VarChar(20)
+
+//   @@id([conditionId, termnum])
+//   @@index([conditionId])
+//   @@map("comparisons")
+// }
+
+// model Operation {
+//   conditionId   Int       @map("condition_id")
+//   condition     Condition @relation(fields: [conditionId], references: [id])
+//   termnum       Int
+//   parentTermnum Int       @map("parent_termnum")
+//   operationType String    @map("operation_type") @db.VarChar(20)
+
+//   @@unique([conditionId, termnum])
+//   @@index([conditionId])
+//   @@map("operations")
+// }

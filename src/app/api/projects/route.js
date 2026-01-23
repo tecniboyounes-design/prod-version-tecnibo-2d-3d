@@ -122,7 +122,7 @@ export async function POST(req) {
     description: projectData.description || "Interior design project.",
     user_id: uid,
     db: projectData?.db,
-    image_url: projectData?.image_url || "https://cdn.andro4all.com/andro4all/2022/07/Planner-5D.jpg",
+    image_url: projectData?.image_url || "",
     celling_type: projectData.celling_type,
     floor_type: projectData.floor_type,
     project_estimate: projectData.project_estimate,

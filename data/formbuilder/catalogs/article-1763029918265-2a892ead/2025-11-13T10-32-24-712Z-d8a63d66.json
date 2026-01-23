@@ -1,0 +1,1086 @@
+{
+  "sections": [
+    {
+      "id": "mhxahju8bst2drvkfza",
+      "type": "NONE",
+      "render": "section",
+      "name": "P_OPUSP_CONFIGURATEUR",
+      "Label": "Cloison Opus P",
+      "children": [
+        {
+          "id": "mhxahju8sqyrayv7lgn",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "P_OPUSP_PERFORMANCE",
+          "label": "Performance",
+          "children": [
+            {
+              "render": "field",
+              "id": "mhxahju8d3yp19816m",
+              "name": "P_FIRE_PERFORMANCE",
+              "label": "Fire Performance",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "mhxahju8g9t19mivpt5",
+                "type": "SELECT",
+                "code": null,
+                "content": null,
+                "source": "P_OPUSP_FIRE_PERFORMANCE",
+                "dynamic": false,
+                "defaultValue": "EI00"
+              },
+              "variables": [],
+              "descriptions": [],
+              "dependencies": [
+                {
+                  "nod": 1,
+                  "action": "SHOW",
+                  "roles": [
+                    {
+                      "operator": "AND",
+                      "roles": [
+                        {
+                          "field": "P_VERSIONS",
+                          "comparisonType": "=",
+                          "value": "VERSION_1",
+                          "ruleType": "simple"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "nod": 1,
+                  "action": "HIDE",
+                  "roles": [
+                    {
+                      "operator": "OR",
+                      "roles": [
+                        {
+                          "leftValue": "P_VERSIONS",
+                          "comparisonType": "=",
+                          "rightValue": "VERSION_2",
+                          "ruleType": "simple"
+                        },
+                        {
+                          "leftValue": "P_VERSIONS",
+                          "comparisonType": "=",
+                          "rightValue": "VERSION_3",
+                          "ruleType": "simple"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "render": "field",
+              "id": "mhxahju8iwbvzn1yfh9",
+              "name": "P_ACOUSTIC_PERFORMANCE",
+              "label": "Acoustic Performance",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "mhxahju8siwd3hanfg",
+                "type": "SELECT",
+                "code": null,
+                "content": null,
+                "source": "P_OPUSP_ACOUSTIC_PERFORMANCE",
+                "dynamic": false,
+                "defaultValue": "45"
+              },
+              "variables": [],
+              "descriptions": [],
+              "dependencies": [
+                {
+                  "nod": 1,
+                  "action": "FILTER",
+                  "roles": [
+                    {
+                      "operator": "OR",
+                      "roles": [
+                        {
+                          "leftValue": "$P_FIRE_PERFORMANCE.value",
+                          "comparisonType": "contains",
+                          "rightValue": "$attributes.EI",
+                          "ruleType": "advanced"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mhxahju8v66lu9qjej9",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "P_DIMENSIONS",
+          "label": "Dimensions",
+          "children": [
+            {
+              "render": "field",
+              "id": "mhxahju8dsqfdr5jni",
+              "name": "P_HEIGHT",
+              "label": "Height",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mhxahju83i4y3xt3qig",
+                "min": 2000,
+                "max": 3500,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 2700,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mhxahju8ouva0h2kavh",
+              "name": "P_DEPTH",
+              "label": "Frame Depth",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mhxahju8olyunet2m",
+                "min": 140,
+                "max": 185,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 140,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mhxahju888jt3s5gw4",
+              "name": "P_FAN_1_HEIGHT",
+              "label": "Fanlight 1 Height",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mhxahju80j0bwj7dkunj",
+                "min": 200,
+                "max": 1200,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 300,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": [],
+              "dependencies": [
+                {
+                  "nod": 1,
+                  "action": "SHOW",
+                  "roles": [
+                    {
+                      "operator": "OR",
+                      "roles": [
+                        {
+                          "field": "P_VERSIONS",
+                          "comparaisonType": "=",
+                          "value": "VERSION_2",
+                          "ruleType": "simple"
+                        },
+                        {
+                          "field": "P_VERSIONS",
+                          "comparaison": "=",
+                          "value": "VERSION_3",
+                          "ruleType": "simple"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "nod": 1,
+                  "action": "HIDE",
+                  "roles": [
+                    {
+                      "operator": "OR",
+                      "roles": [
+                        {
+                          "field": "P_VERSIONS",
+                          "comparaison": "=",
+                          "value": "VERSION_1",
+                          "ruleType": "simple"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "nod": 1,
+                  "action": "FILTER",
+                  "roles": [
+                    {
+                      "operator": "OR",
+                      "roles": [
+                        {
+                          "leftValue": "$P_FIRE_PERFORMANCE.value",
+                          "comparisonType": "contains",
+                          "rightValue": "$attributes.EI",
+                          "ruleType": "advanced"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "render": "field",
+              "id": "mhxahju8ogfjuydd7km",
+              "name": "P_FAN_2_HEIGHT",
+              "label": "Fanlight 2 Height",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mhxahju8gmf961fz9fa",
+                "min": 200,
+                "max": 1200,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 300,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": [],
+              "dependencies": [
+                {
+                  "nod": 1,
+                  "action": "SHOW",
+                  "roles": [
+                    {
+                      "operator": "OR",
+                      "roles": [
+                        {
+                          "field": "P_VERSIONS",
+                          "comparaison": "=",
+                          "value": "VERSION_3",
+                          "ruleType": "simple"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "nod": 1,
+                  "action": "HIDE",
+                  "roles": [
+                    {
+                      "operator": "OR",
+                      "roles": [
+                        {
+                          "field": "P_VERSIONS",
+                          "comparaison": "=",
+                          "value": "VERSION_1",
+                          "ruleType": "simple"
+                        },
+                        {
+                          "field": "P_VERSIONS",
+                          "comparaison": "=",
+                          "value": "VERSION_2",
+                          "ruleType": "simple"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "render": "field",
+              "id": "mhxahju8k3p5pu5tx1",
+              "name": "P_MODULATION",
+              "label": "Module Width",
+              "fieldType": "COMBOBOX",
+              "input": {
+                "id": "mhxahju8si5u0cgmmhr",
+                "min": 1000,
+                "max": 1200,
+                "type": "SELECT",
+                "validation": null,
+                "source": "P_MODULATION",
+                "defaultValue": 1200,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        },
+        {
+          "id": "mhxahju840arsn4a9kj",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "Material",
+          "label": "Material",
+          "children": [
+            {
+              "id": "mhxahju8jaejpczz64",
+              "render": "section",
+              "type": "ROW",
+              "grid": "20",
+              "name": "P_PROFILES_COLOR",
+              "label": "Profiles Color",
+              "LabelTop": "TRUE",
+              "children": [
+                {
+                  "render": "field",
+                  "id": "mhxahju8ks95y76jie8",
+                  "name": "P_LISS_COLOR",
+                  "label": "Color",
+                  "LabelTop": "TRUE",
+                  "fieldType": "COMBOBOX",
+                  "grid": "12",
+                  "combo": {
+                    "id": "mhxahju88d4zlxdev8u",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "P_COLOR",
+                    "dynamic": false,
+                    "defaultValue": "9005"
+                  },
+                  "variables": [],
+                  "descriptions": []
+                },
+                {
+                  "render": "field",
+                  "id": "mhxahju8fccrjooihqm",
+                  "name": "P_LISS_COLOR_FINISH",
+                  "label": "Finish",
+                  "LabelTop": "TRUE",
+                  "fieldType": "COMBOBOX",
+                  "grid": "8",
+                  "combo": {
+                    "id": "mhxahju8skuttxli1hp",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "P_PRF_COLOR_FINISH",
+                    "dynamic": false,
+                    "defaultValue": "CX"
+                  },
+                  "variables": [],
+                  "descriptions": []
+                }
+              ]
+            },
+            {
+              "id": "mhxahju8m94zw2z77e",
+              "render": "section",
+              "type": "ROW",
+              "grid": "20",
+              "name": "P_FRAME_MATERIAL",
+              "label": "Frame Material",
+              "LabelTop": "TRUE",
+              "children": [
+                {
+                  "render": "field",
+                  "id": "mhxahju8u1ndkt8nn3",
+                  "name": "P_FR_FRONT_TYPE",
+                  "label": "Frame Front Type",
+                  "fieldType": "COMBOBOX",
+                  "combo": {
+                    "id": "mhxahju8o8oj05kqucn",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "P_FR_OPUS_FRONT_TYPE",
+                    "dynamic": false,
+                    "defaultValue": "ZENA"
+                  },
+                  "variables": [],
+                  "descriptions": []
+                },
+                {
+                  "render": "field",
+                  "id": "mhxahju8321jc53pdr8",
+                  "name": "P_FR_DECOR",
+                  "label": "Decor",
+                  "fieldType": "COMBOBOX",
+                  "combo": {
+                    "id": "mhxahju84awwrtz5znr",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "P_DECOR",
+                    "dynamic": false,
+                    "defaultValue": "MELA"
+                  },
+                  "variables": [],
+                  "descriptions": [],
+                  "dependencies": [
+                    {
+                      "nod": 1,
+                      "action": "FILTER",
+                      "roles": [
+                        {
+                          "operator": "OR",
+                          "roles": [
+                            {
+                              "leftValue": "$P_FRONT_TYPE.value",
+                              "comparisonType": "contains",
+                              "rightValue": "$attributes.front_type",
+                              "ruleType": "advanced"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "mhxahju8n01u489j4k9",
+              "render": "section",
+              "type": "ROW",
+              "grid": "20",
+              "name": "P_MATERIAL_S1",
+              "label": "Material",
+              "LabelTop": "TRUE",
+              "children": [
+                {
+                  "render": "field",
+                  "id": "mhxahju8p5lcxzamq3",
+                  "name": "P_FRONT_TYPE_S1",
+                  "label": "Front Type",
+                  "fieldType": "COMBOBOX",
+                  "combo": {
+                    "id": "mhxahju82h972fydrml",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "P_OPUSP_FRONT_TYPE",
+                    "dynamic": false,
+                    "defaultValue": "MELA"
+                  },
+                  "variables": [],
+                  "descriptions": []
+                },
+                {
+                  "id": "mhxahju8x5nkgeg864b",
+                  "render": "field",
+                  "name": "P_LACOBEL_TYPE_S1",
+                  "label": "Lacobel toute hauteur",
+                  "fieldType": "CHECKBOX",
+                  "grid": 12,
+                  "combo": {
+                    "id": "mhxahju8bz8aofnqm46",
+                    "type": "SWITCH",
+                    "code": null,
+                    "content": null,
+                    "source": "P_LACOBEL_TYPE",
+                    "dynamic": false,
+                    "defaultValue": null
+                  },
+                  "variables": [],
+                  "descriptions": [],
+                  "dependencies": [
+                    {
+                      "nod": 1,
+                      "action": "SHOW",
+                      "roles": [
+                        {
+                          "operator": "AND",
+                          "roles": [
+                            {
+                              "field": "P_FRONT_TYPE",
+                              "comparisonType": "=",
+                              "value": "LACO",
+                              "ruleType": "simple"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "nod": 1,
+                      "action": "HIDE",
+                      "roles": [
+                        {
+                          "operator": "OR",
+                          "roles": [
+                            {
+                              "field": "P_FRONT_TYPE",
+                              "comparisonType": "!=",
+                              "value": "LACO",
+                              "ruleType": "simple"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "render": "field",
+                  "id": "mhxahju8lpopfwc3fwa",
+                  "name": "P_DECOR_S1",
+                  "label": "Decor",
+                  "fieldType": "COMBOBOX",
+                  "combo": {
+                    "id": "mhxahju82bjnannb2v7",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "P_DECOR",
+                    "dynamic": false,
+                    "defaultValue": "MELA"
+                  },
+                  "variables": [],
+                  "descriptions": [],
+                  "dependencies": [
+                    {
+                      "nod": 2,
+                      "action": "HIDE",
+                      "roles": [
+                        {
+                          "operator": "AND",
+                          "roles": [
+                            {
+                              "field": "P_FRONT_TYPE",
+                              "comparisonType": "=",
+                              "value": "LACO",
+                              "ruleType": "simple"
+                            },
+                            {
+                              "field": "P_LACOBEL_TYPE",
+                              "comparisonType": "=",
+                              "value": "true",
+                              "ruleType": "simple"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "nod": 1,
+                      "action": "FILTER",
+                      "roles": [
+                        {
+                          "operator": "OR",
+                          "roles": [
+                            {
+                              "leftValue": "$P_FRONT_TYPE.value",
+                              "comparisonType": "contains",
+                              "rightValue": "$attributes.front_type",
+                              "ruleType": "advanced"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "render": "field",
+                  "id": "mhxahju8b31nneo7h46",
+                  "name": "P_LACOBEL_S1",
+                  "label": "Lacobel",
+                  "fieldType": "COMBOBOX",
+                  "combo": {
+                    "id": "mhxahju8vgpwtvw82u",
+                    "type": "SWITCH",
+                    "code": null,
+                    "content": null,
+                    "source": "P_LACOBEL",
+                    "dynamic": false,
+                    "defaultValue": "GLASS_L_4_9005"
+                  },
+                  "variables": [],
+                  "descriptions": [],
+                  "dependencies": [
+                    {
+                      "nod": 2,
+                      "action": "SHOW",
+                      "roles": [
+                        {
+                          "operator": "AND",
+                          "roles": [
+                            {
+                              "field": "P_FRONT_TYPE",
+                              "comparisonType": "=",
+                              "value": "LACO",
+                              "ruleType": "simple"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "nod": 2,
+                      "action": "HIDE",
+                      "roles": [
+                        {
+                          "operator": "AND",
+                          "roles": [
+                            {
+                              "field": "P_FRONT_TYPE",
+                              "comparisonType": "!=",
+                              "value": "LACO",
+                              "ruleType": "simple"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "mhxahju8g2407w7mhmj",
+              "render": "field",
+              "name": "P_MAT_ADV_S2",
+              "label": "Material S2 is different",
+              "fieldType": "CHECKBOX",
+              "grid": 12,
+              "combo": {
+                "id": "mhxahju8fk1dkqrte2",
+                "type": "SWITCH",
+                "code": null,
+                "content": null,
+                "source": "",
+                "dynamic": false,
+                "defaultValue": null
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "id": "mhxahju8xe4frlm3wc9",
+              "render": "section",
+              "type": "ROW",
+              "grid": "20",
+              "name": "P_MATERIAL_S2",
+              "label": "Material Side 2",
+              "LabelTop": "TRUE",
+              "children": [
+                {
+                  "render": "field",
+                  "id": "mhxahju8m06tsgu4z8p",
+                  "name": "P_FRONT_TYPE_S2",
+                  "label": "Front Type",
+                  "fieldType": "COMBOBOX",
+                  "combo": {
+                    "id": "mhxahju8lw1ywl84id",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "P_OPUSP_FRONT_TYPE",
+                    "dynamic": false,
+                    "defaultValue": "MELA"
+                  },
+                  "variables": [],
+                  "descriptions": []
+                },
+                {
+                  "id": "mhxahju8caz9z8vxhmp",
+                  "render": "field",
+                  "name": "P_LACOBEL_TYPE_S2",
+                  "label": "Lacobel toute hauteur",
+                  "fieldType": "CHECKBOX",
+                  "grid": 12,
+                  "combo": {
+                    "id": "mhxahju8r2izi56o6k",
+                    "type": "SWITCH",
+                    "code": null,
+                    "content": null,
+                    "source": "P_LACOBEL_TYPE",
+                    "dynamic": false,
+                    "defaultValue": null
+                  },
+                  "variables": [],
+                  "descriptions": [],
+                  "dependencies": [
+                    {
+                      "nod": 1,
+                      "action": "SHOW",
+                      "roles": [
+                        {
+                          "operator": "AND",
+                          "roles": [
+                            {
+                              "field": "P_FRONT_TYPE",
+                              "comparisonType": "=",
+                              "value": "LACO",
+                              "ruleType": "simple"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "nod": 1,
+                      "action": "HIDE",
+                      "roles": [
+                        {
+                          "operator": "OR",
+                          "roles": [
+                            {
+                              "field": "P_FRONT_TYPE",
+                              "comparisonType": "!=",
+                              "value": "LACO",
+                              "ruleType": "simple"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "render": "field",
+                  "id": "mhxahju8sh9diwteco",
+                  "name": "P_DECOR_S2",
+                  "label": "Decor",
+                  "fieldType": "COMBOBOX",
+                  "combo": {
+                    "id": "mhxahju8bdf8xpo26bs",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "P_DECOR",
+                    "dynamic": false,
+                    "defaultValue": "MELA"
+                  },
+                  "variables": [],
+                  "descriptions": [],
+                  "dependencies": [
+                    {
+                      "nod": 2,
+                      "action": "HIDE",
+                      "roles": [
+                        {
+                          "operator": "AND",
+                          "roles": [
+                            {
+                              "field": "P_FRONT_TYPE",
+                              "comparisonType": "=",
+                              "value": "LACO",
+                              "ruleType": "simple"
+                            },
+                            {
+                              "field": "P_LACOBEL_TYPE",
+                              "comparisonType": "=",
+                              "value": "true",
+                              "ruleType": "simple"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "nod": 1,
+                      "action": "FILTER",
+                      "roles": [
+                        {
+                          "operator": "OR",
+                          "roles": [
+                            {
+                              "leftValue": "$P_FRONT_TYPE.value",
+                              "comparisonType": "contains",
+                              "rightValue": "$attributes.front_type",
+                              "ruleType": "advanced"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "render": "field",
+                  "id": "mhxahju8q5vp75nwrh9",
+                  "name": "P_LACOBEL_S2",
+                  "label": "Lacobel",
+                  "fieldType": "COMBOBOX",
+                  "combo": {
+                    "id": "mhxahju8m96t0fd5xed",
+                    "type": "SWITCH",
+                    "code": null,
+                    "content": null,
+                    "source": "P_LACOBEL",
+                    "dynamic": false,
+                    "defaultValue": "GLASS_L_4_9005"
+                  },
+                  "variables": [],
+                  "descriptions": [],
+                  "dependencies": [
+                    {
+                      "nod": 2,
+                      "action": "SHOW",
+                      "roles": [
+                        {
+                          "operator": "AND",
+                          "roles": [
+                            {
+                              "field": "P_FRONT_TYPE",
+                              "comparisonType": "=",
+                              "value": "LACO",
+                              "ruleType": "simple"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "nod": 2,
+                      "action": "HIDE",
+                      "roles": [
+                        {
+                          "operator": "AND",
+                          "roles": [
+                            {
+                              "field": "P_FRONT_TYPE",
+                              "comparisonType": "!=",
+                              "value": "LACO",
+                              "ruleType": "simple"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "dependencies": [
+                {
+                  "nod": 1,
+                  "action": "SHOW",
+                  "roles": [
+                    {
+                      "operator": "OR",
+                      "roles": [
+                        {
+                          "field": "P_MAT_ADV_S2",
+                          "comparisonType": "=",
+                          "value": "true",
+                          "ruleType": "simple"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "nod": 1,
+                  "action": "HIDE",
+                  "roles": [
+                    {
+                      "operator": "OR",
+                      "roles": [
+                        {
+                          "field": "P_MAT_ADV_S2",
+                          "comparisonType": "=",
+                          "value": "false",
+                          "ruleType": "simple"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mhxahju8e0ytzc825yq",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "P_ADVANCED",
+          "label": "Advanced",
+          "children": [
+            {
+              "render": "field",
+              "id": "mhxahju8hfwlq8vm46i",
+              "name": "P_OSB_Panels",
+              "label": "Wooden OSB",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "mhxahju8yru4fdudfik",
+                "type": "SWITCH",
+                "code": null,
+                "source": "P_OSB_Panels",
+                "dynamic": false,
+                "defaultValue": "No OSB"
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mhxahju8thq6mlyzzzn",
+              "name": "P_TG_TYPE",
+              "label": "Transfer Grid Type",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "mhxahju8uyy5qxurtut",
+                "type": "SWITCH",
+                "code": null,
+                "source": "P_TG_TYPE",
+                "dynamic": false,
+                "defaultValue": "None"
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mhxahju8jnzbzc4tqv",
+              "name": "P_TG_CNT",
+              "label": "Transfer Grid Quantity",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "mhxahju8du7tp7l4n4",
+                "type": "SWITCH",
+                "code": null,
+                "source": "P_TG_CNT",
+                "dynamic": false,
+                "defaultValue": 1
+              },
+              "variables": [],
+              "descriptions": [],
+              "dependencies": [
+                {
+                  "nod": 1,
+                  "action": "SHOW",
+                  "roles": [
+                    {
+                      "operator": "OR",
+                      "roles": [
+                        {
+                          "field": "P_TG_TYPE",
+                          "comparisonType": "!=",
+                          "value": "None",
+                          "ruleType": "simple"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "nod": 1,
+                  "action": "HIDE",
+                  "roles": [
+                    {
+                      "operator": "OR",
+                      "roles": [
+                        {
+                          "field": "P_TG_TYPE",
+                          "comparisonType": "=",
+                          "value": "None",
+                          "ruleType": "simple"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mhxahju8t8bf15br8p",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "P_COSTUMER_INFO",
+          "label": "Costumer Info",
+          "children": [
+            {
+              "render": "field",
+              "id": "mhxahju8tjax5s1611",
+              "name": "P_COSTUMER_REQUEST",
+              "label": "Costumer Request",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mhxahju85zbcrxkm62t",
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": "",
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        },
+        {
+          "id": "mhxahju86z9nfxx3wl",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "P_VARS",
+          "label": "Vars",
+          "visibility": "HIDE",
+          "children": [
+            {
+              "render": "field",
+              "id": "mhxahju8nf6tgmt76vs",
+              "name": "P_CPID",
+              "label": "CPID",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "mhxahju8u2w7r0gy6k",
+                "type": "SELECT",
+                "source": "P_OPUSP_CPID",
+                "validation": null,
+                "defaultValue": "P_OPUSP",
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mhxahju8amylmnvouvo",
+              "name": "P_DEPTH",
+              "label": "Depth",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mhxahju8t5dz6mdhow",
+                "min": 1,
+                "max": 102,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 102,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ],
+          "dependencies": [
+            {
+              "nod": 1,
+              "action": "HIDE",
+              "roles": [
+                {
+                  "operator": "OR",
+                  "roles": [
+                    {
+                      "field": "P_CPID",
+                      "comparisonType": "=",
+                      "value": "P_OPUSP",
+                      "ruleType": "simple"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "id": "article-1763029918265-2a892ead",
+    "name": "P_OPUSP"
+  }
+}

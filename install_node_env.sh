@@ -90,3 +90,11 @@ cat <<'EOF'
 EOF
 
 echo "✅ Node.js environment ready!"
+
+
+# 1) go to the project & activate venv
+cd ~/odoo17
+source .venv/bin/activate
+
+# 2) run Odoo in the foreground (shows logs)
+~/odoo17/.venv/bin/python ~/odoo17/src/odoo-bin -c ~/odoo17/odoo.conf --logfile=/dev/stdout --log-level=info

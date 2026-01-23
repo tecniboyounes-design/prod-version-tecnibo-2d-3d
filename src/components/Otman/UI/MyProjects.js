@@ -104,6 +104,7 @@ import CircularWithValueLabel from "./CircularWithValueLabel";
 import { createProject } from "@/actions/createProjectActions";
 
 import dayjs from "dayjs";
+import CustomAlert from "./CustomAlert";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -111,6 +112,10 @@ import { fetchProjects, fetchUserProjects, manageVersionHistory, testConnection,
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 
 const Projects = () => {
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("info");
+  const showAlert = (msg, sev = "info") => { setAlertMessage(String(msg||"")); setAlertSeverity(sev); setAlertOpen(true); };
   const currentYear = dayjs();
   const [resultOfFilter] = useState([]);
   const [filterOpen, setFilterOpen] = React.useState(false);
@@ -1573,12 +1578,12 @@ export function SearchForProjectOnOdooDialog({ open, onClose }) {
       });
 
       if (result && result.success) {
-        alert('Project and phase updated successfully!');
+        showAlert('Project and phase updated successfully!', 'success');
       } else {
-        alert('Failed to update project and phase.');
+        showAlert('Failed to update project and phase.', 'error');
       }
     } else {
-      alert('Please select a project and a phase.');
+      showAlert('Please select a project and a phase.', 'warning');
     }
   };
 
@@ -1595,6 +1600,7 @@ export function SearchForProjectOnOdooDialog({ open, onClose }) {
 
   return (
     <Dialog open={open} onClose={handleDialogClose} fullWidth maxWidth="sm">
+      <CustomAlert open={alertOpen} message={alertMessage} severity={alertSeverity} onClose={() => setAlertOpen(false)} />
       <DialogContent>
         <Box sx={{ display: "flex", alignItems: "center", p: 1 }}>
           <img

@@ -3,10 +3,13 @@ const { createClient } = require('@supabase/supabase-js');
 
 // Initialize Supabase client
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+const ODOO_PRICE_URL = process.env.ODOO_URL
+  ? `${process.env.ODOO_URL}/web/dataset/call_kw/product.template/web_search_read`
+  : null;
+if (!ODOO_PRICE_URL) throw new Error("[calculation/cacheHelper] ODOO_URL env is required");
 
 // Function to fetch price from Odoo
 async function getPriceFromOdoo(name) {
-  const url = 'http://192.168.30.33:8069/web/dataset/call_kw/product.template/web_search_read';
   const payload = {
     jsonrpc: '2.0',
     method: 'call',
@@ -21,7 +24,7 @@ async function getPriceFromOdoo(name) {
       },
     },
   };
-  const response = await fetch(url, {
+  const response = await fetch(ODOO_PRICE_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

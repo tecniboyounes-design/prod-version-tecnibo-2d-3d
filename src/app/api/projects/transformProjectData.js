@@ -25,7 +25,7 @@ export function transformProjectData(input) {
     description: `Auto-generated for ${input.projectName} P.N => ${Math.floor(Math.random() * 900000000 + 100000000)}`,
     created_on: formatDate(input.created),
     changed_on: formatDate(input.lastModified),
-    image_url: input.plan2DImage || 'https://cdn.andro4all.com/andro4all/2022/07/Planner-5D.jpg',
+    image_url: input.plan2DImage || "",
     managers: [
       {
         name: sessionInfo.name || `${input.author?.firstName || 'fallback'} ${input.author?.lastName || ''}`,

@@ -8,6 +8,11 @@
  */
 
 
+const ODOO_URL = process.env.ODOO_URL
+  ? `${process.env.ODOO_URL}/web/dataset/call_kw/hr.employee/search_read`
+  : null;
+if (!ODOO_URL) throw new Error("[getEmployeeBySession] ODOO_URL env is required");
+
 
 export function createEmployeePayloadByUserId(uid, companyId) {
   return {
@@ -82,7 +87,7 @@ export async function getJobPositionDetails(uid, session_id, companyId) {
   
   try {
     console.log("Sending request to Odoo...");
-    const response = await fetch("http://192.168.30.33:8069/web/dataset/call_kw/hr.employee/search_read", options);
+    const response = await fetch(ODOO_URL, options);
     console.log("Response received with status:", response.status);
 
     if (!response.ok) {

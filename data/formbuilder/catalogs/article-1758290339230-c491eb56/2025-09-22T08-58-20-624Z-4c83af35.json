@@ -1,0 +1,351 @@
+{
+  "sections": [
+    {
+      "id": "2a1f4d3c-4014-4e2f-80b9-18ffa0418505",
+      "type": "NONE",
+      "render": "section",
+      "name": "configurator",
+      "Label": "Cloison T82",
+      "children": [
+        {
+          "id": "48c6d342-fedf-4484-85c9-17d5fb3c0828",
+          "render": "section",
+          "type": "NONE",
+          "name": "General_Setting",
+          "label": "General Setting",
+          "children": [
+            {
+              "id": "1be955a9-d7e1-4783-93c4-ad914d295136",
+              "render": "section",
+              "type": "ROW",
+              "name": "Profiles_Color",
+              "label": "Profiles Color",
+              "LabelTop": "TRUE",
+              "children": [
+                {
+                  "render": "field",
+                  "id": "754162e9-dac9-4edc-85c4-eecc92fff624",
+                  "name": "P_PRF_COLOR",
+                  "label": "Color",
+                  "LabelTop": "TRUE",
+                  "fieldType": "COMBOBOX",
+                  "grid": "5",
+                  "combo": {
+                    "id": "daf1a74e-6bc9-4732-bb9e-6bb352700436",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "P_PRF_COLOR",
+                    "dynamic": false,
+                    "defaultValue": "9005"
+                  },
+                  "variables": [],
+                  "descriptions": []
+                },
+                {
+                  "render": "field",
+                  "id": "76ceb9ad-42c7-4afc-8896-6a651bfae862",
+                  "name": "P_PRF_COLOR_FINISH",
+                  "label": "Finish",
+                  "LabelTop": "TRUE",
+                  "fieldType": "COMBOBOX",
+                  "grid": "2",
+                  "combo": {
+                    "id": "0b6c72df-99ff-4701-ab8d-b8e4f5cb216b",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "P_PRF_COLOR_FINISH",
+                    "dynamic": false,
+                    "defaultValue": "CX"
+                  },
+                  "variables": [],
+                  "descriptions": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "f4538013-4c97-4650-b98a-c2149369ef91",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "Dimensions",
+          "label": "Dimensions",
+          "children": [
+            {
+              "render": "field",
+              "id": "e3b73306-d317-47a3-9871-32877ac8f2e6",
+              "name": "height",
+              "label": "Height",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "3c52e46e-cd25-4f9d-b58d-8f8fd1a74241",
+                "min": 1000,
+                "max": 3100,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 2700,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "32328244-438e-4948-91d6-a73a36456778",
+              "name": "module_width",
+              "label": "Module Width",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "76d6bcbd-02ce-4f6a-a3d1-260fb5be9faa",
+                "min": 1000,
+                "max": 1200,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 1200,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "fad09319-db8e-46b8-a130-7e58162aae20",
+              "name": "P_GAP_TOP",
+              "label": "Top Gap",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "98d08818-e763-40b2-b2fa-86519d295eec",
+                "type": "SWITCH",
+                "code": null,
+                "content": null,
+                "source": "P_GAP",
+                "dynamic": false,
+                "defaultValue": "30"
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "7d2157ef-9156-4c51-a77e-16f268e0361d",
+              "name": "P_GAP_BOT",
+              "label": "Bot Gap",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "2c5f67b5-9ee5-4af9-8522-cb03cc3b7e38",
+                "type": "SWITCH",
+                "code": null,
+                "content": null,
+                "source": "P_GAP",
+                "dynamic": false,
+                "defaultValue": "30"
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        },
+        {
+          "id": "9275c894-5efa-4023-86fd-2c50e5bc9924",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "Material",
+          "label": "Material",
+          "children": [
+            {
+              "render": "field",
+              "id": "506a5114-c3f5-40ba-8839-31356d77e9f1",
+              "name": "FRONT_TYPE",
+              "label": "Front Type",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "c71a5114-f30d-4f07-9570-64822126c125",
+                "type": "SWITCH",
+                "code": null,
+                "content": null,
+                "source": "FRONT_TYPE",
+                "dynamic": false,
+                "defaultValue": "MELA"
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "acd13e7c-05bd-4d1c-9abe-8c32bd948ae9",
+              "name": "DECOR_MAT",
+              "label": "Material",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "7b314303-fcb4-4339-a279-9cc1cce2f6f6",
+                "type": "SWITCH",
+                "code": null,
+                "content": null,
+                "source": "DECOR_MAT",
+                "dynamic": false,
+                "defaultValue": "MELA"
+              },
+              "variables": [],
+              "descriptions": [],
+              "dependencies": [
+                {
+                  "nod": 1,
+                  "action": "SHOW",
+                  "roles": [
+                    {
+                      "operator": "OR",
+                      "roles": [
+                        {
+                          "field": "FRONT_TYPE",
+                          "comparaison": "=",
+                          "value": "MELA"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "nod": 2,
+                  "action": "FILTER",
+                  "roles": [
+                    {
+                      "operator": "AND",
+                      "roles": [
+                        {
+                          "leftValue": "$FRONT_TYPE.value",
+                          "comparisonType": "=",
+                          "rightValue": "$attributes.front_type"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "render": "field",
+              "id": "71b47df8-a6ab-43c4-b693-e703e72bec09",
+              "name": "DECOR_SRF",
+              "label": "Surface",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "547acdbc-66db-4c15-b2e6-42559c8add5b",
+                "type": "SWITCH",
+                "code": null,
+                "content": null,
+                "source": "DECOR_SRF",
+                "dynamic": false,
+                "defaultValue": "MELA"
+              },
+              "variables": [],
+              "descriptions": [],
+              "dependencies": [
+                {
+                  "nod": 1,
+                  "action": "SHOW",
+                  "roles": [
+                    {
+                      "operator": "OR",
+                      "roles": [
+                        {
+                          "field": "FRONT_TYPE",
+                          "comparaison": "=",
+                          "value": "LINA"
+                        },
+                        {
+                          "field": "FRONT_TYPE",
+                          "comparaison": "=",
+                          "value": "TIVA"
+                        },
+                        {
+                          "field": "FRONT_TYPE",
+                          "comparaison": "=",
+                          "value": "SALI"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "nod": 2,
+                  "action": "FILTER",
+                  "roles": [
+                    {
+                      "operator": "AND",
+                      "roles": [
+                        {
+                          "leftValue": "$FRONT_TYPE.value",
+                          "comparisonType": "=",
+                          "rightValue": "$attributes.front_type"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "c6ef3e58-0dc1-4a8f-accd-ccc822d1264f",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "Advanced",
+          "label": "Advanced",
+          "children": [
+            {
+              "render": "field",
+              "id": "9f8ba46c-4bcc-4060-acb2-a6a46f216220",
+              "name": "OSB_Panels",
+              "label": "Wooden OSB",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "6686dbcc-ca5d-4205-b5a5-269d430cdb80",
+                "type": "SWITCH",
+                "code": null,
+                "source": "OSB_Panels",
+                "dynamic": false,
+                "defaultValue": "No OSB"
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        },
+        {
+          "id": "8e6ba4b5-e559-427f-afb3-eede159b9e9a",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "Costumer_Info",
+          "label": "Costumer Info",
+          "children": [
+            {
+              "render": "field",
+              "id": "261e586c-3427-41b8-bac9-4ae5ebf9e3ef",
+              "name": "Costumer_Request",
+              "label": "Costumer Request",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "a4a25a70-0d23-459c-9bc4-888c2caeaf02",
+                "min": 1000,
+                "max": 3100,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": "",
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "id": "article-1758290339230-c491eb56",
+    "name": "P_T82"
+  }
+}

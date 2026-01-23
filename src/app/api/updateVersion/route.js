@@ -47,6 +47,8 @@ const fetchProjectWithRelations = async (odooId, projectId) => {
   }
 };
 
+
+
 // Upserts plan parameters into the plan_parameters table
 const upsertPlanParameters = async (planParameters, versionId) => {
   //console.log('[LOG] Processing planParameters:', planParameters);
@@ -120,6 +122,15 @@ const upsertPlanParameters = async (planParameters, versionId) => {
   }
 };
 
+
+// make any object JSONB-safe (drops undefined/functions, avoids crashes)
+const asJson = (obj) => {
+  try { return JSON.parse(JSON.stringify(obj ?? {})); }
+  catch { return {}; }
+};
+
+
+
 export async function POST(req) {
   //console.log('[LOG] Handling POST request for updateVersion');
   const headers = getCorsHeaders(req);
@@ -129,6 +140,12 @@ export async function POST(req) {
     //console.log('[LOG] Received version data:', versionData);
 
     const { projectId, versionId, lines, points, doors, userId, planParameters, plan2DImage } = versionData;
+
+    // Capture the *exact* client payload for each line, keyed by client id
+    const extraByClientId = new Map(
+      (lines ?? []).map(l => [(l.client_id ?? l.id), asJson(l)])
+    );
+
 
     // console.log('material', lines.map(line => line.material));
     // Step 1: Check for required fields
@@ -458,6 +475,9 @@ export async function POST(req) {
         ceiling_type: line.ceiling_type || null,
         floor_type: line.floor_type || null,
         links: line.links || null,
+        extra: extraByClientId.get(clientId) ?? asJson(line),
+        cp_Id: line.cp_Id || null,
+
       };
 
       //console.log('[LOG] Checking if wall exists for client_id:', clientId);
@@ -514,6 +534,8 @@ export async function POST(req) {
               ceiling_type: row.ceiling_type,
               floor_type: row.floor_type,
               links: row.links,
+              extra: row.extra,
+              cp_Id: row.cp_Id,
             })
             .eq('id', row.id)
         )
@@ -596,6 +618,7 @@ export async function POST(req) {
           width: door.width,
           height: door.height,
           wallId: dbWallId,
+          cp_Id: door.cp_Id || "fallback cp_id before insert",
           referencePointId: door.referencePointId
             ? pointIdMap.get(door.referencePointId) || door.referencePointId
             : null,
@@ -604,8 +627,12 @@ export async function POST(req) {
           type: door.type || null,
           framed: door.framed || false,
           glass: door.glass || false,
+          doorType: door.doorType || null,
         },
       };
+
+
+      console.log("article data ##########", articleData)
 
       //console.log('[LOG] Checking if article exists for client_id:', clientId);
       const { data: existingArticle } = await supabase
@@ -621,7 +648,9 @@ export async function POST(req) {
         articleRowsToInsert.push(articleData);
       }
     }
+
     //console.log('[LOG] Articles to insert:', articleRowsToInsert.length, 'Articles to update:', articleRowsToUpdate.length);
+    
 
     // Insert new articles
     if (articleRowsToInsert.length > 0) {
@@ -651,91 +680,91 @@ export async function POST(req) {
       //console.log('[LOG] Existing articles updated successfully');
     }
 
-  if (plan2DImage) {
-    try {
-      // 1) Generate a single timestamp up front:
-      const timestamp = Date.now();
+    if (plan2DImage) {
+      try {
+        // 1) Generate a single timestamp up front:
+        const timestamp = Date.now();
 
-      // console.log("[updateVersion] plan2DImage raw payload:", plan2DImage);
+        // console.log("[updateVersion] plan2DImage raw payload:", plan2DImage);
 
-      // 2) Normalize “plan2DImage” into a string we can either save or store directly.
-      let imageData = plan2DImage;
-      if (
-        typeof plan2DImage === "object" &&
-        plan2DImage.file &&
-        plan2DImage.file.mime &&
-        plan2DImage.file.data
-      ) {
-        // If the client sent { file: { mime, data } }, build a data‐URL:
-        imageData = `data:${plan2DImage.file.mime};base64,${plan2DImage.file.data}`;
-      }
-
-      // 3) Check if imageData is a data‐URL (Base64) or a plain string (URL).
-      const dataUrlMatch =
-        typeof imageData === "string" &&
-        imageData.match(/^data:(\w+\/\w+);base64,(.+)$/);
-
-      let finalUrlToStore;
-      
-      if (dataUrlMatch) {
-        // 4) It’s Base64 data.  Decide if it’s a PDF or an image.
-        const mimeType = dataUrlMatch[1]; // e.g. "application/pdf" or "image/png"
-        const base64Data = dataUrlMatch[2];
-
-        if (mimeType === "application/pdf") {
-          // 5) Convert PDF → PNG, using the **same** timestamp:
-          //    convertPdfViaMicroservice now saves:
-          //      - storage/plan2d/<versionId>/<versionId>-<timestamp>.pdf
-          //      - storage/plan2d/<versionId>/<versionId>-<timestamp>.png
-          //    and returns { filePath, accessUrl } for the PNG.
-          const { accessUrl } = await convertPdfViaMicroservice(
-            base64Data,
-            versionId,
-            timestamp
-          );
-          finalUrlToStore = accessUrl;
-
-        } else if (mimeType.startsWith("image/")) {
-          // 6) It’s already an image (e.g. image/png or image/webp).
-          //    Just save it at <versionId>-<timestamp>.<ext>, then update Supabase.
-          const { accessUrl } = await savePlan2DImage(
-            imageData,
-            versionId,
-            timestamp
-          );
-          finalUrlToStore = accessUrl;
-
-        } else {
-          throw new Error("Unsupported MIME type for plan2DImage");
+        // 2) Normalize “plan2DImage” into a string we can either save or store directly.
+        let imageData = plan2DImage;
+        if (
+          typeof plan2DImage === "object" &&
+          plan2DImage.file &&
+          plan2DImage.file.mime &&
+          plan2DImage.file.data
+        ) {
+          // If the client sent { file: { mime, data } }, build a data‐URL:
+          imageData = `data:${plan2DImage.file.mime};base64,${plan2DImage.file.data}`;
         }
-      } else if (typeof imageData === "string") {
-        // 7) It’s a plain string → assume it’s already a URL (with a valid <timestamp> baked in).
-        //    We do NOT call savePlan2DImage here, because the file already exists.
-        finalUrlToStore = imageData.split("|")[0].trim();
-      } else {
-        throw new Error("Invalid plan2DImage format");
+
+        // 3) Check if imageData is a data‐URL (Base64) or a plain string (URL).
+        const dataUrlMatch =
+          typeof imageData === "string" &&
+          imageData.match(/^data:(\w+\/\w+);base64,(.+)$/);
+
+        let finalUrlToStore;
+
+        if (dataUrlMatch) {
+          // 4) It’s Base64 data.  Decide if it’s a PDF or an image.
+          const mimeType = dataUrlMatch[1]; // e.g. "application/pdf" or "image/png"
+          const base64Data = dataUrlMatch[2];
+
+          if (mimeType === "application/pdf") {
+            // 5) Convert PDF → PNG, using the **same** timestamp:
+            //    convertPdfViaMicroservice now saves:
+            //      - storage/plan2d/<versionId>/<versionId>-<timestamp>.pdf
+            //      - storage/plan2d/<versionId>/<versionId>-<timestamp>.png
+            //    and returns { filePath, accessUrl } for the PNG.
+            const { accessUrl } = await convertPdfViaMicroservice(
+              base64Data,
+              versionId,
+              timestamp
+            );
+            finalUrlToStore = accessUrl;
+
+          } else if (mimeType.startsWith("image/")) {
+            // 6) It’s already an image (e.g. image/png or image/webp).
+            //    Just save it at <versionId>-<timestamp>.<ext>, then update Supabase.
+            const { accessUrl } = await savePlan2DImage(
+              imageData,
+              versionId,
+              timestamp
+            );
+            finalUrlToStore = accessUrl;
+
+          } else {
+            throw new Error("Unsupported MIME type for plan2DImage");
+          }
+        } else if (typeof imageData === "string") {
+          // 7) It’s a plain string → assume it’s already a URL (with a valid <timestamp> baked in).
+          //    We do NOT call savePlan2DImage here, because the file already exists.
+          finalUrlToStore = imageData.split("|")[0].trim();
+        } else {
+          throw new Error("Invalid plan2DImage format");
+        }
+
+        // 8) Update Supabase’s versions table with our chosen URL:
+        const { error: supaError } = await supabase
+          .from("versions")
+          .update({ plan2DImage: finalUrlToStore })
+          .eq("id", versionId);
+
+        if (supaError) throw supaError;
+
+        console.log("[updateVersion] plan2DImage URL stored:", finalUrlToStore);
+      } catch (err) {
+        console.error("[updateVersion] Error handling plan2DImage:", err.message);
+        return new NextResponse(
+          JSON.stringify({
+            error: "Failed to handle plan2DImage",
+            details: err.message,
+          }),
+          { status: 500, headers }
+        );
       }
-
-      // 8) Update Supabase’s versions table with our chosen URL:
-      const { error: supaError } = await supabase
-        .from("versions")
-        .update({ plan2DImage: finalUrlToStore })
-        .eq("id", versionId);
-
-      if (supaError) throw supaError;
-
-      console.log("[updateVersion] plan2DImage URL stored:", finalUrlToStore);
-    } catch (err) {
-      console.error("[updateVersion] Error handling plan2DImage:", err.message);
-      return new NextResponse(
-        JSON.stringify({
-          error: "Failed to handle plan2DImage",
-          details: err.message,
-        }),
-        { status: 500, headers }
-      );
     }
-  }
 
     //console.log('[LOG] Fetching user with odoo_id:', userId);
     const { data: userData, error: userError } = await supabase
@@ -758,13 +787,13 @@ export async function POST(req) {
       lastName: rest.join(' ') || '',
       role: userData.role || null,
     };
-   
+
     // Step 9: Fetch project details
     const fullProject = await fetchProjectWithRelations(userData.odoo_id, projectId);
-    
+
     // Step 10: Transform and respond
     const transformed = transformProjectsData(fullProject, author);
-   
+
     //console.log('[LOG] Preparing response...');
     return new NextResponse(
       JSON.stringify({

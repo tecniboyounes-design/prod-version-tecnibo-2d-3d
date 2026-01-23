@@ -195,6 +195,7 @@ export async function POST(request) {
       version_id,
       versionData,
     });
+    
 
     // Step 4: Fetch full user info
     const { data: userData, error: userError } = await supabase
@@ -202,12 +203,12 @@ export async function POST(request) {
       .select('*')
       .eq('odoo_id', user_id)
       .single();
-
+     
     if (userError || !userData) {
       console.error('User fetch error:', userError || 'No user data');
       throw new Error('User not found');
     }
-
+   
     // Step 5: Construct author from user name
     const [firstName, ...lastNameParts] = userData.name?.trim().split(' ') || [];
     const author = {

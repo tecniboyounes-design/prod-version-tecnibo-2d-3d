@@ -223,6 +223,7 @@ export async function DELETE(request) {
 
 
 
+
 export async function PUT(request) {
   const corsHeaders = getCorsHeaders(request);
 
@@ -253,7 +254,7 @@ export async function PUT(request) {
       .from("custom_articles")
       .update({
         article_data: body,
-        created_at: updated_at, // optional: overwrite timestamp
+        created_at: updated_at,
       })
       .eq("id", id);
 

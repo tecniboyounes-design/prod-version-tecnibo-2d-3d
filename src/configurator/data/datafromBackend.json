@@ -1,0 +1,263 @@
+{
+  "id": 4,
+  "cpid": "YOUNES_TEST_CONF_1",
+  "description": "",
+  "createdAt": "2025-07-29T13:34:53.166Z",
+  "updatedAt": null,
+  "deletedAt": null,
+  "sections": [
+    {
+      "id": 33,
+      "type": "NONE",
+      "label": "C.T 1 P.T root",
+      "description": "Root-level section",
+      "termnum": 1,
+      "parentTermnum": null,
+      "configuratorId": 4,
+      "createdAt": "2025-07-29T14:32:01.713Z",
+      "updatedAt": null,
+      "deletedAt": null,
+      "fields": [
+        {
+          "id": 26,
+          "name": "new_field_1753796785092",
+          "type": "INPUT",
+          "label": "younes test ",
+          "info": "description ",
+          "required": true,
+          "termnum": 2,
+          "parentTermnum": 1,
+          "configuratorId": 4,
+          "deletedAt": null,
+          "inputField": {
+            "id": 3,
+            "type": "type",
+            "validation": "regex ",
+            "defaultValue": "default ",
+            "fieldId": 26,
+            "attributes": {
+              "key1": "value1",
+              "key2": "value2",
+              "key3": "value3"
+            }
+          },
+          "comboboxField": null,
+          "variables": [
+            {
+              "id": 2,
+              "name": "name",
+              "path": "./path",
+              "type": "SURF",
+              "fieldId": 26
+            }
+          ],
+          "descriptions": [
+            {
+              "id": 2,
+              "lang": "fr",
+              "description": "description",
+              "fieldId": 26
+            }
+          ],
+          "dependencies": [
+            {
+              "id": 2,
+              "action": "FILTER",
+              "fieldId": 26,
+              "dependency_values": []
+            }
+          ],
+          "comparisons": []
+        },
+        {
+          "id": 27,
+          "name": "new_field_1753796786074",
+          "type": "INPUT",
+          "label": "New Field",
+          "info": "",
+          "required": false,
+          "termnum": 3,
+          "parentTermnum": 1,
+          "configuratorId": 4,
+          "deletedAt": null,
+          "inputField": null,
+          "comboboxField": null,
+          "variables": [],
+          "descriptions": [],
+          "dependencies": [],
+          "comparisons": []
+        },
+        {
+          "id": 28,
+          "name": "new_field_1753796786759",
+          "type": "INPUT",
+          "label": "New Field",
+          "info": "",
+          "required": false,
+          "termnum": 4,
+          "parentTermnum": 1,
+          "configuratorId": 4,
+          "deletedAt": null,
+          "inputField": null,
+          "comboboxField": null,
+          "variables": [],
+          "descriptions": [],
+          "dependencies": [],
+          "comparisons": []
+        }
+      ],
+      "sections": []
+    },
+    {
+      "id": 34,
+      "type": "NONE",
+      "label": "C.T 5 P.T root",
+      "description": "Root-level section",
+      "termnum": 5,
+      "parentTermnum": null,
+      "configuratorId": 4,
+      "createdAt": "2025-07-29T14:32:01.743Z",
+      "updatedAt": null,
+      "deletedAt": null,
+      "fields": [
+        {
+          "id": 29,
+          "name": "new_field_1753796787724",
+          "type": "INPUT",
+          "label": "New Field",
+          "info": "",
+          "required": false,
+          "termnum": 8,
+          "parentTermnum": 5,
+          "configuratorId": 4,
+          "deletedAt": null,
+          "inputField": null,
+          "comboboxField": null,
+          "variables": [],
+          "descriptions": [],
+          "dependencies": [],
+          "comparisons": []
+        }
+      ],
+      "sections": [
+        {
+          "id": 35,
+          "type": "NONE",
+          "label": "C.T 6 P.T 5",
+          "description": "Auto-added subsection",
+          "termnum": 6,
+          "parentTermnum": 5,
+          "configuratorId": 4,
+          "createdAt": "2025-07-29T14:32:01.749Z",
+          "updatedAt": null,
+          "deletedAt": null,
+          "fields": [],
+          "sections": []
+        },
+        {
+          "id": 36,
+          "type": "NONE",
+          "label": "C.T 7 P.T 5",
+          "description": "Auto-added subsection",
+          "termnum": 7,
+          "parentTermnum": 5,
+          "configuratorId": 4,
+          "createdAt": "2025-07-29T14:32:01.753Z",
+          "updatedAt": null,
+          "deletedAt": null,
+          "fields": [],
+          "sections": []
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "type": "NONE",
+      "label": "C.T 9 P.T root",
+      "description": "Root-level section",
+      "termnum": 9,
+      "parentTermnum": null,
+      "configuratorId": 4,
+      "createdAt": "2025-07-29T14:32:01.756Z",
+      "updatedAt": null,
+      "deletedAt": null,
+      "fields": [],
+      "sections": [
+        {
+          "id": 38,
+          "type": "NONE",
+          "label": "C.T 10 P.T 9",
+          "description": "Auto-added subsection",
+          "termnum": 10,
+          "parentTermnum": 9,
+          "configuratorId": 4,
+          "createdAt": "2025-07-29T14:32:01.760Z",
+          "updatedAt": null,
+          "deletedAt": null,
+          "fields": [
+            {
+              "id": 30,
+              "name": "new_field_1753796792127",
+              "type": "INPUT",
+              "label": "New Field",
+              "info": "",
+              "required": false,
+              "termnum": 11,
+              "parentTermnum": 10,
+              "configuratorId": 4,
+              "deletedAt": null,
+              "inputField": null,
+              "comboboxField": null,
+              "variables": [],
+              "descriptions": [],
+              "dependencies": [],
+              "comparisons": []
+            },
+            {
+              "id": 31,
+              "name": "new_field_1753796792888",
+              "type": "INPUT",
+              "label": "New Field",
+              "info": "",
+              "required": false,
+              "termnum": 12,
+              "parentTermnum": 10,
+              "configuratorId": 4,
+              "deletedAt": null,
+              "inputField": null,
+              "comboboxField": null,
+              "variables": [],
+              "descriptions": [],
+              "dependencies": [],
+              "comparisons": []
+            }
+          ],
+          "sections": []
+        },
+        {
+          "id": 39,
+          "type": "NONE",
+          "label": "C.T 13 P.T 9",
+          "description": "Auto-added subsection",
+          "termnum": 13,
+          "parentTermnum": 9,
+          "configuratorId": 4,
+          "createdAt": "2025-07-29T14:32:01.771Z",
+          "updatedAt": null,
+          "deletedAt": null,
+          "fields": [],
+          "sections": []
+        }
+      ]
+    }
+  ],
+  "fields": [],
+  "conditions": [
+    {
+      "id": null,
+      "comment": "",
+      "operations": [],
+      "comparisons": []
+    }
+  ]
+}

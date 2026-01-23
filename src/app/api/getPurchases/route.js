@@ -1,6 +1,10 @@
 import axios from 'axios';
 import { NextResponse } from 'next/server'; 
 
+const ODOO_URL = process.env.ODOO_URL
+  ? `${process.env.ODOO_URL}/web/dataset/call_kw/purchase.order/web_search_read`
+  : null;
+if (!ODOO_URL) throw new Error("[getPurchases] ODOO_URL env is required");
 
 export const corsHeaders = {
   'Access-Control-Allow-Origin': '*', 
@@ -29,7 +33,7 @@ export async function POST(req) {
       'Accept': 'application/json',
       'Cookie': `session_id=${session_id}`, 
     };
-
+    
     // Request payload for Odoo's call_kw API
     const payload = {
         "id": 10,
@@ -111,12 +115,9 @@ export async function POST(req) {
             }
         }
     };
-
-    // Odoo endpoint
-    const url = 'http://192.168.30.33:8069/web/dataset/call_kw/purchase.order/web_search_read';
     
     // Send POST request to Odoo
-    const response = await axios.post(url, payload, { headers });
+    const response = await axios.post(ODOO_URL, payload, { headers });
      console.log('Odoo response:', response.data); // Log the response from Odoo
     // Return the response from Odoo to the client
     return NextResponse.json(response.data, { status: 200, headers: corsHeaders });
@@ -128,9 +129,9 @@ export async function POST(req) {
     } else {
       console.error('Error without response:', error);
     }
-
+    
     // Return error response with NextResponse and custom error message
     return NextResponse.json({ error: 'An error occurred while communicating with Odoo' }, { status: 500, headers: corsHeaders });
   }
+  
 }
-

@@ -2,6 +2,11 @@ import { NextResponse } from "next/server";
 import { payload } from "./payload";
 import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
 
+const ODOO_URL = process.env.ODOO_URL
+  ? `${process.env.ODOO_URL}/web/dataset/call_kw/product.template/web_search_read`
+  : null;
+if (!ODOO_URL) throw new Error("[getProductByName] ODOO_URL env is required");
+
 
 // Handle OPTIONS requests for CORS preflight
 export async function OPTIONS(req) {
@@ -30,8 +35,6 @@ export async function POST(req) {
     }
     
     // Define the Odoo endpoint URL
-    const url = "http://192.168.30.33:8069/web/dataset/call_kw/product.template/web_search_read";
-
     // Create a new payload with an updated domain using the provided 'name'
     const newPayload = {
       ...payload,
@@ -55,7 +58,7 @@ export async function POST(req) {
     };
   
     // Send the request to Odoo
-    const response = await fetch(url, {
+    const response = await fetch(ODOO_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -82,4 +85,3 @@ export async function POST(req) {
     );
   }
 }
-

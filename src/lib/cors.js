@@ -3,7 +3,8 @@
 const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(",")
   : ["http://localhost:5173", "http://localhost:3000", "http://localhost:3001", "http://192.168.33.137:5173",
-    "http://192.168.33.138:3001","http://192.168.30.92:3006", "http://192.168.30.92:5173", "http://rp.tecnibo.com", "https://rp.tecnibo.com"
+    "http://192.168.33.138:3001","http://192.168.30.92:3006", "http://192.168.30.92:5173", "http://rp.tecnibo.com", "https://rp.tecnibo.com", "http://192.168.30.92:3010", 
+    "http://192.168.30.92:9004","http://localhost:7005"
     ];
   
     
@@ -56,6 +57,8 @@ export function getCorsHeaders(request, config = {}) {
  * @returns {Response} CORS preflight response.
  */
   
+
+
 export function handleCorsPreflight(request, config = {}) {
   const corsHeaders = getCorsHeaders(request, config);
   return new Response(null, { status: 204, headers: corsHeaders });

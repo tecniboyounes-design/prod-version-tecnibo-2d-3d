@@ -21,8 +21,8 @@ export const ProjectInfoMenu = ({ menuWidth, isDragging }) => {
   const selectedProject = useSelector((state) => state.jsonData.project);
   const user = useSelector((state) => state.jsonData.user);
 
-  console.log('user', user);
-  console.log('user', selectedProject);
+  // console.log('user', user);
+  // console.log('user', selectedProject);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);

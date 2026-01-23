@@ -6,9 +6,8 @@ import { styled } from '@mui/system';
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "@/store";
 import { ArrowBack } from "@mui/icons-material";
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import Cookies from "js-cookie";
 import axios from "axios";
 
 
@@ -28,10 +27,7 @@ const OdooLogin = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.jsonData.user);
-    const router = useRouter();
-    const [authData, setAuthData] = useState(null);
-
+    
 
     const validateEmail = (email) => email.includes("tecnibo");
 
@@ -42,53 +38,59 @@ const OdooLogin = () => {
             setErrorMessage("Invalid email. It should contain 'tecnibo'.");
             return;
         }
+        if (!password) {
+            setErrorMessage("Password is required.");
+            return;
+        }
 
         setIsSending(true);
         setRequestResult(null);
         setErrorMessage("");
 
         try {
-            
-            const response = await axios.post("/api/authenticate", { email, password }, {
-                headers: { "Content-Type": "application/json" }
-              });
+            const response = await axios.post(
+                "/api/authenticate",
+                { email, password },
+                {
+                    headers: { "Content-Type": "application/json" },
+                    withCredentials: true,
+                }
+            );
 
+            const data = response.data;
+            console.log("Response Data:", data);
 
-            // const data = await response.json();
-            console.log("Response Data:", response.data);
-            const authData = {
-                session_id: data.session_id,
-                user: data.response.result,
-                // id: data.response.result.uid,
-            };
-            
-            console.log("Authentication Data:", authData);
-            if (data.result) {
-                // Store session_id in cookies
-                Cookies.set("session_id", data.session_id, { expires: 7, secure: true, sameSite: "Strict" });
-                
-                // Dispatch user data to Redux
-                dispatch(setUser(data.response.result));
-                setRequestResult("Login Successful check console for details.");
-                // Redirect after login
-                // router.push("/");
+            if (data?.result) {
+                if (data.response?.result) {
+                    dispatch(setUser(data.response.result));
+                }
+
+                setRequestResult("Login Successful. Reloading...");
+
+                // ✅ Hard reload the current page
+                setTimeout(() => {
+                    window.location.reload();
+                }, 500);
             } else {
                 setRequestResult("Login Failed");
             }
         } catch (error) {
-            console.error("Error:", error); 
-            setRequestResult("Request failed. Check console for details.",);
+            console.error("Error:", error);
+            setRequestResult("Request failed. Check console for details.");
         } finally {
             setIsSending(false);
         }
     };
 
+   
 
 
-    const handleKeyPress = (event) => {
-        if (event.key === 'Enter') {
-            sendRequest();
-        }
+
+    const canSubmit = (validateEmail(email) && !!password && !isSending); 
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (canSubmit) sendRequest();
     };
 
 
@@ -133,43 +135,43 @@ const OdooLogin = () => {
                         {requestResult}
                     </Alert>
                 )}
+                <Box component="form" onSubmit={handleSubmit} noValidate>
+                    <TextField
+                        label="Email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        fullWidth
+                        margin="normal"
+                        required
+                        error={Boolean(errorMessage)}
+                        helperText={errorMessage}
+                        InputLabelProps={{ shrink: true }}
+                        autoFocus
+                    />
 
-                <TextField
-                    label="Email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    fullWidth
-                    margin="normal"
-                    required
-                    error={Boolean(errorMessage)}
-                    helperText={errorMessage}
-                    InputLabelProps={{ shrink: true }}  // Force label behavior
-                    autoFocus
-                />
+                    <TextField
+                        label="Password"
+                        type={showPassword ? "text" : "password"}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        fullWidth
+                        margin="normal"
+                        required
+                        InputLabelProps={{ shrink: true }}
+                    />
 
-                <TextField
-                    label="Password"
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    fullWidth
-                    margin="normal"
-                    required
-                    InputLabelProps={{ shrink: true }}  // Fix label issue
-                />
-
-
-                <Button
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    onClick={sendRequest}
-                    disabled={isSending}
-                    sx={{ mt: 2 }}
-                >
-                    {isSending ? <CircularProgress size={24} /> : "Login"}
-                </Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        fullWidth
+                        type="submit"
+                        disabled={!canSubmit}
+                        sx={{ mt: 2 }}
+                    >
+                        {isSending ? <CircularProgress size={24} /> : "Login"}
+                    </Button>
+                </Box>
             </Box>
         </Background>
     );

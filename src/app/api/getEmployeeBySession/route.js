@@ -1,6 +1,11 @@
 import { getJobPositionDetails } from "./getJobInfo";
 import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
 
+const ODOO_SESSION_URL = process.env.ODOO_URL
+  ? `${process.env.ODOO_URL}/web/session/get_session_info`
+  : null;
+if (!ODOO_SESSION_URL) throw new Error("[getEmployeeBySession] ODOO_URL env is required");
+
 
 /**
  * Handles GET requests to fetch session info and job position details.
@@ -40,7 +45,7 @@ export async function GET(request) {
 
   try {
     console.log("Fetching session info from Odoo...");
-    const response = await fetch("http://192.168.30.33:8069/web/session/get_session_info", options);
+    const response = await fetch(ODOO_SESSION_URL, options);
     console.log("Session info response status:", response.status);
 
     if (!response.ok) {
@@ -110,5 +115,4 @@ export async function OPTIONS(request) {
   console.log("Handling OPTIONS request");
   return handleCorsPreflight(request);
 }
-
 

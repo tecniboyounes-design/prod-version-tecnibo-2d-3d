@@ -1,5 +1,10 @@
 import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
 
+const ODOO_URL = process.env.ODOO_URL
+  ? `${process.env.ODOO_URL}/web/dataset/call_kw/hr.employee/web_search_read`
+  : null;
+if (!ODOO_URL) throw new Error("[getAllEmployees] ODOO_URL env is required");
+
 
 
 /**
@@ -117,10 +122,7 @@ const corsHeaders = getCorsHeaders(request);
       body: JSON.stringify(payload),
     };
 
-    const response = await fetch(
-      "http://192.168.30.33:8069/web/dataset/call_kw/hr.employee/web_search_read",
-      options
-    );
+    const response = await fetch(ODOO_URL, options);
 
     if (!response.ok) {
       console.log(`HTTP request failed with status: ${response.status}`);

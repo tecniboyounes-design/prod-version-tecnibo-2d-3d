@@ -1,64 +1,77 @@
 import axios from "axios";
+import { NextResponse } from "next/server";
 import { createPayload } from "./searchProjectPayload";
-import { getSessionId } from "../sessionMiddleware";
+import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
 
-export async function POST(req) {
+/* ===================== CONFIG ===================== */
+const ODOO_BASE = process.env.ODOO_URL;
+if (!ODOO_BASE) throw new Error("[searchProject] ODOO_URL env is required");
+const RELATIVE_PATH = "web/dataset/call_kw/project.project/web_search_read";
+
+export async function OPTIONS(request) {
+  return handleCorsPreflight(request);
+}
+
+/**
+ * /api/searchProject
+ * Accepts POST with optional filters, extracts x-session-id header, 
+ * then calls Odoo web_search_read to get project list.
+ */
+
+
+export async function POST(request) {
+  const corsHeaders = getCorsHeaders(request);
+
   try {
-    // Extract request data
-    const request = await req.json();
-    console.log("Incoming request:", request);
-    const session_id = getSessionId(req);
+    // Optional logging
+    const requestBody = await request.json().catch(() => ({}));
+    console.log("[/api/searchProject] Incoming request:", requestBody);
 
-    if (!session_id) {
-      console.error("Session ID not found in cookies");
-      return new Response(
-        JSON.stringify({
-          message: "Unauthorized: Missing session ID",
-        }),
-        { status: 401 }
+    // 🔹 Extract session ID from header instead of cookies
+    const sessionId = request.headers.get("x-session-id");
+    console.log("[/api/searchProject] X-Session-Id:", sessionId);
+    if (!sessionId) {
+      return NextResponse.json(
+        { error: "Missing sessionId" },
+        { status: 401, headers: corsHeaders }
       );
     }
-    
-    const relativePath = "web/dataset/call_kw/project.project/web_search_read";
-    const url = getAuthenticationUrl(req, relativePath);
 
-    // Instead of extracting projectName and reference, we'll call createPayload without them
-    // Or, set them to empty if not present
-    const jsonPayload = JSON.parse(createPayload()); // Fetch all projects
+    // Prepare payload and URL
+    const url = `${ODOO_BASE}/${RELATIVE_PATH}`;
+    const jsonPayload = JSON.parse(createPayload()); // fetch all projects
 
-    // Send POST request to Odoo server
+    // 🔹 Call Odoo JSON-RPC API
     const response = await axios.post(url, jsonPayload, {
       withCredentials: true,
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
-        Cookie: `session_id=${session_id}; frontend_lang=fr_BE; tz=Africa/Casablanca`,
+        Cookie: `session_id=${sessionId}; frontend_lang=fr_BE; tz=Africa/Casablanca`,
+        "X-Session-Id": sessionId,
       },
     });
 
-    console.log("Response from Odoo server:", response.data);
+    console.log("[/api/searchProject] Response from Odoo:", response.data);
 
-    if (response.data.error) {
+    if (response.data?.error) {
       console.error("Odoo API Error:", response.data.error);
-      return new Response(
-        JSON.stringify({
-          message: "Error fetching projects from Odoo",
-          error: response.data.error,
-        }),
-        { status: 500 }
+      return NextResponse.json(
+        { error: "Error fetching projects", details: response.data.error },
+        { status: 500, headers: corsHeaders }
       );
     }
 
-    return new Response(JSON.stringify(response.data.result), { status: 200 });
+    // Success — return the result
+    return NextResponse.json(response.data.result, {
+      status: 200,
+      headers: corsHeaders,
+    });
   } catch (error) {
-    console.error("Request Error:", error.message);
-
-    return new Response(
-      JSON.stringify({
-        message: "Error fetching projects",
-        error: error.message,
-      }),
-      { status: 500 }
+    console.error("[/api/searchProject] Request Error:", error?.message || error);
+    return NextResponse.json(
+      { error: error?.message || "Unknown error" },
+      { status: 500, headers: corsHeaders }
     );
   }
 }

@@ -1,81 +1,85 @@
-import { useDispatch, useSelector } from "react-redux";
-import { Box, Edges, Html, Shape } from '@react-three/drei';
-import { useEffect, useRef, useState } from "react";
-import { setCurrentConfig, updateBothCorners } from "../../../store";
-import { cloisonData, cloisonStyles } from "../../../data/models";
-import { BackSide, FrontSide } from "three";
+// /src/components/Otman/Walls/Walls.jsx
+"use client";
 
+import React, { useMemo, useCallback, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Box, Edges, Html } from "@react-three/drei";
+import { setCurrentConfig, updateBothCorners } from "../../../store";
+import { cloisonStyles } from "../../../data/models";
+import { DoubleSide, FrontSide, BackSide } from "three";
+
+/* ---------------- side selector (settings.wallSide: "double" | "front" | "back") ---------------- */
+const mapSide = (s) => {
+  switch ((s || "double").toLowerCase()) {
+    case "front":
+      return FrontSide;
+    case "back":
+      return BackSide;
+    default:
+      return DoubleSide; // show both sides by default
+  }
+};
+
+/* ---------------- geometry helpers ---------------- */
 
 const calculateWallData = (walls, corners, wallHeight = 3, isDrawMode) => {
-  return walls.map((wall) => {
-    const { corner1, corner2, thickness, id, ...otherProps } = wall; 
-    const c1 = corners[corner1], c2 = corners[corner2];
+  return (walls || [])
+    .map((wall) => {
+      const { corner1, corner2, thickness, id, ...otherProps } = wall;
+      const c1 = corners?.[corner1];
+      const c2 = corners?.[corner2];
 
-    if (!c1 || !c2) return null;
+      if (!c1 || !c2) return null;
 
-    const width = Math.hypot(c2.x - c1.x, c2.z - c1.z);
-    const angle = Math.atan2(c2.z - c1.z, c2.x - c1.x);
-    const height = isDrawMode ? Math.max(c1.y, c2.y) : wallHeight;
+      const width = Math.hypot(c2.x - c1.x, c2.z - c1.z);
+      const angle = Math.atan2(c2.z - c1.z, c2.x - c1.x);
+      const height = isDrawMode ? Math.max(c1.y ?? wallHeight, c2.y ?? wallHeight) : wallHeight;
 
-    return {
-      ...otherProps, 
-      id,
-      position: [(c1.x + c2.x) / 2,  height / 2.68 + 0.1, (c1.z + c2.z) / 2], 
-      width,
-      angle,
-      thickness,
-      height,
-      corner1,
-      corner2,
-    };
-  }).filter(Boolean);  
+      return {
+        ...otherProps,
+        id,
+        position: [(c1.x + c2.x) / 2, height / 2.68 + 0.1, (c1.z + c2.z) / 2],
+        width,
+        angle,
+        thickness,
+        height,
+        corner1,
+        corner2,
+      };
+    })
+    .filter(Boolean);
 };
 
-
-
-
-
-
-
-const UICalculateWallAngle = ({ height, angle, length, cornerPosition, angle90 }) => {
-  // console.log('corner position', cornerPosition)
-
+const UICalculateWallAngle = React.memo(function UICalculateWallAngle({
+  height,
+  angle,
+  length,
+  cornerPosition,
+  angle90,
+}) {
   return (
-    <>
-      <Html
-        position={cornerPosition}
-        rotation={[0, angle90 * (Math.PI / 180), 0]}
-        center
-        style={{
-          color: 'red',
-          background: 'white',
-          padding: '2px 5px',
-          borderRadius: '5px',
-          fontSize: '12px',
-          pointerEvents: 'none',
-        }}
-      >
-        {`${angle90.toFixed(2)}°`}
-      </Html>
-    </>
+    <Html
+      position={cornerPosition}
+      rotation={[0, (angle90 * Math.PI) / 180, 0]}
+      center
+      style={{
+        color: "red",
+        background: "white",
+        padding: "2px 5px",
+        borderRadius: "5px",
+        fontSize: "12px",
+        pointerEvents: "none",
+      }}
+    >
+      {`${angle90.toFixed(2)}°`}
+    </Html>
   );
+});
 
-};
-
-
-
-
-
-const WallWidthCalculator = ({ angle, length, position }) => {
-  // console.log('UICalculator Params:', { angle, length, unit, position });
+const WallWidthCalculator = React.memo(function WallWidthCalculator({ angle, length, position }) {
   const unit = useSelector((state) => state.jsonData.floorplanner.units);
-  const conversionFactors = {
-    cm: 100,
-    m: 1,
-    mm: 1000,
-  };
-
-  const convertedLength = (length * conversionFactors[unit]).toFixed(2);
+  const conversionFactors = { cm: 100, m: 1, mm: 1000 };
+  const convertedLength = (length * (conversionFactors[unit] ?? 1)).toFixed(2);
 
   return (
     <Html
@@ -83,26 +87,22 @@ const WallWidthCalculator = ({ angle, length, position }) => {
       rotation={[0, -angle, 0]}
       center
       style={{
-        color: 'black',
-        background: 'none',
-        padding: '2px 5px',
-        borderRadius: '5px',
-        fontSize: '20px',
-        pointerEvents: 'none',
+        color: "black",
+        background: "none",
+        padding: "2px 5px",
+        borderRadius: "5px",
+        fontSize: "20px",
+        pointerEvents: "none",
       }}
     >
       {`${convertedLength} ${unit}`}
     </Html>
   );
-};
+});
 
-
-
-
-
+/** Shift a wall parallel to itself based on pointer position (2D). */
 const updateWallPoints = (corner1, corner2, mousePosition) => {
   if (!corner1 || !corner2 || !mousePosition) {
-    console.error("Invalid input to updateWallPoints:", { corner1, corner2, mousePosition });
     return { pointA: corner1, pointB: corner2 };
   }
 
@@ -112,7 +112,6 @@ const updateWallPoints = (corner1, corner2, mousePosition) => {
 
   const distance = Math.sqrt(directionX ** 2 + directionZ ** 2);
   if (distance === 0) {
-    console.warn("Zero-length wall detected. No movement will be applied.");
     return { pointA: corner1, pointB: corner2 };
   }
 
@@ -139,15 +138,12 @@ const updateWallPoints = (corner1, corner2, mousePosition) => {
     z: corner2.z + perpendicularDisplacementZ,
   };
 
-
   return { pointA, pointB };
 };
 
+/* ---------------- wall mesh ---------------- */
 
-
-
-
-const Wall = ({
+const Wall = React.memo(function Wall({
   position,
   width,
   height,
@@ -159,87 +155,74 @@ const Wall = ({
   corners,
   wallId,
   wallColor,
-}) => {
+  showUI,
+  showEdges,
+}) {
   const [dragging, setDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ dx: 0, dz: 0 });
-  const [draggingBlocked, setDraggingBlocked] = useState(false);
-  const [virtualWall, setVirtualWall ] = useState(0.2);
+  const [draggingBlocked] = useState(false);
+  const [virtualWall, setVirtualWall] = useState(0.2);
+
   const dispatch = useDispatch();
   const is2D = useSelector((state) => state.jsonData.is2DView);
+  const walls = useSelector((state) => state.jsonData.floorplanner.walls);
+  const settings = useSelector((s) => s.jsonData.settings ?? {});
+  const sideConst = mapSide(settings.wallSide || "double"); // "double" | "front" | "back"
+
   const corner1 = corners[corner1Id];
   const corner2 = corners[corner2Id];
-  const walls = useSelector((state) => state.jsonData.floorplanner.walls);
-  
-  const wallCenter = [
-    (corner1.x + corner2.x) / 2,
-    height / 2,
-    (corner1.z + corner2.z) / 2,
-  ];
+  const wallCenter = [(corner1.x + corner2.x) / 2, height / 2, (corner1.z + corner2.z) / 2];
 
-  const handlePointerDown = (e) => {
-    if (draggingBlocked) return;
-    e.stopPropagation();
-    setDragging(true);
-    setVirtualWall(20); // Increase thickness while dragging
-  
-    const point = e.intersections[0]?.point || e.point || {};
-    setDragOffset({
-      dx: (position[0] || 0) - (point.x || 0),
-      dz: (position[2] || 0) - (point.z || 0),
-    });
-  };
-  
-  const handlePointerUp = () => {
+  const handlePointerDown = useCallback(
+    (e) => {
+      if (draggingBlocked) return;
+      e.stopPropagation();
+      setDragging(true);
+      setVirtualWall(20); // fat hitbox during drag
+      const point = e.intersections?.[0]?.point || e.point || {};
+      setDragOffset({
+        dx: (position?.[0] || 0) - (point.x || 0),
+        dz: (position?.[2] || 0) - (point.z || 0),
+      });
+    },
+    [draggingBlocked, position]
+  );
+
+  const handlePointerUp = useCallback(() => {
     setDragging(false);
     setVirtualWall(0.2);
-  };
-  
-  
-  const handlePointerMove = (e) => {
-    if (!dragging || draggingBlocked) return;
-  
-    e.stopPropagation();
-    const point = e.intersections[0]?.point || e.point || {};
-    const mousePosition = {
-      x: point.x + dragOffset.dx,
-      z: point.z + dragOffset.dz,
-    };
-  
-    if (!corner1 || !corner2) {
-      console.error(`Corners ${corner1Id} or ${corner2Id} not found.`);
-      return;
-    }
-  
-    if (is2D) {
-      // In 2D, restrict movement to the X and Z axes only.
-      const { pointA, pointB } = updateWallPoints(corner1, corner2, mousePosition);
-      dispatch(
-        updateBothCorners({
-          corner1Id,
-          corner2Id,
-          position1: pointA,
-          position2: pointB,
-        })
-      );
-    }
-  };
-  
-  
+  }, []);
 
-  const handleClick = (e) => {
-    const wallConfig = {
-      type: 'wall',
-      id: wallId,
-    };
-    dispatch(setCurrentConfig(wallConfig));
-  };
-  
+  const handlePointerMove = useCallback(
+    (e) => {
+      if (!dragging || draggingBlocked) return;
+      e.stopPropagation();
+      const point = e.intersections?.[0]?.point || e.point || {};
+      const mousePosition = { x: point.x + dragOffset.dx, z: point.z + dragOffset.dz };
+      if (!corner1 || !corner2) return;
+      if (is2D) {
+        const { pointA, pointB } = updateWallPoints(corner1, corner2, mousePosition);
+        dispatch(
+          updateBothCorners({
+            corner1Id,
+            corner2Id,
+            position1: pointA,
+            position2: pointB,
+          })
+        );
+      }
+    },
+    [dragging, draggingBlocked, dragOffset, corner1, corner2, is2D, dispatch, corner1Id, corner2Id]
+  );
 
-  const wall = walls.find(w => w.id === wallId);
+  const handleClick = useCallback(() => {
+    dispatch(setCurrentConfig({ type: "wall", id: wallId }));
+  }, [dispatch, wallId]);
+
+  const wallDef = walls.find((w) => w.id === wallId);
   let wallStyle = { thickness, wallColor };
-
-  if (wall && wall.wallType) {
-    const style = cloisonStyles.find(style => style.name === wall.wallType);
+  if (wallDef?.wallType) {
+    const style = cloisonStyles.find((s) => s.name === wallDef.wallType);
     if (style) {
       wallStyle = {
         thickness: style.thickness,
@@ -251,119 +234,107 @@ const Wall = ({
     }
   }
 
-  // rotation={[0, -angle, 0]}
-
-
-
   const adjustedHeight = is2D ? height : 3;
 
-  console.log('adjusted height:', adjustedHeight)
- 
   return (
     <>
-      {is2D && (
+      {/* Wall UI labels only in 2D (optional) */}
+      {showUI && is2D && (
         <>
-          <UICalculateWallAngle height={height} angle={angle} length={width} cornerPosition={position} angle90={angle90} />
+          <UICalculateWallAngle
+            height={height}
+            angle={angle}
+            length={width}
+            cornerPosition={position}
+            angle90={(angle * 180) / Math.PI}
+          />
           <WallWidthCalculator angle={angle} length={width} position={wallCenter} />
         </>
       )}
 
-   <mesh
-      position={position}
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
-      onClick={handleClick}
-      castShadow
-      receiveShadow
-      rotation={[0, -angle, 0]}
-    >
-      {is2D ? (
-        // 2D Mode: Use BoxGeometry with thickness
-        <>
-          <boxGeometry args={[width, thickness, adjustedHeight]} />
-          <meshStandardMaterial
-            color={dragging ? "purple" : wallStyle.wallColor || "white"}
-            {...(wallStyle.material || {})}
-          />
-        </>
-      ) : (
-        // 3D Mode: Use PlaneGeometry (one-sided)
-        <>
-
-          <planeGeometry args={[width, adjustedHeight]} />
-          <meshStandardMaterial
-            color={dragging ? "purple" : wallStyle.wallColor || "white"}
-            {...(wallStyle.material || {})}
-            side={FrontSide} // Inside visible, outside invisible
-          />
-        </>
-      )}
-      <Edges color="black" lineWidth={2} />
-    </mesh>
-
       <mesh
         position={position}
+        rotation={[0, -angle, 0]}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
+        onClick={handleClick}
+        castShadow={false}
+        receiveShadow={false}
       >
-        <Box args={[width, height, virtualWall]} rotation={[0, -angle, 0]}>
-          <meshStandardMaterial color="blue" transparent opacity={0}  />
-        </Box>
+        {is2D ? (
+          // 2D: thin box (thickness is the "Y" of the box)
+          <>
+            <boxGeometry args={[width, wallStyle.thickness ?? thickness, adjustedHeight]} />
+            <meshStandardMaterial
+              color={dragging ? "purple" : wallStyle.wallColor || "white"}
+              {...(wallStyle.material || {})}
+            />
+          </>
+        ) : (
+          // 3D: plane with selectable side (DoubleSide by default)
+          <>
+            <planeGeometry args={[width, adjustedHeight]} />
+            <meshStandardMaterial
+              color={dragging ? "purple" : wallStyle.wallColor || "white"}
+              {...(wallStyle.material || {})}
+              side={sideConst}
+            />
+          </>
+        )}
+
+        {/* Edges are optional (they cost CPU/GPU), keep off unless needed */}
+        {showEdges && <Edges color="black" lineWidth={1} />}
       </mesh>
 
-      <mesh rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[50, 50]} />
-        <meshStandardMaterial color="blue" transparent opacity={0} />
+      {/* Invisible fat hit area for easier interaction */}
+      <mesh position={position} onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp}>
+        <Box args={[width, adjustedHeight, virtualWall]} rotation={[0, -angle, 0]}>
+          <meshStandardMaterial transparent opacity={0} />
+        </Box>
       </mesh>
     </>
   );
-};
+});
 
-
-
+/* ---------------- list ---------------- */
 
 const Walls = ({ isDrawMode }) => {
   const walls = useSelector((state) => state.jsonData.floorplanner.walls);
   const corners = useSelector((state) => state.jsonData.floorplanner.corners);
   const wallHeight = useSelector((state) => state.jsonData.wallHieght);
-  const wallData = calculateWallData(walls, corners, wallHeight, isDrawMode);
- 
 
+  // Perf toggles from settings (default off)
+  const { showWallUI = false, showEdges = false } =
+    useSelector((s) => s.jsonData.settings ?? {}) || {};
+
+  const wallData = useMemo(
+    () => calculateWallData(walls, corners, wallHeight, isDrawMode),
+    [walls, corners, wallHeight, isDrawMode]
+  );
 
   return (
     <>
-      {wallData.map((wall, index) => {
-
-        const angle90 = (wall.angle * 180) / Math.PI;
-
-        return (
-          <>
-            <Wall
- 
-              key={wall.id}
-              wallId={wall.id}
-              position={wall.position}
-              width={wall.width}
-              height={wall.height}
-              thickness={wall.thickness}
-              angle={wall.angle}
-              angle90={angle90}
-              corner1Id={wall.corner1}
-              corner2Id={wall.corner2}
-              corners={corners}
-              wallColor={wall.wallColor}
-
-            />
-          </>
-
-        );
-      })}
-
+      {wallData.map((w) => (
+        <Wall
+          key={w.id}
+          wallId={w.id}
+          position={w.position}
+          width={w.width}
+          height={w.height}
+          thickness={w.thickness}
+          angle={w.angle}
+          angle90={(w.angle * 180) / Math.PI}
+          corner1Id={w.corner1}
+          corner2Id={w.corner2}
+          corners={corners}
+          wallColor={w.wallColor}
+          showUI={showWallUI}
+          showEdges={showEdges}
+        />
+      ))}
     </>
   );
 };
 
-
-export default Walls;
+export default React.memo(Walls);

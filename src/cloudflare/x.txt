@@ -1,0 +1,5 @@
+done => option overide or create copy of the folder with  applied configuration in mui table  in update configuration cloudflare in upload click when we configure the server side assets 
+done =>  preview  image from menu right click 
+done => copy url image
+done => copied name
+done => deployed

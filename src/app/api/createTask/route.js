@@ -16,8 +16,6 @@ export async function POST(req) {
 
     const fullDescription = `${description} (Project No: ${projectNumber})`;
 
-    // const url = "http://192.168.30.33:8069/web/dataset/call_kw";
-
     const relativePath = "web/dataset/call_kw";
     const url = getAuthenticationUrl(req, relativePath);
 

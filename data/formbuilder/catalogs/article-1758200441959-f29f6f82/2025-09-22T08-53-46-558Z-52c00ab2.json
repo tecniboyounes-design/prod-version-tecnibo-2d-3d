@@ -1,0 +1,236 @@
+{
+  "sections": [
+    {
+      "id": "dfaf7345-8660-4769-a64d-d2e05fa2a9dc",
+      "type": "NONE",
+      "render": "section",
+      "name": "configurator",
+      "Label": "Cloison Era",
+      "children": [
+        {
+          "id": "059bf0d2-8c06-4772-bba5-7fb49d98fdf5",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "General_Setting",
+          "label": "General Setting",
+          "children": [
+            {
+              "render": "field",
+              "id": "d19a5dbe-bd25-40a3-b644-400b8eaaede1",
+              "name": "Performance_Acoustique",
+              "label": "Performance Acoustique",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "e09fa875-6f5c-41fd-a396-3e1a67f14237",
+                "type": "SELECT",
+                "code": null,
+                "content": null,
+                "source": "Performance_Acoustique",
+                "dynamic": false,
+                "defaultValue": "48"
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "id": "8e9a8926-302f-49b8-acb4-ca122997a3a9",
+              "render": "section",
+              "type": "ROW",
+              "name": "Profiles_Color",
+              "label": "Profiles Color",
+              "LabelTop": "TRUE",
+              "children": [
+                {
+                  "render": "field",
+                  "id": "6a5081de-56f8-4341-a72c-af54755e13fd",
+                  "name": "P_PRF_COLOR",
+                  "label": "Color",
+                  "LabelTop": "TRUE",
+                  "fieldType": "COMBOBOX",
+                  "grid": "5",
+                  "combo": {
+                    "id": "9deb2795-5046-4a0c-a239-6f8af59b43a9",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "P_PRF_COLOR",
+                    "dynamic": false,
+                    "defaultValue": "9005"
+                  },
+                  "variables": [],
+                  "descriptions": []
+                },
+                {
+                  "render": "field",
+                  "id": "ac1f6fb7-d63a-4890-8cb8-2eff7e05b8d0",
+                  "name": "P_PRF_COLOR_FINISH",
+                  "label": "Finish",
+                  "LabelTop": "TRUE",
+                  "fieldType": "COMBOBOX",
+                  "grid": "2",
+                  "combo": {
+                    "id": "c4ec9eba-4b3a-42fe-83d4-c4fce1f1832a",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "P_PRF_COLOR_FINISH",
+                    "dynamic": false,
+                    "defaultValue": "CX"
+                  },
+                  "variables": [],
+                  "descriptions": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "669465af-f3fb-4aef-a862-fa225255f01c",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "Dimensions",
+          "label": "Dimensions",
+          "children": [
+            {
+              "render": "field",
+              "id": "525f8d47-449b-4d81-9cbd-13dc5ea74238",
+              "name": "P_Height",
+              "label": "Height",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "8388f956-efdc-46fa-a36a-2d3ee26bca0f",
+                "min": 1000,
+                "max": 3100,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 2700,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        },
+        {
+          "id": "6cdee955-5da1-4ab6-8daa-5d552d6cfb6a",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "Material",
+          "label": "Material",
+          "children": [
+            {
+              "render": "field",
+              "id": "bd56f09a-3ddd-46e9-8c7f-b54c3212a01a",
+              "name": "Glass_Type",
+              "label": "Glass Type",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "34099b7a-4d66-46a8-9ba2-ae98cde86125",
+                "type": "SELECT",
+                "code": null,
+                "content": null,
+                "source": "Glass_Type",
+                "dynamic": false,
+                "defaultValue": "30"
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        },
+        {
+          "id": "ba56998d-3d06-439f-ae28-deffdde83d74",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "Advanced",
+          "label": "Advanced",
+          "children": [
+            {
+              "render": "field",
+              "id": "f46d51a0-2676-425e-a38b-d7fb603f53b0",
+              "name": "Glass_Modulation",
+              "label": "Glass Modulation",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "7abe576a-4f44-4d89-98e8-3043bfe408d4",
+                "type": "SELECT",
+                "code": null,
+                "content": null,
+                "source": "Glass_Modulation",
+                "dynamic": false,
+                "defaultValue": "Default"
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "0ef12b25-ba2e-4041-b602-3d4d4e973e4c",
+              "name": "Step_Modulation",
+              "label": "Step Modulation",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "d56959dc-3502-474b-8023-14ebe0c2b7a0",
+                "type": "SELECT",
+                "code": null,
+                "content": null,
+                "source": "Step_Modulation",
+                "dynamic": false,
+                "defaultValue": "900"
+              },
+              "variables": [],
+              "descriptions": [],
+              "dependencies": [
+                {
+                  "nod": 1,
+                  "action": "SHOW",
+                  "roles": [
+                    {
+                      "operator": "AND",
+                      "roles": [
+                        {
+                          "field": "Glass_Modulation",
+                          "comparisonType": "=",
+                          "value": "Advanced"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "31d9dbf1-b215-4cee-8f0e-ff2232c27054",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "Costumer_Info",
+          "label": "Costumer Info",
+          "children": [
+            {
+              "render": "field",
+              "id": "1d56386f-eaf6-4b5b-a489-6a741362c038",
+              "name": "Costumer_Request",
+              "label": "Costumer Request",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "3a4fab51-13f2-45a8-90bd-56ce85c89ec8",
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": "",
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "id": "article-1758200441959-f29f6f82",
+    "name": "P_ERA"
+  }
+}

@@ -1,401 +1,230 @@
-"use client"
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Canvas, useThree } from '@react-three/fiber';
-import { Html, OrbitControls } from '@react-three/drei';
-import Walls from '../Walls/Walls';
-import { setCurrentConfig, setIs2DView, setIsDrawing, updateCorner, updateSettings } from '../../../store';
-import useDrawWall from '../../../HOC/useDrawWall';
-import InteractivePointMenu from '../UI/InteractivePointMenu';
-import FloorPlane from '../Floor/Floor';
-import { FloatingSpeedDial } from '../RoomShape/roomShape';
-import GLTFDoor from '../Articles/Articles';
-import { ScreenshotHandler } from '@/HOC/useScreenshotUpload';
-import { Button } from '@mui/material';
-import html2canvas from 'html2canvas';
-import { useControls } from 'leva';
-import Plan2DImage from "../Plan2DImage/Plan2DImage";
-import { WallList } from '../wallList/WallList';
+// /src/components/Otman/Points/Points.jsx
+"use client";
 
-const Points = () => {
-  const corners = useSelector((state) => state.jsonData.floorplanner.corners);
-  const rooms = useSelector((state) => state.jsonData.floorplanner.rooms);
-  const walls = useSelector((state) => state.jsonData.floorplanner.walls);
-  const items = useSelector((state) => state.jsonData.floorplanner.items);
-  const isDrawMode = useSelector((state) => state.jsonData.isDrawing);
-  const is2DView = useSelector((state) => state.jsonData.is2DView);
-  const [draggedPoint, setDraggedPoint] = useState(false);
-  const [activePoint, setActivePoint] = useState(false);
-  const dispatch = useDispatch();
-  const groupRef = useRef();
-  const { handleGridClick, handlePointerMove } = useDrawWall();
-  const { gridSize, gridColor, axesHelperVisible, gridHelperVisible, pointColor, draggingColor, divisions } = useSelector((state) => state.jsonData.settings);
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import * as THREE from "three";
+import { useSelector } from "react-redux";
+import { useThree, useFrame } from "@react-three/fiber";
+import { OrbitControls, Html } from "@react-three/drei";
+import { useControls } from "leva";
 
+import Walls from "../Walls/Walls";
+import FloorPlane from "../Floor/Floor";
 
-  const canvasRef = useRef(null)
-  
+/* ---------------- helpers ---------------- */
 
-  // Add leva control for showing/hiding the 2D plan image
-  const {
-    isDrawMode: levaDrawMode,
-    axesHelperVisible: levaAxesVisible,
-    gridHelperVisible: levaGridVisible,
-    is2DView: levaIs2DView,
-    showPlan2DImage, // <-- new leva state
-  } = useControls({
-    isDrawMode: {
-      value: isDrawMode,
-      label: 'Draw Mode',
-      onChange: (value) => dispatch(setIsDrawing(value)),
-    },
-    axesHelperVisible: {
-      value: axesHelperVisible,
-      label: 'Show Axes',
-      onChange: (value) => dispatch(updateSettings({ key: 'axesHelperVisible', value })),
-    },
-    gridHelperVisible: {
-      value: gridHelperVisible,
-      label: 'Show Grid',
-      onChange: (value) => dispatch(updateSettings({ key: 'gridHelperVisible', value })),
-    },
-    is2DView: {
-      value: is2DView,
-      label: '2D View',
-      onChange: (value) => dispatch(setIs2DView(value)),
-    },
-    showPlan2DImage: {
-      value: true,
-      label: 'Show 2D Plan Image',
-    },
-  });
+function niceStep(x) {
+  if (x <= 0 || !isFinite(x)) return 1;
+  const p = Math.pow(10, Math.floor(Math.log10(x)));
+  const n = x / p;
+  let m = 1;
+  if (n < 1.5) m = 1;
+  else if (n < 3.5) m = 2;
+  else if (n < 7.5) m = 5;
+  else m = 10;
+  return m * p;
+}
 
+/** Top-down lock when 2D (no orbit controls). */
+function CameraTopDown({ enabled }) {
+  const { camera } = useThree();
+  useEffect(() => {
+    if (!enabled) return;
+    camera.position.set(0, 50, 0);
+    camera.up.set(0, 0, -1);
+    camera.lookAt(0, 0, 0);
+  }, [enabled, camera]);
+  return null;
+}
 
-
-
-  const positions = useMemo(
-    () =>
-      Object.keys(corners).reduce((acc, id) => {
-        acc[id] = [corners[id].x, 0.1, corners[id].z];
-        return acc;
-      }, {}),
-    [corners]
+/** OrbitControls that invalidates on change (frameloop="demand"). */
+function OrbitControlsPerf({ enabled }) {
+  const { invalidate } = useThree();
+  if (enabled) return null;
+  return (
+    <OrbitControls
+      enableDamping={false}
+      enableZoom
+      enablePan
+      enableRotate
+      minDistance={0}
+      maxDistance={400}
+      onChange={invalidate}
+    />
   );
+}
 
-
-
+/** Instanced dots for corners (optional for perf). */
+function CornerPoints({ positions, radius = 0.1, segments = 12, color = "#222" }) {
+  const ids = useMemo(() => Object.keys(positions), [positions]);
+  const meshRef = useRef(null);
+  const temp = useMemo(() => new THREE.Object3D(), []);
 
   useEffect(() => {
-    console.log('Draw mode changed:', isDrawMode);
-
-    if (isDrawMode) {
-      console.log('Entering drawing mode, setting custom cursor');
-      document.body.style.cursor = 'crosshair';
-    } else {
-      console.log('Exiting drawing mode, resetting to default cursor');
-      document.body.style.cursor = 'auto';
+    const mesh = meshRef.current;
+    if (!mesh) return;
+    let i = 0;
+    for (const id of ids) {
+      const [x, y, z] = positions[id];
+      temp.position.set(x, y, z);
+      temp.rotation.set(0, 0, 0);
+      temp.scale.set(1.3, 1.3, 1.3);
+      temp.updateMatrix();
+      mesh.setMatrixAt(i++, temp.matrix);
     }
-  }, [isDrawMode]);
+    if (mesh.instanceMatrix) mesh.instanceMatrix.needsUpdate = true;
+  }, [ids, positions, temp]);
 
+  if (!ids.length) return null;
 
+  return (
+    <instancedMesh ref={meshRef} args={[null, null, ids.length]}>
+      <sphereGeometry args={[radius, segments, segments]} />
+      <meshStandardMaterial color={color} />
+    </instancedMesh>
+  );
+}
 
+/** Dynamic grid with readable cell size. */
+function AdaptiveGrid({
+  baseSize = 100,
+  targetPx = 32,
+  minDiv = 10,
+  maxDiv = 220,
+  colorMajor = "#888",
+  colorMinor = "#888",
+  axesLength,
+}) {
+  const gridRef = useRef(null);
+  const [gridKey, setGridKey] = useState(0);
+  const [args, setArgs] = useState([baseSize, 50, colorMajor, colorMinor]);
+  const { camera, size } = useThree();
+  const last = useRef({ divisions: 50, cell: baseSize / 50 });
 
+  useFrame(() => {
+    const altitude = Math.abs(camera.position.y) + 1e-6;
+    const vFovRad = (camera.fov * Math.PI) / 180;
+    const worldH = 2 * altitude * Math.tan(vFovRad / 2);
+    const pxPerMeter = size.height / worldH;
 
-const handleDragStart = (id) => setDraggedPoint(id);
+    let cellMeters = targetPx / pxPerMeter;
+    cellMeters = niceStep(cellMeters);
+    cellMeters = Math.max(0.01, cellMeters);
 
+    let divisions = Math.round(baseSize / cellMeters);
+    divisions = Math.max(minDiv, Math.min(maxDiv, divisions));
 
-
-
-
-  const handleDrag = (e) => {
-    if (!draggedPoint || !is2DView) return;
-
-    const [x, , z] = e.point.toArray();
-
-    dispatch(updateCorner({ id: draggedPoint, position: { x, z } }));
-
-    // Loop through all corners in the global state and check if any match the dragged point
-    Object.keys(corners).forEach((cornerId) => {
-      const corner = corners[cornerId];
-
-      // Compare x and z coordinates
-      if (corner.x === x && corner.z === z) {
-        console.log(`Match found for point (${x}, ${z}) at corner ID: ${cornerId}`);
-
-        // Action 1: Remove the existing point (corner) if close
-        // You might remove or flag the old corner as obsolete
-        // dispatch(removeCorner(cornerId));  // You need to handle this action in your reducer
-
-        // Action 2: Update walls that are connected to this matched corner
-        // Find walls that reference the old corner and replace it with the dragged point
-        // dispatch(updateWallWithNewCorner(cornerId, draggedPoint));  // Implement this in your reducer to update walls
-
-        // Action 3: Disconnect and remove from other walls connected to the old corner
-        // You need to update the wall connections to ensure the dragged point is correctly assigned
-        // dispatch(removeCornerFromWalls(cornerId));  // Disconnect the matched corner from any walls
-
-        // Action 4: Add the new corner position to the walls connected to it
-        // You need to update the walls to reference the new dragged corner
-        // dispatch(addCornerToWalls(draggedPoint, [/* walls that are connected to this point */])); 
-
-        // Action 5: If the new corner position is already the same as the matched position, do nothing
-        // Compare the x and z with some tolerance range to ensure it's not exactly the same point
-        // if (Math.abs(corner.x - x) < 0.01 && Math.abs(corner.z - z) < 0.01) return; 
-
-        // Action 6: Add a new corner to the global state with the new position
-        // dispatch(addCorner({ id: `new-${cornerId}`, position: { x, z } }));  // Implement this in your reducer to add new corners
-      }
-    });
-  };
-
-
-
-
-  const CameraController2D = () => {
-    const { camera, gl } = useThree();
-    const is2DView = useSelector((state) => state.jsonData.is2DView);
-    const orbitRef = useRef();
-
-    useEffect(() => {
-      if (!orbitRef.current || !is2DView) return;
-
-      orbitRef.current.minPolarAngle = 0;
-      orbitRef.current.maxPolarAngle = 0;
-      orbitRef.current.enableRotate = false;
-      camera.position.set(0, 50, 0); // 2D Top-Down View
-      camera.lookAt(0, 0, 0);
-    }, [camera, is2DView]);
-
-    return is2DView ? (
-      <OrbitControls ref={orbitRef} args={[camera, gl.domElement]} enableDamping dampingFactor={0.1} />
-    ) : null;
-  };
-
-
-
-
-
-  const handleDoubleClick = (e) => {
-    // console.log('handleDoubleClick', e);
-    // console.log('group:', groupRef)
-  } 
-   
-
-
-  const handleEmptySpaceClick = (e) => {
-    // console.log('handleEmptySpaceClick', e)
-    const roomConfig = {
-      type: 'room',
-      id: 'room-1',
-    };
-    dispatch(setCurrentConfig(roomConfig));
-  }
-
-
-  const projectId = "be6f913b-cbca-4bca-9e34-3ad9463be355";
-
-  const takeScreenshot = async () => {
-    console.log('🟡 Initiating screenshot process...');
-
-    const container = document.querySelector('#screenshot-container');
-    if (!container) {
-      console.error('❌ Screenshot container not found!');
-      return;
+    if (divisions !== last.current.divisions && Math.abs(divisions - last.current.divisions) >= 2) {
+      last.current = { divisions, cell: baseSize / divisions };
+      setArgs([baseSize, divisions, colorMajor, colorMinor]);
+      setGridKey((k) => k + 1);
     }
-
-    console.log('✅ Screenshot container found:', container);
-    
-    try {
-      const canvas = await html2canvas(container, { useCORS: true });
-      const dataUrl = canvas.toDataURL('image/png');
-      console.log('📸 Screenshot captured successfully.');
-
-      const timestamp = new Date().toISOString();
-      await sendToBackend(dataUrl, timestamp);
-    } catch (err) {
-      console.error('❌ Failed to capture screenshot:', err);
-    }
-  };
-
-  const sendToBackend = async (base64Image) => {
-    console.log('📤 Uploading screenshot to backend...');
-
-    try {
-      const response = await fetch('http://192.168.30.92:3000/api/uploadScreenshot', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          projectId,
-          screenshot: base64Image,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Server responded with ${response.status} - ${response.statusText}`);
-      }
-
-      const result = await response.json();
-      console.log('✅ Screenshot uploaded successfully:', result);
-    } catch (error) {
-      console.error('❌ Error uploading screenshot:', error.message || error);
-    }
-  };
-
-
+  });
 
   return (
     <>
-      <div id="screenshot-container" style={{
-        position: 'relative',
-        height: "100vh",
-        width: "100vw",
-      }}>
-        <Button onClick={takeScreenshot}>Take Screenshot</Button>
-        <Canvas
-          ref={canvasRef}
-          gl={{ preserveDrawingBuffer: true }}
-          camera={{ position: [0, 5, 10], fov: 50 }}
-          shadows
-        >
-          {/* Conditionally render the 2D plan image */}
-          {showPlan2DImage && (
-            <Plan2DImage src="/plan2dcolor.jpg" />
-          )}
-               
-          <GLTFDoor />
+      <gridHelper key={gridKey} ref={gridRef} args={args} />
+      <axesHelper args={[axesLength ?? baseSize]} />
+    </>
+  );
+}
 
-          {is2DView ? <CameraController2D /> :
+/* ---------------- main ---------------- */
 
-            <>
-              <directionalLight
-                position={[10, 10, 10]}
-                intensity={1}
-                castShadow
-                shadow-mapSize-width={2048}
-                shadow-mapSize-height={2048}
-                shadow-camera-near={1}
-                shadow-camera-far={500}
-                shadow-camera-left={-50}
-                shadow-camera-right={50}
-                shadow-camera-top={50}
-                shadow-camera-bottom={-10}
-              />
-              <OrbitControls
-                minDistance={0}
-                maxDistance={400}
-                enableZoom
-                enablePan
-                enableRotate
-              />
-            </>
+const AUTO_HIDE_POINTS_AT = 300;
 
-          }
-          {/* <Lights /> */}
+const Points = () => {
+  // store
+  const corners  = useSelector((s) => s.jsonData.floorplanner.corners);
+  const rooms    = useSelector((s) => s.jsonData.floorplanner.rooms);
+  const walls    = useSelector((s) => s.jsonData.floorplanner.walls);
+  const is2DView = useSelector((s) => s.jsonData.is2DView);
 
+  const { pointColor = "#222", gridColor = "#888", gridSize = 100 } =
+    useSelector((s) => s.jsonData.settings ?? {}) || {};
 
-          <group ref={groupRef}>
-            <Walls isDrawMode={isDrawMode || is2DView} />
-            <FloorPlane corners={corners} rooms={rooms} walls={walls} wallHeight={4} />
+  // UI toggles
+  const { showPoints } = useControls("Display", {
+    showPoints: { value: false }, // default OFF for perf
+  });
 
-            {/* Interactive grid */}
-            <mesh
-              rotation={[-Math.PI / 2, 0, 0]}
-              onClick={(e) => handleGridClick(e)}
-              onPointerMove={(e) => {
-                if (isDrawMode) { handlePointerMove(e) } else { handleDrag(e) }
-              }}
-              onDoubleClick={handleDoubleClick}
-            >
-              <planeGeometry args={[50, 50]} />
-              <meshStandardMaterial color="transparent" transparent opacity={0.01} />
-            </mesh>
+  const { invalidate } = useThree();
+  const hasGeometry = (walls?.length ?? 0) > 0;
 
-            {/* Points */}
-            {Object.keys(positions).map((id) => (
-      
-              <mesh
-                key={id}
-                position={positions[id]}
-                onPointerDown={() => handleDragStart(id)}
-                onPointerUp={() => setDraggedPoint(null)}
-                onPointerOver={() => setActivePoint(id)}
-                onPointerOut={() => setActivePoint(null)}
-                scale={activePoint === id ? [1.6, 1.6, 1.6] : [1.3, 1.3, 1.3]}
-              >
-                {is2DView ? (
-                  <sphereGeometry args={[0.1, 16, 16]} />
-                ) : (
-                  <>
-                  </>
-                  // <boxGeometry args={[0.3, 3, 0.3]} /> 
-                )}
-                <meshStandardMaterial
-                  color={
-                    activePoint === id
-                      ? "black"
-                      : draggedPoint === id
-                        ? draggingColor
-                        : pointColor
-                  }
-                />
+  // 👉 Defer mounting the heavy walls by 1 frame so the grid paints immediately
+  const [showWalls, setShowWalls] = useState(false);
+  useEffect(() => {
+    setShowWalls(false);
+    if (hasGeometry) {
+      const id = requestAnimationFrame(() => setShowWalls(true));
+      return () => cancelAnimationFrame(id);
+    }
+  }, [hasGeometry]);
 
-                {activePoint === id && is2DView && (
-                  <InteractivePointMenu
-                    point={positions[id]}
-                    isActive={true}
-                    OPTIONS={[
-                      { id: 'resize', label: 'Resize', icon: null, position: [1, 0, 0] },
-                      { id: 'delete', label: `${id}`, icon: null, position: [-1, 0, 0] },
-                    ]}
-                    handleOptionSelect={(e, id) => {
-                      console.log(`Option ${id} selected for point`);
-                    }}
-                  />
-                )}
-                
-              </mesh>
-            ))}
+  // make sure a new frame is rendered when toggles / data change
+  useEffect(() => invalidate(), [hasGeometry, showWalls, showPoints, invalidate]);
 
+  const cornerCount = Object.keys(corners || {}).length;
+  const shouldRenderPoints = showPoints && cornerCount > 0 && cornerCount <= AUTO_HIDE_POINTS_AT;
 
-          </group>
+  const positions = useMemo(() => {
+    if (!shouldRenderPoints) return {};
+    const out = {};
+    for (const id in corners) out[id] = [corners[id].x, 0.1, corners[id].z];
+    return out;
+  }, [corners, shouldRenderPoints]);
 
+  return (
+    <>
+      {/* 1) Grid first (always visible) */}
+      <AdaptiveGrid
+        baseSize={gridSize || 100}
+        targetPx={32}
+        minDiv={10}
+        maxDiv={220}
+        colorMajor={gridColor}
+        colorMinor={gridColor}
+      />
 
+      {/* Camera & controls */}
+      <CameraTopDown enabled={is2DView} />
+      <OrbitControlsPerf enabled={is2DView} />
 
-          {/* Fixed grid and axes helpers outside the group */}
-          {gridHelperVisible && <gridHelper args={[gridSize, divisions, gridColor, gridColor]} />}
-          {axesHelperVisible && <axesHelper args={[gridSize]} />}
+      {/* Lighting */}
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[5, 5, 5]} intensity={1} />
 
-          {/* Lighting */}
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[5, 5, 5]} intensity={1} />
-          {/* <Html
+      {/* 2) In-canvas fallback while walls are deferred */}
+      {hasGeometry && !showWalls && (
+        <Html center transform={false} zIndexRange={[10, 0]}>
+          <div
             style={{
-              position: 'absolute',
-              bottom: '20px',
-              right: '20px',
-              width: '300px', // Adjust width as needed
-              maxHeight: '200px', // Limit height and allow scrolling if needed
-              overflowY: 'auto',
-              backgroundColor: 'rgba(255, 255, 255, 0.8)', // Semi-transparent white background
-              padding: '10px',
-              borderRadius: '5px',
-              boxShadow: '0 2px 5px rgba(0,0,0,0.2)', // Optional: subtle shadow for depth
+              background: "rgba(255,255,255,0.75)",
+              borderRadius: 12,
+              padding: "12px 16px",
+              fontFamily: "sans-serif",
+              fontSize: 12,
+              color: "#333",
+              boxShadow: "0 6px 16px rgba(0,0,0,0.15)",
             }}
           >
-            {/* <WallList /> */}
-          {/* </Html> */}
-          
-        </Canvas>
+            Loading walls…
+          </div>
+        </Html>
+      )}
 
-      </div>
+      {/* 3) Walls & floor (mount one frame after geometry exists) */}
+      {showWalls && (
+        <group>
+          <Walls isDrawMode={false} />
+          <FloorPlane corners={corners} rooms={rooms} walls={walls} wallHeight={4} />
+        </group>
+      )}
+
+      {/* 4) Optional corner dots via Leva */}
+      {showWalls && shouldRenderPoints && <CornerPoints positions={positions} color={pointColor} />}
     </>
-
-
   );
-
-
 };
-
 
 export default Points;

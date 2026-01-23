@@ -1,0 +1,1333 @@
+{
+  "sections": [
+    {
+      "id": "mi5sokrfqrpd7ojiiii",
+      "type": "NONE",
+      "render": "section",
+      "name": "D_DOORS_CONFIGURATEUR",
+      "children": [
+        {
+          "id": "mi5sokrfxnmjobo5uf",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "D_DOOR_MODEL",
+          "label": "Modèle",
+          "children": [
+            {
+              "render": "field",
+              "id": "mi5sokrfzeuk7sesxcr",
+              "name": "D_INSERTION_TYPE",
+              "label": "Insertion Type",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "mi5sokrf4x8wj3xshm",
+                "type": "BUTTONAVATAR",
+                "code": null,
+                "content": null,
+                "source": "D_INSERTION_TYPE_ITEMS",
+                "dynamic": false,
+                "defaultValue": "INSERTION_1"
+              },
+              "variables": [],
+              "descriptions": [],
+              "dependencies": [
+                {
+                  "nod": 1,
+                  "action": "FILTER",
+                  "roles": [
+                    {
+                      "operator": "AND",
+                      "roles": [
+                        {
+                          "leftValue": "$P_PARTITION_CPID.value",
+                          "comparisonType": "contains",
+                          "rightValue": "$attributes.PartitionCompatible"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "render": "field",
+              "id": "mi5sokrfo4bnxzey0ts",
+              "name": "D_DOOR_TYPE",
+              "label": "Door Type",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "mi5sokrfo2k4auubati",
+                "type": "BUTTONAVATAR",
+                "code": null,
+                "content": null,
+                "source": "D_DOOR_TYPE_ITEMS",
+                "dynamic": false,
+                "defaultValue": "ALU_W40"
+              },
+              "variables": [],
+              "descriptions": [],
+              "dependencies": [
+                {
+                  "nod": 1,
+                  "action": "FILTER",
+                  "roles": [
+                    {
+                      "operator": "AND",
+                      "roles": [
+                        {
+                          "leftValue": "$D_INSERTION_TYPE.value",
+                          "comparisonType": "contains",
+                          "rightValue": "$attributes.InsertionType"
+                        },
+                        {
+                          "leftValue": "$P_PARTITION_CPID.value",
+                          "comparisonType": "contains",
+                          "rightValue": "$attributes.PartitionType"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "render": "field",
+              "id": "mi5sokrf2vdsqfwsart",
+              "name": "D_FRAME_TYPE",
+              "label": "Frame Type",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "mi5sokrfg5idkk0dfl8",
+                "type": "BUTTONAVATAR",
+                "code": null,
+                "content": null,
+                "source": "D_FRAME_TYPE_ITEMS",
+                "dynamic": false,
+                "defaultValue": "AL_40"
+              },
+              "variables": [],
+              "descriptions": [],
+              "dependencies": [
+                {
+                  "nod": 1,
+                  "action": "FILTER",
+                  "roles": [
+                    {
+                      "operator": "AND",
+                      "roles": [
+                        {
+                          "leftValue": "$P_PARTITION_CPID.value",
+                          "comparisonType": "contains",
+                          "rightValue": "$attributes.PartitionType"
+                        },
+                        {
+                          "leftValue": "$D_DOOR_TYPE.value",
+                          "comparisonType": "contains",
+                          "rightValue": "$attributes.DoorType"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "render": "field",
+              "id": "mi5sokrfu7fp2nveius",
+              "name": "D_DOOR_VARIANT",
+              "label": "Door Variant",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "mi5sokrfbdsslv6ms6",
+                "type": "BUTTONAVATAR",
+                "code": null,
+                "content": null,
+                "source": "D_DOOR_VARIANT_ITEMS",
+                "dynamic": false,
+                "defaultValue": "ALU_W40_1"
+              },
+              "variables": [],
+              "descriptions": [],
+              "dependencies": [
+                {
+                  "nod": 1,
+                  "action": "FILTER",
+                  "roles": [
+                    {
+                      "operator": "AND",
+                      "roles": [
+                        {
+                          "leftValue": "$D_DOOR_TYPE.value",
+                          "comparisonType": "contains",
+                          "rightValue": "$attributes.DoorType"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "render": "field",
+              "id": "mi5sokrf8zwkltbk5sm",
+              "name": "D_DOOR_CPID",
+              "label": "CPID",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "mi5sokrftpuozbi37y",
+                "type": "SELECT",
+                "source": "D_DOOR_CPID_ITEMS",
+                "validation": null,
+                "defaultValue": "",
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": [],
+              "dependencies": [
+                {
+                  "nod": 1,
+                  "action": "FILTER",
+                  "roles": [
+                    {
+                      "operator": "AND",
+                      "roles": [
+                        {
+                          "leftValue": "$D_DOOR_VARIANT.value",
+                          "comparisonType": "=",
+                          "rightValue": "$attributes.DoorVariant"
+                        },
+                        {
+                          "leftValue": "$D_FRAME_TYPE.value",
+                          "comparisonType": "=",
+                          "rightValue": "$attributes.FrameType"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mi5sokrfnrrhjqkepih",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "D_DOOR_OPENING",
+          "label": "Door Opening",
+          "children": [
+            {
+              "render": "field",
+              "id": "mi5sokrf8097sy4fogm",
+              "name": "D_DOOR_OPENING_SIDE",
+              "label": "Opening Side",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "mi5sokrf0kxuq55w4q3r",
+                "type": "SELECT",
+                "code": null,
+                "content": null,
+                "source": "D_DOOR_OPENING_SIDE_ITEMS",
+                "dynamic": false,
+                "defaultValue": "LEFT"
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mi5sokrf9lshy46rawt",
+              "name": "D_DOOR_SWING",
+              "label": "Door swing",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "mi5sokrf08ff663nmcrp",
+                "type": "SELECT",
+                "code": null,
+                "content": null,
+                "source": "D_DOOR_SWING_ITEMS",
+                "dynamic": false,
+                "defaultValue": "IN"
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        },
+        {
+          "id": "mi5sokrfas2gnok5r4f",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "D_DOOR_PERFORMANCE",
+          "label": "Performance",
+          "children": [
+            {
+              "render": "field",
+              "id": "mi5sokrfr9mvsm1imc",
+              "name": "D_BODY_TYPE",
+              "label": "Acoustic Performance",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "mi5sokrfzvu47bvbumc",
+                "type": "SELECT",
+                "code": null,
+                "content": null,
+                "source": "D_DOOR_PERFORMANCE_ITEMS",
+                "dynamic": false,
+                "defaultValue": "AC01"
+              },
+              "variables": [],
+              "descriptions": [],
+              "dependencies": [
+                {
+                  "nod": 1,
+                  "action": "FILTER",
+                  "roles": [
+                    {
+                      "operator": "AND",
+                      "roles": [
+                        {
+                          "leftValue": "$D_DOOR_VARIANT.value",
+                          "comparisonType": "contains",
+                          "rightValue": "$attributes.DoorPerformance"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "nod": 1,
+                  "action": "HIDE",
+                  "roles": [
+                    {
+                      "operator": "OR",
+                      "roles": [
+                        {
+                          "field": "D_DOOR_TYPE",
+                          "comparisonType": "contains",
+                          "value": "ALU_ALU100"
+                        },
+                        {
+                          "field": "D_DOOR_TYPE",
+                          "comparisonType": "contains",
+                          "value": "ALU_ALU70"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            {
+              "nod": 1,
+              "action": "HIDE",
+              "roles": [
+                {
+                  "operator": "OR",
+                  "roles": [
+                    {
+                      "field": "D_DOOR_TYPE",
+                      "comparisonType": "contains",
+                      "value": "ALU_ALU100"
+                    },
+                    {
+                      "field": "D_DOOR_TYPE",
+                      "comparisonType": "contains",
+                      "value": "ALU_ALU70"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mi5sokrfs4kj3ftuzvb",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "D_DIMENSIONS",
+          "label": "Dimension",
+          "children": [
+            {
+              "render": "field",
+              "id": "mi5sokrf4si463lnbox",
+              "name": "D_HEIGHT",
+              "label": "Height",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mi5sokrfjuzweuewql",
+                "min": 2000,
+                "max": 3100,
+                "type": "NUM",
+                "validation": null,
+                "defaultValue": 2700,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mi5sokrfnnwqnz7wi88",
+              "name": "D_FAN_HEIGHT",
+              "label": "Fanlight Height",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mi5sokrfd4tsu877oxn",
+                "min": 200,
+                "max": 1000,
+                "type": "NUM",
+                "validation": null,
+                "defaultValue": 300,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mi5sokrfmn71gkhfg",
+              "name": "D_SD_WIDTH",
+              "label": "Door Width",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mi5sokrfh4c9tskcwc6",
+                "min": 800,
+                "max": 1300,
+                "type": "NUM",
+                "validation": null,
+                "defaultValue": 1010,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": [],
+              "dependencies": [
+                {
+                  "nod": 1,
+                  "action": "SHOW",
+                  "roles": [
+                    {
+                      "operator": "OR",
+                      "roles": [
+                        {
+                          "field": "D_DOOR_CPID",
+                          "comparisonType": "startsWith",
+                          "value": "P_SD_"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "nod": 1,
+                  "action": "HIDE",
+                  "roles": [
+                    {
+                      "operator": "OR",
+                      "roles": [
+                        {
+                          "field": "D_DOOR_CPID",
+                          "comparisonType": "startsWith",
+                          "value": "P_DD_"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "mi5sokrfupu3fmk30sk",
+              "render": "section",
+              "type": "TAB",
+              "name": "D_DD_DIMENTIONS",
+              "label": "Dooble Door Width",
+              "children": [
+                {
+                  "render": "field",
+                  "id": "mi5sokrfea7vlposjqc",
+                  "name": "D_DD_WIDTH",
+                  "label": "Frame Width",
+                  "fieldType": "INPUT",
+                  "input": {
+                    "id": "mi5sokrfgat1b7e6oy",
+                    "min": 1300,
+                    "max": 1800,
+                    "type": "NUM",
+                    "validation": null,
+                    "defaultValue": 1300,
+                    "attributes": null
+                  },
+                  "variables": [],
+                  "descriptions": []
+                },
+                {
+                  "render": "field",
+                  "id": "mi5sokrfczhq7djph4h",
+                  "name": "D_OP_WIDTH",
+                  "label": "Opened body Width",
+                  "fieldType": "INPUT",
+                  "input": {
+                    "id": "mi5sokrfuos3hb4jmt",
+                    "min": 700,
+                    "max": 1000,
+                    "type": "NUM",
+                    "validation": null,
+                    "defaultValue": 939,
+                    "attributes": null
+                  },
+                  "variables": [],
+                  "descriptions": []
+                }
+              ],
+              "dependencies": [
+                {
+                  "nod": 1,
+                  "action": "SHOW",
+                  "roles": [
+                    {
+                      "operator": "OR",
+                      "roles": [
+                        {
+                          "field": "D_DOOR_CPID",
+                          "comparisonType": "startsWith",
+                          "value": "P_DD_"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "nod": 1,
+                  "action": "HIDE",
+                  "roles": [
+                    {
+                      "operator": "OR",
+                      "roles": [
+                        {
+                          "field": "D_DOOR_CPID",
+                          "comparisonType": "startsWith",
+                          "value": "P_SD_"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mi5sokrfd9c3ixmyvw",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "Material",
+          "label": "Material",
+          "children": [
+            {
+              "id": "mi5sokrfrystk56ub6",
+              "render": "section",
+              "type": "ROW",
+              "name": "Profiles_Color",
+              "label": "Frame Color",
+              "LabelTop": "TRUE",
+              "children": [
+                {
+                  "render": "field",
+                  "id": "mi5sokrf872y9911hva",
+                  "name": "D_PRF_COLOR",
+                  "label": "Color",
+                  "LabelTop": "TRUE",
+                  "fieldType": "COMBOBOX",
+                  "grid": "5",
+                  "combo": {
+                    "id": "mi5sokrfg6r65342hdu",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "D_PRF_COLOR",
+                    "dynamic": false,
+                    "defaultValue": "9005"
+                  },
+                  "variables": [],
+                  "descriptions": []
+                },
+                {
+                  "render": "field",
+                  "id": "mi5sokrf746tdj8d8tb",
+                  "name": "D_PRF_COLOR_FINISH",
+                  "label": "Finish",
+                  "LabelTop": "TRUE",
+                  "fieldType": "COMBOBOX",
+                  "grid": "2",
+                  "combo": {
+                    "id": "mi5sokrf21kce6lt1m4",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "D_PRF_COLOR_FINISH",
+                    "dynamic": false,
+                    "defaultValue": "CX"
+                  },
+                  "variables": [],
+                  "descriptions": []
+                }
+              ]
+            },
+            {
+              "id": "mi5sokrf8wwav831hqs",
+              "render": "section",
+              "type": "NONE",
+              "name": "Material",
+              "label": "Material",
+              "children": [
+                {
+                  "render": "field",
+                  "id": "mi5sokrf3rvq1zjswcu",
+                  "name": "D_FRONT_TYPE",
+                  "label": "Front Type",
+                  "fieldType": "COMBOBOX",
+                  "combo": {
+                    "id": "mi5sokrfepnq2syq72a",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "D_FRONT_TYPE",
+                    "dynamic": false,
+                    "defaultValue": "LINA"
+                  },
+                  "variables": [],
+                  "descriptions": []
+                },
+                {
+                  "render": "field",
+                  "id": "mi5sokrf829ojwqztja",
+                  "name": "D_SRF_DECOR",
+                  "label": "Front",
+                  "fieldType": "COMBOBOX",
+                  "combo": {
+                    "id": "mi5sokrfwr1g6iynhz",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "D_SRF_ITEMS",
+                    "dynamic": false,
+                    "defaultValue": "UN_00025_CST"
+                  },
+                  "variables": [],
+                  "descriptions": [],
+                  "dependencies": [
+                    {
+                      "nod": 1,
+                      "action": "FILTER",
+                      "roles": [
+                        {
+                          "operator": "AND",
+                          "roles": [
+                            {
+                              "leftValue": "$D_FRONT_TYPE.value",
+                              "comparisonType": "=",
+                              "rightValue": "$attributes.front_type"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mi5sokrfogpm237u0r",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "Quincaillerie",
+          "label": "Quincaillerie",
+          "children": [
+            {
+              "id": "mi5sokrfd9i0zx1soj",
+              "render": "section",
+              "type": "ROW",
+              "name": "Door_Closer",
+              "label": "Door Closer",
+              "Labeltop": "TRUE",
+              "children": [
+                {
+                  "render": "field",
+                  "id": "mi5sokrf1a78bu6m9zv",
+                  "name": "D_DC_TYPE",
+                  "label": "Closing force",
+                  "fieldType": "COMBOBOX",
+                  "grid": "4",
+                  "combo": {
+                    "id": "mi5sokrfz42gglgamh",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "D_DC_TYPE",
+                    "dynamic": false,
+                    "defaultValue": "NONE"
+                  },
+                  "variables": [],
+                  "descriptions": []
+                },
+                {
+                  "render": "field",
+                  "id": "mi5sokrfsq6zrb7ilwd",
+                  "name": "D_DC_COLOR",
+                  "label": "Front",
+                  "fieldType": "COMBOBOX",
+                  "grid": "4",
+                  "combo": {
+                    "id": "mi5sokrfwjk0v0ifhun",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "D_DC_COLOR",
+                    "dynamic": false,
+                    "defaultValue": "NONE"
+                  },
+                  "variables": [],
+                  "descriptions": [],
+                  "dependencies": [
+                    {
+                      "nod": 1,
+                      "action": "FILTER",
+                      "roles": [
+                        {
+                          "operator": "AND",
+                          "roles": [
+                            {
+                              "leftValue": "$D_DC_TYPE.value",
+                              "comparisonType": "=",
+                              "rightValue": "$attributes.dc_type"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "render": "field",
+                  "id": "mi5sokrfu27bopxd9zl",
+                  "name": "D_DC_STOP",
+                  "label": "Front",
+                  "fieldType": "COMBOBOX",
+                  "grid": "4",
+                  "combo": {
+                    "id": "mi5sokrf4f2wyvrswzs",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "D_DC_STOP",
+                    "dynamic": false,
+                    "defaultValue": "NONE"
+                  },
+                  "variables": [],
+                  "descriptions": [],
+                  "dependencies": [
+                    {
+                      "nod": 1,
+                      "action": "FILTER",
+                      "roles": [
+                        {
+                          "operator": "AND",
+                          "roles": [
+                            {
+                              "leftValue": "$D_DC_TYPE.value",
+                              "comparisonType": "=",
+                              "rightValue": "$attributes.dc_type"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "render": "field",
+                  "id": "mi5sokrf8zfkynjb3ji",
+                  "name": "D_DC_FILTER",
+                  "label": "Front",
+                  "fieldType": "COMBOBOX",
+                  "grid": "4",
+                  "combo": {
+                    "id": "mi5sokrftm9ozgtf2cp",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "D_DC_FILTER",
+                    "dynamic": false,
+                    "defaultValue": "NONE"
+                  },
+                  "variables": [],
+                  "descriptions": [],
+                  "dependencies": [
+                    {
+                      "nod": 1,
+                      "action": "FILTER",
+                      "roles": [
+                        {
+                          "operator": "AND",
+                          "roles": [
+                            {
+                              "leftValue": "$D_DC_TYPE.value",
+                              "comparisonType": "=",
+                              "rightValue": "$attributes.dc_type"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "mi5sokrfb7gyaiiyp48",
+              "render": "section",
+              "type": "ROW",
+              "name": "Locks",
+              "label": "Locks",
+              "Labeltop": "TRUE",
+              "children": [
+                {
+                  "render": "field",
+                  "id": "mi5sokrf8tkkxj2p5m3",
+                  "name": "D_LOCK_TYPE",
+                  "label": "Lock type",
+                  "fieldType": "COMBOBOX",
+                  "grid": "4",
+                  "combo": {
+                    "id": "mi5sokrfpg9aviq9f9j",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "D_LOCK_TYPE",
+                    "dynamic": false,
+                    "defaultValue": "CYL"
+                  },
+                  "variables": [],
+                  "descriptions": []
+                },
+                {
+                  "render": "field",
+                  "id": "mi5sokrf4vfws3fpvge",
+                  "name": "D_KNOBC_SIDE",
+                  "label": "Knob Side",
+                  "fieldType": "COMBOBOX",
+                  "grid": "4",
+                  "combo": {
+                    "id": "mi5sokrfxo5j4trec7g",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "D_KNOBC_SIDE",
+                    "dynamic": false,
+                    "defaultValue": "NONE"
+                  },
+                  "variables": [],
+                  "descriptions": [],
+                  "dependencies": [
+                    {
+                      "nod": 1,
+                      "action": "SHOW",
+                      "roles": [
+                        {
+                          "operator": "OR",
+                          "roles": [
+                            {
+                              "field": "D_LOCK_TYPE",
+                              "comparisonType": "=",
+                              "value": "ES_CYL"
+                            },
+                            {
+                              "field": "D_LOCK_TYPE",
+                              "comparisonType": "=",
+                              "value": "ES_AV"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "render": "field",
+                  "id": "mi5sokrfr9so4ngsy3",
+                  "name": "D_ES_TYPE",
+                  "label": "Electric Strike Type",
+                  "fieldType": "COMBOBOX",
+                  "grid": "4",
+                  "combo": {
+                    "id": "mi5sokrfalqcgug1ykn",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "D_DC_STOP",
+                    "dynamic": false,
+                    "defaultValue": "NONE"
+                  },
+                  "variables": [],
+                  "descriptions": [],
+                  "dependencies": [
+                    {
+                      "nod": 1,
+                      "action": "SHOW",
+                      "roles": [
+                        {
+                          "operator": "OR",
+                          "roles": [
+                            {
+                              "field": "D_LOCK_TYPE",
+                              "comparisonType": "=",
+                              "value": "ES_CYL"
+                            },
+                            {
+                              "field": "D_LOCK_TYPE",
+                              "comparisonType": "=",
+                              "value": "ES_AV"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "render": "field",
+                  "id": "mi5sokrfxw44derm9la",
+                  "name": "D_CYL_TYPE",
+                  "label": "Cylindre Type",
+                  "fieldType": "COMBOBOX",
+                  "grid": "4",
+                  "combo": {
+                    "id": "mi5sokrfgsgniqbb26",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "D_DC_FILTER",
+                    "dynamic": false,
+                    "defaultValue": "NONE"
+                  },
+                  "variables": [],
+                  "descriptions": [],
+                  "dependencies": [
+                    {
+                      "nod": 1,
+                      "action": "SHOW",
+                      "roles": [
+                        {
+                          "operator": "OR",
+                          "roles": [
+                            {
+                              "field": "D_LOCK_TYPE",
+                              "comparisonType": "=",
+                              "value": "CYL"
+                            },
+                            {
+                              "field": "D_LOCK_TYPE",
+                              "comparisonType": "=",
+                              "value": "CYL_AV"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "mi5sokrfdvmiw905227",
+              "render": "section",
+              "type": "ROW",
+              "name": "Handles",
+              "label": "Handles",
+              "Labeltop": "TRUE",
+              "children": [
+                {
+                  "render": "field",
+                  "id": "mi5sokrfm8qwdu1op3f",
+                  "name": "D_HANDLE_DESIGN",
+                  "label": "Handle Design",
+                  "fieldType": "COMBOBOX",
+                  "grid": "4",
+                  "combo": {
+                    "id": "mi5sokrfw5uqhink3ua",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "D_HANDLE_DESIGN",
+                    "dynamic": false,
+                    "defaultValue": "CYL"
+                  },
+                  "variables": [],
+                  "descriptions": []
+                },
+                {
+                  "render": "field",
+                  "id": "mi5sokrfgxw8wjum357",
+                  "name": "D_HANDLE_COLOR",
+                  "label": "Knob Side",
+                  "fieldType": "COMBOBOX",
+                  "grid": "4",
+                  "combo": {
+                    "id": "mi5sokrf7oumm3ffsue",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "D_HANDLE_COLOR",
+                    "dynamic": false,
+                    "defaultValue": "NONE"
+                  },
+                  "variables": [],
+                  "descriptions": []
+                },
+                {
+                  "render": "field",
+                  "id": "mi5sokrf8sx7qqcrx7f",
+                  "name": "D_ROSE_DESIGN",
+                  "label": "Electric Strike Type",
+                  "fieldType": "COMBOBOX",
+                  "grid": "4",
+                  "combo": {
+                    "id": "mi5sokrftome7fip5c",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "D_DC_STOP",
+                    "dynamic": false,
+                    "defaultValue": "NONE"
+                  },
+                  "variables": [],
+                  "descriptions": [],
+                  "dependencies": [
+                    {
+                      "nod": 1,
+                      "action": "FILTER",
+                      "roles": [
+                        {
+                          "operator": "OR",
+                          "roles": [
+                            {
+                              "leftValue": "$D_HANDLE_DESIGN.value",
+                              "comparisonType": "=",
+                              "rightValue": "$attributes.handle_design1"
+                            },
+                            {
+                              "leftValue": "$D_HANDLE_DESIGN.value",
+                              "comparisonType": "=",
+                              "rightValue": "$attributes.handle_design2"
+                            },
+                            {
+                              "leftValue": "$D_HANDLE_DESIGN.value",
+                              "comparisonType": "=",
+                              "rightValue": "$attributes.handle_design3"
+                            },
+                            {
+                              "leftValue": "$D_HANDLE_DESIGN.value",
+                              "comparisonType": "=",
+                              "rightValue": "$attributes.handle_design4"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "render": "field",
+                  "id": "mi5sokrfht7fs982i8",
+                  "name": "D_HANDLE_TYPE",
+                  "label": "Cylindre Type",
+                  "fieldType": "COMBOBOX",
+                  "grid": "4",
+                  "combo": {
+                    "id": "mi5sokrfgfbo4ia2bd9",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "D_DC_FILTER",
+                    "dynamic": false,
+                    "defaultValue": "NONE"
+                  },
+                  "variables": [],
+                  "descriptions": [],
+                  "dependencies": [
+                    {
+                      "nod": 1,
+                      "action": "FILTER",
+                      "roles": [
+                        {
+                          "operator": "AND",
+                          "roles": [
+                            {
+                              "leftValue": "$D_HANDLE_DESIGN.value",
+                              "comparisonType": "=",
+                              "rightValue": "$attributes.handle_design"
+                            },
+                            {
+                              "leftValue": "$D_HANDLE_COLOR.value",
+                              "comparisonType": "=",
+                              "rightValue": "$attributes.handle_color"
+                            },
+                            {
+                              "leftValue": "$D_ROSE_DESIGN.value",
+                              "comparisonType": "=",
+                              "rightValue": "$attributes.rose_design"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mi5sokrfer2xrv5g9wu",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "Advenced",
+          "label": "Advenced",
+          "Labeltop": "TRUE",
+          "children": [
+            {
+              "render": "field",
+              "id": "mi5sokrf4xkazzqqmg4",
+              "name": "D_FR_TOP_TYPE",
+              "label": "Frame Top Type",
+              "fieldType": "COMBOBOX",
+              "grid": "4",
+              "combo": {
+                "id": "mi5sokrfaivl7t1zm8a",
+                "type": "SELECT",
+                "code": null,
+                "content": null,
+                "source": "D_FR_TOP_TYPE",
+                "dynamic": false,
+                "defaultValue": "AL_40"
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mi5sokrf87utiykv70l",
+              "name": "D_SRF_ADV",
+              "label": "Body sides have the same surface",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "mi5sokrfmagirgwk87n",
+                "type": "SWITCH",
+                "code": null,
+                "content": null,
+                "source": "D_ADV",
+                "dynamic": false,
+                "defaultValue": "YES"
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "id": "mi5sokrfmcm96fjrkx",
+              "render": "section",
+              "type": "NONE",
+              "name": "Material_S2",
+              "label": "Material S2",
+              "children": [
+                {
+                  "render": "field",
+                  "id": "mi5sokrffmv41hunut",
+                  "name": "D_FRONT_TYPE_S2",
+                  "label": "Front Type S2",
+                  "fieldType": "COMBOBOX",
+                  "combo": {
+                    "id": "mi5sokrf7px0e7jkb2t",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "D_FRONT_TYPE",
+                    "dynamic": false,
+                    "defaultValue": "LINA"
+                  },
+                  "variables": [],
+                  "descriptions": []
+                },
+                {
+                  "render": "field",
+                  "id": "mi5sokrf3p7skukxttc",
+                  "name": "D_SRF_DECOR_2",
+                  "label": "Front",
+                  "fieldType": "COMBOBOX",
+                  "combo": {
+                    "id": "mi5sokrfzvkhhl49kis",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "D_SRF_ITEMS",
+                    "dynamic": false,
+                    "defaultValue": "UN_00025_CST"
+                  },
+                  "variables": [],
+                  "descriptions": [],
+                  "dependencies": [
+                    {
+                      "nod": 1,
+                      "action": "FILTER",
+                      "roles": [
+                        {
+                          "operator": "AND",
+                          "roles": [
+                            {
+                              "leftValue": "$D_FRONT_TYPE_S2.value",
+                              "comparisonType": "=",
+                              "rightValue": "$attributes.front_type"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "dependencies": [
+                {
+                  "nod": 1,
+                  "action": "SHOW",
+                  "roles": [
+                    {
+                      "operator": "AND",
+                      "roles": [
+                        {
+                          "field": "D_SRF_ADV",
+                          "comparisonType": "=",
+                          "value": "NO"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mi5sokrf6m8lljqaq4i",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "Costumer Info",
+          "label": "Costumer Info",
+          "children": [
+            {
+              "render": "field",
+              "id": "mi5sokrfgsb4nzv1dfq",
+              "name": "Costumer_Request",
+              "label": "Costumer Request",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mi5sokrf6s5qdje0xof",
+                "min": 1000,
+                "max": 3100,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": "",
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        },
+        {
+          "id": "mi5sokrf2sky3826dj5",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "P_VARS",
+          "label": "Vars",
+          "visibility": "HIDE",
+          "children": [
+            {
+              "render": "field",
+              "id": "mi5sokrf7egkplear64",
+              "name": "P_PARTITION_CPID",
+              "label": "CPID",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "mi5sokrf7mwgn81rpbf",
+                "type": "SELECT",
+                "source": "P_PARTITION_CPID_ITEMS",
+                "validation": null,
+                "defaultValue": "P_T100",
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mi5sokrfh30pada8loe",
+              "name": "P_DEPTH",
+              "label": "Depth",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mi5sokrf78v50ehgc8h",
+                "min": 1,
+                "max": 102,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 102,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ],
+          "dependencies": [
+            {
+              "nod": 1,
+              "action": "HIDE",
+              "roles": [
+                {
+                  "operator": "OR",
+                  "roles": [
+                    {
+                      "field": "P_VERSIONS",
+                      "comparisonType": "=",
+                      "value": "VERSION_1",
+                      "ruleType": "simple"
+                    },
+                    {
+                      "field": "P_VERSIONS",
+                      "comparisonType": "=",
+                      "value": "VERSION_2",
+                      "ruleType": "simple"
+                    },
+                    {
+                      "field": "P_VERSIONS",
+                      "comparisonType": "=",
+                      "value": "VERSION_3",
+                      "ruleType": "simple"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "id": "article-1758290339230-c491eb56",
+    "name": "P_T82"
+  }
+}

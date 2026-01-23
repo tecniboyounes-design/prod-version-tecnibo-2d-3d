@@ -1,0 +1,253 @@
+{
+  "version": "1.1",
+  "created": "2025-10-09T11:27:06.017Z",
+  "lines": [
+    {
+      "article_id": "cloison-2",
+      "name": "P_T100",
+      "cp_Id": "P_T100",
+      "dimension": {
+        "height": {
+          "min": 0.2,
+          "max": 3.1
+        },
+        "width": {
+          "min": 0.1,
+          "max": 1.2
+        },
+        "thickness": {
+          "min": 0.1,
+          "max": 0.1
+        }
+      },
+      "dimensions": {
+        "height": 2700,
+        "width": 1200,
+        "thickness": 100
+      },
+      "height": 2700,
+      "color": {},
+      "lines": {
+        "id": "line-1738852779523",
+        "startPointId": "point-1738852778627",
+        "endPointId": "point-1738852779523",
+        "length": 1.2,
+        "rotation": 0.0003796998020737854,
+        "thickness": 0.01,
+        "color": "#0A0A0A",
+        "texture": "default.avif",
+        "height": 2700
+      },
+      "points": [
+        {
+          "id": "point-1738852778627",
+          "position": {
+            "x": -4.724803390336925,
+            "y": 0.01,
+            "z": -1.2545439058631405
+          },
+          "rotation": 0,
+          "snapAngle": 0
+        },
+        {
+          "id": "point-1738852779523",
+          "position": {
+            "x": -5.926,
+            "y": 0.01,
+            "z": -1.255
+          },
+          "rotation": 0,
+          "snapAngle": 0
+        }
+      ],
+      "image": "P_T100_START_LEF.png",
+      "material": {
+        "profile": "Unilim Evola 025 CST 0.3mm"
+      },
+      "type": "T100",
+      "price": 0,
+      "id": "cloison-1760009180958-factory",
+      "startPointId": "point-1760009180691",
+      "endPointId": "point-1760009180958",
+      "length": 8.99,
+      "rotation": 2.7900636839477753,
+      "thickness": 0.01,
+      "texture": "default.avif",
+      "gap": {},
+      "isExisting": true,
+      "customName": "",
+      "connections": {
+        "left": null,
+        "right": {
+          "lineId": "cloison-1760009181376-factory",
+          "position": {
+            "x": 0.7493606341036462,
+            "y": 0.01,
+            "z": -2.266207133191795
+          }
+        }
+      },
+      "Resistence_Feu": "EI00",
+      "Performance_Acoustique": "45",
+      "P_PRF_COLOR": "9005",
+      "P_PRF_COLOR_FINISH": "CX",
+      "module_width": 1200,
+      "P_GAP_TOP": "30",
+      "P_GAP_BOT": "30",
+      "FRONT_TYPE": "MELA",
+      "DECOR_MAT": "MELA",
+      "DECOR_SRF": "MELA",
+      "D_MAT_ADV": "YES",
+      "FRONT_TYPE_2": "MELA",
+      "DECOR_MAT_2": "MELA",
+      "DECOR_SRF_2": "MELA",
+      "OSB_Panels": "No OSB",
+      "TG_TYPE": "None",
+      "TG_CNT": 1,
+      "Costumer_Request": ""
+    },
+    {
+      "article_id": "cloison-2",
+      "name": "P_T100",
+      "cp_Id": "P_T100",
+      "dimension": {
+        "height": {
+          "min": 0.2,
+          "max": 3.1
+        },
+        "width": {
+          "min": 0.1,
+          "max": 1.2
+        },
+        "thickness": {
+          "min": 0.1,
+          "max": 0.1
+        }
+      },
+      "dimensions": {
+        "height": 2700,
+        "width": 1200,
+        "thickness": 100
+      },
+      "height": 2700,
+      "color": {},
+      "lines": {
+        "id": "line-1738852779523",
+        "startPointId": "point-1738852778627",
+        "endPointId": "point-1738852779523",
+        "length": 1.2,
+        "rotation": 0.0003796998020737854,
+        "thickness": 0.01,
+        "color": "#0A0A0A",
+        "texture": "default.avif",
+        "height": 2700
+      },
+      "points": [
+        {
+          "id": "point-1738852778627",
+          "position": {
+            "x": -4.724803390336925,
+            "y": 0.01,
+            "z": -1.2545439058631405
+          },
+          "rotation": 0,
+          "snapAngle": 0
+        },
+        {
+          "id": "point-1738852779523",
+          "position": {
+            "x": -5.926,
+            "y": 0.01,
+            "z": -1.255
+          },
+          "rotation": 0,
+          "snapAngle": 0
+        }
+      ],
+      "image": "P_T100_START_LEF.png",
+      "material": {
+        "profile": "Unilim Evola 025 CST 0.3mm"
+      },
+      "type": "T100",
+      "price": 0,
+      "id": "cloison-1760009181376-factory",
+      "startPointId": "point-1760009180958",
+      "endPointId": "point-1760009181376",
+      "length": 4.19,
+      "rotation": -1.507297600637009,
+      "thickness": 0.01,
+      "texture": "default.avif",
+      "gap": {},
+      "isExisting": true,
+      "customName": "",
+      "connections": {
+        "left": {
+          "lineId": "cloison-1760009180958-factory",
+          "position": {
+            "x": 0.7493606341036454,
+            "y": 0.01,
+            "z": -2.266207133191795
+          }
+        },
+        "right": null
+      },
+      "Resistence_Feu": "EI00",
+      "Performance_Acoustique": "45",
+      "P_PRF_COLOR": "9005",
+      "P_PRF_COLOR_FINISH": "CX",
+      "module_width": 1200,
+      "P_GAP_TOP": "30",
+      "P_GAP_BOT": "30",
+      "FRONT_TYPE": "MELA",
+      "DECOR_MAT": "MELA",
+      "DECOR_SRF": "MELA",
+      "D_MAT_ADV": "YES",
+      "FRONT_TYPE_2": "MELA",
+      "DECOR_MAT_2": "MELA",
+      "DECOR_SRF_2": "MELA",
+      "OSB_Panels": "No OSB",
+      "TG_TYPE": "None",
+      "TG_CNT": 1,
+      "Costumer_Request": ""
+    }
+  ],
+  "points": [
+    {
+      "id": "point-1760009180691",
+      "position": {
+        "x": -7.686973010150734,
+        "y": 0.01,
+        "z": 0.8279208352131882
+      },
+      "rotation": 0,
+      "snapAngle": 0
+    },
+    {
+      "id": "point-1760009180958",
+      "position": {
+        "x": 0.7493606341036462,
+        "y": 0.01,
+        "z": -2.266207133191795
+      },
+      "rotation": 0,
+      "snapAngle": 0
+    },
+    {
+      "id": "point-1760009181376",
+      "position": {
+        "x": 0.4834573869624019,
+        "y": 0.01,
+        "z": 1.9156998958394675
+      },
+      "rotation": 0,
+      "snapAngle": 0
+    }
+  ],
+  "doors": [],
+  "floors": [],
+  "description": "Auto-synced from local version 1.0",
+  "plan2DImage": "",
+  "project_id": "fe5fe031-80ff-4d31-93df-a80011e901b6",
+  "user_id": "39a18b31-b21a-4c52-b745-abb16a141e6d", 
+  "errors": false
+}

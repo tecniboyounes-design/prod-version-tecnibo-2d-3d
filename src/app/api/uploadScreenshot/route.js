@@ -11,7 +11,7 @@ const mkdir = promisify(fs.mkdir);
 
 // Standalone function to get screenshot URL based on projectId and filename
 export async function getScreenshotUrl(projectId, filename) {
-  const origin = "https://configure.tecnibo.com";
+  const origin = "https://backend.tecnibo.com";
   return `${origin}/api/screenshots?projectId=${projectId}&file=${filename}`;
 }
  
@@ -44,7 +44,7 @@ export async function POST(req) {
 
   // Define the directory path
   const dir = path.join(process.cwd(), 'storage', 'screenshots', projectId);
-
+  
   // Create the directory if it doesn’t exist
   try {
     await mkdir(dir, { recursive: true });

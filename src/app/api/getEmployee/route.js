@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { createEmployeePayload } from './odooPayload';
 
+const ODOO_URL = process.env.ODOO_URL
+  ? `${process.env.ODOO_URL}/web/dataset/call_kw/hr.employee/web_read`
+  : null;
+if (!ODOO_URL) throw new Error("[getEmployee] ODOO_URL env is required");
+
 export async function POST(req) {
 
     const { employeeId } = req.body;
@@ -21,7 +26,7 @@ export async function POST(req) {
     try {
         // Send request to Odoo server using Axios
         const response = await axios.post(
-            "http://192.168.30.33:8069/web/dataset/call_kw/hr.employee/web_read",
+            ODOO_URL,
             createEmployeePayload(employeeId),
             {
                 headers: {

@@ -16,17 +16,15 @@
 # next.js
 /.next/
 /out/
-
-
-#data 
-/data
-
-#database
-/database
+/.vscode
 
 
 # production
 /build
+
+# var 
+/var
+/storage
 
 # misc
 .DS_Store
@@ -46,19 +44,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-
-#vscode
-/.vscode
-auth-logs.json
-
-# project logs
-/auth-logs.json
-
-/storage
-auth-logs-backup.json
-src/configurator/data/datafromBackend.json
-curl (1).ps1
-
-# local app storage (screenshots, exports, etc.)
-/storage/

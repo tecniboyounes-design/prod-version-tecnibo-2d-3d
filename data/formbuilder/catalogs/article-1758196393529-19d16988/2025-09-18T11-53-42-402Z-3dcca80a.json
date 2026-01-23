@@ -1,0 +1,296 @@
+{
+  "sections": [
+    {
+      "id": 8,
+      "type": "TAB",
+      "render": "section",
+      "name": "configurator",
+      "children": [
+        {
+          "id": 1,
+          "render": "section",
+          "type": "ACCORDION",
+          "label": "General Setting",
+          "children": [
+            {
+              "render": "field",
+              "id": 101,
+              "name": "Performance_Acoustique",
+              "label": "Performance Acoustique",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": 44,
+                "type": "SWITCH",
+                "code": null,
+                "content": null,
+                "source": "performance_acoustique",
+                "dynamic": false,
+                "defaultValue": "42"
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "id": 113,
+              "render": "section",
+              "type": "ROW",
+              "label": "Profiles Color",
+              "LabelTop": "TRUE",
+              "children": [
+                {
+                  "render": "field",
+                  "id": 1131,
+                  "name": "P_PRF_COLOR",
+                  "label": "Color",
+                  "LabelTop": "TRUE",
+                  "fieldType": "COMBOBOX",
+                  "grid": "5",
+                  "combo": {
+                    "id": 44,
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "P_PRF_COLOR",
+                    "dynamic": false,
+                    "defaultValue": "9005"
+                  },
+                  "variables": [],
+                  "descriptions": []
+                },
+                {
+                  "render": "field",
+                  "id": 1132,
+                  "name": "P_PRF_COLOR_FINISH",
+                  "label": "Finish",
+                  "LabelTop": "TRUE",
+                  "fieldType": "COMBOBOX",
+                  "grid": "2",
+                  "combo": {
+                    "id": 44,
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "P_PRF_COLOR_FINISH",
+                    "dynamic": false,
+                    "defaultValue": "CX"
+                  },
+                  "variables": [],
+                  "descriptions": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "render": "section",
+          "type": "ACCORDION",
+          "label": "Dimensions",
+          "children": [
+            {
+              "render": "field",
+              "id": 8,
+              "name": "P_Height",
+              "label": "Height",
+              "fieldType": "INPUT",
+              "input": {
+                "id": 2,
+                "min": 1000,
+                "max": 3100,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": "2700",
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": 103,
+              "name": "P_GAP_TOP",
+              "label": "Top Gap",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": 44,
+                "type": "SWITCH",
+                "code": null,
+                "content": null,
+                "source": "P_GAP",
+                "dynamic": false,
+                "defaultValue": "30"
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": 104,
+              "name": "P_GAP_BOT",
+              "label": "Bot Gap",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": 44,
+                "type": "SWITCH",
+                "code": null,
+                "content": null,
+                "source": "P_GAP",
+                "dynamic": false,
+                "defaultValue": "30"
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "render": "section",
+          "type": "ACCORDION",
+          "label": "Material",
+          "children": [
+            {
+              "render": "field",
+              "id": 103,
+              "name": "Glass_Type",
+              "label": "Glass Type",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": 44,
+                "type": "SWITCH",
+                "code": null,
+                "content": null,
+                "source": "Glass_Type",
+                "dynamic": false,
+                "defaultValue": "Clair"
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "render": "section",
+          "type": "ACCORDION",
+          "label": "Advanced",
+          "children": [
+            {
+              "id": 113,
+              "render": "section",
+              "type": "ROW",
+              "label": "Glass Division",
+              "LabelTop": "TRUE",
+              "children": [
+                {
+                  "render": "field",
+                  "id": 103,
+                  "name": "Glass_Modulation",
+                  "label": "Glass Modulation",
+                  "fieldType": "COMBOBOX",
+                  "grid": 4,
+                  "combo": {
+                    "id": 44,
+                    "type": "SWITCH",
+                    "code": null,
+                    "content": null,
+                    "source": "Glass_Modulation",
+                    "dynamic": false,
+                    "defaultValue": "Default"
+                  },
+                  "variables": [],
+                  "descriptions": []
+                },
+                {
+                  "render": "field",
+                  "id": 103,
+                  "name": "Step_Modulation",
+                  "label": "Step Modulation",
+                  "fieldType": "COMBOBOX",
+                  "grid": 4,
+                  "combo": {
+                    "id": 44,
+                    "type": "SWITCH",
+                    "code": null,
+                    "content": null,
+                    "source": "Step_Modulation",
+                    "dynamic": false,
+                    "defaultValue": "900"
+                  },
+                  "variables": [],
+                  "descriptions": [],
+                  "dependencies": [
+                    {
+                      "nod": 1,
+                      "action": "SHOW",
+                      "roles": [
+                        {
+                          "operator": "AND",
+                          "roles": [
+                            {
+                              "field": "Glass_Modulation",
+                              "comparisonType": "=",
+                              "value": "Advanced"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "render": "field",
+              "id": 103,
+              "name": "Stores",
+              "label": "Stores",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": 44,
+                "type": "SWITCH",
+                "code": null,
+                "content": null,
+                "source": "Stores",
+                "dynamic": false,
+                "defaultValue": "None"
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "render": "section",
+          "type": "ACCORDION",
+          "label": "Costumer Info",
+          "children": [
+            {
+              "render": "field",
+              "id": 8,
+              "name": "Costumer_Request",
+              "label": "Costumer Request",
+              "fieldType": "INPUT",
+              "input": {
+                "id": 2,
+                "min": 1000,
+                "max": 3100,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": "",
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "id": "article-1758196393529-19d16988",
+    "name": "P_ART"
+  }
+}

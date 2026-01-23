@@ -1,5 +1,5 @@
 [Unit]
-Description=Tecnipo Next.js Application
+Description=Tecnibo Next.js Application
 After=network.target
 StartLimitIntervalSec=60
 StartLimitBurst=10
