@@ -21,6 +21,8 @@ const safe = (obj) => { try { return JSON.stringify(obj, null, 2); } catch { ret
  * @param {Object} kwargs - RPC keyword args
  * @returns {Promise<any>} Odoo result
  */
+
+
 async function callOdoo(session_id, model, method, args = [], kwargs = {}) {
   const headers = {
     "Content-Type": "application/json",
@@ -37,10 +39,14 @@ async function callOdoo(session_id, model, method, args = [], kwargs = {}) {
   return data?.result;
 }
 
+
+
 /**
  * Validate a Many2one id exists on given model.
  * Returns the id if valid, otherwise false (no throw).
  */
+
+
 async function ensureM2OExists(session_id, model, id, ctx) {
   if (!id || !Number.isFinite(Number(id))) return false;
   const res = await callOdoo(
@@ -80,6 +86,8 @@ async function ensureVendor(session_id, id, ctx) {
  *  - "ticket #115028"
  *  - "#115028"
  */
+
+
 function extractTicketIdsFromText(...texts) {
   const out = new Set();
   const rx = /(?:ticket\s*#?\s*|#)\s*(\d{3,})/gi;
@@ -107,6 +115,9 @@ function extractTicketIdsFromText(...texts) {
  * @param {number|false} projectId
  * @returns {Promise<number[]>} validated ticket ids
  */
+
+
+
 async function ensureOpenTickets(session_id, ids, ctx, projectId = false) {
   const uniq = [...new Set((ids || []).map(Number).filter(Boolean))];
   if (!uniq.length) return [];
@@ -163,6 +174,8 @@ async function ensureOpenTickets(session_id, ids, ctx, projectId = false) {
  * @param {object} ctx
  * @returns {Promise<{projectId:number|false, ticketIds:number[]}>}
  */
+
+
 async function findTicketsForPhase(session_id, phaseId, ctx) {
   if (!phaseId) return { projectId: false, ticketIds: [] };
 

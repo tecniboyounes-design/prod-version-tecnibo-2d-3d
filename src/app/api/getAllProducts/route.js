@@ -24,9 +24,13 @@ const BASE_SPEC_FIELDS = {
   display_name: {},
 };
 
+
+
 export async function OPTIONS(request) {
   return handleCorsPreflight(request);
 }
+
+
 
 function log(...a) { console.log("[/api/getAllProducts]", ...a); }
 
@@ -177,3 +181,6 @@ export async function GET(request) {
     return NextResponse.json({ error: err?.message || "Internal server error" }, { status: 500, headers: corsHeaders });
   }
 }
+
+
+

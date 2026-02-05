@@ -17,7 +17,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => { loadMe(); }, [loadMe]);
-
+ 
   return (
     <div style={{ display:'grid', gap:12 }}>
       <h3>Odoo OAuth login</h3>

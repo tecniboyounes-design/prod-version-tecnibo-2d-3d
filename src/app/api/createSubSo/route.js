@@ -1,0 +1,576 @@
+// src/app/api/createSubSO/route.js
+import { NextResponse } from "next/server";
+import axios from "axios";
+import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
+
+export const runtime = "nodejs";
+
+/**
+ * Odoo endpoint normalization:
+ * - If env ODOO_BASE is host only (https://erptest.tecnibo.com) -> add /web/dataset/call_kw
+ * - If env already includes /web/dataset/call_kw -> keep it
+ * - Always strip trailing slash
+ */
+const ODOO_HOST = (process.env.ODOO_BASE || "https://erptest.tecnibo.com").replace(/\/$/, "");
+const ODOO_CALL_KW = ODOO_HOST.includes("/web/dataset/call_kw")
+  ? ODOO_HOST
+  : `${ODOO_HOST}/web/dataset/call_kw`;
+
+/** Safe JSON stringify for logs. */
+const safe = (obj) => {
+  try {
+    return JSON.stringify(obj, null, 2);
+  } catch {
+    return String(obj);
+  }
+};
+
+function log(...a) {
+  console.log("[/api/createSubSO]", ...a);
+}
+
+
+
+/** Low-level JSON-RPC call to Odoo (auth comes ONLY from session_id cookie). */
+async function callOdoo(session_id, model, method, args = [], kwargs = {}) {
+  const headers = {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    Cookie: `session_id=${session_id}`,
+  };
+
+  const payload = {
+    jsonrpc: "2.0",
+    method: "call",
+    id: Date.now(),
+    params: { model, method, args, kwargs },
+  };
+   
+  const url = `${ODOO_CALL_KW}/${model}/${method}`;
+  const { data } = await axios.post(url, payload, { headers });
+
+  if (data?.error) {
+    const msg = data.error?.data?.message || data.error?.message || "Odoo error";
+    const dbg = data.error?.data?.debug;
+    throw new Error(`${msg}${dbg ? `\n${dbg}` : ""}`);
+  }
+
+  return data?.result;
+}
+
+
+
+function ensureInt(v) {
+  const n = Number(v);
+  return Number.isFinite(n) && n > 0 ? n : false;
+}
+
+/** Many2one id extractor supporting: number | [id, name] | {id, display_name} */
+function m2oId(v) {
+  if (!v) return false;
+  if (typeof v === "number") return v;
+  if (Array.isArray(v)) return v[0] || false;
+  if (typeof v === "object" && typeof v.id === "number") return v.id;
+  return false;
+}
+
+
+
+function itemProductId(it) {
+  // Preferred payload shape: { id, quantity, price? }
+  // Backward compatible: { product_id, qty }
+  return ensureInt(it?.id) || ensureInt(it?.product_id) || false;
+}
+
+
+
+function itemQty(it) {
+  // Prefer new "quantity", fallback to legacy "qty"
+  const q = Number(it?.quantity ?? it?.qty ?? 1) || 1;
+  return Math.max(1, q);
+}
+
+
+/** Fetch model fields (so we can avoid sending invalid fields). */
+async function getModelFieldSet(session_id, model, ctx) {
+  const res = await callOdoo(session_id, model, "fields_get", [[], ["type"]], {
+    context: ctx,
+  });
+  return new Set(Object.keys(res || {}));
+}
+
+
+/** Ensure product.product ids exist. */
+async function ensureProductProductIds(session_id, productIds, ctx) {
+  const uniq = [...new Set((productIds || []).map(Number).filter(Boolean))];
+  if (!uniq.length) return [];
+
+  const rows = await callOdoo(
+    session_id,
+    "product.product",
+    "search_read",
+    [[["id", "in", uniq]], ["id"]],
+    { context: ctx }
+  );
+
+  const found = new Set((rows || []).map((r) => r.id));
+  const missing = uniq.filter((id) => !found.has(id));
+  if (missing.length) throw new Error(`Invalid product.product ids: ${missing.join(", ")}`);
+  return uniq;
+}
+
+/**
+ * Find reference SO for a project.
+ * Prefer sub_so=false, fallback to latest order of that project.
+ */
+
+
+async function findReferenceSO(session_id, project_id, ctx) {
+  const spec = {
+    id: {},
+    name: {},
+    sub_so: {},
+    company_id: { fields: { id: {}, display_name: {} } },
+    partner_id: { fields: { id: {}, display_name: {} } },
+    partner_shipping_id: { fields: { id: {}, display_name: {} } },
+    route_id: { fields: { id: {}, display_name: {} } },
+    warehouse_id: { fields: { id: {}, display_name: {} } },
+    pricelist_id: { fields: { id: {}, display_name: {} } },
+    analytic_account_id: { fields: { id: {}, display_name: {} } },
+    user_id: { fields: { id: {}, display_name: {} } },
+    team_id: { fields: { id: {}, display_name: {} } },
+    website_id: { fields: { id: {}, display_name: {} } },
+  };
+
+  const main = await callOdoo(session_id, "sale.order", "web_search_read", [], {
+    domain: [
+      ["relatedproject_id", "=", project_id],
+      ["sub_so", "=", false],
+    ],
+    order: "id desc",
+    limit: 1,
+    specification: spec,
+    context: ctx,
+  });
+
+  const mainRec = main?.records?.[0];
+  if (mainRec) return { rec: mainRec, pickedBy: "sub_so=false" };
+
+  const any = await callOdoo(session_id, "sale.order", "web_search_read", [], {
+    domain: [["relatedproject_id", "=", project_id]],
+    order: "id desc",
+    limit: 1,
+    specification: spec,
+    context: ctx,
+  });
+
+  const anyRec = any?.records?.[0];
+  if (anyRec) return { rec: anyRec, pickedBy: "fallback:any" };
+
+  return null;
+}
+
+/** Extract pickings generated by a sale order. */
+async function fetchPickingsForSaleOrder(session_id, saleOrderId, ctx) {
+  try {
+    const so = await callOdoo(
+      session_id,
+      "sale.order",
+      "read",
+      [[Number(saleOrderId)], ["id", "name", "picking_ids"]],
+      { context: ctx }
+    );
+
+    const pickingIds = so?.[0]?.picking_ids || [];
+    if (!Array.isArray(pickingIds) || pickingIds.length === 0) return [];
+
+    const pickings = await callOdoo(
+      session_id,
+      "stock.picking",
+      "read",
+      [pickingIds, ["id", "name", "state", "scheduled_date"]],
+      { context: ctx }
+    );
+
+    return pickings || [];
+  } catch (e) {
+    log("fetchPickingsForSaleOrder failed (non-fatal):", e?.message || e);
+    return [];
+  }
+}
+
+export async function OPTIONS(request) {
+  return handleCorsPreflight(request);
+}
+
+/**
+ * POST /api/createSubSO
+ *
+ * Body:
+ * {
+ *   project_id: number,
+ *   phase_id: number,
+ *   confirm?: boolean (default true),
+ *   sub_so?: boolean (default true),
+ *   origin?: string,
+ *   notes?: string,
+ *   assign_user_id?: number | false   // OPTIONAL. If omitted -> user_id=false (browser-like)
+ *   items: [{ id:number, quantity:number, route_id?: number, price?: number }]
+ * }
+ */
+export async function POST(req) {
+  const corsHeaders = getCorsHeaders(req);
+
+  try {
+    const body = await req.json().catch(() => ({}));
+    log("Incoming body:", safe(body));
+
+    // session
+    const headerSession =
+      req.headers.get("x-session-id") || req.headers.get("X-Session-Id") || "";
+    const cookieHeader = req.headers.get("cookie") || "";
+    const cookieSession = (cookieHeader.match(/(?:^|;)\s*session_id=([^;]+)/) || [])[1];
+    const session_id = headerSession || cookieSession;
+
+    if (!session_id) {
+      return NextResponse.json(
+        { success: false, error: "Missing session_id" },
+        { status: 401, headers: corsHeaders }
+      );
+    }
+
+    const project_id = ensureInt(body.project_id);
+    const phase_id = ensureInt(body.phase_id);
+
+    if (!project_id) {
+      return NextResponse.json(
+        { success: false, error: "Missing/invalid project_id" },
+        { status: 400, headers: corsHeaders }
+      );
+    }
+    if (!phase_id) {
+      return NextResponse.json(
+        { success: false, error: "Missing/invalid phase_id" },
+        { status: 400, headers: corsHeaders }
+      );
+    }
+
+    const items = Array.isArray(body.items) ? body.items : [];
+    if (!items.length) {
+      return NextResponse.json(
+        { success: false, error: "Missing items[]" },
+        { status: 400, headers: corsHeaders }
+      );
+    }
+
+    // NOTE: context uid/company are UI hints only.
+    // Auth is ALWAYS session user.
+    const uidFallback = ensureInt(body.user_id) || 447;
+    const companyIdFallback = ensureInt(body.company_id) || 11;
+
+    const ctx = {
+      lang: "en_US",
+      tz: "Africa/Casablanca",
+      uid: uidFallback,
+      allowed_company_ids: [companyIdFallback],
+      force_company: companyIdFallback,
+      params: { cids: companyIdFallback, model: "sale.order", view_type: "form" },
+      bin_size: true,
+    };
+
+    // Find reference SO
+    const ref = await findReferenceSO(session_id, project_id, ctx);
+    if (!ref) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Parent SO not found for this project",
+          details: "No sale.order found with relatedproject_id=project_id",
+          meta: { project_id },
+        },
+        { status: 404, headers: corsHeaders }
+      );
+    }
+
+    const refSO = ref.rec;
+
+    const companyId = m2oId(refSO.company_id) || companyIdFallback;
+
+    // rebuild ctx with real company (still not auth)
+    const ctx2 = {
+      ...ctx,
+      allowed_company_ids: [companyId],
+      force_company: companyId,
+      params: { cids: companyId, model: "sale.order", view_type: "form" },
+      current_company_id: companyId,
+    };
+
+    const partner_id = m2oId(refSO.partner_id);
+    const partner_shipping_id = m2oId(refSO.partner_shipping_id);
+    const analytic_account_id = m2oId(refSO.analytic_account_id) || false;
+    const pricelist_id = m2oId(refSO.pricelist_id) || false;
+    const warehouse_id = m2oId(refSO.warehouse_id) || false;
+    const so_route_id = m2oId(refSO.route_id) || false;
+
+    // Optional browser-like fields (can help match UI behavior)
+    const team_id = m2oId(refSO.team_id) || false;
+    const website_id = m2oId(refSO.website_id) || false;
+
+    if (!partner_id || !partner_shipping_id) {
+      throw new Error(
+        `Reference SO is missing partner info. partner_id=${partner_id}, partner_shipping_id=${partner_shipping_id}`
+      );
+    }
+
+    // Validate products
+    const productIds = items.map((it) => itemProductId(it)).filter(Boolean);
+    await ensureProductProductIds(session_id, productIds, ctx2);
+
+    // Only set valid fields on lines
+    const solFields = await getModelFieldSet(session_id, "sale.order.line", ctx2);
+
+    const confirm = body.confirm !== false; // default true
+    const sub_so = body.sub_so !== false; // default true
+    const origin = body.origin || `Project #${project_id} / Phase #${phase_id}`;
+    const notes = body.notes || false;
+
+    /**
+     * ✅ Browser behavior:
+     * - user_id is often false on create (unassigned), especially for website flows
+     * - If you assign it to someone else, your "Personal Order Lines" rule will likely block create
+     *
+     * Default: false
+     * Override: body.assign_user_id (number) if you want
+     */
+    const assign_user_id =
+      body.assign_user_id === false ? false : ensureInt(body.assign_user_id) || false;
+
+    log("Reference SO selected:", {
+      id: refSO.id,
+      name: refSO.name,
+      pickedBy: ref.pickedBy,
+      companyId,
+      partner_id,
+      partner_shipping_id,
+      analytic_account_id,
+      pricelist_id,
+      warehouse_id,
+      route_id: so_route_id,
+      team_id,
+      website_id,
+      assign_user_id,
+      odoo_call_kw: ODOO_CALL_KW,
+    });
+
+    const order_lines = items.map((it, idx) => {
+      const product_id = itemProductId(it);
+      const qty = itemQty(it);
+      const lineRouteId = ensureInt(it.route_id) || so_route_id || false;
+
+      const lineVals = {
+        sequence: (idx + 1) * 10,
+        display_type: false,
+        product_id,
+        product_uom_qty: qty,
+      };
+
+      if (lineRouteId && solFields.has("route_id")) lineVals.route_id = lineRouteId;
+      if (phase_id && solFields.has("phase_id")) lineVals.phase_id = phase_id;
+
+      if (solFields.has("analytic_distribution")) {
+        lineVals.analytic_distribution = analytic_account_id ? { [analytic_account_id]: 100 } : {};
+      }
+
+      return [0, 0, lineVals];
+    });
+
+    const specification = {
+      id: {},
+      name: {},
+      state: {},
+      sub_so: {},
+      partner_id: { fields: { display_name: {} } },
+      partner_shipping_id: { fields: { display_name: {} } },
+      relatedproject_id: { fields: { display_name: {} } },
+      phase_id: { fields: { display_name: {} } },
+      route_id: { fields: { id: {}, display_name: {} } },
+      warehouse_id: { fields: { id: {}, display_name: {} } },
+      pricelist_id: { fields: { id: {}, display_name: {} } },
+      analytic_account_id: { fields: { id: {}, display_name: {} } },
+      team_id: { fields: { id: {}, display_name: {} } },
+      website_id: { fields: { id: {}, display_name: {} } },
+      user_id: { fields: { id: {}, display_name: {} } },
+      order_line: {
+        fields: {
+          id: {},
+          sequence: {},
+          name: {},
+          product_id: { fields: { id: {}, display_name: {}, default_code: {} } },
+          product_uom_qty: {},
+          product_uom: { fields: { display_name: {} } },
+          price_unit: {},
+          discount: {},
+          tax_id: {},
+          route_id: { fields: { id: {}, display_name: {} } },
+          phase_id: { fields: { id: {}, display_name: {} } },
+          analytic_distribution: {},
+        },
+        limit: 200,
+        order: "sequence ASC, id ASC",
+      },
+      picking_ids: { fields: { id: {}, name: {}, state: {} } },
+    };
+
+    const payload = {
+      jsonrpc: "2.0",
+      method: "call",
+      id: Date.now(),
+      params: {
+        model: "sale.order",
+        method: "web_save",
+        args: [
+          [],
+          {
+            partner_id,
+            partner_invoice_id: partner_id,
+            partner_shipping_id,
+            company_id: companyId,
+
+            // ✅ browser-like: unassigned salesperson unless you explicitly want one
+            user_id: assign_user_id || false,
+
+            origin,
+            note: notes || false,
+
+            // Copy commercial settings
+            analytic_account_id: analytic_account_id || false,
+            pricelist_id: pricelist_id || false,
+            warehouse_id: warehouse_id || false,
+            route_id: so_route_id || false,
+
+            // optional browser-ish defaults (won't hurt if false)
+            team_id: team_id || false,
+            website_id: website_id || false,
+
+            // Project/phase linkage on SO level
+            relatedproject_id: project_id,
+            phase_id: phase_id,
+
+            // flag
+            sub_so: !!sub_so,
+
+            // lines
+            order_line: order_lines,
+          },
+        ],
+        kwargs: {
+          context: {
+            ...ctx2,
+            mail_create_nosubscribe: true,
+            tracking_disable: true,
+          },
+          specification,
+        },
+      },
+    };
+
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Cookie: `session_id=${session_id}`,
+    };
+
+    const { data } = await axios.post(`${ODOO_CALL_KW}/sale.order/web_save`, payload, { headers });
+
+    if (data?.error) {
+      const msg = data.error?.data?.message || data.error?.message || "Odoo error";
+      const dbg = data.error?.data?.debug;
+      throw new Error(`${msg}${dbg ? `\n${dbg}` : ""}`);
+    }
+
+    const result = data?.result;
+
+    // Odoo web_save returns: [ {id: ...} ] usually
+    let createdSoId = null;
+    if (Array.isArray(result) && typeof result?.[0]?.id === "number") createdSoId = result[0].id;
+    if (!createdSoId && typeof result?.id === "number") createdSoId = result.id;
+    if (!createdSoId && typeof result?.res_id === "number") createdSoId = result.res_id;
+    if (!createdSoId && typeof result?.record?.id === "number") createdSoId = result.record.id;
+    if (!createdSoId && typeof result?.data?.id === "number") createdSoId = result.data.id;
+
+    // fallback: search by origin + project
+    if (!createdSoId) {
+      const last = await callOdoo(
+        session_id,
+        "sale.order",
+        "search_read",
+        [[["origin", "=", origin], ["relatedproject_id", "=", project_id]], ["id"]],
+        { context: ctx2, limit: 1, order: "id desc" }
+      );
+      createdSoId = last?.[0]?.id || null;
+    }
+
+    if (!createdSoId) throw new Error("Created sale.order id not found in web_save result.");
+
+    log("SO created:", createdSoId);
+
+    if (confirm) {
+      log("Confirming SO:", createdSoId);
+      await callOdoo(session_id, "sale.order", "action_confirm", [[createdSoId]], {
+        context: ctx2,
+      });
+    }
+
+    const soRead = await callOdoo(
+      session_id,
+      "sale.order",
+      "read",
+      [
+        [createdSoId],
+        ["id", "name", "state", "order_line", "partner_shipping_id", "partner_id", "picking_ids", "user_id", "team_id"],
+      ],
+      { context: ctx2 }
+    );
+
+    const pickings = confirm ? await fetchPickingsForSaleOrder(session_id, createdSoId, ctx2) : [];
+
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Sub SO created successfully",
+        sale_order_id: createdSoId,
+        sale_order: soRead?.[0] || null,
+        delivery_pickings: pickings,
+        meta: {
+          confirm,
+          project_id,
+          phase_id,
+          reference_so_id: refSO.id,
+          reference_so_name: refSO.name,
+          copied: {
+            partner_id,
+            partner_shipping_id,
+            analytic_account_id,
+            pricelist_id,
+            warehouse_id,
+            route_id: so_route_id,
+            company_id: companyId,
+            team_id,
+            website_id,
+          },
+          applied: {
+            user_id: assign_user_id || false,
+          },
+          odoo_call_kw: ODOO_CALL_KW,
+        },
+      },
+      { status: 200, headers: corsHeaders }
+    );
+  } catch (error) {
+    console.error("[/api/createSubSO] Error:", error?.stack || error);
+    return NextResponse.json(
+      { success: false, error: "Sub SO creation failed", details: String(error?.message || error) },
+      { status: 500, headers: corsHeaders }
+    );
+  }
+}

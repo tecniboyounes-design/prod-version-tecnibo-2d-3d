@@ -4,9 +4,8 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 const ODOO_UPSTREAM = process.env.ODOO_URL;              // e.g. https://erptest.tecnibo.com
-const DB_NAME = process.env.ODOO_DB;                     // pin the DB
+const DB_NAME = process.env.ODOO_DB || 'tecnibo17_test'; // pin the DB
 if (!ODOO_UPSTREAM) throw new Error('ODOO_URL env is required');
-if (!DB_NAME) throw new Error('ODOO_DB env is required');
 
 const PROXY_PREFIX = '/api/odoo';
 const ODOO = new URL(ODOO_UPSTREAM);
