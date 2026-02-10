@@ -1,0 +1,171 @@
+{
+  "sections": [
+    {
+      "id": "mlgg8zitbvs28cufedw",
+      "type": "NONE",
+      "render": "section",
+      "name": "D_EXT_CONFIGURATEUR",
+      "Label": "Porte sous traitée",
+      "children": [
+        {
+          "id": "mlgg8zitee4vy9bm93i",
+          "render": "section",
+          "type": "NONE",
+          "name": "P_ART_MODEL",
+          "label": "Model",
+          "children": [
+            {
+              "render": "field",
+              "id": "mlgg8zits10vs9hviq9",
+              "name": "D_MOVABLE_SUPPLIER",
+              "label": "Fournisseur",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "mlgg8zitwipzkzacgs",
+                "type": "SELECT",
+                "code": null,
+                "content": null,
+                "source": "D_MOVABLE_SUPPLIER",
+                "dynamic": false,
+                "defaultValue": "Parthos"
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        },
+        {
+          "id": "mlgg8zitqnvt6aqaiak",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "P_DIMENSIONS",
+          "label": "Dimensions",
+          "children": [
+            {
+              "render": "field",
+              "id": "mlgg8zitxcrczzsfbg",
+              "name": "P_HEIGHT",
+              "label": "Height",
+              "fieldType": "INPUT",
+              "ImpactedVariable": [
+                "HSP"
+              ],
+              "input": {
+                "id": "mlgg8zitcle4kdvrceu",
+                "min": 2000,
+                "max": 3500,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 2700,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mlgg8zitm8ngrtjskrp",
+              "name": "P_WIDTH",
+              "label": "Width",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mlgg8zit4gqetx9f9dx",
+                "min": 200,
+                "max": 10000,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 1200,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": [],
+              "dependencies": [
+                {
+                  "nod": 1,
+                  "action": "SHOW",
+                  "roles": [
+                    {
+                      "operator": "AND",
+                      "roles": [
+                        {
+                          "field": "D_DOOR_FANLIGHT",
+                          "comparisonType": "!=",
+                          "value": "NO_FANLIGHT"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mlgg8zittavlxjgeihr",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "P_ADVANCED",
+          "label": "Advanced",
+          "children": [
+            {
+              "render": "field",
+              "id": "mlgg8zitbg98qcuhiws",
+              "name": "P_EXT_QUANTITY",
+              "label": "Quantité",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mlgg8zitchfg3jqisc5",
+                "min": 1,
+                "max": 10000,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 1,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mlgg8zitrvbdixvchba",
+              "name": "P_EXT_PRICE",
+              "label": "Prix d'achat (Pièce)",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mlgg8zitknuvwcd4sgn",
+                "min": 100,
+                "max": 10000,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 1000,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mlgg8zitl7co2g0vawe",
+              "name": "P_EXT_DESRIPTION",
+              "label": "Additinal description",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mlgg8zitznk726e6ko",
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": "",
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "id": "article-1770635692372-cda9e63f",
+    "name": "ACCS_PORT_CY02_65x65_INOX"
+  }
+}

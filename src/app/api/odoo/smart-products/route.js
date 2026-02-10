@@ -1,3 +1,4 @@
+// src/app/api/odoo/smart-products/route.js
 import { NextResponse } from "next/server";
 import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
 
@@ -6,10 +7,12 @@ import { fetchConndescWsRows } from "./lib/db";
 import { buildTagToCategoryIndex, groupRowsByCategory } from "./lib/categorize";
 import { uniq } from "./lib/utils";
 import {
+  getSessionInfo,
   smartSearchOne,
   isAccessError,
   fetchTemplatesByMatchFieldBatched,
   fetchProductStockByIdsBatched,
+  fetchSupplierinfoByIdsBatched,
 } from "./lib/odoo";
 
 import fs from "fs/promises";
@@ -39,13 +42,9 @@ async function writeLastResponseToFile({ filePath, payload }) {
   }
 }
 
-
-
 function makeDefaultLogFile() {
   return path.join(LOG_DIR, `${Date.now()}.json`);
 }
-
-
 
 /**
  * Odoo Many2one normalizer -> numeric id or null
@@ -54,16 +53,111 @@ function makeDefaultLogFile() {
  * - {id, display_name}
  * - number
  */
-
-
-
-
 function m2oToId(v) {
   if (!v) return null;
   if (Array.isArray(v)) return v[0] || null;
   if (typeof v === "object") return v.id || null;
   if (typeof v === "number") return v;
   return null;
+}
+
+function m2oToPair(v) {
+  if (!v) return null;
+  if (Array.isArray(v)) return [v[0] || null, v[1] || null];
+  if (typeof v === "object") return [v.id || null, v.display_name || null];
+  if (typeof v === "number") return [v, null];
+  return null;
+}
+
+function uniqArr(arr) {
+  return Array.from(new Set((arr || []).filter(Boolean)));
+}
+
+/**
+ * ✅ FIXED: normalize seller_ids from ALL Odoo shapes:
+ * - [1,2,3]
+ * - { records: [{id:1},{id:2}], length: 2 }
+ * - { ids: [1,2] }
+ * - [{id:1},{id:2}]
+ */
+function normalizeSellerIds(val) {
+  if (!val) return [];
+
+  const arr = Array.isArray(val)
+    ? val
+    : Array.isArray(val?.records)
+      ? val.records
+      : Array.isArray(val?.ids)
+        ? val.ids
+        : [];
+
+  return arr
+    .map((x) => {
+      if (typeof x === "number") return x;
+      if (typeof x === "string") return Number(x) || null;
+      if (Array.isArray(x)) return Number(x[0]) || null;
+      if (typeof x === "object") return Number(x.id) || null;
+      return null;
+    })
+    .filter(Boolean);
+}
+
+/**
+ * Attach vendors from supplierinfo (product.supplierinfo) onto template records.
+ * Requires templateRecord.seller_ids to be present (list of supplierinfo ids).
+ */
+function attachVendorsFromSupplierinfo(templateRecs, supplierById) {
+  return (templateRecs || []).map((r0) => {
+    const r = { ...r0 };
+
+    const sellerIds = normalizeSellerIds(r.seller_ids);
+
+    const vendors = sellerIds
+      .map((id) => {
+        const s = supplierById?.[id];
+        if (!s) {
+          // keep placeholders so client can see "we had seller ids, supplier read failed/missing"
+          return {
+            id,
+            partner_id: null,
+            product_tmpl_id: null,
+            product_id: null,
+            min_qty: null,
+            price: null,
+            delay: null,
+            sequence: null,
+            company_id: null,
+          };
+        }
+        return {
+          id: s.id ?? id,
+          partner_id: m2oToPair(s.partner_id),
+          product_tmpl_id: m2oToPair(s.product_tmpl_id),
+          product_id: m2oToPair(s.product_id),
+          min_qty: s.min_qty ?? null,
+          price: s.price ?? null,
+          delay: s.delay ?? null,
+          sequence: s.sequence ?? null,
+          company_id: m2oToPair(s.company_id),
+        };
+      })
+      .filter(Boolean);
+
+    const vendorPartnerIds = uniqArr(vendors.map((v) => v.partner_id?.[0]));
+
+    // primary = lowest sequence (or first) that has partner
+    const vendorPrimary =
+      vendors
+        .filter((v) => v.partner_id?.[0])
+        .sort((a, b) => (a.sequence ?? 999999) - (b.sequence ?? 999999))[0] || null;
+
+    return {
+      ...r,
+      vendors,
+      vendor_partner_ids: vendorPartnerIds,
+      vendor_primary: vendorPrimary,
+    };
+  });
 }
 
 /**
@@ -88,12 +182,10 @@ function buildOrDomainFromFlags(fieldName, flags) {
 }
 
 /**
- * Flatten batched matcher output and inject cfg_name (from helper DB by match value).
- * Keeps first non-null cfg_name per template id.
+ * Flatten batched matcher output and inject cfg_name + routing (from helper DB by match value).
+ * Keeps first non-null cfg_name / routing per template id.
  */
-
-
-function flattenMatchedRecordsWithCfg(byValue, cfgByValue, matchField) {
+function flattenMatchedRecordsWithCfg(byValue, cfgByValue, routingByValue, matchField) {
   const out = [];
   const seen = new Map(); // templateId -> index
 
@@ -103,8 +195,12 @@ function flattenMatchedRecordsWithCfg(byValue, cfgByValue, matchField) {
       const r = { ...r0 };
 
       const key = r?.[matchField];
+
       const cfgName = cfgByValue?.get?.(key) ?? null;
       r.cfg_name = cfgName;
+
+      const routing = routingByValue?.get?.(key) ?? null;
+      r.routing = routing;
 
       const id = r?.id;
       if (!id) continue;
@@ -117,8 +213,15 @@ function flattenMatchedRecordsWithCfg(byValue, cfgByValue, matchField) {
 
       const idx = seen.get(id);
       const existing = out[idx];
+
+      // keep first non-empty cfg_name
       if ((existing?.cfg_name == null || existing?.cfg_name === "") && cfgName) {
         out[idx] = { ...existing, cfg_name: cfgName };
+      }
+
+      // keep first non-empty routing
+      if ((existing?.routing == null || existing?.routing === "") && routing) {
+        out[idx] = { ...out[idx], routing };
       }
     }
   }
@@ -166,7 +269,6 @@ function normalizeStockRow(s) {
  * - WS reverse:      /api/odoo/smart-products?mode=ws
  * - Flat:            /api/odoo/smart-products?mode=flat
  */
-
 export async function GET(request) {
   const corsHeaders = getCorsHeaders(request);
   const url = new URL(request.url);
@@ -188,15 +290,23 @@ export async function GET(request) {
     const flatMode = mode === "flat" || url.searchParams.get("flat") === "1";
     const q = (url.searchParams.get("q") || "").trim();
 
-    // NEW: stock option for flat mode
     const includeStock = url.searchParams.get("include_stock") === "1";
+    const includeVendors = url.searchParams.get("include_vendors") !== "0";
+
+    const companyIdOverrideRaw = url.searchParams.get("company_id");
+    const companyIdOverride = companyIdOverrideRaw ? Number(companyIdOverrideRaw) : undefined;
 
     // optional logging
     const shouldLog = url.searchParams.get("log") === "1";
     const logFile = (url.searchParams.get("log_file") || makeDefaultLogFile()).trim();
 
+    // fetch session info once (so context is correct)
+    const tSess0 = Date.now();
+    const sessionInfo = await getSessionInfo({ sessionId });
+    const tSess1 = Date.now();
+
     // -------------------------------
-    // SMART mode (keep as-is)
+    // SMART mode
     // -------------------------------
     if (q && mode !== "ws" && mode !== "flat") {
       const model = (url.searchParams.get("model") || DEFAULT_MODEL).trim();
@@ -210,6 +320,8 @@ export async function GET(request) {
         limit,
         offset,
         requireImosTable,
+        includeVendors,
+        companyIdOverride,
         shouldLog,
         logFile,
       });
@@ -221,6 +333,8 @@ export async function GET(request) {
         limit,
         offset,
         requireImosTable,
+        sessionInfo,
+        companyIdOverride,
       });
 
       if (!result.ok && result.details && isAccessError(result.details)) {
@@ -229,20 +343,79 @@ export async function GET(request) {
           mode: "smart",
           error: result.error || "Access denied by Odoo",
           details: result.details,
-          timing_ms: { total: Date.now() - tAll0 },
+          timing_ms: { session: tSess1 - tSess0, total: Date.now() - tAll0 },
         };
         if (shouldLog) await writeLastResponseToFile({ filePath: logFile, payload });
         return NextResponse.json(payload, { status: 403, headers: corsHeaders });
       }
 
-      // SMART mode does not use helper DB => no cfg_name injection here
+      let records = (result.payload?.records || []).map(normalizeVariantIdOnTemplateRecord);
+
+      // Vendor hydration (supplierinfo)
+      let vendorMeta = null;
+      const tVend0 = Date.now();
+
+      if (includeVendors) {
+        const sellerIds = records
+          .flatMap((r) => normalizeSellerIds(r.seller_ids))
+          .map(Number)
+          .filter(Boolean);
+
+        const suppRes = await fetchSupplierinfoByIdsBatched({
+          sessionId,
+          sellerIds,
+          chunkSize: 200,
+          sessionInfo,
+          companyIdOverride,
+        });
+
+        if (suppRes.ok) {
+          records = attachVendorsFromSupplierinfo(records, suppRes.payload.by_id || {});
+          vendorMeta = {
+            ok: true,
+            rpc_calls: suppRes.payload.rpc_calls,
+            timing_ms: suppRes.payload.timing_ms,
+            context_company_id: suppRes.payload.context_company_id,
+          };
+        } else {
+          // still attach empty vendor fields
+          records = records.map((r) => ({
+            ...r,
+            vendors: [],
+            vendor_partner_ids: [],
+            vendor_primary: null,
+          }));
+          vendorMeta = {
+            ok: false,
+            error: suppRes.error,
+            status: suppRes.status,
+          };
+        }
+      } else {
+        records = records.map((r) => ({
+          ...r,
+          vendors: [],
+          vendor_partner_ids: [],
+          vendor_primary: null,
+        }));
+      }
+
       const payload = {
         success: result.ok,
         mode: "smart",
         model,
         q,
         ...(result.payload || {}),
-        timing_ms: { total: Date.now() - tAll0 },
+        records, // override with hydrated + normalized
+        meta: {
+          ...(result.payload?.meta || {}),
+          vendors: includeVendors ? vendorMeta : null,
+        },
+        timing_ms: {
+          session: tSess1 - tSess0,
+          vendors: includeVendors ? Date.now() - tVend0 : 0,
+          total: Date.now() - tAll0,
+        },
       };
 
       if (shouldLog) await writeLastResponseToFile({ filePath: logFile, payload });
@@ -254,13 +427,17 @@ export async function GET(request) {
     }
 
     // -------------------------------
-    // WS/FLAT reverse mode:
-    // helper DB -> categorize -> values(article_id) -> batch Odoo match by match_field
+    // WS/FLAT reverse mode
     // -------------------------------
     const model = (url.searchParams.get("model") || DEFAULT_MODEL).trim();
 
     // DB controls
-    const limitRows = Number(url.searchParams.get("limit_rows") ?? 500);
+    // ✅ FIX: limit_rows=0 should mean "no limit", not "return 0 rows"
+    const limitRowsRaw = url.searchParams.get("limit_rows");
+    let limitRows = limitRowsRaw == null ? 500 : Number(limitRowsRaw);
+    if (!Number.isFinite(limitRows)) limitRows = 500;
+    if (limitRows === 0) limitRows = 1000000; // "no limit" mode
+
     const offsetRows = Number(url.searchParams.get("offset_rows") || 0);
 
     // DB filter: ORDER_ID ILIKE %WS% by default
@@ -294,11 +471,13 @@ export async function GET(request) {
       odooChunk,
       limitPerChunk,
       includeStock,
+      includeVendors,
+      companyIdOverride,
       shouldLog,
       logFile,
     });
 
-    // Step 1: DB fetch from helper DB table (via lib/db.js)
+    // Step 1: DB fetch
     const tDb0 = Date.now();
     const conndescRows = await fetchConndescWsRows({
       wsLike,
@@ -308,12 +487,15 @@ export async function GET(request) {
     const tDb1 = Date.now();
     log("Step1 DB:", { rows: conndescRows.length, ms: tDb1 - tDb0 });
 
-    // cfg_name map by article_id (match value)
+    // cfg_name + routing map by article_id (match value)
     const cfgByValue = new Map();
+    const routingByValue = new Map();
+
     for (const r of conndescRows) {
       const k = r?.article_id;
       if (!k) continue;
 
+      // cfg_name (keep first non-empty)
       if (!cfgByValue.has(k)) cfgByValue.set(k, r?.cfg_name ?? null);
       else {
         const existing = cfgByValue.get(k);
@@ -321,9 +503,18 @@ export async function GET(request) {
           cfgByValue.set(k, r.cfg_name);
         }
       }
+
+      // routing (keep first non-null, fallback to 'odoo')
+      if (!routingByValue.has(k)) routingByValue.set(k, r?.routing ?? "odoo");
+      else {
+        const existingR = routingByValue.get(k);
+        if ((existingR == null || existingR === "") && r?.routing) {
+          routingByValue.set(k, r.routing);
+        }
+      }
     }
 
-    // Step 2: categorize (same as before)
+    // Step 2: categorize
     const tCat0 = Date.now();
     const tagIndex = buildTagToCategoryIndex(CATEGORY_ORDER_ID_MAP);
     const grouped = groupRowsByCategory(conndescRows, tagIndex);
@@ -365,6 +556,8 @@ export async function GET(request) {
         chunkSize: odooChunk,
         requireImosTable,
         limitPerChunk,
+        sessionInfo,
+        companyIdOverride,
       });
 
       if (!res.ok) {
@@ -374,7 +567,7 @@ export async function GET(request) {
             mode: flatMode ? "flat" : "ws",
             error: res.error || "Access denied by Odoo",
             details: res.details,
-            timing_ms: { total: Date.now() - tAll0 },
+            timing_ms: { session: tSess1 - tSess0, total: Date.now() - tAll0 },
           };
           if (shouldLog) await writeLastResponseToFile({ filePath: logFile, payload });
           return NextResponse.json(payload, { status: 403, headers: corsHeaders });
@@ -385,7 +578,7 @@ export async function GET(request) {
           mode: flatMode ? "flat" : "ws",
           error: res.error || "Odoo batch match failed",
           details: res.details || null,
-          timing_ms: { total: Date.now() - tAll0 },
+          timing_ms: { session: tSess1 - tSess0, total: Date.now() - tAll0 },
         };
         if (shouldLog) await writeLastResponseToFile({ filePath: logFile, payload });
         return NextResponse.json(payload, { status: res.status || 502, headers: corsHeaders });
@@ -400,6 +593,7 @@ export async function GET(request) {
         total_values: res.payload.total_values,
         domain_base: res.payload.domain_base,
         timing_ms: res.payload.timing_ms,
+        context_company_id: res.payload.context_company_id,
       };
     }
 
@@ -412,12 +606,54 @@ export async function GET(request) {
       ms: tOdoo1 - tOdoo0,
     });
 
+    // Step 4.5: hydrate vendors ONCE (supplierinfo)
+    let supplierById = {};
+    let vendorsMeta = null;
+    const tVend0 = Date.now();
+
+    if (includeOdoo && includeVendors) {
+      const allSellerIds = [];
+
+      for (const bucket of Object.values(byValue || {})) {
+        const recs = bucket?.records || [];
+        for (const rec of recs) {
+          allSellerIds.push(...normalizeSellerIds(rec?.seller_ids));
+        }
+      }
+
+      const uniqSellerIds = uniqArr(allSellerIds.map(Number).filter(Boolean));
+
+      const suppRes = await fetchSupplierinfoByIdsBatched({
+        sessionId,
+        sellerIds: uniqSellerIds,
+        chunkSize: 200,
+        sessionInfo,
+        companyIdOverride,
+      });
+
+      if (suppRes.ok) {
+        supplierById = suppRes.payload.by_id || {};
+        vendorsMeta = {
+          ok: true,
+          seller_ids: uniqSellerIds.length,
+          rpc_calls: suppRes.payload.rpc_calls,
+          timing_ms: suppRes.payload.timing_ms,
+          context_company_id: suppRes.payload.context_company_id,
+        };
+      } else {
+        supplierById = {};
+        vendorsMeta = { ok: false, error: suppRes.error, status: suppRes.status };
+      }
+    }
+
+    const tVend1 = Date.now();
+
     // -------------------------------
     // FLAT MODE OUTPUT
     // -------------------------------
     if (flatMode) {
       const recordsFlatRaw = includeOdoo
-        ? flattenMatchedRecordsWithCfg(byValue, cfgByValue, matchField)
+        ? flattenMatchedRecordsWithCfg(byValue, cfgByValue, routingByValue, matchField)
         : [];
 
       let recordsFlat = recordsFlatRaw
@@ -425,9 +661,22 @@ export async function GET(request) {
         .map((r) => ({
           ...r,
           cfg_name: r.cfg_name ?? null,
+          routing: r.routing ?? "odoo",
         }));
 
-      // NEW: Stock merge (optional)
+      // ✅ FIX: attach vendors whenever includeVendors is on (even if supplierinfo fetch failed)
+      if (includeOdoo && includeVendors) {
+        recordsFlat = attachVendorsFromSupplierinfo(recordsFlat, supplierById);
+      } else {
+        recordsFlat = recordsFlat.map((r) => ({
+          ...r,
+          vendors: [],
+          vendor_partner_ids: [],
+          vendor_primary: null,
+        }));
+      }
+
+      // ✅ Stock merge (optional)
       let stockMeta = null;
       const tStock0 = Date.now();
 
@@ -441,10 +690,11 @@ export async function GET(request) {
           sessionId,
           productIds: ids,
           chunkSize: 200,
+          sessionInfo,
+          companyIdOverride,
         });
 
         if (!stockRes.ok) {
-          // don't kill endpoint; just return stock=nulls
           log("⚠️ Stock fetch failed:", stockRes.error, stockRes.details || "");
           recordsFlat = recordsFlat.map((r) => ({
             ...r,
@@ -469,12 +719,14 @@ export async function GET(request) {
             rpc_calls: stockRes.payload.rpc_calls,
             fields: stockRes.payload.fetch_fields,
             timing_ms: stockRes.payload.timing_ms,
+            context_company_id: stockRes.payload.context_company_id,
+            context_location_id: stockRes.payload.context_location_id,
           };
         }
       }
- 
+
       const tStock1 = Date.now();
- 
+
       const payload = {
         success: true,
         mode: "flat",
@@ -490,19 +742,29 @@ export async function GET(request) {
           unique_values: values.length,
           include_odoo: includeOdoo,
           require_imos_table: requireImosTable,
+          include_stock: includeStock,
+          include_vendors: includeVendors,
+          company_id_override: Number.isFinite(companyIdOverride) ? companyIdOverride : null,
+          session: {
+            uid: sessionInfo?.uid ?? sessionInfo?.user_context?.uid ?? null,
+            current_company: sessionInfo?.user_companies?.current_company ?? null,
+          },
           odoo: odooMeta,
           stock: includeStock ? stockMeta : null,
+          vendors: includeVendors ? vendorsMeta : null,
         },
         timing_ms: {
+          session: tSess1 - tSess0,
           db: tDb1 - tDb0,
           categorize: tCat1 - tCat0,
           uniq: tUniq1 - tUniq0,
           odoo: tOdoo1 - tOdoo0,
+          vendors: includeVendors ? tVend1 - tVend0 : 0,
           stock: includeStock ? tStock1 - tStock0 : 0,
           total: Date.now() - tAll0,
         },
       };
-      
+
       if (shouldLog) await writeLastResponseToFile({ filePath: logFile, payload });
       return NextResponse.json(payload, { status: 200, headers: corsHeaders });
     }
@@ -534,12 +796,27 @@ export async function GET(request) {
       const fixed = { ...found };
 
       if (Array.isArray(fixed.records)) {
-        fixed.records = fixed.records
+        let recs = fixed.records
           .map(normalizeVariantIdOnTemplateRecord)
           .map((rec) => ({
             ...rec,
             cfg_name: row?.cfg_name ?? null,
+            routing: row?.routing ?? "odoo",
           }));
+
+        // ✅ FIX: attach vendors whenever includeVendors is on
+        if (includeVendors) {
+          recs = attachVendorsFromSupplierinfo(recs, supplierById);
+        } else {
+          recs = recs.map((r) => ({
+            ...r,
+            vendors: [],
+            vendor_partner_ids: [],
+            vendor_primary: null,
+          }));
+        }
+
+        fixed.records = recs;
       }
 
       return { ...row, odoo: fixed };
@@ -558,6 +835,9 @@ export async function GET(request) {
         rows_from_conndesc: conndescRows.length,
         unique_values: values.length,
         include_odoo: includeOdoo,
+        require_imos_table: requireImosTable,
+        include_vendors: includeVendors,
+        company_id_override: Number.isFinite(companyIdOverride) ? companyIdOverride : null,
         model,
         match_field: matchField,
         flags,
@@ -566,14 +846,21 @@ export async function GET(request) {
         unmatched: matchStats.unmatched,
         ambiguous: matchStats.ambiguous,
         odoo: odooMeta,
+        vendors: includeVendors ? vendorsMeta : null,
+        session: {
+          uid: sessionInfo?.uid ?? sessionInfo?.user_context?.uid ?? null,
+          current_company: sessionInfo?.user_companies?.current_company ?? null,
+        },
       },
       categories: categoriesOut,
       uncategorized: uncategorizedOut,
       timing_ms: {
+        session: tSess1 - tSess0,
         db: tDb1 - tDb0,
         categorize: tCat1 - tCat0,
         uniq: tUniq1 - tUniq0,
         odoo: tOdoo1 - tOdoo0,
+        vendors: includeVendors ? tVend1 - tVend0 : 0,
         total: Date.now() - tAll0,
       },
     };

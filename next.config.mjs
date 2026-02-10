@@ -16,14 +16,19 @@ const configuratorOrigin = `http://${configuratorHost}:${configuratorPort}`;
 
 // 3D converter service (Docker container exposed on host port 3005)
 const converterHost = process.env.CONVERTER_HOST || "localhost";
-const converterPort = process.env.CONVERTER_PORT || "3005";
+const converterPort = process.env.CONVERTER_PORT || "7009";
 const converterOrigin = `http://${converterHost}:${converterPort}`;
+
+
 
 
 // Tecnibo Flask app (proxied through Next on port 3009)
 const tecniboHost = process.env.TECNIBO_HOST || "192.168.30.92";
 const tecniboPort = process.env.TECNIBO_PORT || "5000";
 const tecniboOrigin = `http://${tecniboHost}:${tecniboPort}`;
+
+
+
 
 
 

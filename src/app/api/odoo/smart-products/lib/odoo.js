@@ -7,6 +7,7 @@ function log(...a) {
   console.log("[/api/odoo/smart-products][odoo]", ...a);
 }
 
+
 export function isAccessError(odooErr) {
   const name = odooErr?.data?.name || "";
   const msg = odooErr?.data?.message || odooErr?.message || "";
@@ -29,7 +30,7 @@ async function rpcPost({ url, payload, sessionId }) {
 
 /**
  * Odoo session info (company scope, language, tz, uid).
- * IMPORTANT: used to build correct context for stock quantities.
+ * IMPORTANT: used to build correct context for company-specific fields (vendors, stock, etc.)
  */
 export async function getSessionInfo({ sessionId }) {
   const url = `${ODOO_BASE}/web/session/get_session_info`;
@@ -47,48 +48,86 @@ export async function getSessionInfo({ sessionId }) {
   );
 
   const data = res.data || {};
-  // Usually { result: {...} }
   return data.result || data;
 }
 
 /**
- * Build a safe Odoo context.
- * companyId MUST be allowed for the session user.
+ * Safer id coercion:
+ * - number
+ * - "12"
+ * - [12, "Name"]
+ * - {id: 12, display_name: "..."}
+ */
+function asId(v) {
+  if (v == null) return null;
+  if (typeof v === "number") return Number.isFinite(v) ? v : null;
+  if (typeof v === "string") {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : null;
+  }
+  if (Array.isArray(v)) return asId(v[0]);
+  if (typeof v === "object") return asId(v.id);
+  return null;
+}
+
+function uniqNums(arr) {
+  return Array.from(new Set((arr || []).map(Number).filter(Number.isFinite)));
+}
+
+/**
+ * Build an Odoo context that doesn't accidentally switch companies (the root cause of your "stock = 0" issue).
+ * Fixes:
+ * - parses current_company whether it's number OR [id,name] OR object
+ * - prefers user_context.allowed_company_id/company_id
+ * - sets standard keys: allowed_company_ids, allowed_company_id, company_id
+ * - preserves user_context defaults (lang/tz/etc.)
  */
 function contextOf({ model, session, companyIdOverride, locationId }) {
   const uc = session?.user_context || {};
   const companies = session?.user_companies || {};
-  const allowed = companies?.allowed_companies || {};
-  const current = companies?.current_company;
 
-  // Allowed company ids list
-  const allowedIds = Object.keys(allowed)
-    .map((k) => Number(k))
-    .filter((n) => Number.isFinite(n));
+  // Allowed companies: prefer what Odoo provides in user_context
+  const allowedFromUc = uniqNums(Array.isArray(uc.allowed_company_ids) ? uc.allowed_company_ids : []);
 
-  // Pick companyId:
-  // 1) override only if allowed
-  // 2) else current_company
-  // 3) else first allowed (fallback)
+  // Fallback: user_companies.allowed_companies keys
+  const allowedFromUserCompanies = uniqNums(Object.keys(companies?.allowed_companies || {}).map(Number));
+
+  const allowedIds = allowedFromUc.length ? allowedFromUc : allowedFromUserCompanies;
+
+  // Active company candidates
+  const override = asId(companyIdOverride);
+  const ucActive = asId(uc.allowed_company_id ?? uc.company_id);
+  const currentCompany = asId(companies.current_company);
+
+  // Pick active company:
+  // 1) override if allowed
+  // 2) uc active if allowed
+  // 3) current_company if allowed
+  // 4) first allowed
   let companyId = null;
+  if (override && allowedIds.includes(override)) companyId = override;
+  else if (ucActive && allowedIds.includes(ucActive)) companyId = ucActive;
+  else if (currentCompany && allowedIds.includes(currentCompany)) companyId = currentCompany;
+  else companyId = allowedIds[0] ?? null;
 
-  const override = Number(companyIdOverride);
-  if (Number.isFinite(override) && allowedIds.includes(override)) {
-    companyId = override;
-  } else if (Number.isFinite(Number(current))) {
-    companyId = Number(current);
-  } else if (allowedIds.length) {
-    companyId = allowedIds[0];
-  }
+  // If allowedIds is empty (weird session), still set company keys consistently
+  const finalAllowedIds = allowedIds.length ? allowedIds : companyId ? [companyId] : [];
 
   return {
+    // keep Odoo defaults
+    ...uc,
+
+    // enforce basics
     lang: uc.lang || "en_US",
     tz: uc.tz || "Africa/Casablanca",
-    uid: uc.uid || session?.uid || 0,
-    allowed_company_ids: companyId ? [companyId] : [],
-    current_company_id: companyId || null,
+    uid: asId(uc.uid) ?? asId(session?.uid) ?? 0,
+
+    // standard company keys Odoo actually uses
+    allowed_company_ids: finalAllowedIds,
+    allowed_company_id: companyId ?? null,
+    company_id: companyId ?? null,
+
     bin_size: true,
-    params: { action: 2068, model, view_type: "list", cids: companyId || null, menu_id: 1722 },
     ...(locationId != null ? { location: locationId } : {}),
   };
 }
@@ -109,7 +148,7 @@ async function fieldsGet({ model, sessionId }) {
   return rpcPost({ url, payload, sessionId });
 }
 
-// kept for SMART mode (don’t break it)
+// kept for SMART mode
 function buildOrDomain(leaves) {
   if (!leaves.length) return [];
   if (leaves.length === 1) return [leaves[0]];
@@ -128,8 +167,8 @@ export async function smartSearchOne({
   limit = 80,
   offset = 0,
   requireImosTable = true,
-  sessionInfo,           // <- pass from route (cached)
-  companyIdOverride,     // <- optional query param
+  sessionInfo, // cached
+  companyIdOverride, // optional query param
 }) {
   try {
     const fg = await fieldsGet({ model, sessionId });
@@ -172,6 +211,10 @@ export async function smartSearchOne({
       ...(has("product_variant_ids")
         ? { product_variant_ids: { fields: { id: {}, default_code: {}, display_name: {} } } }
         : {}),
+      ...(has("product_variant_id")
+        ? { product_variant_id: { fields: { id: {}, display_name: {}, default_code: {} } } }
+        : {}),
+      ...(has("seller_ids") ? { seller_ids: {} } : {}), // ✅ IMPORTANT: vendor ids
       ...(has("imos_table") ? { imos_table: {} } : {}),
       ...(has("categ_id") ? { categ_id: { fields: { display_name: {} } } } : {}),
       ...(has("uom_id") ? { uom_id: { fields: { display_name: {} } } } : {}),
@@ -212,7 +255,13 @@ export async function smartSearchOne({
     const result = data?.result || {};
     return {
       ok: true,
-      payload: { model, q, domain, length: result.length || 0, records: result.records || [] },
+      payload: {
+        model,
+        q,
+        domain,
+        length: result.length || 0,
+        records: result.records || [],
+      },
     };
   } catch (err) {
     return { ok: false, status: 500, error: err?.message || "Internal error" };
@@ -227,8 +276,8 @@ export async function fetchTemplatesByMatchFieldBatched({
   chunkSize = 80,
   requireImosTable = true,
   limitPerChunk = 5000,
-  sessionInfo,        // <- cached
-  companyIdOverride,  // <- optional
+  sessionInfo, // cached
+  companyIdOverride, // optional
 }) {
   const t0 = Date.now();
 
@@ -250,18 +299,26 @@ export async function fetchTemplatesByMatchFieldBatched({
 
   const fg = await fieldsGet({ model, sessionId });
   if (fg?.error) {
-    return { ok: false, status: isAccessError(fg.error) ? 403 : 502, error: "Odoo fields_get error", details: fg.error };
+    return {
+      ok: false,
+      status: isAccessError(fg.error) ? 403 : 502,
+      error: "Odoo fields_get error",
+      details: fg.error,
+    };
   }
 
   const fields = fg?.result || fg;
   const has = (f) => !!fields?.[f];
+
   if (!has(matchField)) {
     return {
       ok: false,
       status: 400,
       error: `Model ${model} has no field "${matchField}"`,
       details: {
-        hint: Object.keys(fields || {}).filter((k) => k.toLowerCase().includes("imos") || k.toLowerCase().includes("ref")).slice(0, 50),
+        hint: Object.keys(fields || {})
+          .filter((k) => k.toLowerCase().includes("imos") || k.toLowerCase().includes("ref"))
+          .slice(0, 50),
       },
     };
   }
@@ -281,9 +338,17 @@ export async function fetchTemplatesByMatchFieldBatched({
     ...(has("matched_date") ? { matched_date: {} } : {}),
     ...(has("matched_bom") ? { matched_bom: {} } : {}),
     [matchField]: {},
+
     ...(has("product_variant_id")
       ? { product_variant_id: { fields: { id: {}, display_name: {}, default_code: {} } } }
       : {}),
+
+    ...(has("product_variant_ids")
+      ? { product_variant_ids: { fields: { id: {}, display_name: {}, default_code: {} } } }
+      : {}),
+
+    ...(has("seller_ids") ? { seller_ids: {} } : {}), // ✅ IMPORTANT: vendor ids
+
     ...(has("categ_id") ? { categ_id: { fields: { id: {}, display_name: {} } } } : {}),
     ...(has("uom_id") ? { uom_id: { fields: { id: {}, display_name: {} } } } : {}),
   };
@@ -308,7 +373,12 @@ export async function fetchTemplatesByMatchFieldBatched({
     if (domainBase.length === 1) domain = ["&", domainBase[0], ...domain];
     if (domainBase.length > 1) domain = domainBase.reduceRight((acc, d) => ["&", d, ...acc], domain);
 
-    log(`RPC chunk ${i + 1}/${chunks.length}`, { matchField, size: part.length, limitPerChunk, company: ctx.current_company_id });
+    log(`RPC chunk ${i + 1}/${chunks.length}`, {
+      matchField,
+      size: part.length,
+      limitPerChunk,
+      company: ctx.company_id ?? ctx.allowed_company_id ?? null,
+    });
 
     const payload = {
       id: 99,
@@ -334,7 +404,12 @@ export async function fetchTemplatesByMatchFieldBatched({
     rpcCount++;
 
     if (data?.error) {
-      return { ok: false, status: isAccessError(data.error) ? 403 : 502, error: "Odoo JSON-RPC error", details: data.error };
+      return {
+        ok: false,
+        status: isAccessError(data.error) ? 403 : 502,
+        error: "Odoo JSON-RPC error",
+        details: data.error,
+      };
     }
 
     const records = data?.result?.records || [];
@@ -348,7 +423,10 @@ export async function fetchTemplatesByMatchFieldBatched({
 
   const t1 = Date.now();
 
-  let matched = 0, unmatched = 0, ambiguous = 0;
+  let matched = 0,
+    unmatched = 0,
+    ambiguous = 0;
+
   const out = {};
   for (const [k, recs] of byValue.entries()) {
     const length = recs.length;
@@ -379,7 +457,7 @@ export async function fetchTemplatesByMatchFieldBatched({
       by_value: out,
       stats: { matched, unmatched, ambiguous },
       timing_ms: { rpc_total: t1 - tRpc0, total: Date.now() - t0 },
-      context_company_id: ctx.current_company_id,
+      context_company_id: ctx.company_id ?? ctx.allowed_company_id ?? null,
     },
   };
 }
@@ -388,14 +466,17 @@ export async function fetchProductStockByIdsBatched({
   sessionId,
   productIds = [],
   chunkSize = 200,
-  sessionInfo,        // <- cached
-  companyIdOverride,  // <- optional
-  locationId,         // <- optional
+  sessionInfo,
+  companyIdOverride,
+  locationId,
 }) {
   const t0 = Date.now();
 
   if (!Array.isArray(productIds) || productIds.length === 0) {
-    return { ok: true, payload: { by_id: {}, rpc_calls: 0, fetch_fields: [], timing_ms: { total: Date.now() - t0 } } };
+    return {
+      ok: true,
+      payload: { by_id: {}, rpc_calls: 0, fetch_fields: [], timing_ms: { total: Date.now() - t0 } },
+    };
   }
 
   const fields = ["qty_available", "virtual_available", "free_qty", "incoming_qty", "outgoing_qty"];
@@ -405,13 +486,20 @@ export async function fetchProductStockByIdsBatched({
   const url = `${ODOO_BASE}/web/dataset/call_kw/product.product/web_search_read`;
 
   const chunks = [];
-  for (let i = 0; i < productIds.length; i += chunkSize) chunks.push(productIds.slice(i, i + chunkSize));
+  for (let i = 0; i < productIds.length; i += chunkSize) {
+    chunks.push(productIds.slice(i, i + chunkSize));
+  }
 
   const byId = {};
   let rpcCalls = 0;
   const tRpc0 = Date.now();
 
-  const ctx = contextOf({ model: "product.product", session: sessionInfo, companyIdOverride, locationId });
+  const ctx = contextOf({
+    model: "product.product",
+    session: sessionInfo,
+    companyIdOverride,
+    locationId,
+  });
 
   for (let i = 0; i < chunks.length; i++) {
     const part = chunks[i];
@@ -431,7 +519,7 @@ export async function fetchProductStockByIdsBatched({
           offset: 0,
           limit: part.length,
           count_limit: 10001,
-          context: ctx,
+          context: ctx, // ✅ IMPORTANT: now safe because contextOf is fixed
         },
       },
     };
@@ -440,7 +528,12 @@ export async function fetchProductStockByIdsBatched({
     rpcCalls++;
 
     if (data?.error) {
-      return { ok: false, status: isAccessError(data.error) ? 403 : 502, error: "Odoo JSON-RPC error (stock)", details: data.error };
+      return {
+        ok: false,
+        status: isAccessError(data.error) ? 403 : 502,
+        error: "Odoo JSON-RPC error (stock)",
+        details: data.error,
+      };
     }
 
     const records = data?.result?.records || [];
@@ -456,6 +549,103 @@ export async function fetchProductStockByIdsBatched({
     }
   }
 
+  return {
+    ok: true,
+    payload: {
+      by_id: byId,
+      rpc_calls: rpcCalls,
+      fetch_fields: fields,
+      timing_ms: { rpc_total: Date.now() - tRpc0, total: Date.now() - t0 },
+      context_company_id: ctx.company_id ?? ctx.allowed_company_id ?? null,
+      context_location_id: locationId ?? null,
+    },
+  };
+}
+
+/**
+ * ✅ Supplierinfo hydration by IDs
+ * Input: sellerIds = product.template.seller_ids (list of product.supplierinfo ids)
+ * Output: by_id map for quick attach in route.js
+ */
+
+export async function fetchSupplierinfoByIdsBatched({
+  sessionId,
+  sellerIds = [],
+  chunkSize = 200,
+  sessionInfo,
+  companyIdOverride,
+}) {
+  const t0 = Date.now();
+
+  const ids = Array.from(new Set((sellerIds || []).map(Number).filter(Boolean)));
+  if (!ids.length) {
+    return {
+      ok: true,
+      payload: { by_id: {}, rpc_calls: 0, timing_ms: { total: Date.now() - t0 } },
+    };
+  }
+
+  const ctx = contextOf({
+    model: "product.supplierinfo",
+    session: sessionInfo,
+    companyIdOverride,
+  });
+
+  const url = `${ODOO_BASE}/web/dataset/call_kw/product.supplierinfo/read`;
+  const fields = [
+    "id",
+    "partner_id",
+    "product_tmpl_id",
+    "product_id",
+    "min_qty",
+    "price",
+    "delay",
+    "sequence",
+    "company_id",
+  ];
+
+  const chunks = [];
+  for (let i = 0; i < ids.length; i += chunkSize) {
+    chunks.push(ids.slice(i, i + chunkSize));
+  }
+
+  let rpcCalls = 0;
+  const byId = {};
+  const tRpc0 = Date.now();
+
+  for (let i = 0; i < chunks.length; i++) {
+    const part = chunks[i];
+
+    const payload = {
+      id: 55,
+      jsonrpc: "2.0",
+      method: "call",
+      params: {
+        model: "product.supplierinfo",
+        method: "read",
+        args: [part, fields],
+        kwargs: { context: ctx },
+      },
+    };
+
+    const data = await rpcPost({ url, payload, sessionId });
+    rpcCalls++;
+   
+    if (data?.error) {
+      return {
+        ok: false,
+        status: isAccessError(data.error) ? 403 : 502,
+        error: "Odoo JSON-RPC error (supplierinfo)",
+        details: data.error,
+      };
+    }
+
+    const recs = data?.result || [];
+    for (const r of recs) {
+      if (!r?.id) continue;
+      byId[r.id] = r;
+    }
+  }
 
   return {
     ok: true,
@@ -464,9 +654,7 @@ export async function fetchProductStockByIdsBatched({
       rpc_calls: rpcCalls,
       fetch_fields: fields,
       timing_ms: { rpc_total: Date.now() - tRpc0, total: Date.now() - t0 },
-      context_company_id: ctx.current_company_id,
-      context_location_id: locationId ?? null,
+      context_company_id: ctx.company_id ?? ctx.allowed_company_id ?? null,
     },
   };
-  
 }

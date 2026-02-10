@@ -459,27 +459,52 @@
   "P_GL_MODULATION": [
     {
       "value": "750",
-      "label": "750mm"
+      "label": "750mm",
+      "attributes": {
+        "version": "VERSION_1"
+      }
     },
     {
       "value": "800",
-      "label": "800mm"
+      "label": "800mm",
+      "attributes": {
+        "version": "VERSION_1"
+      }
     },
     {
       "value": "850",
-      "label": "850mm"
+      "label": "850mm",
+      "attributes": {
+        "version": "VERSION_1"
+      }
     },
     {
       "value": "900",
-      "label": "900mm"
+      "label": "900mm",
+      "attributes": {
+        "version": "VERSION_1"
+      }
     },
     {
       "value": "950",
-      "label": "950mm"
+      "label": "950mm",
+      "attributes": {
+        "version": "VERSION_1"
+      }
     },
     {
       "value": "1000",
-      "label": "1000mm"
+      "label": "1000mm",
+      "attributes": {
+        "version": "VERSION_1,VERSION_2,VERSION_3"
+      }
+    },
+    {
+      "value": "1200",
+      "label": "1200mm",
+      "attributes": {
+        "version": "VERSION_1,VERSION_2,VERSION_3"
+      }
     }
   ],
   "P_T100_VERSIONS": [
@@ -934,6 +959,27 @@
     {
       "value": "P_SILO",
       "label": "P_SILO",
+      "attributes": {
+        "VERSION": "VERSION_3"
+      }
+    },
+    {
+      "value": "P_SUBLT_ART_LIN",
+      "label": "P_SUBLT_ART_LIN",
+      "attributes": {
+        "VERSION": "VERSION_1"
+      }
+    },
+    {
+      "value": "P_SUBLT_V100_LIN",
+      "label": "P_SUBLT_V100_LIN",
+      "attributes": {
+        "VERSION": "VERSION_2"
+      }
+    },
+    {
+      "value": "P_SUBLT_SILO_LIN",
+      "label": "P_SUBLT_SILO_LIN",
       "attributes": {
         "VERSION": "VERSION_3"
       }
@@ -46238,6 +46284,100 @@
         "MATCAT": "Glass",
         "PRODUCER": "Euroglas"
       }
+    }
+  ],
+  "D_DOOR_TYPE": [
+    {
+      "value": "SD",
+      "label": "Simple porte"
+    },
+    {
+      "value": "DD",
+      "label": "Double porte"
+    }
+  ],
+  "D_DOOR_SUPPLIER": [
+    {
+      "value": "Baustoff",
+      "label": "Baustoff"
+    },
+    {
+      "value": "Hoffmanns",
+      "label": "Hoffmanns"
+    },
+    {
+      "value": "HK Baustudio",
+      "label": "HK Baustudio"
+    },
+    {
+      "value": "Heinen Doors",
+      "label": "Heinen Doors"
+    },
+    {
+      "value": "Eribel",
+      "label": "Eribel"
+    },
+    {
+      "value": "Bolmin",
+      "label": "Bolmin"
+    },
+    {
+      "value": "Theuma",
+      "label": "Theuma"
+    },
+    {
+      "value": "Schutz in Form",
+      "label": "Schutz in Form"
+    }
+  ],
+  "D_DOOR_FANLIGHT": [
+    {
+      "value": "NO_FANLIGHT",
+      "label": "Pas d'imposte"
+    },
+    {
+      "value": "PLEIN_FANLIGHT",
+      "label": "Imposte pleine"
+    },
+    {
+      "value": "GLASS_FANLIGHT",
+      "label": "Imposte Vitré"
+    }
+  ],
+  "D_DOOR_RF": [
+    {
+      "value": "EI00",
+      "label": "EI00"
+    },
+    {
+      "value": "EI30",
+      "label": "EI30"
+    },
+    {
+      "value": "EI60",
+      "label": "EI60"
+    },
+    {
+      "value": "EI120",
+      "label": "EI120"
+    }
+  ],
+  "D_MOVABLE_SUPPLIER": [
+    {
+      "value": "Parthos",
+      "label": "Parthos"
+    },
+    {
+      "value": "FDS",
+      "label": "FDS"
+    },
+    {
+      "value": "BLS",
+      "label": "BLS"
+    },
+    {
+      "value": "Fabima",
+      "label": "Fabima"
     }
   ]
 }

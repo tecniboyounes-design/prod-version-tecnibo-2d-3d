@@ -6,14 +6,11 @@ let _pool = null;
 function getPgPool() {
   if (_pool) return _pool;
 
-  // NEW: dedicated helper DB URL
-  const connectionString =
-    process.env.DATABASE_HELPER_URL
+  // dedicated helper DB URL
+  const connectionString = process.env.DATABASE_HELPER_URL;
 
   if (!connectionString) {
-    throw new Error(
-      "Missing DATABASE_HELPER_URL (or RP_IMOS_HELPER_DATABASE_URL / DATABASE_URL / POSTGRES_URL / PG_CONNECTION_STRING)."
-    );
+    throw new Error("Missing DATABASE_HELPER_URL");
   }
 
   _pool = new Pool({ connectionString });
@@ -28,19 +25,13 @@ function normalizeLikePattern(wsLike) {
 }
 
 /**
- * IMPORTANT:
- * - Old source: public."CONNDESC" (quoted uppercase cols)
- * - New source: public.conndesc_helper (assumed normal lowercase cols)
+ * Source: public.conndesc_helper
  *
- * Required columns for current pipeline (keep everything same):
- * - article_id  (used for matchField=ref_imos values)
- * - order_id    (used for categorization flags)
- * - cfg_name    (NEW: injected into product records)
- *
- * Optional fields kept for compatibility / debugging:
- * - text_short, name, price, supplier, etc (if present in table)
- *
- * If your conndesc_helper table has fewer columns, keep the SELECT minimal.
+ * Required columns:
+ * - article_id
+ * - order_id
+ * - cfg_name
+ * - routing  (NEW)
  */
 export async function fetchConndescWsRows({
   wsLike = "WS",
@@ -56,17 +47,14 @@ export async function fetchConndescWsRows({
   const params = [like];
   let p = 1;
 
-  // Minimal + compatible shape (aliases match what route.js expects)
   let sql = `
     SELECT
       article_id  AS article_id,
       text_short  AS text_short,
       order_id    AS order_id,
       name        AS name,
-
-      -- NEW: configuration name (can be NULL)
-      cfg_name    AS cfg_name
-
+      cfg_name    AS cfg_name,
+      routing     AS routing
     FROM public.conndesc_helper
     WHERE order_id ILIKE $1
     ORDER BY article_id ASC

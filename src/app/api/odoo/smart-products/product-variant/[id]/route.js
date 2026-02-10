@@ -15,6 +15,7 @@ function log(...a) {
 }
 
 
+
 // Same context vibe you used before
 function contextOf(model) {
   return {
@@ -28,9 +29,12 @@ function contextOf(model) {
   };
 }
 
+
+
 export async function OPTIONS(request) {
   return handleCorsPreflight(request);
 }
+
 
 function isAccessError(odooErr) {
   const name = odooErr?.data?.name || "";
@@ -40,6 +44,8 @@ function isAccessError(odooErr) {
     String(msg).toLowerCase().includes("not allowed to access")
   );
 }
+
+
 
 async function rpcPost({ url, payload, sessionId }) {
   const res = await axios.post(url, payload, {
@@ -67,6 +73,7 @@ async function fieldsGet({ model, sessionId }) {
   };
   return rpcPost({ url, payload, sessionId });
 }
+
 
 function pickExistingFields(allFields, wanted) {
   const set = new Set(Object.keys(allFields || {}));
