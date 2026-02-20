@@ -1,0 +1,146 @@
+{
+  "sections": [
+    {
+      "id": "mlhve2ard2dgdcf7tr5",
+      "type": "NONE",
+      "render": "section",
+      "name": "D_EXT_CONFIGURATEUR",
+      "Label": "Porte sous traitée",
+      "children": [
+        {
+          "id": "mlhve2arzght4zvt8lq",
+          "render": "section",
+          "type": "NONE",
+          "name": "P_ART_MODEL",
+          "label": "Model",
+          "children": [
+            {
+              "id": "mlhve2arf1iesvnib1h",
+              "render": "section",
+              "type": "NONE",
+              "grid": "20",
+              "name": "P_MATERIAL_S1",
+              "label": "Material",
+              "LabelTop": "TRUE",
+              "children": [
+                {
+                  "render": "field",
+                  "id": "mlhve2arwn52075rlq",
+                  "name": "P_FRONT_TYPE_S1",
+                  "label": "Front Type",
+                  "fieldType": "COMBOBOX",
+                  "combo": {
+                    "id": "mlhve2arjnpn2l3o3f8",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "P_T100_FRONT_TYPE",
+                    "dynamic": false,
+                    "defaultValue": "MELA"
+                  },
+                  "variables": [],
+                  "descriptions": []
+                },
+                {
+                  "render": "field",
+                  "id": "mlhve2arki3nbo9fsn",
+                  "name": "P_DECOR_S1",
+                  "label": "Decor",
+                  "fieldType": "COMBOBOX",
+                  "ImpactedVariable": [
+                    "P_MAT_WP_T100_S1",
+                    "P_SRF_EXT_WP_T100_S1",
+                    "P_MAT_WP_T100_S2",
+                    "P_SRF_EXT_WP_T100_S2"
+                  ],
+                  "combo": {
+                    "id": "mlhve2ar5hw28in1982",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "P_DECOR",
+                    "dynamic": false,
+                    "defaultValue": "MELA"
+                  },
+                  "variables": [],
+                  "descriptions": [],
+                  "dependencies": [
+                    {
+                      "nod": 1,
+                      "action": "FILTER",
+                      "roles": [
+                        {
+                          "operator": "OR",
+                          "roles": [
+                            {
+                              "leftValue": "$P_FRONT_TYPE_S1.value",
+                              "comparisonType": "contains",
+                              "rightValue": "$attributes.front_type",
+                              "ruleType": "advanced"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mlhve2ary79k1rx2kb8",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "P_DIMENSIONS",
+          "label": "Dimensions",
+          "children": [
+            {
+              "render": "field",
+              "id": "mlhve2ar7bqemiotxfi",
+              "name": "P_HEIGHT",
+              "label": "Height",
+              "fieldType": "INPUT",
+              "ImpactedVariable": [
+                "HSP"
+              ],
+              "input": {
+                "id": "mlhve2aruw8d5c1nj8",
+                "min": 100,
+                "max": 3050,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 2700,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mlhve2arl49bwe5o8cg",
+              "name": "P_WIDTH",
+              "label": "Width",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mlhve2ar6ntua4cfw8a",
+                "min": 100,
+                "max": 3000,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 1200,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "id": "article-1770804682180-7262c429",
+    "name": "Cut"
+  }
+}

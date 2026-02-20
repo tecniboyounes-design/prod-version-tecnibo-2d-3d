@@ -18,8 +18,14 @@ export const runtime = "nodejs";
  *
  * Because some endpoints (session info, mail post) are NOT under /web/dataset/call_kw.
  */
-const RAW_ODOO = (process.env.ODOO_BASEHH || "https://erptest.tecnibo.com").replace(/\/$/, "");
-const ODOO_ROOT = RAW_ODOO.replace(/\/web\/dataset\/call_kw\/?$/, "");
+
+
+const RAW_ODOO = (process.env.ODOO_BASE || "").replace(/\/$/, "");
+if (!RAW_ODOO) throw new Error("Missing ODOO_BASE (set to https://erptest.tecnibo.com or https://www.tecnibo.com)");
+// Never call RPC with /odoo prefix. Normalize host to root + /web/dataset/call_kw only.
+const ODOO_ROOT = RAW_ODOO
+  .replace(/\/web\/dataset\/call_kw\/?$/, "")
+  .replace(/\/odoo\/?$/, "");
 const ODOO_CALL_KW = `${ODOO_ROOT}/web/dataset/call_kw`;
 
 /** Safe JSON stringify for logs. */
@@ -36,7 +42,7 @@ function log(...a) {
 }
 
 /** Simple in-memory cache for fields_get (per node process). */
-const FIELD_CACHE = globalThis.__ODOO_FIELD_CACHE__ ??= new Map();
+const FIELD_CACHE = (globalThis.__ODOO_FIELD_CACHE__ ??= new Map());
 const FIELD_TTL_MS = 5 * 60 * 1000; // 5 minutes
 
 /** Low-level JSON-RPC call to Odoo (auth comes ONLY from session_id cookie). */
@@ -148,6 +154,70 @@ async function ensureProductProductIds(session_id, productIds, ctx) {
 }
 
 /**
+ * ✅ NEW: Build safe dynamic description from item.variables
+ * - If variables is empty/missing => "Not configurable"
+ * - Filters null/undefined/"" values
+ * - Limits size to avoid Odoo choking on giant strings
+ */
+function buildLineDescriptionFromVariables(it, opts = {}) {
+  const {
+    header = "Configuration",
+    emptyText = "Not configurable",
+    maxPairs = 60,
+    maxTotalChars = 1800,
+  } = opts;
+
+  const vars = it?.variables;
+
+  // only accept plain objects
+  const isPlainObject =
+    vars &&
+    typeof vars === "object" &&
+    !Array.isArray(vars) &&
+    Object.prototype.toString.call(vars) === "[object Object]";
+
+  if (!isPlainObject) {
+    return emptyText;
+  }
+
+  const entries = Object.entries(vars)
+    .filter(([k]) => typeof k === "string" && k.trim().length > 0)
+    .map(([k, v]) => {
+      if (v == null) return [k, null];
+      if (typeof v === "string") {
+        const t = v.trim();
+        return [k, t.length ? t : null];
+      }
+      if (typeof v === "number" || typeof v === "boolean") return [k, String(v)];
+      // objects/arrays -> safe stringify
+      try {
+        const s = JSON.stringify(v);
+        return [k, s && s !== "null" ? s : null];
+      } catch {
+        return [k, String(v)];
+      }
+    })
+    .filter(([, v]) => v != null);
+
+  if (!entries.length) return emptyText;
+
+  const lines = [`${header}:`];
+  for (const [k, v] of entries.slice(0, maxPairs)) {
+    // keep it readable
+    lines.push(`- ${k}: ${v}`);
+  }
+
+  let out = lines.join("\n");
+
+  // hard cap to avoid gigantic chatter/line text
+  if (out.length > maxTotalChars) {
+    out = out.slice(0, maxTotalChars - 3) + "...";
+  }
+
+  return out;
+}
+
+/**
  * Find reference SO for a project.
  * Prefer sub_so=false, fallback to latest order of that project.
  */
@@ -254,31 +324,6 @@ async function getM2ORelationModel(session_id, model, field, ctx) {
   const f = meta?.[field];
   if (!f || f.type !== "many2one" || !f.relation) return null;
   return f.relation;
-}
-
-/** Read phase start date field (best-effort via introspection). */
-async function readPhaseStartDate(session_id, phaseModel, phase_id, ctx) {
-  try {
-    const meta = await callOdoo(session_id, phaseModel, "fields_get", [[], ["type"]], { context: ctx });
-    const keys = new Set(Object.keys(meta || {}));
-
-    const candidates = ["start_date", "date_start", "planned_date_begin", "planning_date_begin", "x_start_date"].filter(
-      (k) => keys.has(k)
-    );
-
-    const readFields = ["id", "name", "display_name", ...candidates];
-    const rec = (await callOdoo(session_id, phaseModel, "read", [[phase_id], readFields], { context: ctx }))?.[0];
-    if (!rec) return { start_date: false, start_field: false, rec: null };
-
-    const startField = candidates.find((k) => rec[k]);
-    return {
-      start_date: startField ? rec[startField] : false,
-      start_field: startField || false,
-      rec,
-    };
-  } catch {
-    return { start_date: false, start_field: false, rec: null };
-  }
 }
 
 /** Find which field on project.task points to the phase model (phase_id / x_phase_id / etc.). */
@@ -522,8 +567,9 @@ export async function OPTIONS(request) {
 /**
  * POST /api/createSubSo
  *
- * New items shape: array of full product objects (template-ish) BUT must include product_variant_id.
- * We will create SO lines using product_variant_id ONLY.
+ * - items[] must include product_variant_id (product.product id)
+ * - commitment_date is REQUIRED and is the ONLY source of date (no phase_id fallback for date)
+ * - phase_id is OPTIONAL (if provided and the Odoo field exists, we write it on SO + lines)
  */
 export async function POST(req) {
   const corsHeaders = getCorsHeaders(req);
@@ -549,17 +595,11 @@ export async function POST(req) {
     }
 
     const project_id = ensureInt(body.project_id);
-    const phase_id = ensureInt(body.phase_id);
+    const phase_id = ensureInt(body.phase_id) || false; // ✅ OPTIONAL now
 
     if (!project_id) {
       return NextResponse.json(
         { success: false, error: "Missing/invalid project_id" },
-        { status: 400, headers: corsHeaders }
-      );
-    }
-    if (!phase_id) {
-      return NextResponse.json(
-        { success: false, error: "Missing/invalid phase_id" },
         { status: 400, headers: corsHeaders }
       );
     }
@@ -569,23 +609,63 @@ export async function POST(req) {
       return NextResponse.json({ success: false, error: "Missing items[]" }, { status: 400, headers: corsHeaders });
     }
 
+    // ✅ commitment_date is REQUIRED and is the ONLY date source now
+    const commitment_date_raw = body.commitment_date;
+    const commitment_date =
+      typeof commitment_date_raw === "string"
+        ? commitment_date_raw.trim()
+        : commitment_date_raw
+          ? String(commitment_date_raw).trim()
+          : "";
+
+    if (!commitment_date) {
+      return NextResponse.json(
+        { success: false, error: "Missing commitment_date (expected YYYY-MM-DD)" },
+        { status: 400, headers: corsHeaders }
+      );
+    }
+
+    // light sanity check (accepts YYYY-MM-DD or YYYY-MM-DD HH:mm:ss)
+    if (!/^\d{4}-\d{2}-\d{2}/.test(commitment_date)) {
+      return NextResponse.json(
+        { success: false, error: "Invalid commitment_date format (expected YYYY-MM-DD)" },
+        { status: 400, headers: corsHeaders }
+      );
+    }
+
     // Context hints (auth is session user anyway)
     const uidFallback = ensureInt(body.user_id) || 447;
-    const companyIdFallback = ensureInt(body.company_id) || 11;
+    const requestedCompanyId = ensureInt(body.company_id) || false;
 
-    const ctx = {
+    const ctxBase = {
       lang: "en_US",
       tz: "Africa/Casablanca",
       uid: uidFallback,
-      allowed_company_ids: [companyIdFallback],
-      force_company: companyIdFallback,
-      params: { cids: companyIdFallback, model: "sale.order", view_type: "form" },
+      params: {
+        model: "sale.order",
+        view_type: "form",
+      },
       bin_size: true,
     };
 
     // Find reference SO
-    const ref = await findReferenceSO(session_id, project_id, ctx);
+    const requestedCompanyCtx = requestedCompanyId
+      ? {
+          ...ctxBase,
+          allowed_company_ids: [requestedCompanyId],
+          force_company: requestedCompanyId,
+          params: { ...ctxBase.params, cids: requestedCompanyId },
+        }
+      : null;
+
+    let ref = requestedCompanyCtx ? await findReferenceSO(session_id, project_id, requestedCompanyCtx) : null;
+
+    // If caller sent a company_id that does not own the project/SO, retry across allowed companies.
+    if (!ref) {
+      ref = await findReferenceSO(session_id, project_id, ctxBase);
+    }
     mark("ref_so");
+
     if (!ref) {
       return NextResponse.json(
         {
@@ -599,14 +679,18 @@ export async function POST(req) {
     }
 
     const refSO = ref.rec;
-    const companyId = m2oId(refSO.company_id) || companyIdFallback;
+    const companyId = m2oId(refSO.company_id) || requestedCompanyId || false;
 
     const ctx2 = {
-      ...ctx,
-      allowed_company_ids: [companyId],
-      force_company: companyId,
-      params: { cids: companyId, model: "sale.order", view_type: "form" },
-      current_company_id: companyId,
+      ...ctxBase,
+      ...(companyId ? { allowed_company_ids: [companyId] } : {}),
+      ...(companyId ? { force_company: companyId } : {}),
+      params: {
+        model: "sale.order",
+        view_type: "form",
+        ...(companyId ? { cids: companyId } : {}),
+      },
+      ...(companyId ? { current_company_id: companyId } : {}),
     };
 
     // Base partners from reference
@@ -649,7 +733,7 @@ export async function POST(req) {
 
     const confirmRequested = body.confirm !== false; // default true
     const sub_so = body.sub_so !== false; // default true
-    const origin = body.origin || `Project #${project_id} / Phase #${phase_id}`;
+    const origin = body.origin || `Project #${project_id}${phase_id ? ` / Phase #${phase_id}` : ""}`;
 
     // Only recompute prices when confirming OR when explicitly requested.
     const recompute_prices = body.recompute_prices === true || confirmRequested === true;
@@ -662,19 +746,17 @@ export async function POST(req) {
         : notesRaw
           ? String(notesRaw).trim() || false
           : false;
-  
+
     const sessionUid = (await getSessionUid(session_id)) || uidFallback;
 
     // salesperson on SO
     const assign_user_id = body.assign_user_id === false ? false : ensureInt(body.assign_user_id) || sessionUid;
 
-    // commitment date from phase (best-effort)
-    const phaseModel = soFields.has("phase_id")
-      ? await getM2ORelationModel(session_id, "sale.order", "phase_id", ctx2)
-      : null;
-
-    const phaseInfo = phaseModel ? await readPhaseStartDate(session_id, phaseModel, phase_id, ctx2) : null;
-    const commitment_date = body.commitment_date || phaseInfo?.start_date || false;
+    // phase model (only useful for livraison check or when writing phase_id)
+    const phaseModel =
+      phase_id && soFields.has("phase_id")
+        ? await getM2ORelationModel(session_id, "sale.order", "phase_id", ctx2)
+        : null;
 
     // logistic user default = session user (dynamic)
     const logistic_user_id = ensureInt(body.logistic_user_id) || sessionUid;
@@ -685,14 +767,14 @@ export async function POST(req) {
 
     const auto_validate_delivery = body.auto_validate_delivery === true; // explicit only
 
-    // Livraison check becomes opt-in (debug feature)
-    const check_livraison = body.check_livraison_task === true;
+    // Livraison check becomes opt-in (debug feature) and requires phase_id
+    const check_livraison = body.check_livraison_task === true && !!phase_id;
     const livraison_task = check_livraison
       ? await checkLivraisonTask(session_id, { project_id, phase_id, phaseModel }, ctx2)
       : {
           exists: false,
           matched: null,
-          mode: "skipped",
+          mode: phase_id ? "skipped" : "skipped(no-phase_id)",
           phase_model: phaseModel || null,
           phase_field_on_task: null,
           errors: [],
@@ -702,6 +784,9 @@ export async function POST(req) {
     if (check_livraison && !livraison_task.exists) {
       extraWarnings.push(`No "6.2 Livraison #L" task found for this phase/project (non-blocking).`);
     }
+
+    // ✅ NEW: whether we can write line descriptions
+    const canWriteLineName = solFields.has("name");
 
     // Build order lines using product_variant_id ONLY
     const order_lines = items.map((it, idx) => {
@@ -717,11 +802,36 @@ export async function POST(req) {
       };
 
       if (lineRouteId && solFields.has("route_id")) lineVals.route_id = lineRouteId;
+
+      // ✅ phase_id is OPTIONAL: write only if provided + exists
       if (phase_id && solFields.has("phase_id")) lineVals.phase_id = phase_id;
+
+      // ✅ scheduled_date always comes from commitment_date payload
       if (commitment_date && solFields.has("scheduled_date")) lineVals.scheduled_date = commitment_date;
 
       if (solFields.has("analytic_distribution")) {
         lineVals.analytic_distribution = analytic_account_id ? { [analytic_account_id]: 100 } : {};
+      }
+
+      // ✅ NEW: dynamic description based on it.variables
+      if (canWriteLineName) {
+        const baseName =
+          (typeof it?.name === "string" && it.name.trim()) ||
+          (typeof it?.default_code === "string" && it.default_code.trim())
+            ? `${it.name || ""}`.trim()
+            : "";
+
+        const cfg = buildLineDescriptionFromVariables(it, {
+          header: "Configuration",
+          emptyText: "Not configurable",
+        });
+
+        // Keep base product name first, then config
+        // If baseName is empty, we still provide cfg (Odoo will fill product name in UI, but we store ours anyway).
+        const full = baseName ? `${baseName}\n${cfg}` : cfg;
+
+        // Odoo sometimes dislikes super long "name"
+        lineVals.name = full;
       }
 
       return [0, 0, lineVals];
@@ -737,7 +847,9 @@ export async function POST(req) {
       note: notes || false,
 
       relatedproject_id: project_id,
-      phase_id: phase_id,
+
+      // ✅ phase_id is OPTIONAL: write only if provided + exists
+      ...(phase_id && soFields.has("phase_id") ? { phase_id } : {}),
 
       sub_so: !!sub_so,
 
@@ -753,6 +865,7 @@ export async function POST(req) {
     if (soFields.has("team_id")) soVals.team_id = team_id || false;
     if (soFields.has("website_id")) soVals.website_id = website_id || false;
 
+    // ✅ commitment_date comes from payload only
     if (commitment_date && soFields.has("commitment_date")) soVals.commitment_date = commitment_date;
 
     const specification = {
@@ -876,7 +989,7 @@ export async function POST(req) {
           confirm_requested: confirmRequested,
           confirm_ok,
           project_id,
-          phase_id,
+          phase_id: phase_id || null,
           reference_so_id: refSO.id,
           reference_so_name: refSO.name,
           applied: {
@@ -888,13 +1001,13 @@ export async function POST(req) {
             auto_validate_delivery,
             recompute_prices,
             check_livraison,
+            line_name_written: canWriteLineName,
           },
           phase: {
             model: phaseModel || null,
-            start_field: phaseInfo?.start_field || null,
+            start_field: null,
           },
           timings,
-
           ...(debug
             ? {
                 odoo: {

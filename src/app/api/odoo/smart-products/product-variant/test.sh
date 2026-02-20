@@ -12,6 +12,3 @@ curl -sS "http://localhost:3009/api/odoo/smart-products/product-variant/221266?f
 # row.odoo.records[0].product_variant_ids[0].id   // this is where id located to get full product info
 
 
-
-
-

@@ -108,9 +108,57 @@
     "updatedAt": "2026-02-10T10:20:02.823Z"
   },
   {
-    "id": "article-1770648777761-4fa2b87f",
-    "name": "S_D_DOOR_EXTERNAL",
-    "createdAt": "2026-02-09T14:52:57.761Z",
-    "updatedAt": "2026-02-09T14:53:17.795Z"
+    "id": "article-1770804661222-ef0d191c",
+    "name": "P_DOOR_EXTERNAL",
+    "createdAt": "2026-02-11T10:11:01.222Z",
+    "updatedAt": "2026-02-11T10:32:30.866Z"
+  },
+  {
+    "id": "article-1770804682180-7262c429",
+    "name": "Cut",
+    "createdAt": "2026-02-11T10:11:22.180Z",
+    "updatedAt": "2026-02-11T10:11:30.272Z"
+  },
+  {
+    "id": "article-1770804701599-fbf5d9e3",
+    "name": "Cut_srf",
+    "createdAt": "2026-02-11T10:11:41.599Z",
+    "updatedAt": "2026-02-11T10:11:55.705Z"
+  },
+  {
+    "id": "article-1770804724482-fcca5783",
+    "name": "NP_GLASS_CUT",
+    "createdAt": "2026-02-11T10:12:04.482Z",
+    "updatedAt": "2026-02-11T10:12:16.308Z"
+  },
+  {
+    "id": "article-1770805905882-fb0af7ed",
+    "name": "NP_T100_PANEL_ONLY_1111_S1",
+    "createdAt": "2026-02-11T10:31:45.881Z",
+    "updatedAt": "2026-02-11T10:31:52.662Z"
+  },
+  {
+    "id": "article-1770805923328-f7bd9135",
+    "name": "P_BLIND_EXTERNAL",
+    "createdAt": "2026-02-11T10:32:03.328Z",
+    "updatedAt": "2026-02-11T10:32:12.164Z"
+  },
+  {
+    "id": "article-1770805958462-067d0ed4",
+    "name": "P_LABELING_EXTERNAL",
+    "createdAt": "2026-02-11T10:32:38.462Z",
+    "updatedAt": "2026-02-11T10:32:49.109Z"
+  },
+  {
+    "id": "article-1770805987806-931141da",
+    "name": "P_MOVABLE_EXTERNAL",
+    "createdAt": "2026-02-11T10:33:07.806Z",
+    "updatedAt": "2026-02-17T16:12:38.460Z"
+  },
+  {
+    "id": "article-1770806016990-320f7879",
+    "name": "P_PAINTING_EXTERNAL",
+    "createdAt": "2026-02-11T10:33:36.990Z",
+    "updatedAt": "2026-02-11T10:33:50.671Z"
   }
 ]

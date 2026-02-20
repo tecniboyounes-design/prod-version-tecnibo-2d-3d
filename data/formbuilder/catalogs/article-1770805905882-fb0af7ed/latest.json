@@ -1,0 +1,146 @@
+{
+  "sections": [
+    {
+      "id": "mlhw494l0iapy8vsuoah",
+      "type": "NONE",
+      "render": "section",
+      "name": "D_EXT_CONFIGURATEUR",
+      "Label": "Porte sous traitée",
+      "children": [
+        {
+          "id": "mlhw494lenip7kjmdo9",
+          "render": "section",
+          "type": "NONE",
+          "name": "P_ART_MODEL",
+          "label": "Model",
+          "children": [
+            {
+              "id": "mlhw494lnte06f2a6u",
+              "render": "section",
+              "type": "NONE",
+              "grid": "20",
+              "name": "P_MATERIAL_S1",
+              "label": "Material",
+              "LabelTop": "TRUE",
+              "children": [
+                {
+                  "render": "field",
+                  "id": "mlhw494lwrn71t9ogfp",
+                  "name": "P_FRONT_TYPE_S1",
+                  "label": "Front Type",
+                  "fieldType": "COMBOBOX",
+                  "combo": {
+                    "id": "mlhw494lzds0rb4osri",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "P_T100_FRONT_TYPE",
+                    "dynamic": false,
+                    "defaultValue": "MELA"
+                  },
+                  "variables": [],
+                  "descriptions": []
+                },
+                {
+                  "render": "field",
+                  "id": "mlhw494le6xtz0lqhq8",
+                  "name": "P_DECOR_S1",
+                  "label": "Decor",
+                  "fieldType": "COMBOBOX",
+                  "ImpactedVariable": [
+                    "P_MAT_WP_T100_S1",
+                    "P_SRF_EXT_WP_T100_S1",
+                    "P_MAT_WP_T100_S2",
+                    "P_SRF_EXT_WP_T100_S2"
+                  ],
+                  "combo": {
+                    "id": "mlhw494ll8ffbemmema",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "P_DECOR",
+                    "dynamic": false,
+                    "defaultValue": "MELA"
+                  },
+                  "variables": [],
+                  "descriptions": [],
+                  "dependencies": [
+                    {
+                      "nod": 1,
+                      "action": "FILTER",
+                      "roles": [
+                        {
+                          "operator": "OR",
+                          "roles": [
+                            {
+                              "leftValue": "$P_FRONT_TYPE_S1.value",
+                              "comparisonType": "contains",
+                              "rightValue": "$attributes.front_type",
+                              "ruleType": "advanced"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mlhw494lzxav71gg24",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "P_DIMENSIONS",
+          "label": "Dimensions",
+          "children": [
+            {
+              "render": "field",
+              "id": "mlhw494l78zjqfgor37",
+              "name": "P_HEIGHT",
+              "label": "Height",
+              "fieldType": "INPUT",
+              "ImpactedVariable": [
+                "HSP"
+              ],
+              "input": {
+                "id": "mlhw494lzn8www54p1m",
+                "min": 100,
+                "max": 3050,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 2700,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mlhw494lio5d56j6ro",
+              "name": "P_WIDTH",
+              "label": "Width",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mlhw494l4zhka8x5zn7",
+                "min": 100,
+                "max": 1198,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 1200,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "id": "article-1770805905882-fb0af7ed",
+    "name": "NP_T100_PANEL_ONLY_1111_S1"
+  }
+}

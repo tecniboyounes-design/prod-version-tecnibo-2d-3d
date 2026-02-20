@@ -92,6 +92,8 @@ export default function Home() {
       .slice(0, 2);
   };
 
+
+
   const formatAddress = (p) => {
     if (!p) return "No address";
     const parts = [];
@@ -111,7 +113,7 @@ export default function Home() {
   useEffect(() => {
     if (typeof window !== "undefined") setReturnTo(window.location.href);
   }, []);
-
+  
   const loginUrl = returnTo
     ? `${BACKEND_BASE}/api/odoo/login?returnTo=${encodeURIComponent(returnTo)}`
     : `${BACKEND_BASE}/api/odoo/login`;
@@ -119,7 +121,7 @@ export default function Home() {
   const logoutUrl = returnTo
     ? `${BACKEND_BASE}/api/odoo/logout?returnTo=${encodeURIComponent(returnTo)}`
     : `${BACKEND_BASE}/api/odoo/logout`;
- 
+
 
   return (
     <div className={styles.page}>
@@ -311,4 +313,6 @@ export default function Home() {
       </footer>
     </div>
   );
+
+
 }

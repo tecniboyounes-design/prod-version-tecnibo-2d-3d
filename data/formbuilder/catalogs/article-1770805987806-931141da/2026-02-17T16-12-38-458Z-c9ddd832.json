@@ -1,0 +1,171 @@
+{
+  "sections": [
+    {
+      "id": "mlqsxc0d8zulv2tmaaw",
+      "type": "NONE",
+      "render": "section",
+      "name": "D_EXT_CONFIGURATEUR",
+      "Label": "Porte sous traitée",
+      "children": [
+        {
+          "id": "mlqsxc0ddze1d0ajpyd",
+          "render": "section",
+          "type": "NONE",
+          "name": "P_ART_MODEL",
+          "label": "Model",
+          "children": [
+            {
+              "render": "field",
+              "id": "mlqsxc0do5bi8ncltos",
+              "name": "D_MOVABLE_SUPPLIER",
+              "label": "Fournisseur",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "mlqsxc0dladwazky85e",
+                "type": "SELECT",
+                "code": null,
+                "content": null,
+                "source": "D_MOVABLE_SUPPLIER",
+                "dynamic": false,
+                "defaultValue": "Parthos"
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        },
+        {
+          "id": "mlqsxc0dhxufho6cz6",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "P_DIMENSIONS",
+          "label": "Dimensions",
+          "children": [
+            {
+              "render": "field",
+              "id": "mlqsxc0d0m6q7av6w3t",
+              "name": "P_HEIGHT",
+              "label": "Height",
+              "fieldType": "INPUT",
+              "ImpactedVariable": [
+                "HSP"
+              ],
+              "input": {
+                "id": "mlqsxc0d01u16854yqi7",
+                "min": 2000,
+                "max": 3500,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 2700,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mlqsxc0du7skorfx9k",
+              "name": "P_WIDTH",
+              "label": "Width",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mlqsxc0d6ihuiwui55b",
+                "min": 200,
+                "max": 10000,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 1200,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": [],
+              "dependencies": [
+                {
+                  "nod": 1,
+                  "action": "SHOW",
+                  "roles": [
+                    {
+                      "operator": "AND",
+                      "roles": [
+                        {
+                          "field": "D_DOOR_FANLIGHT",
+                          "comparisonType": "!=",
+                          "value": "NO_FANLIGHT"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mlqsxc0dqx34ujk2yh",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "P_ADVANCED",
+          "label": "Advanced",
+          "children": [
+            {
+              "render": "field",
+              "id": "mlqsxc0dzs6jhh95hjs",
+              "name": "P_EXT_QUANTITY",
+              "label": "Quantité",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mlqsxc0drvxoz3oeitc",
+                "min": 1,
+                "max": 10000,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 1,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mlqsxc0d712e8cgonph",
+              "name": "P_EXT_PRICE",
+              "label": "Prix d'achat (Pièce)",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mlqsxc0dxys6hbhgi0e",
+                "min": 100,
+                "max": 10000,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 1000,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mlqsxc0drshw1sqyexd",
+              "name": "P_EXT_DESRIPTION",
+              "label": "Additinal description",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mlqsxc0d12e5rydf9r5r",
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": "",
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "id": "article-1770805987806-931141da",
+    "name": "P_MOVABLE_EXTERNAL"
+  }
+}

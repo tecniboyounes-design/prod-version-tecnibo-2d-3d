@@ -73,3 +73,5 @@ export const CATEGORY_ORDER_ID_MAP = {
   "serrure simple porte BTG": "#WS_BTG#",
   "serrure simple porte clarit": "#WS_DCL#",
 };
+
+

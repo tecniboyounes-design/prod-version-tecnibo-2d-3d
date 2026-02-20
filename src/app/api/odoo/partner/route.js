@@ -1,6 +1,8 @@
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
+import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
+
 const ODOO_BASE = process.env.ODOO_BASE;
 
 function getCookie(req, name) {
@@ -9,25 +11,33 @@ function getCookie(req, name) {
     return m ? decodeURIComponent(m[1]) : null;
 }
 
-function j(data, status = 200) {
+function j(req, data, status = 200) {
+    const headers = new Headers({ "content-type": "application/json", "cache-control": "no-store" });
+    const corsHeaders = getCorsHeaders(req);
+
+    for (const [key, value] of Object.entries(corsHeaders)) {
+        if (key.toLowerCase() === "content-type") continue;
+        headers.set(key, value);
+    }
+
     return new Response(JSON.stringify(data), {
         status,
-        headers: { "content-type": "application/json", "cache-control": "no-store" },
+        headers,
     });
 }
 
 export async function GET(req) {
-    if (!ODOO_BASE) return j({ error: "Missing ODOO_BASE" }, 500);
+    if (!ODOO_BASE) return j(req, { error: "Missing ODOO_BASE" }, 500);
 
     // 1. Get tokens from cookies
     const accessToken = getCookie(req, "odoo_at");
     const sessionId = getCookie(req, "session_id");
 
     if (!accessToken) {
-        return j({ error: "no_access_token", message: "Access token missing" }, 401);
+        return j(req, { error: "no_access_token", message: "Access token missing" }, 401);
     }
     if (!sessionId) {
-        return j({ error: "no_session", message: "Session ID missing" }, 401);
+        return j(req, { error: "no_session", message: "Session ID missing" }, 401);
     }
 
     // 2. Call Odoo UserInfo directly to get uid and db
@@ -44,12 +54,12 @@ export async function GET(req) {
 
         if (!userinfoRes.ok) {
             console.error("UserInfo call failed:", userinfoRes.status);
-            return j({ error: "auth_failed", message: "Invalid access token" }, 401);
+            return j(req, { error: "auth_failed", message: "Invalid access token" }, 401);
         }
 
         const userinfo = await userinfoRes.json();
         if (!userinfo.sub || !userinfo.db) {
-            return j({ error: "missing_data", message: "Incomplete user data from Odoo" }, 400);
+            return j(req, { error: "missing_data", message: "Incomplete user data from Odoo" }, 400);
         }
 
         uid = parseInt(userinfo.sub);
@@ -57,7 +67,7 @@ export async function GET(req) {
 
     } catch (e) {
         console.error("UserInfo fetch error:", e);
-        return j({ error: "network_error", message: "Failed to verify identity" }, 500);
+        return j(req, { error: "network_error", message: "Failed to verify identity" }, 500);
     }
 
     // 3. Call Odoo via /web/dataset/call_kw (Session-based, no password needed)
@@ -105,6 +115,7 @@ export async function GET(req) {
         if (rpcData.error) {
             console.error("RPC Error:", JSON.stringify(rpcData.error));
             return j(
+                req,
                 {
                     error: "rpc_error",
                     message: rpcData.error.data?.message || "RPC call failed",
@@ -115,13 +126,17 @@ export async function GET(req) {
         }
 
         if (!rpcData.result || rpcData.result.length === 0) {
-            return j({ error: "no_partner", message: "No partner record found" }, 404);
+            return j(req, { error: "no_partner", message: "No partner record found" }, 404);
         }
 
-        return j({ partner: rpcData.result[0] }, 200);
+        return j(req, { partner: rpcData.result[0] }, 200);
 
     } catch (e) {
         console.error("RPC fetch error:", e);
-        return j({ error: "network_error", message: e.message }, 500);
+        return j(req, { error: "network_error", message: e.message }, 500);
     }
+}
+
+export async function OPTIONS(req) {
+    return handleCorsPreflight(req);
 }

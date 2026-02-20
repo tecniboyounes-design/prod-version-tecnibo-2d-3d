@@ -46379,5 +46379,187 @@
       "value": "Fabima",
       "label": "Fabima"
     }
+  ],
+  "P_GLASS_TYPE_DATA": [
+    {
+      "value": "F",
+      "label": "Feuilleté"
+    },
+    {
+      "value": "T",
+      "label": "Trempé"
+    },
+    {
+      "value": "PY",
+      "label": "Pyrobel"
+    },
+    {
+      "value": "PVL",
+      "label": "Priva-Lite"
+    }
+  ],
+  "P_GLASS_DATA": [
+    {
+      "value": "GLASS_4_4_2",
+      "label": "Feuilleté 44.2 clair"
+    },
+    {
+      "value": "GLASS_4_4_2_EC",
+      "label": "Feuilleté 44.2 extra clair"
+    },
+    {
+      "value": "GLASS_4_4_2_A",
+      "label": "Feuilleté 44.2 acoustique clair"
+    },
+    {
+      "value": "GLASS_4_4_2_A_EC",
+      "label": "Feuilleté 44.2 acoustique extra clair"
+    },
+    {
+      "value": "GLASS_5_5_2",
+      "label": "Feuilleté 55.2 clair"
+    },
+    {
+      "value": "GLASS_5_5_2_EC",
+      "label": "Feuilleté 55.2 extra clair"
+    },
+    {
+      "value": "GLASS_5_5_2_A",
+      "label": "Feuilleté 55.2 acoustique clair"
+    },
+    {
+      "value": "GLASS_5_5_2_A_EC",
+      "label": "Feuilleté 55.2 acoustique extra clair"
+    },
+    {
+      "value": "GLASS_6_6_2",
+      "label": "Feuilleté 66.2 clair"
+    },
+    {
+      "value": "GLASS_6_6_2_EC",
+      "label": "Feuilleté 66.2 extra clair"
+    },
+    {
+      "value": "GLASS_6_6_2_A",
+      "label": "Feuilleté 66.2 acoustique clair"
+    },
+    {
+      "value": "GLASS_6_6_2_A_EC",
+      "label": "Feuilleté 66.2 acoustique extra clair"
+    },
+    {
+      "value": "GLASS_8_8_2",
+      "label": "Feuilleté 88.2 clair"
+    },
+    {
+      "value": "GLASS_8_8_2_EC",
+      "label": "Feuilleté 88.2 extra clair"
+    },
+    {
+      "value": "GLASS_8_8_2_A",
+      "label": "Feuilleté 88.2 acoustique clair"
+    },
+    {
+      "value": "GLASS_8_8_2_A_EC",
+      "label": "Feuilleté 88.2 acoustique extra clair"
+    },
+    {
+      "value": "GLASS_T_8",
+      "label": "Trempé clair 8 mm"
+    },
+    {
+      "value": "GLASS_T_8_EC",
+      "label": "Trempé extra clair 8 mm"
+    },
+    {
+      "value": "GLASS_T_10",
+      "label": "Trempé clair 10 mm"
+    },
+    {
+      "value": "GLASS_T_10_EC",
+      "label": "Trempé extra clair 10 mm"
+    },
+    {
+      "value": "GLASS_T_12",
+      "label": "Trempé clair 12 mm"
+    },
+    {
+      "value": "GLASS_T_12_EC",
+      "label": "Trempé extra clair 12 mm"
+    },
+    {
+      "value": "GLASS_P_16",
+      "label": "Pyrobel 16mm"
+    },
+    {
+      "value": "GLASS_P_16_VL",
+      "label": "Pyrobel 16 Vision Line"
+    },
+    {
+      "value": "GLASS_P_25",
+      "label": "Pyrobel 25mm"
+    },
+    {
+      "value": "GLASS_P_25_VL",
+      "label": "Pyrobel 25 Vision Line"
+    },
+    {
+      "value": "GLASS_P_53",
+      "label": "Pyrobel 53mm"
+    },
+    {
+      "value": "GLASS_P_53_VL",
+      "label": "Pyrobel 53 Vision Line"
+    },
+    {
+      "value": "GLASS_PVL_CLASSIC_5_5_4",
+      "label": "Verre Priva-Lite Classic 55.4"
+    },
+    {
+      "value": "GLASS_PVL_CLASSIC_6_6_4",
+      "label": "Verre Priva-Lite Classic 66.4"
+    },
+    {
+      "value": "GLASS_PVL_XL_5_5_4",
+      "label": "Verre Priva-Lite XL 55.4"
+    },
+    {
+      "value": "GLASS_PVL_XL_6_6_4",
+      "label": "Verre Priva-Lite XL 66.4"
+    }
+  ],
+  "D_BLIND_SUPPLIER": [
+    {
+      "value": "Ortaldrape",
+      "label": "Ortaldrape"
+    }
+  ],
+  "D_LABELING_SUPPLIER": [
+    {
+      "value": "TacOtac",
+      "label": "TacOtac"
+    },
+    {
+      "value": "Lettrago Grillo",
+      "label": "Lettrago Grillo"
+    },
+    {
+      "value": "Dantasy Foil",
+      "label": "Dantasy Foil"
+    }
+  ],
+  "D_PAINTING_SUPPLIER": [
+    {
+      "value": "SENAT Sarl",
+      "label": "SENAT Sarl"
+    },
+    {
+      "value": "LDP S.A",
+      "label": "LDP S.A"
+    },
+    {
+      "value": "LD Rénovations",
+      "label": "LD Rénovations"
+    }
   ]
 }

@@ -1,0 +1,153 @@
+{
+  "sections": [
+    {
+      "id": "mlhw5d351b12s4eeejz",
+      "type": "NONE",
+      "render": "section",
+      "name": "D_EXT_CONFIGURATEUR",
+      "Label": "Porte sous traitée",
+      "children": [
+        {
+          "id": "mlhw5d35116qxm89fifl",
+          "render": "section",
+          "type": "NONE",
+          "name": "P_ART_MODEL",
+          "label": "Model",
+          "children": [
+            {
+              "render": "field",
+              "id": "mlhw5d35z43ik2tg13g",
+              "name": "D_LABELING_SUPPLIER",
+              "label": "Fournisseur",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "mlhw5d35cxa20p9i4s",
+                "type": "SELECT",
+                "code": null,
+                "content": null,
+                "source": "D_LABELING_SUPPLIER",
+                "dynamic": false,
+                "defaultValue": "TacOtac"
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        },
+        {
+          "id": "mlhw5d358j8jdczsa4q",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "P_DIMENSIONS",
+          "label": "Dimensions",
+          "children": [
+            {
+              "render": "field",
+              "id": "mlhw5d35vuvmtxarut",
+              "name": "P_HEIGHT",
+              "label": "Height",
+              "fieldType": "INPUT",
+              "ImpactedVariable": [
+                "HSP"
+              ],
+              "input": {
+                "id": "mlhw5d35rusjfotea",
+                "min": 2000,
+                "max": 3500,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 2700,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mlhw5d35r17bh2pd46",
+              "name": "P_WIDTH",
+              "label": "Width",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mlhw5d358auia6wjytf",
+                "min": 200,
+                "max": 10000,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 1200,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": [],
+              "dependencies": [
+                {
+                  "nod": 1,
+                  "action": "SHOW",
+                  "roles": [
+                    {
+                      "operator": "AND",
+                      "roles": [
+                        {
+                          "field": "D_DOOR_FANLIGHT",
+                          "comparisonType": "!=",
+                          "value": "NO_FANLIGHT"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mlhw5d35segdw3dwg08",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "P_ADVANCED",
+          "label": "Advanced",
+          "children": [
+            {
+              "render": "field",
+              "id": "mlhw5d35sregmi1ottr",
+              "name": "P_EXT_PRICE",
+              "label": "Prix d'achat (€ / M²)",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mlhw5d35qgcmq5ceew",
+                "min": 100,
+                "max": 10000,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 1000,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mlhw5d35ncocdv31vp",
+              "name": "P_EXT_DESRIPTION",
+              "label": "Additinal description",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mlhw5d35ct4q4zfhdzj",
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": "",
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "id": "article-1770805958462-067d0ed4",
+    "name": "P_LABELING_EXTERNAL"
+  }
+}

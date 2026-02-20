@@ -1,0 +1,207 @@
+{
+  "sections": [
+    {
+      "id": "mlhw4zknipveesnwcl",
+      "type": "NONE",
+      "render": "section",
+      "name": "D_EXT_CONFIGURATEUR",
+      "Label": "Porte sous traitée",
+      "children": [
+        {
+          "id": "mlhw4zknp8tcja3mzs",
+          "render": "section",
+          "type": "NONE",
+          "name": "P_ART_MODEL",
+          "label": "Model",
+          "children": [
+            {
+              "render": "field",
+              "id": "mlhw4zknldd2osh9y69",
+              "name": "D_DOOR_TYPE",
+              "label": "Type de Porte",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "mlhw4zknlyekocflkub",
+                "type": "SELECT",
+                "code": null,
+                "content": null,
+                "source": "D_DOOR_TYPE",
+                "dynamic": false,
+                "defaultValue": "SD"
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mlhw4zknj7wa28ni4q",
+              "name": "D_DOOR_RF",
+              "label": "Door fire resistant",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "mlhw4zknebbacdqn6ic",
+                "type": "SELECT",
+                "code": null,
+                "content": null,
+                "source": "D_DOOR_RF",
+                "dynamic": false,
+                "defaultValue": "EI00"
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mlhw4zknpfspovgex",
+              "name": "D_DOOR_SUPPLIER",
+              "label": "Fournisseur",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "mlhw4zknr8ub7pi2x3",
+                "type": "SELECT",
+                "code": null,
+                "content": null,
+                "source": "D_DOOR_SUPPLIER",
+                "dynamic": false,
+                "defaultValue": "Baustoff"
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mlhw4zkn8n8jt1hixl3",
+              "name": "D_DOOR_FANLIGHT",
+              "label": "Fournisseur",
+              "fieldType": "COMBOBOX",
+              "combo": {
+                "id": "mlhw4zkn9zkl5jjwbe",
+                "type": "SELECT",
+                "code": null,
+                "content": null,
+                "source": "D_DOOR_FANLIGHT",
+                "dynamic": false,
+                "defaultValue": "NO_FANLIGHT"
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        },
+        {
+          "id": "mlhw4zknd20yw4z2nrf",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "P_DIMENSIONS",
+          "label": "Dimensions",
+          "children": [
+            {
+              "render": "field",
+              "id": "mlhw4zkntulwxix6pwr",
+              "name": "P_HEIGHT",
+              "label": "Height",
+              "fieldType": "INPUT",
+              "ImpactedVariable": [
+                "HSP"
+              ],
+              "input": {
+                "id": "mlhw4zknkp61n4de0mi",
+                "min": 2000,
+                "max": 3500,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 2700,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mlhw4zknkhcagliwz5k",
+              "name": "P_FAN_HEIGHT",
+              "label": "Fanlight Height",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mlhw4zknizucifhbnqo",
+                "min": 200,
+                "max": 1000,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 300,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": [],
+              "dependencies": [
+                {
+                  "nod": 1,
+                  "action": "SHOW",
+                  "roles": [
+                    {
+                      "operator": "AND",
+                      "roles": [
+                        {
+                          "field": "D_DOOR_FANLIGHT",
+                          "comparisonType": "!=",
+                          "value": "NO_FANLIGHT"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mlhw4zkn1aeuuolf26e",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "P_ADVANCED",
+          "label": "Advanced",
+          "children": [
+            {
+              "render": "field",
+              "id": "mlhw4zknn4yml5jtn09",
+              "name": "P_EXT_PRICE",
+              "label": "Prix d'achat",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mlhw4zknlydsbonsbus",
+                "min": 100,
+                "max": 10000,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 1000,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mlhw4zkntqslmrv9kyc",
+              "name": "P_EXT_DESRIPTION",
+              "label": "Additinal description",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mlhw4zkn61xy45iwb2q",
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": "",
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "id": "article-1770804661222-ef0d191c",
+    "name": "P_DOOR_EXTERNAL"
+  }
+}

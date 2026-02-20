@@ -1,30 +1,52 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
-const converterHost = process.env.CONVERTER_HOST || 'localhost';
-const converterPort = process.env.CONVERTER_PORT || '3005';
-const converterOrigin = `http://${converterHost}:${converterPort}`;
+const PUBLIC_PATHS = new Set([
+  "/0Auth",
+  "/favicon.ico",
+  "/robots.txt",
+  "/manifest.json",
+  "/api/me",
+  "/api/odoo/login",
+  "/api/odoo/callback",
+  "/api/odoo/logout",
+]);
+
+function isPublicPath(pathname) {
+  if (pathname.startsWith("/_next/")) return true;
+  if (pathname === "/0Auth" || pathname.startsWith("/0Auth/")) return true;
+  if (PUBLIC_PATHS.has(pathname)) return true;
+  if (pathname.startsWith("/api/me")) return true;
+  if (pathname.startsWith("/api/odoo/login")) return true;
+  if (pathname.startsWith("/api/odoo/callback")) return true;
+  if (pathname.startsWith("/api/odoo/logout")) return true;
+  return false;
+}
+
+function hasOdooAuth(req) {
+  return Boolean(req.cookies.get("odoo_at")?.value) && Boolean(req.cookies.get("session_id")?.value);
+}
+
+function isOdooWebPath(pathname) {
+  if (pathname === "/web" || pathname.startsWith("/web/")) return true;
+  return /^\/[a-z]{2}_[A-Z]{2}\/web(?:\/|$)/.test(pathname);
+}
 
 export function middleware(req) {
   const { pathname, search } = req.nextUrl;
-  const referer = req.headers.get('referer') || '';
+  const isApi = pathname.startsWith("/api/");
 
-  // Only proxy converter asset/API calls when they originate from the converter page
-  if (
-    (pathname.startsWith('/assets/') || pathname.startsWith('/api/')) &&
-    referer.includes('/digitalfactory/3dconverter')
-  ) {
-    const url = new URL(`${pathname}${search || ''}`, converterOrigin);
-    return NextResponse.rewrite(url);
+  if (isPublicPath(pathname)) return NextResponse.next();
+
+  if (!isApi && !hasOdooAuth(req)) {
+    const returnTo = `${pathname}${search || ""}`;
+    const target = new URL("/0Auth", req.url);
+    target.searchParams.set("returnTo", returnTo);
+    return NextResponse.redirect(target);
   }
 
-  // Keep /tools/fiches traffic as-is
-  if (pathname.startsWith('/tools/fiches')) {
-    return NextResponse.next();
-  }
-
-  // Rewrite bare root (and query like ?type=Porte) to /tools/fiches to keep the prefix stable
-  if (pathname === '/') {
-    const url = new URL(`/tools/fiches${search || ''}`, req.url);
+  if (isOdooWebPath(pathname)) {
+    const url = req.nextUrl.clone();
+    url.pathname = `/api/odoo${pathname}`;
     return NextResponse.rewrite(url);
   }
 
@@ -32,12 +54,5 @@ export function middleware(req) {
 }
 
 export const config = {
-  matcher: [
-    '/',
-    '/tools/fiches/:path*',
-    '/digitalfactory/3dconverter',
-    '/digitalfactory/3dconverter/:path*',
-    '/assets/:path*',
-    '/api/:path*',
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|robots.txt|manifest.json).*)"],
 };

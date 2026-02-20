@@ -1,96 +1,377 @@
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 
-const ODOO_BASE = process.env.ODOO_BASE 
+import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
 
-function j(data, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: { "content-type": "application/json", "cache-control": "no-store" },
-  });
+const ODOO_BASE = process.env.ODOO_BASE;
+const ODOO_DB = process.env.ODOO_DB;
+
+const PARTNER_FIELDS = [
+  "id",
+  "name",
+  "email",
+  "phone",
+  "mobile",
+  "street",
+  "street2",
+  "city",
+  "zip",
+  "state_id",
+  "country_id",
+  "function",
+  "company_name",
+];
+
+function jsonResponse(req, data, { status = 200, headers } = {}) {
+  const responseHeaders = new Headers(headers || {});
+  const corsHeaders = getCorsHeaders(req);
+
+  for (const [key, value] of Object.entries(corsHeaders)) {
+    if (key.toLowerCase() === "content-type") continue;
+    responseHeaders.set(key, value);
+  }
+
+  if (!responseHeaders.has("content-type")) {
+    responseHeaders.set("content-type", "application/json");
+  }
+  if (!responseHeaders.has("cache-control")) {
+    responseHeaders.set("cache-control", "no-store");
+  }
+
+  return new Response(JSON.stringify(data), { status, headers: responseHeaders });
+}
+
+function buildOdooUrl(host, pathname) {
+  const base = (host || "").replace(/\/$/, "");
+  return `${base}${pathname.startsWith("/") ? pathname : `/${pathname}`}`;
+}
+
+function withOptionalDb(url) {
+  if (!ODOO_DB) return url;
+  const u = new URL(url);
+  if (!u.searchParams.has("db")) u.searchParams.set("db", ODOO_DB);
+  return u.toString();
 }
 
 function getCookie(req, name) {
   const c = req.headers.get("cookie") || "";
-  const m = c.match(new RegExp("(?:^|;\\s*)" + name + "=([^;]+)"));
+  const m = c.match(new RegExp(`(?:^|;\\s*)${name}=([^;]+)`));
   return m ? decodeURIComponent(m[1]) : null;
 }
 
-export async function GET(req) {
-  if (!ODOO_BASE) return j({ error: "Missing ODOO_BASE" }, 500);
+function ensurePositiveInt(value) {
+  const n = Number(value);
+  return Number.isInteger(n) && n > 0 ? n : null;
+}
 
-  const at = getCookie(req, "odoo_at");
-  const rt = getCookie(req, "odoo_rt");
-  const debug = new URL(req.url).searchParams.get("debug") === "1";
+function isHttpsRequest(req) {
+  const xfProto = req.headers.get("x-forwarded-proto");
+  if (xfProto) return xfProto.split(",")[0].trim().toLowerCase() === "https";
+  try {
+    return new URL(req.url).protocol === "https:";
+  } catch {
+    return true;
+  }
+}
 
-  if (!at) return j({ error: "no_access_token" }, 401);
+function setCookie(headers, name, value, { maxAge, secure, httpOnly = true, sameSite = "Lax", path = "/" } = {}) {
+  const parts = [`${name}=${encodeURIComponent(value)}`, `Path=${path}`, `SameSite=${sameSite}`];
+  if (httpOnly) parts.push("HttpOnly");
+  if (secure) parts.push("Secure");
+  if (typeof maxAge === "number") parts.push(`Max-Age=${Math.max(0, Math.floor(maxAge))}`);
+  headers.append("Set-Cookie", parts.join("; "));
+}
 
-  const callUserInfo = async (token) => {
-    const res = await fetch(`${ODOO_BASE}/oauth/userinfo`, {
-      headers: { authorization: `Bearer ${token}`, accept: "application/json" },
+function authMeta(req, extra = {}) {
+  return {
+    has_odoo_at: Boolean(getCookie(req, "odoo_at")),
+    has_odoo_rt: Boolean(getCookie(req, "odoo_rt")),
+    has_session_id: Boolean(getCookie(req, "session_id")),
+    ...extra,
+  };
+}
+
+function summarizeUser(userinfo, fallback = {}) {
+  const partnerId = Array.isArray(userinfo?.partner_id)
+    ? ensurePositiveInt(userinfo.partner_id[0])
+    : ensurePositiveInt(userinfo?.partner_id);
+
+  const companyId = Array.isArray(userinfo?.company_id)
+    ? ensurePositiveInt(userinfo.company_id[0])
+    : ensurePositiveInt(userinfo?.company_id);
+
+  return {
+    id: ensurePositiveInt(userinfo?.sub) || ensurePositiveInt(userinfo?.uid) || fallback.id || null,
+    name: userinfo?.name || fallback.name || null,
+    email: userinfo?.email || fallback.email || null,
+    login: userinfo?.login || userinfo?.preferred_username || fallback.login || null,
+    db: userinfo?.db || fallback.db || ODOO_DB || null,
+    company_id: companyId || fallback.company_id || null,
+    partner_id: partnerId || fallback.partner_id || null,
+  };
+}
+
+async function callUserInfo(accessToken) {
+  const userinfoUrls = [
+    withOptionalDb(buildOdooUrl(ODOO_BASE, "/oauth/userinfo")),
+    withOptionalDb(buildOdooUrl(ODOO_BASE, "/oauth2/userinfo")),
+  ];
+
+  let last = null;
+  for (const url of userinfoUrls) {
+    const res = await fetch(url, {
+      headers: { authorization: `Bearer ${accessToken}`, accept: "application/json" },
       cache: "no-store",
     });
+    last = res;
+    if (res.status === 404 && url !== userinfoUrls[userinfoUrls.length - 1]) continue;
     return res;
-  };
+  }
+  return last;
+}
 
-  let res = await callUserInfo(at);
+async function refreshAccessToken(refreshToken) {
+  const tokenUrls = [buildOdooUrl(ODOO_BASE, "/oauth/token"), buildOdooUrl(ODOO_BASE, "/oauth2/token")];
 
-  if (res.status === 401 && rt) {
-    const tokenRes = await fetch(`${ODOO_BASE}/oauth/token`, {
-      method: "POST",
-      headers: { "content-type": "application/x-www-form-urlencoded", accept: "application/json" },
-      body: new URLSearchParams({
-        grant_type: "refresh_token",
-        refresh_token: rt,
-        client_id: process.env.ODOO_CLIENT_ID || "",
-        client_secret: process.env.ODOO_CLIENT_SECRET || "",
-      }),
+  let tokenRes = null;
+  for (const tokenURL of tokenUrls) {
+    const body = new URLSearchParams({
+      grant_type: "refresh_token",
+      refresh_token: refreshToken,
+      client_id: process.env.ODOO_CLIENT_ID || "",
+      client_secret: process.env.ODOO_CLIENT_SECRET || "",
     });
 
-    if (tokenRes.ok) {
-      const tk = await tokenRes.json().catch(() => null);
-      if (tk?.access_token) {
-        const headers = new Headers();
-        const isHttps = (req.headers.get("x-forwarded-proto") || new URL(req.url).protocol.replace(":", "")) === "https";
-        const sessionId = tk.session_id;
-        headers.append(
-          "Set-Cookie",
-          `odoo_at=${encodeURIComponent(tk.access_token)}; Path=/; HttpOnly; SameSite=Lax; ${
-            isHttps ? "Secure; " : ""
-          }Max-Age=${Math.max(300, (tk.expires_in || 3600) - 60)}`
-        );
-        if (tk.refresh_token) {
-          headers.append(
-            "Set-Cookie",
-            `odoo_rt=${encodeURIComponent(tk.refresh_token)}; Path=/; HttpOnly; SameSite=Lax; ${
-              isHttps ? "Secure; " : ""
-            }Max-Age=${60 * 60 * 24 * 30}`
-          );
-        }
-        if (sessionId) {
-          headers.append(
-            "Set-Cookie",
-            `session_id=${encodeURIComponent(sessionId)}; Path=/; HttpOnly; SameSite=Lax; ${
-              isHttps ? "Secure; " : ""
-            }Max-Age=${60 * 60 * 24 * 7}`
-          );
-        }
-        res = await callUserInfo(tk.access_token);
-        if (res.ok) {
-          const body = await res.json().catch(() => ({}));
-          return new Response(JSON.stringify({ userinfo: body }), { status: 200, headers });
-        }
-        return new Response(JSON.stringify({ error: "userinfo_failed_after_refresh" }), { status: 401, headers });
+    if (ODOO_DB) body.set("db", ODOO_DB);
+
+    tokenRes = await fetch(tokenURL, {
+      method: "POST",
+      headers: { "content-type": "application/x-www-form-urlencoded", accept: "application/json" },
+      body,
+    });
+
+    if (tokenRes.status === 404 && tokenURL !== tokenUrls[tokenUrls.length - 1]) continue;
+    break;
+  }
+
+  if (!tokenRes?.ok) return { ok: false, tokenRes };
+  const payload = await tokenRes.json().catch(() => null);
+  return { ok: true, tokenRes, payload };
+}
+
+async function getSessionInfo(sessionId) {
+  const response = await fetch(buildOdooUrl(ODOO_BASE, "/web/session/get_session_info"), {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json",
+      cookie: `session_id=${encodeURIComponent(sessionId)}`,
+    },
+    body: "{}",
+    cache: "no-store",
+  });
+
+  const body = await response.json().catch(() => null);
+  if (!response.ok) return null;
+  return body?.result || null;
+}
+
+async function fetchPartner({ sessionId, user }) {
+  if (!sessionId || !user?.id) return { partner: null };
+
+  const domain = user.partner_id ? [["id", "=", user.partner_id]] : [["user_ids", "in", [user.id]]];
+  const context = { lang: "en_US" };
+  if (user.company_id) {
+    context.allowed_company_ids = [user.company_id];
+    context.force_company = user.company_id;
+  }
+
+  const rpcRes = await fetch(buildOdooUrl(ODOO_BASE, "/web/dataset/call_kw/res.partner/search_read"), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: `session_id=${encodeURIComponent(sessionId)}`,
+    },
+    body: JSON.stringify({
+      jsonrpc: "2.0",
+      method: "call",
+      params: {
+        model: "res.partner",
+        method: "search_read",
+        args: [domain, PARTNER_FIELDS],
+        kwargs: { limit: 1, context },
+      },
+      id: Date.now(),
+    }),
+    cache: "no-store",
+  });
+
+  const rpcData = await rpcRes.json().catch(() => null);
+  if (!rpcRes.ok) {
+    return { partner: null, error: `Partner RPC failed (${rpcRes.status})` };
+  }
+  if (rpcData?.error) {
+    return { partner: null, error: rpcData.error?.data?.message || "Partner RPC error" };
+  }
+
+  return { partner: rpcData?.result?.[0] || null };
+}
+
+export async function GET(req) {
+  if (!ODOO_BASE) {
+    return jsonResponse(req, { success: false, authenticated: false, error: "Missing ODOO_BASE" }, { status: 500 });
+  }
+
+  const url = new URL(req.url);
+  const includePartner = url.searchParams.get("include_partner") === "1";
+  const debug = url.searchParams.get("debug") === "1";
+
+  let accessToken = getCookie(req, "odoo_at");
+  const refreshToken = getCookie(req, "odoo_rt");
+  let sessionId = getCookie(req, "session_id");
+
+  let responseHeaders = new Headers();
+  let refreshed = false;
+
+  if (!accessToken) {
+    if (!sessionId) {
+      return jsonResponse(
+        req,
+        {
+          success: false,
+          authenticated: false,
+          error: "no_access_token",
+          auth: authMeta(req, { mode: "missing" }),
+        },
+        { status: 401 }
+      );
+    }
+
+    const sessionInfo = await getSessionInfo(sessionId);
+    if (!sessionInfo?.uid) {
+      return jsonResponse(
+        req,
+        {
+          success: false,
+          authenticated: false,
+          error: "invalid_session",
+          auth: authMeta(req, { mode: "session" }),
+        },
+        { status: 401 }
+      );
+    }
+
+    const user = summarizeUser(
+      {
+        sub: sessionInfo.uid,
+        name: sessionInfo.name,
+        login: sessionInfo.username,
+        db: sessionInfo.db,
+      },
+      {
+        id: ensurePositiveInt(sessionInfo.uid),
+        name: sessionInfo.name || null,
+        login: sessionInfo.username || null,
+        db: sessionInfo.db || ODOO_DB || null,
       }
+    );
+
+    const body = {
+      success: true,
+      authenticated: true,
+      session_info: sessionInfo,
+      user,
+      auth: authMeta(req, { mode: "session", refreshed: false }),
+      meta: {
+        odoo_base: ODOO_BASE,
+        db: user.db,
+      },
+    };
+    
+    if (includePartner) {
+      const partnerResult = await fetchPartner({ sessionId, user });
+      if (partnerResult.partner) body.partner = partnerResult.partner;
+      if (partnerResult.error) body.partner_error = partnerResult.error;
+    }
+
+    return jsonResponse(req, body);
+  }
+
+  let userInfoResponse = await callUserInfo(accessToken);
+
+  if (userInfoResponse.status === 401 && refreshToken) {
+    const refreshedToken = await refreshAccessToken(refreshToken);
+    if (refreshedToken.ok && refreshedToken.payload?.access_token) {
+      const tk = refreshedToken.payload;
+      refreshed = true;
+      accessToken = tk.access_token;
+      sessionId = tk.session_id || sessionId;
+
+      const secure = isHttpsRequest(req);
+      setCookie(responseHeaders, "odoo_at", tk.access_token, {
+        maxAge: Math.max(300, Number(tk.expires_in || 3600) - 60),
+        secure,
+      });
+      if (tk.refresh_token) {
+        setCookie(responseHeaders, "odoo_rt", tk.refresh_token, {
+          maxAge: 60 * 60 * 24 * 30,
+          secure,
+        });
+      }
+      if (tk.session_id) {
+        setCookie(responseHeaders, "session_id", tk.session_id, {
+          maxAge: 60 * 60 * 24 * 7,
+          secure,
+        });
+      }
+
+      userInfoResponse = await callUserInfo(accessToken);
     }
   }
 
-  if (!res.ok) {
-    const txt = await res.text().catch(() => "");
-    if (debug) console.log("[api/me] userinfo fail", res.status, txt.slice(0, 300));
-    return j({ error: "userinfo_failed", status: res.status }, 401);
+  if (!userInfoResponse?.ok) {
+    const upstreamText = await userInfoResponse.text().catch(() => "");
+    if (debug) {
+      console.log("[api/me] userinfo failed", userInfoResponse?.status, upstreamText.slice(0, 300));
+    }
+
+    return jsonResponse(
+      req,
+      {
+        success: false,
+        authenticated: false,
+        error: "userinfo_failed",
+        upstream_status: userInfoResponse?.status || 500,
+        auth: authMeta(req, { mode: "oauth", refreshed }),
+      },
+      { status: 401, headers: responseHeaders }
+    );
   }
 
-  const data = await res.json().catch(() => ({}));
-  return j({ userinfo: data }, 200);
+  const userinfo = await userInfoResponse.json().catch(() => ({}));
+  const user = summarizeUser(userinfo);
+
+  const body = {
+    success: true,
+    authenticated: true,
+    userinfo,
+    user,
+    auth: authMeta(req, { mode: "oauth", refreshed }),
+    meta: {
+      odoo_base: ODOO_BASE,
+      db: user.db,
+    },
+  };
+
+  if (includePartner) {
+    const partnerResult = await fetchPartner({ sessionId, user });
+    if (partnerResult.partner) body.partner = partnerResult.partner;
+    if (partnerResult.error) body.partner_error = partnerResult.error;
+  }
+
+  return jsonResponse(req, body, { headers: responseHeaders });
+}
+
+export async function OPTIONS(req) {
+  return handleCorsPreflight(req);
 }

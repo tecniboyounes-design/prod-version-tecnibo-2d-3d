@@ -22,6 +22,7 @@
   color: var(--text-primary);
 }
 
+
 .card {
   width: min(500px, 100%);
   background: var(--card-bg);
@@ -116,6 +117,8 @@
   box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1);
 }
 
+
+
 .secondaryBtn {
   background: rgba(255, 255, 255, 0.03);
   color: #F1F5F9;
@@ -131,6 +134,8 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
 }
+
+
 
 .secondaryBtn:hover {
   background: rgba(255, 255, 255, 0.08);

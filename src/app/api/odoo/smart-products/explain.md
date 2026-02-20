@@ -7,8 +7,8 @@ This folder implements a **Next.js App Router API** that bridges:
 
 to produce either:
 
-- a **flat list** of Odoo products enriched with `cfg_name`, vendors, and optional stock (`mode=flat`), or
-- a **tree** grouped by WS category where each helper-row contains the Odoo match (`mode=ws`),
+- a **flat list** of Odoo products enriched with `cfg_name`, `routing`, vendors, and optional stock (`mode=flat`), or
+- a **tree** grouped by WS category where each helper-row contains the Odoo match (and keeps the row’s `cfg_name` / `routing`) (`mode=ws`),
 - plus a **smart search** mode for interactive lookup by code/name/barcode (`q=...`).
 
 ---
@@ -31,11 +31,11 @@ Used by files in this directory:
   - Postgres connection string for the helper DB.
 - `ODOO_BASE_URL` (optional)
   - Base Odoo URL, defaults to `https://erptest.tecnibo.com`.
- 
+
 ### 3) Helper DB table shape
- 
+
 `src/app/api/odoo/smart-products/lib/db.js` queries:
- 
+
 ```sql
 SELECT
   article_id, text_short, order_id, name,
@@ -55,7 +55,9 @@ So your `public.conndesc_helper` table must have at least:
 
 It *also* selects `text_short` and `name`.
 
-> If you created the helper table using `lib/sync_conndesc_helper.sh.sh`, note that script currently does **not** create a `routing` column. Add it in DB or update the script to match your schema.
+`routing` is a **per-article routing hint** (typically `"odoo"` or `"imos"`, case-insensitive) that the API propagates into responses so the client can decide which downstream flow to use.
+
+> If you created the helper table using `lib/sync_conndesc_helper.sh.sh`, note that script currently does **not** create a `routing` column. Add it in DB (or update the script) to match your schema.
 
 ---
 
@@ -78,6 +80,93 @@ Supports:
 File: `src/app/api/odoo/smart-products/product-variant/[id]/route.js`
 
 Reads a single `product.product` record by id, safely filtering fields via `fields_get`.
+
+---
+
+## Data Flow Overview
+
+This API is mostly a **data pipeline** that joins 3 sources:
+
+- **Request** (query params + `X-Session-Id`)
+- **Helper DB** (`public.conndesc_helper` via `DATABASE_HELPER_URL`)
+- **Odoo** (via `ODOO_BASE_URL`, using the `session_id` cookie)
+
+### Join keys (how records connect)
+
+- **Helper row → Odoo template match**
+  - `conndesc_helper.article_id` == `product.template[match_field]` (default `ref_imos`)
+- **Template → vendors**
+  - `product.template.seller_ids[]` (supplierinfo ids) → `product.supplierinfo.id`
+- **Template → variant id**
+  - `product_variant_id` (preferred) else first `product_variant_ids[]`
+- **Variant → stock**
+  - `product.product.id` == `product_variant_id`
+
+### Main intermediate structures (internal)
+
+- `cfgByValue`: `Map<article_id, cfg_name>`
+- `routingByValue`: `Map<article_id, routing>` (defaults to `"odoo"`)
+- `byValue`: `{ [article_id]: { status, length, records[] } }` returned by `fetchTemplatesByMatchFieldBatched`
+- `supplierById`: `{ [supplierinfoId]: supplierinfoRecord }` returned by `fetchSupplierinfoByIdsBatched`
+- `stockById`: `{ [productProductId]: stockFields }` returned by `fetchProductStockByIdsBatched`
+- `tagIndex`: `Map<#WS_TAG#, CategoryLabel>` built from `CATEGORY_ORDER_ID_MAP`
+
+### Field provenance (what comes from where)
+
+| Field you see in JSON | Comes from | Notes |
+|---|---|---|
+| `categories.<cat>[]` rows (`article_id`, `order_id`, `text_short`, `name`, `cfg_name`, `routing`, …) | Helper DB (`public.conndesc_helper`) | Returned as the “row” in WS mode. |
+| `row.odoo` bucket (`status`, `length`, `records[]`) | Odoo matcher (`product.template`) | Keyed by `article_id` matched to `match_field`. |
+| `record.cfg_name` / `record.routing` (flat mode) | Helper DB maps keyed by `article_id` | Injected after flattening matched Odoo records. |
+| `vendors[]`, `vendor_partner_ids[]`, `vendor_primary` | Odoo `product.supplierinfo` | Joined via template `seller_ids`. If supplierinfo fetch fails, vendor rows become placeholders. |
+| `product_variant_id` | Odoo template record | Normalized from `product_variant_id` or `product_variant_ids`. |
+| `stock` | Odoo `product.product` | Only when `include_stock=1` (flat mode). Joined via `product_variant_id`. |
+
+### Execution switches (what changes the pipeline)
+
+- `include_odoo=0`
+  - WS mode: returns helper rows grouped by category, **without** `row.odoo`.
+  - Flat mode: returns `records: []` (there is nothing to flatten without Odoo matches).
+- `include_vendors=0`: skips supplierinfo read and attaches empty vendor fields.
+- `include_stock=1`: triggers stock fetch and attaches `record.stock` (flat mode only).
+
+### Pipelines by mode (what runs, in order)
+
+#### Smart mode (`q=...`) — Odoo-only
+
+1. Read `X-Session-Id` → `getSessionInfo()` (one call).
+2. `fields_get(model)` → decide which fields can be searched.
+3. `web_search_read(model)` using an **OR** domain (`default_code` / `name` / `barcode` / `product_variant_ids.default_code`), optionally AND `imos_table != false`.
+4. Normalize each template to a stable `product_variant_id`.
+5. If `include_vendors=1`: read all `seller_ids` from `product.supplierinfo`, then attach:
+   - `vendors[]`, `vendor_partner_ids[]`, `vendor_primary`.
+6. Return JSON (+ optional `log=1` file write).
+
+#### WS mode (`mode=ws`) — Helper DB rows grouped by category + optional Odoo match
+
+1. Read `X-Session-Id` → `getSessionInfo()` (one call).
+2. Fetch helper rows from Postgres (`fetchConndescWsRows`).
+3. Categorize rows by detecting `#WS_...#` tags inside `order_id`.
+4. Extract unique `article_id` values.
+5. If `include_odoo=1`: batch-match in Odoo (`fetchTemplatesByMatchFieldBatched`) producing `byValue`.
+6. If `include_vendors=1`: fetch supplierinfo once for **all** matched `seller_ids` → `supplierById`.
+7. Build output:
+   - keep the helper row as-is (`article_id`, `order_id`, `cfg_name`, `routing`, …)
+   - attach `row.odoo` bucket:
+     - `status: not_found | matched | ambiguous`
+     - `records[]` enriched with `cfg_name` + `routing` (from the helper row), normalized `product_variant_id`, and vendors.
+8. Return JSON (+ optional `log=1` file write).
+
+#### Flat mode (`mode=flat`) — Unique matched templates (flat list)
+
+Same as WS mode up to vendor hydration, then:
+
+1. Flatten all matched Odoo records into a unique list by template `id`.
+2. Inject `cfg_name` + `routing` for each record using the per-`article_id` maps.
+3. Normalize `product_variant_id`.
+4. Attach vendors (uses `supplierById`; missing supplierinfo becomes placeholder vendor rows).
+5. If `include_stock=1`: batch-fetch stock for all `product_variant_id` values → `stockById`, then attach `record.stock`.
+6. Return JSON (+ optional `log=1` file write).
 
 ---
 
@@ -127,6 +216,8 @@ Triggered when:
 - and `mode` is not `ws`/`flat`
 
 Purpose: **interactive lookup** in Odoo (`web_search_read`) across likely search fields.
+
+> Smart mode does **not** inject `cfg_name` / `routing` because it does not query `public.conndesc_helper`.
 
 ### Inputs (query params)
 
@@ -213,24 +304,27 @@ Implemented in `src/app/api/odoo/smart-products/route.js`:
    - Fetches session info once (`getSessionInfo`) so all subsequent Odoo calls use the right company context.
 2. **DB fetch**
    - `fetchConndescWsRows()` reads `public.conndesc_helper` rows filtered by `order_id ILIKE ws_like`.
-3. **Categorize**
+3. **Build per-article maps**
+   - Builds `cfg_name` and `routing` maps keyed by `article_id` (the match value).
+   - `routing` is treated as a hint; if missing/empty it defaults to `"odoo"`.
+4. **Categorize**
    - Builds a tag index from `CATEGORY_ORDER_ID_MAP` (`categories.js`).
    - Detects category by checking if `order_id` contains a known tag like `#WS_ELE#`.
-4. **Unique values**
+5. **Unique values**
    - Extracts unique `article_id` values (these become the match keys).
-5. **Batch match in Odoo**
+6. **Batch match in Odoo**
    - `fetchTemplatesByMatchFieldBatched()`:
      - verifies the model has `match_field` via `fields_get`,
      - `web_search_read` where `[match_field, "in", chunk]`,
      - builds a `by_value` map: `{ "<article_id>": { status, records[] } }`
-6. **Vendors (optional)**
+7. **Vendors (optional)**
    - Collects all `seller_ids` from all matched records and reads `product.supplierinfo` once.
    - Attaches vendor fields onto every record when `include_vendors=1`.
-7. **Output**
+8. **Output**
    - `categories: { "<Category>": [rows...] }`
    - Each row includes an `odoo` bucket:
      - `status: not_found | matched | ambiguous`
-     - `records[]` enriched with `cfg_name`, normalized `product_variant_id`, and vendors (if enabled)
+     - `records[]` enriched with `cfg_name`, `routing`, normalized `product_variant_id`, and vendors (if enabled)
 
 ---
 
@@ -239,6 +333,7 @@ Implemented in `src/app/api/odoo/smart-products/route.js`:
 Purpose: return a **single flat array** of Odoo products enriched with:
 
 - `cfg_name` (from Postgres helper table),
+- `routing` (from Postgres helper table, default `"odoo"`),
 - vendor info (from `product.supplierinfo`),
 - optional stock (from `product.product`).
 
@@ -250,9 +345,9 @@ Inputs are the same as WS mode, plus:
 
 1. Start from the same Odoo batched matcher output (`by_value`).
 2. Flatten all matched Odoo records into a unique list by Odoo `id`.
-3. Inject `cfg_name`:
-   - it uses `match_field` value (e.g. `ref_imos`) to look up `cfg_name` mapped from `article_id`.
-   - if the same template `id` appears multiple times, it keeps the first non-empty `cfg_name`.
+3. Inject `cfg_name` + `routing`:
+   - it uses the `match_field` value (e.g. `ref_imos`) to look up `cfg_name` and `routing` mapped from `article_id`.
+   - if the same template `id` appears multiple times, it keeps the first non-empty `cfg_name` / `routing`.
 4. Normalize `product_variant_id`.
 5. Attach vendor fields (if `include_vendors=1`).
 6. If `include_stock=1`, fetch stock for all `product_variant_id` values and attach:
@@ -272,6 +367,18 @@ Inputs are the same as WS mode, plus:
 ---
 
 ## Enrichment details
+
+### Routing (`routing`)
+
+`routing` is an extra field coming from the helper DB (`public.conndesc_helper.routing`), keyed by the match value (`article_id`).
+
+- **WS mode**: the helper row already contains `routing`, and matched Odoo records also receive `routing` under `row.odoo.records[].routing`.
+- **Flat mode**: each flat record receives `routing` as `record.routing`.
+- **Default**: if helper routing is missing/empty, the API uses `"odoo"`.
+
+Typical values are `"odoo"` and `"imos"` (treat it case-insensitively). The intent is to let the client split/filter items by where they should be handled.
+
+> Server-side note: `routing` is currently **propagated** (copied into the response) but not used to filter or change behavior on the server.
 
 ### `product_variant_id` normalization (important)
 
@@ -350,7 +457,7 @@ This script is a convenience to populate a helper DB from an IMOS DB using `dbli
 - creates `ws_category_map` (tag → category label)
 - creates `conndesc_helper`
 - upserts rows from `public."CONNDESC"` where `ORDER_ID ILIKE '%WS%'`
-- derives `ws_tag`, `cat_path`, and sets `cfg_name`
+- derives `ws_tag`, `cat_path`, and sets `cfg_name` (it does **not** populate `routing`)
 
 It’s driven by env vars (defaults shown in the script):
 
@@ -364,6 +471,16 @@ Run it like:
 PGHOST=127.0.0.1 PGPORT=5432 PGUSER=postgres PGPASSWORD=... \
 SOURCE_DB=imos TARGET_DB=imos_helper \
 bash src/app/api/odoo/smart-products/lib/sync_conndesc_helper.sh.sh
+```
+
+If your API expects the `routing` column (it does), add it once in your helper DB (example):
+
+```sql
+ALTER TABLE public.conndesc_helper
+ADD COLUMN IF NOT EXISTS routing text;
+
+UPDATE public.conndesc_helper
+SET routing = COALESCE(NULLIF(routing, ''), 'odoo');
 ```
 
 ---
@@ -381,7 +498,7 @@ Set `DATABASE_HELPER_URL` for the Next.js server process.
 ### Postgres error: `column "routing" does not exist`
 
 Your `conndesc_helper` table doesn’t match what `lib/db.js` selects.
-Add the column or adjust your DB/schema to match.
+Add the column or adjust your DB/schema to match (see the SQL snippet in the sync section above).
 
 ### 403: Odoo access error
 
@@ -392,9 +509,9 @@ Try a different session or pass a valid `company_id`.
 
 ## File map (what each file does)
 
-- `route.js` — Main API handler; implements smart/ws/flat modes, vendor+stock merge, logging.
+- `route.js` — Main API handler; implements smart/ws/flat modes, injects `cfg_name` + `routing`, vendor+stock merge, logging.
 - `categories.js` — Category label → `#WS_*#` tag map for `order_id` categorization.
-- `lib/db.js` — Reads rows from `public.conndesc_helper` in Postgres.
+- `lib/db.js` — Reads rows from `public.conndesc_helper` in Postgres (including `cfg_name` + `routing`).
 - `lib/categorize.js` — Tag index + category grouping by `order_id`.
 - `lib/utils.js` — Small helpers (`uniq`, concurrency mapper; currently only `uniq` is used here).
 - `lib/odoo.js` — Odoo JSON-RPC helpers:
@@ -405,4 +522,3 @@ Try a different session or pass a valid `company_id`.
   - `fetchSupplierinfoByIdsBatched`
 - `curl.sh` — Handy curl snippets for manual testing.
 - `product-variant/[id]/route.js` — Reads one `product.product` variant by id, with safe field selection.
-

@@ -1,0 +1,1529 @@
+{
+    "odoo_project_id": 1993,
+    "analytic_account_id": 3290,
+    "userData": {
+        "uid": 446,
+        "user_companies": {
+            "current_company": 11
+        }
+    },
+   
+    "items": [
+        {
+            "id": 336615,
+            "name": "Cylindre 65/65 Duo (3 clés)",
+            "active": true,
+            "default_code": "D_CYL_DUO_65x65",
+            "barcode": "CON_D_CYL_DUO_65x65",
+            "imos_table": "imos.conndesc",
+            "imos_name": "ACCS_PORT_CY02_65x65_INOX",
+            "matched_info": true,
+            "matched_date": "2025-06-27 14:46:45",
+            "matched_bom": true,
+            "ref_imos": "D_CYL_DUO_65x65",
+            "product_variant_id": 336615,
+            "product_variant_ids": [
+                {
+                    "id": 336615,
+                    "display_name": "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)",
+                    "default_code": "D_CYL_DUO_65x65"
+                }
+            ],
+            "seller_ids": [
+                4892349,
+                5003658,
+                3392626,
+                4815803,
+                203576,
+                4817734,
+                4817735,
+                4817736,
+                4967585
+            ],
+            "categ_id": {
+                "id": 15,
+                "display_name": "Tous / IMOS / Quincailleries"
+            },
+            "uom_id": {
+                "id": 1,
+                "display_name": "Pièce(s)"
+            },
+            "cfg_name": "ACCS_PORT_CY02_65x65_INOX",
+            "routing": "odoo",
+            "vendors": [
+                {
+                    "id": 4892349,
+                    "partner_id": [
+                        803,
+                        "Lecot nv-sa"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 1,
+                    "price": 57.71,
+                    "delay": 1,
+                    "sequence": 1,
+                    "company_id": null
+                },
+                {
+                    "id": 5003658,
+                    "partner_id": [
+                        1,
+                        "Wood CAM SRL"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 0,
+                    "price": 0,
+                    "delay": 14,
+                    "sequence": 1,
+                    "company_id": [
+                        4,
+                        "Tecnibo Lux SA"
+                    ]
+                },
+                {
+                    "id": 3392626,
+                    "partner_id": [
+                        5270,
+                        "Fernand Georges"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 1,
+                    "price": 42.34,
+                    "delay": 14,
+                    "sequence": 2,
+                    "company_id": null
+                },
+                {
+                    "id": 4815803,
+                    "partner_id": [
+                        803,
+                        "Lecot nv-sa"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 1,
+                    "price": 51.47,
+                    "delay": 21,
+                    "sequence": 3,
+                    "company_id": null
+                },
+                {
+                    "id": 203576,
+                    "partner_id": [
+                        1,
+                        "Wood CAM SRL"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 0,
+                    "price": 0,
+                    "delay": 14,
+                    "sequence": 4,
+                    "company_id": [
+                        7,
+                        "Tecnibo Belgium SA"
+                    ]
+                },
+                {
+                    "id": 4817734,
+                    "partner_id": [
+                        774,
+                        "Häfele Belgium NV"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 0,
+                    "price": 0,
+                    "delay": 1,
+                    "sequence": 5,
+                    "company_id": [
+                        1,
+                        "Wood CAM SRL"
+                    ]
+                },
+                {
+                    "id": 4817735,
+                    "partner_id": [
+                        3005,
+                        "Häfele SE & Co KG"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 0,
+                    "price": 0,
+                    "delay": 1,
+                    "sequence": 6,
+                    "company_id": [
+                        4,
+                        "Tecnibo Lux SA"
+                    ]
+                },
+                {
+                    "id": 4817736,
+                    "partner_id": [
+                        2458,
+                        "Tecnibo Lux SA"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 0,
+                    "price": 0,
+                    "delay": 1,
+                    "sequence": 7,
+                    "company_id": [
+                        1,
+                        "Wood CAM SRL"
+                    ]
+                },
+                {
+                    "id": 4967585,
+                    "partner_id": [
+                        803,
+                        "Lecot nv-sa"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 30,
+                    "price": 41.37,
+                    "delay": 0,
+                    "sequence": 8,
+                    "company_id": [
+                        1,
+                        "Wood CAM SRL"
+                    ]
+                }
+            ],
+            "vendor_partner_ids": [
+                803,
+                1,
+                5270,
+                774,
+                3005,
+                2458
+            ],
+            "vendor_primary": {
+                "id": 4892349,
+                "partner_id": [
+                    803,
+                    "Lecot nv-sa"
+                ],
+                "product_tmpl_id": [
+                    339227,
+                    "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                ],
+                "product_id": null,
+                "min_qty": 1,
+                "price": 57.71,
+                "delay": 1,
+                "sequence": 1,
+                "company_id": null
+            },
+            "stock": {
+                "qty_available": 28,
+                "free_qty": 28,
+                "virtual_available": 28,
+                "incoming_qty": 0,
+                "outgoing_qty": 0
+            },
+            "article_id": 336615,
+            "price": 0,
+            "type": "shop-item",
+            "customizable": false,
+            "dimensions": {},
+            "variables": {},
+            "inStock": true,
+            "stockQuantity": 28,
+            "hasCfg": true,
+            "cartQuantity": 35,
+            "remainingStock": -7,
+            "D_MOVABLE_SUPPLIER": "Parthos",
+            "P_HEIGHT": 2700,
+            "P_WIDTH": 1200,
+            "P_EXT_QUANTITY": 1,
+            "P_EXT_PRICE": 1000,
+            "P_EXT_DESRIPTION": "",
+            "cp_Id": "ACCS_PORT_CY02_65x65_INOX",
+            "articleDescription": {
+                "D_MOVABLE_SUPPLIER": {
+                    "label": "Fournisseur",
+                    "value": "Parthos"
+                },
+                "P_HEIGHT": {
+                    "label": "Height",
+                    "value": 2700
+                },
+                "P_WIDTH": {
+                    "label": "Width",
+                    "value": 1200
+                },
+                "P_EXT_QUANTITY": {
+                    "label": "Quantité",
+                    "value": 1
+                },
+                "P_EXT_PRICE": {
+                    "label": "Prix d'achat (Pièce)",
+                    "value": 1000
+                },
+                "P_EXT_DESRIPTION": {
+                    "label": "Additinal description",
+                    "value": ""
+                }
+            },
+            "articleProperties": [
+                {
+                    "label": "Model",
+                    "depth": 0,
+                    "fields": [
+                        {
+                            "name": "D_MOVABLE_SUPPLIER",
+                            "label": "Fournisseur",
+                            "value": "Parthos"
+                        }
+                    ],
+                    "subsections": []
+                },
+                {
+                    "label": "Dimensions",
+                    "depth": 0,
+                    "fields": [
+                        {
+                            "name": "P_HEIGHT",
+                            "label": "Height",
+                            "value": 2700
+                        },
+                        {
+                            "name": "P_WIDTH",
+                            "label": "Width",
+                            "value": 1200
+                        }
+                    ],
+                    "subsections": []
+                },
+                {
+                    "label": "Advanced",
+                    "depth": 0,
+                    "fields": [
+                        {
+                            "name": "P_EXT_QUANTITY",
+                            "label": "Quantité",
+                            "value": 1
+                        },
+                        {
+                            "name": "P_EXT_PRICE",
+                            "label": "Prix d'achat (Pièce)",
+                            "value": 1000
+                        },
+                        {
+                            "name": "P_EXT_DESRIPTION",
+                            "label": "Additinal description",
+                            "value": ""
+                        }
+                    ],
+                    "subsections": []
+                }
+            ],
+            "isConfigured": true,
+            "cartItemId": "336615-config-instock-1770735241245",
+            "quantity": 28,
+            "configuredAt": "2026-02-10T14:54:01.245Z",
+            "configHash": "{\"D_MOVABLE_SUPPLIER\":\"Parthos\",\"P_EXT_DESRIPTION\":\"\",\"P_EXT_PRICE\":1000,\"P_EXT_QUANTITY\":1,\"P_HEIGHT\":2700,\"P_WIDTH\":1200}",
+            "isBackorder": false,
+            "addedAt": "2026-02-10T14:54:01.245Z",
+            "source": "shop",
+            "isShopItem": true
+        },
+        {
+            "id": 11291,
+            "name": "Promante 15473 Constru-Fix cartouche 290ml - Colle silicone blanche à adhésion immédiate",
+            "active": true,
+            "default_code": "15473",
+            "barcode": "CON_15473",
+            "imos_table": "imos.conndesc",
+            "imos_name": "TUB_COL_SILIC_FORTE",
+            "matched_info": true,
+            "matched_date": "2025-06-27 14:59:25",
+            "matched_bom": true,
+            "ref_imos": "15473",
+            "product_variant_id": 11291,
+            "product_variant_ids": [
+                {
+                    "id": 11291,
+                    "display_name": "[15473] Promante 15473 Constru-Fix cartouche 290ml - Colle silicone blanche à adhésion immédiate",
+                    "default_code": "15473"
+                }
+            ],
+            "seller_ids": [
+                4971871,
+                4607197,
+                4278470,
+                4346776,
+                430117,
+                82054,
+                5056337
+            ],
+            "categ_id": {
+                "id": 15,
+                "display_name": "Tous / IMOS / Quincailleries"
+            },
+            "uom_id": {
+                "id": 1,
+                "display_name": "Pièce(s)"
+            },
+            "cfg_name": null,
+            "routing": "odoo",
+            "vendors": [
+                {
+                    "id": 4971871,
+                    "partner_id": [
+                        2049,
+                        "Mcs Belgium"
+                    ],
+                    "product_tmpl_id": [
+                        11581,
+                        "[15473] Promante 15473 Constru-Fix cartouche 290ml - Colle silicone blanche à adhésion immédiate"
+                    ],
+                    "product_id": null,
+                    "min_qty": 1,
+                    "price": 9.94,
+                    "delay": 1,
+                    "sequence": 0,
+                    "company_id": null
+                },
+                {
+                    "id": 4607197,
+                    "partner_id": [
+                        7780,
+                        "PROMANTE"
+                    ],
+                    "product_tmpl_id": [
+                        11581,
+                        "[15473] Promante 15473 Constru-Fix cartouche 290ml - Colle silicone blanche à adhésion immédiate"
+                    ],
+                    "product_id": null,
+                    "min_qty": 24,
+                    "price": 9.94,
+                    "delay": 1,
+                    "sequence": 1,
+                    "company_id": null
+                },
+                {
+                    "id": 4278470,
+                    "partner_id": [
+                        7780,
+                        "PROMANTE"
+                    ],
+                    "product_tmpl_id": [
+                        11581,
+                        "[15473] Promante 15473 Constru-Fix cartouche 290ml - Colle silicone blanche à adhésion immédiate"
+                    ],
+                    "product_id": null,
+                    "min_qty": 24,
+                    "price": 11.74,
+                    "delay": 7,
+                    "sequence": 2,
+                    "company_id": [
+                        4,
+                        "Tecnibo Lux SA"
+                    ]
+                },
+                {
+                    "id": 4346776,
+                    "partner_id": [
+                        2049,
+                        "Mcs Belgium"
+                    ],
+                    "product_tmpl_id": [
+                        11581,
+                        "[15473] Promante 15473 Constru-Fix cartouche 290ml - Colle silicone blanche à adhésion immédiate"
+                    ],
+                    "product_id": null,
+                    "min_qty": 300,
+                    "price": 9.94,
+                    "delay": 1,
+                    "sequence": 3,
+                    "company_id": [
+                        1,
+                        "Wood CAM SRL"
+                    ]
+                },
+                {
+                    "id": 430117,
+                    "partner_id": [
+                        2049,
+                        "Mcs Belgium"
+                    ],
+                    "product_tmpl_id": [
+                        11581,
+                        "[15473] Promante 15473 Constru-Fix cartouche 290ml - Colle silicone blanche à adhésion immédiate"
+                    ],
+                    "product_id": null,
+                    "min_qty": 1,
+                    "price": 9.97,
+                    "delay": 7,
+                    "sequence": 4,
+                    "company_id": [
+                        1,
+                        "Wood CAM SRL"
+                    ]
+                },
+                {
+                    "id": 82054,
+                    "partner_id": [
+                        2049,
+                        "Mcs Belgium"
+                    ],
+                    "product_tmpl_id": [
+                        11581,
+                        "[15473] Promante 15473 Constru-Fix cartouche 290ml - Colle silicone blanche à adhésion immédiate"
+                    ],
+                    "product_id": null,
+                    "min_qty": 24,
+                    "price": 9.97,
+                    "delay": 7,
+                    "sequence": 5,
+                    "company_id": [
+                        1,
+                        "Wood CAM SRL"
+                    ]
+                },
+                {
+                    "id": 5056337,
+                    "partner_id": [
+                        2049,
+                        "Mcs Belgium"
+                    ],
+                    "product_tmpl_id": [
+                        11581,
+                        "[15473] Promante 15473 Constru-Fix cartouche 290ml - Colle silicone blanche à adhésion immédiate"
+                    ],
+                    "product_id": null,
+                    "min_qty": 48,
+                    "price": 9.94,
+                    "delay": 0,
+                    "sequence": 6,
+                    "company_id": [
+                        1,
+                        "Wood CAM SRL"
+                    ]
+                }
+            ],
+            "vendor_partner_ids": [
+                2049,
+                7780
+            ],
+            "vendor_primary": {
+                "id": 4971871,
+                "partner_id": [
+                    2049,
+                    "Mcs Belgium"
+                ],
+                "product_tmpl_id": [
+                    11581,
+                    "[15473] Promante 15473 Constru-Fix cartouche 290ml - Colle silicone blanche à adhésion immédiate"
+                ],
+                "product_id": null,
+                "min_qty": 1,
+                "price": 9.94,
+                "delay": 1,
+                "sequence": 0,
+                "company_id": null
+            },
+            "stock": {
+                "qty_available": 167,
+                "free_qty": 121,
+                "virtual_available": 119,
+                "incoming_qty": 0,
+                "outgoing_qty": 48
+            },
+            "article_id": 11291,
+            "price": 0,
+            "type": "shop-item",
+            "customizable": false,
+            "dimensions": {},
+            "variables": {},
+            "inStock": true,
+            "stockQuantity": 167,
+            "hasCfg": null,
+            "cartQuantity": 0,
+            "remainingStock": 167,
+            "cartItemId": "11291-instock-1770735256611",
+            "quantity": 167,
+            "isBackorder": false,
+            "isConfigured": false,
+            "addedAt": "2026-02-10T14:54:16.611Z",
+            "source": "shop",
+            "isShopItem": true
+        },
+        {
+            "id": 11291,
+            "name": "Promante 15473 Constru-Fix cartouche 290ml - Colle silicone blanche à adhésion immédiate",
+            "active": true,
+            "default_code": "15473",
+            "barcode": "CON_15473",
+            "imos_table": "imos.conndesc",
+            "imos_name": "TUB_COL_SILIC_FORTE",
+            "matched_info": true,
+            "matched_date": "2025-06-27 14:59:25",
+            "matched_bom": true,
+            "ref_imos": "15473",
+            "product_variant_id": 11291,
+            "product_variant_ids": [
+                {
+                    "id": 11291,
+                    "display_name": "[15473] Promante 15473 Constru-Fix cartouche 290ml - Colle silicone blanche à adhésion immédiate",
+                    "default_code": "15473"
+                }
+            ],
+            "seller_ids": [
+                4971871,
+                4607197,
+                4278470,
+                4346776,
+                430117,
+                82054,
+                5056337
+            ],
+            "categ_id": {
+                "id": 15,
+                "display_name": "Tous / IMOS / Quincailleries"
+            },
+            "uom_id": {
+                "id": 1,
+                "display_name": "Pièce(s)"
+            },
+            "cfg_name": null,
+            "routing": "odoo",
+            "vendors": [
+                {
+                    "id": 4971871,
+                    "partner_id": [
+                        2049,
+                        "Mcs Belgium"
+                    ],
+                    "product_tmpl_id": [
+                        11581,
+                        "[15473] Promante 15473 Constru-Fix cartouche 290ml - Colle silicone blanche à adhésion immédiate"
+                    ],
+                    "product_id": null,
+                    "min_qty": 1,
+                    "price": 9.94,
+                    "delay": 1,
+                    "sequence": 0,
+                    "company_id": null
+                },
+                {
+                    "id": 4607197,
+                    "partner_id": [
+                        7780,
+                        "PROMANTE"
+                    ],
+                    "product_tmpl_id": [
+                        11581,
+                        "[15473] Promante 15473 Constru-Fix cartouche 290ml - Colle silicone blanche à adhésion immédiate"
+                    ],
+                    "product_id": null,
+                    "min_qty": 24,
+                    "price": 9.94,
+                    "delay": 1,
+                    "sequence": 1,
+                    "company_id": null
+                },
+                {
+                    "id": 4278470,
+                    "partner_id": [
+                        7780,
+                        "PROMANTE"
+                    ],
+                    "product_tmpl_id": [
+                        11581,
+                        "[15473] Promante 15473 Constru-Fix cartouche 290ml - Colle silicone blanche à adhésion immédiate"
+                    ],
+                    "product_id": null,
+                    "min_qty": 24,
+                    "price": 11.74,
+                    "delay": 7,
+                    "sequence": 2,
+                    "company_id": [
+                        4,
+                        "Tecnibo Lux SA"
+                    ]
+                },
+                {
+                    "id": 4346776,
+                    "partner_id": [
+                        2049,
+                        "Mcs Belgium"
+                    ],
+                    "product_tmpl_id": [
+                        11581,
+                        "[15473] Promante 15473 Constru-Fix cartouche 290ml - Colle silicone blanche à adhésion immédiate"
+                    ],
+                    "product_id": null,
+                    "min_qty": 300,
+                    "price": 9.94,
+                    "delay": 1,
+                    "sequence": 3,
+                    "company_id": [
+                        1,
+                        "Wood CAM SRL"
+                    ]
+                },
+                {
+                    "id": 430117,
+                    "partner_id": [
+                        2049,
+                        "Mcs Belgium"
+                    ],
+                    "product_tmpl_id": [
+                        11581,
+                        "[15473] Promante 15473 Constru-Fix cartouche 290ml - Colle silicone blanche à adhésion immédiate"
+                    ],
+                    "product_id": null,
+                    "min_qty": 1,
+                    "price": 9.97,
+                    "delay": 7,
+                    "sequence": 4,
+                    "company_id": [
+                        1,
+                        "Wood CAM SRL"
+                    ]
+                },
+                {
+                    "id": 82054,
+                    "partner_id": [
+                        2049,
+                        "Mcs Belgium"
+                    ],
+                    "product_tmpl_id": [
+                        11581,
+                        "[15473] Promante 15473 Constru-Fix cartouche 290ml - Colle silicone blanche à adhésion immédiate"
+                    ],
+                    "product_id": null,
+                    "min_qty": 24,
+                    "price": 9.97,
+                    "delay": 7,
+                    "sequence": 5,
+                    "company_id": [
+                        1,
+                        "Wood CAM SRL"
+                    ]
+                },
+                {
+                    "id": 5056337,
+                    "partner_id": [
+                        2049,
+                        "Mcs Belgium"
+                    ],
+                    "product_tmpl_id": [
+                        11581,
+                        "[15473] Promante 15473 Constru-Fix cartouche 290ml - Colle silicone blanche à adhésion immédiate"
+                    ],
+                    "product_id": null,
+                    "min_qty": 48,
+                    "price": 9.94,
+                    "delay": 0,
+                    "sequence": 6,
+                    "company_id": [
+                        1,
+                        "Wood CAM SRL"
+                    ]
+                }
+            ],
+            "vendor_partner_ids": [
+                2049,
+                7780
+            ],
+            "vendor_primary": {
+                "id": 4971871,
+                "partner_id": [
+                    2049,
+                    "Mcs Belgium"
+                ],
+                "product_tmpl_id": [
+                    11581,
+                    "[15473] Promante 15473 Constru-Fix cartouche 290ml - Colle silicone blanche à adhésion immédiate"
+                ],
+                "product_id": null,
+                "min_qty": 1,
+                "price": 9.94,
+                "delay": 1,
+                "sequence": 0,
+                "company_id": null
+            },
+            "stock": {
+                "qty_available": 167,
+                "free_qty": 121,
+                "virtual_available": 119,
+                "incoming_qty": 0,
+                "outgoing_qty": 48
+            },
+            "article_id": 11291,
+            "price": 0,
+            "type": "shop-item",
+            "customizable": false,
+            "dimensions": {},
+            "variables": {},
+            "inStock": true,
+            "stockQuantity": 167,
+            "hasCfg": null,
+            "cartQuantity": 0,
+            "remainingStock": 167,
+            "cartItemId": "11291-backorder-1770735256611",
+            "quantity": 133,
+            "isBackorder": true,
+            "isConfigured": false,
+            "addedAt": "2026-02-10T14:54:16.611Z",
+            "source": "shop",
+            "isShopItem": true
+        },
+        {
+            "id": 336615,
+            "name": "Cylindre 65/65 Duo (3 clés)",
+            "active": true,
+            "default_code": "D_CYL_DUO_65x65",
+            "barcode": "CON_D_CYL_DUO_65x65",
+            "imos_table": "imos.conndesc",
+            "imos_name": "ACCS_PORT_CY02_65x65_INOX",
+            "matched_info": true,
+            "matched_date": "2025-06-27 14:46:45",
+            "matched_bom": true,
+            "ref_imos": "D_CYL_DUO_65x65",
+            "product_variant_id": 336615,
+            "product_variant_ids": [
+                {
+                    "id": 336615,
+                    "display_name": "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)",
+                    "default_code": "D_CYL_DUO_65x65"
+                }
+            ],
+            "seller_ids": [
+                4892349,
+                5003658,
+                3392626,
+                4815803,
+                203576,
+                4817734,
+                4817735,
+                4817736,
+                4967585
+            ],
+            "categ_id": {
+                "id": 15,
+                "display_name": "Tous / IMOS / Quincailleries"
+            },
+            "uom_id": {
+                "id": 1,
+                "display_name": "Pièce(s)"
+            },
+            "cfg_name": "ACCS_PORT_CY02_65x65_INOX",
+            "routing": "odoo",
+            "vendors": [
+                {
+                    "id": 4892349,
+                    "partner_id": [
+                        803,
+                        "Lecot nv-sa"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 1,
+                    "price": 57.71,
+                    "delay": 1,
+                    "sequence": 1,
+                    "company_id": null
+                },
+                {
+                    "id": 5003658,
+                    "partner_id": [
+                        1,
+                        "Wood CAM SRL"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 0,
+                    "price": 0,
+                    "delay": 14,
+                    "sequence": 1,
+                    "company_id": [
+                        4,
+                        "Tecnibo Lux SA"
+                    ]
+                },
+                {
+                    "id": 3392626,
+                    "partner_id": [
+                        5270,
+                        "Fernand Georges"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 1,
+                    "price": 42.34,
+                    "delay": 14,
+                    "sequence": 2,
+                    "company_id": null
+                },
+                {
+                    "id": 4815803,
+                    "partner_id": [
+                        803,
+                        "Lecot nv-sa"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 1,
+                    "price": 51.47,
+                    "delay": 21,
+                    "sequence": 3,
+                    "company_id": null
+                },
+                {
+                    "id": 203576,
+                    "partner_id": [
+                        1,
+                        "Wood CAM SRL"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 0,
+                    "price": 0,
+                    "delay": 14,
+                    "sequence": 4,
+                    "company_id": [
+                        7,
+                        "Tecnibo Belgium SA"
+                    ]
+                },
+                {
+                    "id": 4817734,
+                    "partner_id": [
+                        774,
+                        "Häfele Belgium NV"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 0,
+                    "price": 0,
+                    "delay": 1,
+                    "sequence": 5,
+                    "company_id": [
+                        1,
+                        "Wood CAM SRL"
+                    ]
+                },
+                {
+                    "id": 4817735,
+                    "partner_id": [
+                        3005,
+                        "Häfele SE & Co KG"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 0,
+                    "price": 0,
+                    "delay": 1,
+                    "sequence": 6,
+                    "company_id": [
+                        4,
+                        "Tecnibo Lux SA"
+                    ]
+                },
+                {
+                    "id": 4817736,
+                    "partner_id": [
+                        2458,
+                        "Tecnibo Lux SA"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 0,
+                    "price": 0,
+                    "delay": 1,
+                    "sequence": 7,
+                    "company_id": [
+                        1,
+                        "Wood CAM SRL"
+                    ]
+                },
+                {
+                    "id": 4967585,
+                    "partner_id": [
+                        803,
+                        "Lecot nv-sa"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 30,
+                    "price": 41.37,
+                    "delay": 0,
+                    "sequence": 8,
+                    "company_id": [
+                        1,
+                        "Wood CAM SRL"
+                    ]
+                }
+            ],
+            "vendor_partner_ids": [
+                803,
+                1,
+                5270,
+                774,
+                3005,
+                2458
+            ],
+            "vendor_primary": {
+                "id": 4892349,
+                "partner_id": [
+                    803,
+                    "Lecot nv-sa"
+                ],
+                "product_tmpl_id": [
+                    339227,
+                    "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                ],
+                "product_id": null,
+                "min_qty": 1,
+                "price": 57.71,
+                "delay": 1,
+                "sequence": 1,
+                "company_id": null
+            },
+            "stock": {
+                "qty_available": 28,
+                "free_qty": 28,
+                "virtual_available": 28,
+                "incoming_qty": 0,
+                "outgoing_qty": 0
+            },
+            "article_id": 336615,
+            "price": 0,
+            "type": "shop-item",
+            "customizable": false,
+            "dimensions": {},
+            "variables": {},
+            "inStock": true,
+            "stockQuantity": 28,
+            "hasCfg": true,
+            "cartQuantity": 28,
+            "remainingStock": 0,
+            "D_MOVABLE_SUPPLIER": "FDS",
+            "P_HEIGHT": 2700,
+            "P_WIDTH": 1200,
+            "P_EXT_QUANTITY": 1,
+            "P_EXT_PRICE": 1000,
+            "P_EXT_DESRIPTION": "",
+            "cp_Id": "ACCS_PORT_CY02_65x65_INOX",
+            "articleDescription": {
+                "D_MOVABLE_SUPPLIER": {
+                    "label": "Fournisseur",
+                    "value": "FDS"
+                },
+                "P_HEIGHT": {
+                    "label": "Height",
+                    "value": 2700
+                },
+                "P_WIDTH": {
+                    "label": "Width",
+                    "value": 1200
+                },
+                "P_EXT_QUANTITY": {
+                    "label": "Quantité",
+                    "value": 1
+                },
+                "P_EXT_PRICE": {
+                    "label": "Prix d'achat (Pièce)",
+                    "value": 1000
+                },
+                "P_EXT_DESRIPTION": {
+                    "label": "Additinal description",
+                    "value": ""
+                }
+            },
+            "articleProperties": [
+                {
+                    "label": "Model",
+                    "depth": 0,
+                    "fields": [
+                        {
+                            "name": "D_MOVABLE_SUPPLIER",
+                            "label": "Fournisseur",
+                            "value": "FDS"
+                        }
+                    ],
+                    "subsections": []
+                },
+                {
+                    "label": "Dimensions",
+                    "depth": 0,
+                    "fields": [
+                        {
+                            "name": "P_HEIGHT",
+                            "label": "Height",
+                            "value": 2700
+                        },
+                        {
+                            "name": "P_WIDTH",
+                            "label": "Width",
+                            "value": 1200
+                        }
+                    ],
+                    "subsections": []
+                },
+                {
+                    "label": "Advanced",
+                    "depth": 0,
+                    "fields": [
+                        {
+                            "name": "P_EXT_QUANTITY",
+                            "label": "Quantité",
+                            "value": 1
+                        },
+                        {
+                            "name": "P_EXT_PRICE",
+                            "label": "Prix d'achat (Pièce)",
+                            "value": 1000
+                        },
+                        {
+                            "name": "P_EXT_DESRIPTION",
+                            "label": "Additinal description",
+                            "value": ""
+                        }
+                    ],
+                    "subsections": []
+                }
+            ],
+            "isConfigured": true,
+            "cartItemId": "336615-config-backorder-1770735282712",
+            "quantity": 2,
+            "configuredAt": "2026-02-10T14:54:42.712Z",
+            "configHash": "{\"D_MOVABLE_SUPPLIER\":\"FDS\",\"P_EXT_DESRIPTION\":\"\",\"P_EXT_PRICE\":1000,\"P_EXT_QUANTITY\":1,\"P_HEIGHT\":2700,\"P_WIDTH\":1200}",
+            "isBackorder": true,
+            "addedAt": "2026-02-10T14:54:42.712Z",
+            "source": "shop",
+            "isShopItem": true
+        },
+        {
+            "id": 336615,
+            "name": "Cylindre 65/65 Duo (3 clés)",
+            "active": true,
+            "default_code": "D_CYL_DUO_65x65",
+            "barcode": "CON_D_CYL_DUO_65x65",
+            "imos_table": "imos.conndesc",
+            "imos_name": "ACCS_PORT_CY02_65x65_INOX",
+            "matched_info": true,
+            "matched_date": "2025-06-27 14:46:45",
+            "matched_bom": true,
+            "ref_imos": "D_CYL_DUO_65x65",
+            "product_variant_id": 336615,
+            "product_variant_ids": [
+                {
+                    "id": 336615,
+                    "display_name": "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)",
+                    "default_code": "D_CYL_DUO_65x65"
+                }
+            ],
+            "seller_ids": [
+                4892349,
+                5003658,
+                3392626,
+                4815803,
+                203576,
+                4817734,
+                4817735,
+                4817736,
+                4967585
+            ],
+            "categ_id": {
+                "id": 15,
+                "display_name": "Tous / IMOS / Quincailleries"
+            },
+            "uom_id": {
+                "id": 1,
+                "display_name": "Pièce(s)"
+            },
+            "cfg_name": "ACCS_PORT_CY02_65x65_INOX",
+            "routing": "odoo",
+            "vendors": [
+                {
+                    "id": 4892349,
+                    "partner_id": [
+                        803,
+                        "Lecot nv-sa"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 1,
+                    "price": 57.71,
+                    "delay": 1,
+                    "sequence": 1,
+                    "company_id": null
+                },
+                {
+                    "id": 5003658,
+                    "partner_id": [
+                        1,
+                        "Wood CAM SRL"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 0,
+                    "price": 0,
+                    "delay": 14,
+                    "sequence": 1,
+                    "company_id": [
+                        4,
+                        "Tecnibo Lux SA"
+                    ]
+                },
+                {
+                    "id": 3392626,
+                    "partner_id": [
+                        5270,
+                        "Fernand Georges"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 1,
+                    "price": 42.34,
+                    "delay": 14,
+                    "sequence": 2,
+                    "company_id": null
+                },
+                {
+                    "id": 4815803,
+                    "partner_id": [
+                        803,
+                        "Lecot nv-sa"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 1,
+                    "price": 51.47,
+                    "delay": 21,
+                    "sequence": 3,
+                    "company_id": null
+                },
+                {
+                    "id": 203576,
+                    "partner_id": [
+                        1,
+                        "Wood CAM SRL"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 0,
+                    "price": 0,
+                    "delay": 14,
+                    "sequence": 4,
+                    "company_id": [
+                        7,
+                        "Tecnibo Belgium SA"
+                    ]
+                },
+                {
+                    "id": 4817734,
+                    "partner_id": [
+                        774,
+                        "Häfele Belgium NV"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 0,
+                    "price": 0,
+                    "delay": 1,
+                    "sequence": 5,
+                    "company_id": [
+                        1,
+                        "Wood CAM SRL"
+                    ]
+                },
+                {
+                    "id": 4817735,
+                    "partner_id": [
+                        3005,
+                        "Häfele SE & Co KG"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 0,
+                    "price": 0,
+                    "delay": 1,
+                    "sequence": 6,
+                    "company_id": [
+                        4,
+                        "Tecnibo Lux SA"
+                    ]
+                },
+                {
+                    "id": 4817736,
+                    "partner_id": [
+                        2458,
+                        "Tecnibo Lux SA"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 0,
+                    "price": 0,
+                    "delay": 1,
+                    "sequence": 7,
+                    "company_id": [
+                        1,
+                        "Wood CAM SRL"
+                    ]
+                },
+                {
+                    "id": 4967585,
+                    "partner_id": [
+                        803,
+                        "Lecot nv-sa"
+                    ],
+                    "product_tmpl_id": [
+                        339227,
+                        "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                    ],
+                    "product_id": null,
+                    "min_qty": 30,
+                    "price": 41.37,
+                    "delay": 0,
+                    "sequence": 8,
+                    "company_id": [
+                        1,
+                        "Wood CAM SRL"
+                    ]
+                }
+            ],
+            "vendor_partner_ids": [
+                803,
+                1,
+                5270,
+                774,
+                3005,
+                2458
+            ],
+            "vendor_primary": {
+                "id": 4892349,
+                "partner_id": [
+                    803,
+                    "Lecot nv-sa"
+                ],
+                "product_tmpl_id": [
+                    339227,
+                    "[D_CYL_DUO_65x65] Cylindre 65/65 Duo (3 clés)"
+                ],
+                "product_id": null,
+                "min_qty": 1,
+                "price": 57.71,
+                "delay": 1,
+                "sequence": 1,
+                "company_id": null
+            },
+            "stock": {
+                "qty_available": 28,
+                "free_qty": 28,
+                "virtual_available": 28,
+                "incoming_qty": 0,
+                "outgoing_qty": 0
+            },
+            "article_id": 336615,
+            "price": 0,
+            "type": "shop-item",
+            "customizable": false,
+            "dimensions": {},
+            "variables": {},
+            "inStock": true,
+            "stockQuantity": 28,
+            "hasCfg": true,
+            "cartQuantity": 28,
+            "remainingStock": 0,
+            "D_MOVABLE_SUPPLIER": "Parthos",
+            "P_HEIGHT": 2700,
+            "P_WIDTH": 1200,
+            "P_EXT_QUANTITY": 1,
+            "P_EXT_PRICE": 1000,
+            "P_EXT_DESRIPTION": "",
+            "cp_Id": "ACCS_PORT_CY02_65x65_INOX",
+            "articleDescription": {
+                "D_MOVABLE_SUPPLIER": {
+                    "label": "Fournisseur",
+                    "value": "Parthos"
+                },
+                "P_HEIGHT": {
+                    "label": "Height",
+                    "value": 2700
+                },
+                "P_WIDTH": {
+                    "label": "Width",
+                    "value": 1200
+                },
+                "P_EXT_QUANTITY": {
+                    "label": "Quantité",
+                    "value": 1
+                },
+                "P_EXT_PRICE": {
+                    "label": "Prix d'achat (Pièce)",
+                    "value": 1000
+                },
+                "P_EXT_DESRIPTION": {
+                    "label": "Additinal description",
+                    "value": ""
+                }
+            },
+            "articleProperties": [
+                {
+                    "label": "Model",
+                    "depth": 0,
+                    "fields": [
+                        {
+                            "name": "D_MOVABLE_SUPPLIER",
+                            "label": "Fournisseur",
+                            "value": "Parthos"
+                        }
+                    ],
+                    "subsections": []
+                },
+                {
+                    "label": "Dimensions",
+                    "depth": 0,
+                    "fields": [
+                        {
+                            "name": "P_HEIGHT",
+                            "label": "Height",
+                            "value": 2700
+                        },
+                        {
+                            "name": "P_WIDTH",
+                            "label": "Width",
+                            "value": 1200
+                        }
+                    ],
+                    "subsections": []
+                },
+                {
+                    "label": "Advanced",
+                    "depth": 0,
+                    "fields": [
+                        {
+                            "name": "P_EXT_QUANTITY",
+                            "label": "Quantité",
+                            "value": 1
+                        },
+                        {
+                            "name": "P_EXT_PRICE",
+                            "label": "Prix d'achat (Pièce)",
+                            "value": 1000
+                        },
+                        {
+                            "name": "P_EXT_DESRIPTION",
+                            "label": "Additinal description",
+                            "value": ""
+                        }
+                    ],
+                    "subsections": []
+                }
+            ],
+            "isConfigured": true,
+            "cartItemId": "336615-config-backorder-1770735288346",
+            "quantity": 2,
+            "configuredAt": "2026-02-10T14:54:48.346Z",
+            "configHash": "{\"D_MOVABLE_SUPPLIER\":\"Parthos\",\"P_EXT_DESRIPTION\":\"\",\"P_EXT_PRICE\":1000,\"P_EXT_QUANTITY\":1,\"P_HEIGHT\":2700,\"P_WIDTH\":1200}",
+            "isBackorder": true,
+            "addedAt": "2026-02-10T14:54:48.346Z",
+            "source": "shop",
+            "isShopItem": true
+        }
+    ],
+    "knobs": {
+        "picking_type_id": 95,
+        "notes": "Purchase Order created via Tecnibo RP"
+    },
+    "date_order": "2020-04-13",
+    "date_planned": "2020-04-08",
+    "origin": "[200091] Documentation know system",
+    "project_id": 1993,
+    "phase_id": 7267,
+    "user_id": 446,
+    "company_id": 11,
+    "confirm": false
+}
+

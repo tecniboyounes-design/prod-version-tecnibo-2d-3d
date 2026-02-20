@@ -1,12 +1,11 @@
 // src/app/api/odoo/smart-products/lib/odoo.js
 import axios from "axios";
 
-const ODOO_BASE = process.env.ODOO_BASE_URL || "https://erptest.tecnibo.com";
+const ODOO_BASE = "https://erptest.tecnibo.com";
 
 function log(...a) {
   console.log("[/api/odoo/smart-products][odoo]", ...a);
 }
-
 
 export function isAccessError(odooErr) {
   const name = odooErr?.data?.name || "";
@@ -75,54 +74,35 @@ function uniqNums(arr) {
 }
 
 /**
- * Build an Odoo context that doesn't accidentally switch companies (the root cause of your "stock = 0" issue).
- * Fixes:
- * - parses current_company whether it's number OR [id,name] OR object
- * - prefers user_context.allowed_company_id/company_id
- * - sets standard keys: allowed_company_ids, allowed_company_id, company_id
- * - preserves user_context defaults (lang/tz/etc.)
+ * Build an Odoo context that doesn't accidentally switch companies.
  */
+
 function contextOf({ model, session, companyIdOverride, locationId }) {
   const uc = session?.user_context || {};
   const companies = session?.user_companies || {};
 
-  // Allowed companies: prefer what Odoo provides in user_context
   const allowedFromUc = uniqNums(Array.isArray(uc.allowed_company_ids) ? uc.allowed_company_ids : []);
-
-  // Fallback: user_companies.allowed_companies keys
   const allowedFromUserCompanies = uniqNums(Object.keys(companies?.allowed_companies || {}).map(Number));
-
   const allowedIds = allowedFromUc.length ? allowedFromUc : allowedFromUserCompanies;
 
-  // Active company candidates
   const override = asId(companyIdOverride);
   const ucActive = asId(uc.allowed_company_id ?? uc.company_id);
   const currentCompany = asId(companies.current_company);
 
-  // Pick active company:
-  // 1) override if allowed
-  // 2) uc active if allowed
-  // 3) current_company if allowed
-  // 4) first allowed
   let companyId = null;
   if (override && allowedIds.includes(override)) companyId = override;
   else if (ucActive && allowedIds.includes(ucActive)) companyId = ucActive;
   else if (currentCompany && allowedIds.includes(currentCompany)) companyId = currentCompany;
   else companyId = allowedIds[0] ?? null;
 
-  // If allowedIds is empty (weird session), still set company keys consistently
   const finalAllowedIds = allowedIds.length ? allowedIds : companyId ? [companyId] : [];
 
   return {
-    // keep Odoo defaults
     ...uc,
-
-    // enforce basics
     lang: uc.lang || "en_US",
     tz: uc.tz || "Africa/Casablanca",
     uid: asId(uc.uid) ?? asId(session?.uid) ?? 0,
 
-    // standard company keys Odoo actually uses
     allowed_company_ids: finalAllowedIds,
     allowed_company_id: companyId ?? null,
     company_id: companyId ?? null,
@@ -167,8 +147,8 @@ export async function smartSearchOne({
   limit = 80,
   offset = 0,
   requireImosTable = true,
-  sessionInfo, // cached
-  companyIdOverride, // optional query param
+  sessionInfo,
+  companyIdOverride,
 }) {
   try {
     const fg = await fieldsGet({ model, sessionId });
@@ -214,7 +194,7 @@ export async function smartSearchOne({
       ...(has("product_variant_id")
         ? { product_variant_id: { fields: { id: {}, display_name: {}, default_code: {} } } }
         : {}),
-      ...(has("seller_ids") ? { seller_ids: {} } : {}), // ✅ IMPORTANT: vendor ids
+      ...(has("seller_ids") ? { seller_ids: {} } : {}),
       ...(has("imos_table") ? { imos_table: {} } : {}),
       ...(has("categ_id") ? { categ_id: { fields: { display_name: {} } } } : {}),
       ...(has("uom_id") ? { uom_id: { fields: { display_name: {} } } } : {}),
@@ -268,6 +248,11 @@ export async function smartSearchOne({
   }
 }
 
+/**
+ * Batch match templates by a matchField.
+ * ✅ Now supports matchField="id" for your ODOO:PRODUCT rows.
+ */
+
 export async function fetchTemplatesByMatchFieldBatched({
   sessionId,
   model = "product.template",
@@ -276,8 +261,8 @@ export async function fetchTemplatesByMatchFieldBatched({
   chunkSize = 80,
   requireImosTable = true,
   limitPerChunk = 5000,
-  sessionInfo, // cached
-  companyIdOverride, // optional
+  sessionInfo,
+  companyIdOverride,
 }) {
   const t0 = Date.now();
 
@@ -297,6 +282,8 @@ export async function fetchTemplatesByMatchFieldBatched({
     };
   }
 
+  const isIdMatch = matchField === "id";
+
   const fg = await fieldsGet({ model, sessionId });
   if (fg?.error) {
     return {
@@ -310,7 +297,8 @@ export async function fetchTemplatesByMatchFieldBatched({
   const fields = fg?.result || fg;
   const has = (f) => !!fields?.[f];
 
-  if (!has(matchField)) {
+  // ✅ Special-case: "id" is not a real fields_get key on many models
+  if (!isIdMatch && !has(matchField)) {
     return {
       ok: false,
       status: 400,
@@ -337,7 +325,7 @@ export async function fetchTemplatesByMatchFieldBatched({
     ...(has("matched_info") ? { matched_info: {} } : {}),
     ...(has("matched_date") ? { matched_date: {} } : {}),
     ...(has("matched_bom") ? { matched_bom: {} } : {}),
-    [matchField]: {},
+    ...(isIdMatch ? {} : { [matchField]: {} }),
 
     ...(has("product_variant_id")
       ? { product_variant_id: { fields: { id: {}, display_name: {}, default_code: {} } } }
@@ -347,7 +335,7 @@ export async function fetchTemplatesByMatchFieldBatched({
       ? { product_variant_ids: { fields: { id: {}, display_name: {}, default_code: {} } } }
       : {}),
 
-    ...(has("seller_ids") ? { seller_ids: {} } : {}), // ✅ IMPORTANT: vendor ids
+    ...(has("seller_ids") ? { seller_ids: {} } : {}),
 
     ...(has("categ_id") ? { categ_id: { fields: { id: {}, display_name: {} } } } : {}),
     ...(has("uom_id") ? { uom_id: { fields: { id: {}, display_name: {} } } } : {}),
@@ -358,8 +346,9 @@ export async function fetchTemplatesByMatchFieldBatched({
   const chunks = [];
   for (let i = 0; i < values.length; i += chunkSize) chunks.push(values.slice(i, i + chunkSize));
 
+  // keys are strings (your DB article_id is text)
   const byValue = new Map();
-  values.forEach((v) => byValue.set(v, []));
+  values.forEach((v) => byValue.set(String(v), []));
 
   let rpcCount = 0;
   const tRpc0 = Date.now();
@@ -369,7 +358,12 @@ export async function fetchTemplatesByMatchFieldBatched({
   for (let i = 0; i < chunks.length; i++) {
     const part = chunks[i];
 
-    let domain = [[matchField, "in", part]];
+    const partIds = isIdMatch ? part.map((x) => Number(x)).filter(Boolean) : part;
+
+    let domain = isIdMatch
+      ? [["id", "in", partIds]]
+      : [[matchField, "in", part]];
+
     if (domainBase.length === 1) domain = ["&", domainBase[0], ...domain];
     if (domainBase.length > 1) domain = domainBase.reduceRight((acc, d) => ["&", d, ...acc], domain);
 
@@ -414,10 +408,12 @@ export async function fetchTemplatesByMatchFieldBatched({
 
     const records = data?.result?.records || [];
     for (const rec of records) {
-      const key = rec?.[matchField];
-      if (!key) continue;
-      if (!byValue.has(key)) byValue.set(key, []);
-      byValue.get(key).push(rec);
+      const key = isIdMatch ? rec?.id : rec?.[matchField];
+      if (key == null) continue;
+
+      const keyStr = String(key);
+      if (!byValue.has(keyStr)) byValue.set(keyStr, []);
+      byValue.get(keyStr).push(rec);
     }
   }
 
@@ -519,7 +515,7 @@ export async function fetchProductStockByIdsBatched({
           offset: 0,
           limit: part.length,
           count_limit: 10001,
-          context: ctx, // ✅ IMPORTANT: now safe because contextOf is fixed
+          context: ctx,
         },
       },
     };
@@ -562,11 +558,12 @@ export async function fetchProductStockByIdsBatched({
   };
 }
 
+
+
 /**
  * ✅ Supplierinfo hydration by IDs
- * Input: sellerIds = product.template.seller_ids (list of product.supplierinfo ids)
- * Output: by_id map for quick attach in route.js
  */
+
 
 export async function fetchSupplierinfoByIdsBatched({
   sessionId,
@@ -630,7 +627,7 @@ export async function fetchSupplierinfoByIdsBatched({
 
     const data = await rpcPost({ url, payload, sessionId });
     rpcCalls++;
-   
+
     if (data?.error) {
       return {
         ok: false,

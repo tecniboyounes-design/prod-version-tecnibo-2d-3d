@@ -1,0 +1,146 @@
+{
+  "sections": [
+    {
+      "id": "mlhveww26zjgfoz0den",
+      "type": "NONE",
+      "render": "section",
+      "name": "D_EXT_CONFIGURATEUR",
+      "Label": "Porte sous traitée",
+      "children": [
+        {
+          "id": "mlhveww2fjkum3q8brf",
+          "render": "section",
+          "type": "NONE",
+          "name": "P_ART_MODEL",
+          "label": "Glass",
+          "children": [
+            {
+              "id": "mlhveww2vahcohyakja",
+              "render": "section",
+              "type": "NONE",
+              "grid": "20",
+              "name": "P_GLASS",
+              "label": "Glass type",
+              "LabelTop": "TRUE",
+              "children": [
+                {
+                  "render": "field",
+                  "id": "mlhveww2onu3xb8kqhl",
+                  "name": "NP_GLASS_FLTR",
+                  "label": "Type",
+                  "fieldType": "COMBOBOX",
+                  "combo": {
+                    "id": "mlhveww2xy3o06g2uq",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "P_GLASS_TYPE_DATA",
+                    "dynamic": false,
+                    "defaultValue": "F"
+                  },
+                  "variables": [],
+                  "descriptions": []
+                },
+                {
+                  "render": "field",
+                  "id": "mlhveww2ki1y73wlr6",
+                  "name": "NP_GLASS_TYPE",
+                  "label": "Glass",
+                  "fieldType": "COMBOBOX",
+                  "ImpactedVariable": [
+                    "P_MAT_WP_T100_S1",
+                    "P_SRF_EXT_WP_T100_S1",
+                    "P_MAT_WP_T100_S2",
+                    "P_SRF_EXT_WP_T100_S2"
+                  ],
+                  "combo": {
+                    "id": "mlhveww2m8xwkbbuc2",
+                    "type": "SELECT",
+                    "code": null,
+                    "content": null,
+                    "source": "P_GLASS_DATA",
+                    "dynamic": false,
+                    "defaultValue": "GLASS_6_6_2"
+                  },
+                  "variables": [],
+                  "descriptions": [],
+                  "dependencies": [
+                    {
+                      "nod": 1,
+                      "action": "FILTER",
+                      "roles": [
+                        {
+                          "operator": "OR",
+                          "roles": [
+                            {
+                              "leftValue": "$NP_GLASS_FLTR.value",
+                              "comparisonType": "contains",
+                              "rightValue": "$attributes.type",
+                              "ruleType": "advanced"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mlhveww2xeuqtj1h1yi",
+          "render": "section",
+          "type": "ACCORDION",
+          "name": "P_DIMENSIONS",
+          "label": "Dimensions",
+          "children": [
+            {
+              "render": "field",
+              "id": "mlhveww2bk8iewyyufm",
+              "name": "P_HEIGHT",
+              "label": "Height",
+              "fieldType": "INPUT",
+              "ImpactedVariable": [
+                "HSP"
+              ],
+              "input": {
+                "id": "mlhveww2fa3ob0qlq1r",
+                "min": 100,
+                "max": 3050,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 2700,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            },
+            {
+              "render": "field",
+              "id": "mlhveww23rgclif730q",
+              "name": "P_WIDTH",
+              "label": "Width",
+              "fieldType": "INPUT",
+              "input": {
+                "id": "mlhveww283pqublnok2",
+                "min": 100,
+                "max": 3000,
+                "type": "TEXT",
+                "validation": null,
+                "defaultValue": 1200,
+                "attributes": null
+              },
+              "variables": [],
+              "descriptions": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "meta": {
+    "id": "article-1770804724482-fcca5783",
+    "name": "NP_GLASS_CUT"
+  }
+}

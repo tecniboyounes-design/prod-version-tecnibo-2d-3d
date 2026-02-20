@@ -74,7 +74,7 @@ function uniqArr(arr) {
 }
 
 /**
- * ✅ FIXED: normalize seller_ids from ALL Odoo shapes:
+ * ✅ normalize seller_ids from ALL Odoo shapes:
  * - [1,2,3]
  * - { records: [{id:1},{id:2}], length: 2 }
  * - { ids: [1,2] }
@@ -116,7 +116,6 @@ function attachVendorsFromSupplierinfo(templateRecs, supplierById) {
       .map((id) => {
         const s = supplierById?.[id];
         if (!s) {
-          // keep placeholders so client can see "we had seller ids, supplier read failed/missing"
           return {
             id,
             partner_id: null,
@@ -214,12 +213,10 @@ function flattenMatchedRecordsWithCfg(byValue, cfgByValue, routingByValue, match
       const idx = seen.get(id);
       const existing = out[idx];
 
-      // keep first non-empty cfg_name
       if ((existing?.cfg_name == null || existing?.cfg_name === "") && cfgName) {
         out[idx] = { ...existing, cfg_name: cfgName };
       }
 
-      // keep first non-empty routing
       if ((existing?.routing == null || existing?.routing === "") && routing) {
         out[idx] = { ...out[idx], routing };
       }
@@ -236,10 +233,8 @@ function flattenMatchedRecordsWithCfg(byValue, cfgByValue, routingByValue, match
 function normalizeVariantIdOnTemplateRecord(rec) {
   const out = { ...rec };
 
-  // 1) prefer explicit product_variant_id m2o
   const pv1 = m2oToId(out.product_variant_id);
 
-  // 2) fallback from product_variant_ids
   let pv2 = null;
   if (Array.isArray(out.product_variant_ids) && out.product_variant_ids.length) {
     const first = out.product_variant_ids[0];
@@ -261,6 +256,15 @@ function normalizeStockRow(s) {
     incoming_qty: s?.incoming_qty ?? null,
     outgoing_qty: s?.outgoing_qty ?? null,
   };
+}
+
+/**
+ * Detect if a helper row is a "special product row" (no ref_imos).
+ * We key it by order_id = ODOO:PRODUCT (as you inserted).
+ */
+function isOdooProductRow(row) {
+  const oid = String(row?.order_id || "").toUpperCase();
+  return oid.includes("ODOO:PRODUCT");
 }
 
 /**
@@ -296,7 +300,6 @@ export async function GET(request) {
     const companyIdOverrideRaw = url.searchParams.get("company_id");
     const companyIdOverride = companyIdOverrideRaw ? Number(companyIdOverrideRaw) : undefined;
 
-    // optional logging
     const shouldLog = url.searchParams.get("log") === "1";
     const logFile = (url.searchParams.get("log_file") || makeDefaultLogFile()).trim();
 
@@ -306,7 +309,7 @@ export async function GET(request) {
     const tSess1 = Date.now();
 
     // -------------------------------
-    // SMART mode
+    // SMART mode (unchanged)
     // -------------------------------
     if (q && mode !== "ws" && mode !== "flat") {
       const model = (url.searchParams.get("model") || DEFAULT_MODEL).trim();
@@ -378,7 +381,6 @@ export async function GET(request) {
             context_company_id: suppRes.payload.context_company_id,
           };
         } else {
-          // still attach empty vendor fields
           records = records.map((r) => ({
             ...r,
             vendors: [],
@@ -406,7 +408,7 @@ export async function GET(request) {
         model,
         q,
         ...(result.payload || {}),
-        records, // override with hydrated + normalized
+        records,
         meta: {
           ...(result.payload?.meta || {}),
           vendors: includeVendors ? vendorMeta : null,
@@ -432,26 +434,22 @@ export async function GET(request) {
     const model = (url.searchParams.get("model") || DEFAULT_MODEL).trim();
 
     // DB controls
-    // ✅ FIX: limit_rows=0 should mean "no limit", not "return 0 rows"
     const limitRowsRaw = url.searchParams.get("limit_rows");
     let limitRows = limitRowsRaw == null ? 500 : Number(limitRowsRaw);
     if (!Number.isFinite(limitRows)) limitRows = 500;
-    if (limitRows === 0) limitRows = 1000000; // "no limit" mode
+    if (limitRows === 0) limitRows = 1000000;
 
     const offsetRows = Number(url.searchParams.get("offset_rows") || 0);
 
-    // DB filter: ORDER_ID ILIKE %WS% by default
     const wsLike = (url.searchParams.get("ws_like") || "WS").trim();
 
-    // Odoo controls
     const includeOdoo = url.searchParams.get("include_odoo") !== "0";
     const requireImosTable = url.searchParams.get("imos_table") !== "0";
     const onlyCategory = (url.searchParams.get("only_category") || "").trim();
 
-    // deterministic matching field (default: ref_imos)
+    // default deterministic match field for normal rows
     const matchField = (url.searchParams.get("match_field") || "ref_imos").trim();
 
-    // batching controls
     const odooChunk = Math.max(1, Number(url.searchParams.get("odoo_chunk") || 80));
     const limitPerChunk = Math.max(
       1,
@@ -488,6 +486,9 @@ export async function GET(request) {
     log("Step1 DB:", { rows: conndescRows.length, ms: tDb1 - tDb0 });
 
     // cfg_name + routing map by article_id (match value)
+    // IMPORTANT: we key by the "value we will match with"
+    // - normal: key = row.article_id (ref_imos values)
+    // - special product: key = row.article_id (template id)
     const cfgByValue = new Map();
     const routingByValue = new Map();
 
@@ -495,7 +496,6 @@ export async function GET(request) {
       const k = r?.article_id;
       if (!k) continue;
 
-      // cfg_name (keep first non-empty)
       if (!cfgByValue.has(k)) cfgByValue.set(k, r?.cfg_name ?? null);
       else {
         const existing = cfgByValue.get(k);
@@ -504,7 +504,6 @@ export async function GET(request) {
         }
       }
 
-      // routing (keep first non-null, fallback to 'odoo')
       if (!routingByValue.has(k)) routingByValue.set(k, r?.routing ?? "odoo");
       else {
         const existingR = routingByValue.get(k);
@@ -524,6 +523,18 @@ export async function GET(request) {
       grouped.categories = { [onlyCategory]: only };
     }
 
+    const categoryByValue = new Map();
+    for (const [cat, rows] of Object.entries(grouped.categories || {})) {
+      for (const row of rows || []) {
+        const key = row?.article_id;
+        if (key && !categoryByValue.has(key)) categoryByValue.set(key, cat);
+      }
+    }
+    for (const row of grouped.uncategorized || []) {
+      const key = row?.article_id;
+      if (key && !categoryByValue.has(key)) categoryByValue.set(key, "uncategorized");
+    }
+
     const flags = Object.keys(grouped.categories || {}).filter(Boolean);
     const flagDomain = buildOrDomainFromFlags("imos_order_id", flags);
 
@@ -534,25 +545,49 @@ export async function GET(request) {
       ms: tCat1 - tCat0,
     });
 
-    // Step 3: unique match values
+    // Step 3: split uniq values into:
+    // - normalRefValues: match by matchField (default ref_imos)
+    // - productIdValues: match by id (special order_id=ODOO:PRODUCT)
     const tUniq0 = Date.now();
     const allRows = Object.values(grouped.categories).flat().concat(grouped.uncategorized);
-    const values = uniq(allRows.map((r) => r.article_id).filter(Boolean));
-    const tUniq1 = Date.now();
-    log("Step3 Uniq:", { unique_values: values.length, ms: tUniq1 - tUniq0 });
 
-    // Step 4: batch match in Odoo by matchField
+    const normalRefValues = uniq(
+      allRows
+        .filter((r) => !isOdooProductRow(r))
+        .map((r) => r.article_id)
+        .filter(Boolean)
+        .map(String)
+    );
+
+    const productIdValues = uniq(
+      allRows
+        .filter((r) => isOdooProductRow(r))
+        .map((r) => r.article_id)
+        .filter(Boolean)
+        .map(String)
+    );
+
+    const tUniq1 = Date.now();
+    log("Step3 Uniq:", {
+      unique_ref_values: normalRefValues.length,
+      unique_product_ids: productIdValues.length,
+      ms: tUniq1 - tUniq0,
+    });
+
+    // Step 4: two-pass batch match in Odoo:
+    // A) normal rows -> matchField (ref_imos)
+    // B) ODOO products -> id
     const tOdoo0 = Date.now();
     let byValue = {};
     let matchStats = { matched: 0, unmatched: 0, ambiguous: 0 };
     let odooMeta = null;
 
     if (includeOdoo) {
-      const res = await fetchTemplatesByMatchFieldBatched({
+      const resA = await fetchTemplatesByMatchFieldBatched({
         sessionId,
         model,
         matchField,
-        values,
+        values: normalRefValues,
         chunkSize: odooChunk,
         requireImosTable,
         limitPerChunk,
@@ -560,13 +595,13 @@ export async function GET(request) {
         companyIdOverride,
       });
 
-      if (!res.ok) {
-        if (res.details && isAccessError(res.details)) {
+      if (!resA.ok) {
+        if (resA.details && isAccessError(resA.details)) {
           const payload = {
             success: false,
             mode: flatMode ? "flat" : "ws",
-            error: res.error || "Access denied by Odoo",
-            details: res.details,
+            error: resA.error || "Access denied by Odoo",
+            details: resA.details,
             timing_ms: { session: tSess1 - tSess0, total: Date.now() - tAll0 },
           };
           if (shouldLog) await writeLastResponseToFile({ filePath: logFile, payload });
@@ -576,24 +611,82 @@ export async function GET(request) {
         const payload = {
           success: false,
           mode: flatMode ? "flat" : "ws",
-          error: res.error || "Odoo batch match failed",
-          details: res.details || null,
+          error: resA.error || "Odoo batch match failed",
+          details: resA.details || null,
           timing_ms: { session: tSess1 - tSess0, total: Date.now() - tAll0 },
         };
         if (shouldLog) await writeLastResponseToFile({ filePath: logFile, payload });
-        return NextResponse.json(payload, { status: res.status || 502, headers: corsHeaders });
+        return NextResponse.json(payload, { status: resA.status || 502, headers: corsHeaders });
       }
 
-      byValue = res.payload.by_value || {};
-      matchStats = res.payload.stats || matchStats;
+      const resB = await fetchTemplatesByMatchFieldBatched({
+        sessionId,
+        model,
+        matchField: "id",
+        values: productIdValues,
+        chunkSize: odooChunk,
+        requireImosTable: false, // ✅ IMPORTANT: products might not have imos_table
+        limitPerChunk,
+        sessionInfo,
+        companyIdOverride,
+      });
+
+      if (!resB.ok) {
+        if (resB.details && isAccessError(resB.details)) {
+          const payload = {
+            success: false,
+            mode: flatMode ? "flat" : "ws",
+            error: resB.error || "Access denied by Odoo",
+            details: resB.details,
+            timing_ms: { session: tSess1 - tSess0, total: Date.now() - tAll0 },
+          };
+          if (shouldLog) await writeLastResponseToFile({ filePath: logFile, payload });
+          return NextResponse.json(payload, { status: 403, headers: corsHeaders });
+        }
+
+        const payload = {
+          success: false,
+          mode: flatMode ? "flat" : "ws",
+          error: resB.error || "Odoo batch match failed (products by id)",
+          details: resB.details || null,
+          timing_ms: { session: tSess1 - tSess0, total: Date.now() - tAll0 },
+        };
+        if (shouldLog) await writeLastResponseToFile({ filePath: logFile, payload });
+        return NextResponse.json(payload, { status: resB.status || 502, headers: corsHeaders });
+      }
+
+      byValue = {
+        ...(resA.payload.by_value || {}),
+        ...(resB.payload.by_value || {}),
+      };
+
+      const a = resA.payload.stats || { matched: 0, unmatched: 0, ambiguous: 0 };
+      const b = resB.payload.stats || { matched: 0, unmatched: 0, ambiguous: 0 };
+      matchStats = {
+        matched: a.matched + b.matched,
+        unmatched: a.unmatched + b.unmatched,
+        ambiguous: a.ambiguous + b.ambiguous,
+      };
+
       odooMeta = {
-        match_field: res.payload.match_field,
-        chunks: res.payload.chunks,
-        rpc_calls: res.payload.rpc_calls,
-        total_values: res.payload.total_values,
-        domain_base: res.payload.domain_base,
-        timing_ms: res.payload.timing_ms,
-        context_company_id: res.payload.context_company_id,
+        normal: {
+          match_field: resA.payload.match_field,
+          chunks: resA.payload.chunks,
+          rpc_calls: resA.payload.rpc_calls,
+          total_values: resA.payload.total_values,
+          domain_base: resA.payload.domain_base,
+          timing_ms: resA.payload.timing_ms,
+          context_company_id: resA.payload.context_company_id,
+        },
+        products: {
+          match_field: resB.payload.match_field,
+          chunks: resB.payload.chunks,
+          rpc_calls: resB.payload.rpc_calls,
+          total_values: resB.payload.total_values,
+          domain_base: resB.payload.domain_base,
+          timing_ms: resB.payload.timing_ms,
+          context_company_id: resB.payload.context_company_id,
+        },
       };
     }
 
@@ -652,8 +745,56 @@ export async function GET(request) {
     // FLAT MODE OUTPUT
     // -------------------------------
     if (flatMode) {
+      // We can't use a single matchField here because keys are mixed (ref_imos values + id values).
+      // So we attach cfg/routing directly from maps keyed by DB "article_id" values.
       const recordsFlatRaw = includeOdoo
-        ? flattenMatchedRecordsWithCfg(byValue, cfgByValue, routingByValue, matchField)
+        ? (() => {
+            const out = [];
+            const seen = new Map();
+
+            for (const bucket of Object.values(byValue || {})) {
+              const records = bucket?.records || [];
+              for (const r0 of records) {
+                const r = { ...r0 };
+
+                // derive "value key" depending on which bucket matched:
+                // - id match: key is String(r.id)
+                // - ref_imos match: key is r[matchField]
+                // But our DB uses article_id as the value, and for product rows article_id == template id == r.id.
+                // For normal rows article_id == r[matchField] (ref_imos)
+                const keyCandidate =
+                  String(r?.id) in (byValue || {}) ? String(r?.id) : String(r?.[matchField] ?? "");
+
+                // we will still map cfg/routing by "article_id values" only, so:
+                // if we matched by id, use r.id; else use r[matchField]
+                const valueKey = r?.id && productIdValues.includes(String(r.id))
+                  ? String(r.id)
+                  : String(r?.[matchField] ?? "");
+
+                r.cfg_name = cfgByValue.get(valueKey) ?? null;
+                r.routing = routingByValue.get(valueKey) ?? "odoo";
+                r._match_value = valueKey;
+
+                const id = r?.id;
+                if (!id) continue;
+
+                if (!seen.has(id)) {
+                  seen.set(id, out.length);
+                  out.push(r);
+                } else {
+                  const idx = seen.get(id);
+                  const existing = out[idx];
+                  if ((existing?.cfg_name == null || existing?.cfg_name === "") && r.cfg_name) {
+                    out[idx] = { ...existing, cfg_name: r.cfg_name };
+                  }
+                  if ((existing?.routing == null || existing?.routing === "") && r.routing) {
+                    out[idx] = { ...out[idx], routing: r.routing };
+                  }
+                }
+              }
+            }
+            return out;
+          })()
         : [];
 
       let recordsFlat = recordsFlatRaw
@@ -662,9 +803,13 @@ export async function GET(request) {
           ...r,
           cfg_name: r.cfg_name ?? null,
           routing: r.routing ?? "odoo",
+          category:
+            categoryByValue.get(r?._match_value) ??
+            categoryByValue.get(String(r?.[matchField] ?? "")) ??
+            "uncategorized",
         }));
 
-      // ✅ FIX: attach vendors whenever includeVendors is on (even if supplierinfo fetch failed)
+      // vendors
       if (includeOdoo && includeVendors) {
         recordsFlat = attachVendorsFromSupplierinfo(recordsFlat, supplierById);
       } else {
@@ -676,7 +821,7 @@ export async function GET(request) {
         }));
       }
 
-      // ✅ Stock merge (optional)
+      // stock (optional)
       let stockMeta = null;
       const tStock0 = Date.now();
 
@@ -739,7 +884,8 @@ export async function GET(request) {
         stats: includeOdoo ? matchStats : { matched: 0, unmatched: 0, ambiguous: 0 },
         meta: {
           rows_from_conndesc: conndescRows.length,
-          unique_values: values.length,
+          unique_ref_values: normalRefValues.length,
+          unique_product_ids: productIdValues.length,
           include_odoo: includeOdoo,
           require_imos_table: requireImosTable,
           include_stock: includeStock,
@@ -775,7 +921,7 @@ export async function GET(request) {
     const attachOdoo = (row) => {
       if (!includeOdoo) return row;
 
-      const key = row.article_id;
+      const key = String(row.article_id || "");
       const found = byValue[key];
 
       if (!found) {
@@ -784,7 +930,7 @@ export async function GET(request) {
           odoo: {
             ok: true,
             model,
-            match_field: matchField,
+            match_field: isOdooProductRow(row) ? "id" : matchField,
             value: key,
             length: 0,
             records: [],
@@ -804,7 +950,6 @@ export async function GET(request) {
             routing: row?.routing ?? "odoo",
           }));
 
-        // ✅ FIX: attach vendors whenever includeVendors is on
         if (includeVendors) {
           recs = attachVendorsFromSupplierinfo(recs, supplierById);
         } else {
@@ -833,7 +978,8 @@ export async function GET(request) {
       mode: "ws",
       meta: {
         rows_from_conndesc: conndescRows.length,
-        unique_values: values.length,
+        unique_ref_values: normalRefValues.length,
+        unique_product_ids: productIdValues.length,
         include_odoo: includeOdoo,
         require_imos_table: requireImosTable,
         include_vendors: includeVendors,
@@ -864,7 +1010,7 @@ export async function GET(request) {
         total: Date.now() - tAll0,
       },
     };
-
+    
     if (shouldLog) await writeLastResponseToFile({ filePath: logFile, payload });
     return NextResponse.json(payload, { status: 200, headers: corsHeaders });
   } catch (err) {

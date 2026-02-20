@@ -17,6 +17,7 @@ import PriceChangeRoundedIcon from '@mui/icons-material/PriceChangeRounded';
 import ShoppingBagRoundedIcon from '@mui/icons-material/ShoppingBagRounded';
 import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
 import CloudUploadRoundedIcon from '@mui/icons-material/CloudUploadRounded';
+import SyncAltRoundedIcon from '@mui/icons-material/SyncAltRounded';
 
 /** Prefer NEXT_PUBLIC_ODOO_BASE for client; fallback to erptest */
 const ODOO_BASE =
@@ -210,14 +211,14 @@ export default function HomeClientPage({ me }) {
               onClick={() => goInternal('/descriptor/COMPAT_DOOR_AF20')}
             />
           </Grid>
-
+         
           <Grid item xs={12} sm={6}>
             <Tile
               icon={<BuildCircleRoundedIcon fontSize="medium" />}
-              title="Configurator V1"
-              subtitle="Legacy configurator — internal"
+              title="RP Configurator"
+              subtitle="IMOS | Odoo sync — internal"
               chip="Internal"
-              onClick={() => goInternal('/configuratorV1')}
+              onClick={() => goInternal('/v2/configurator/')}
             />
           </Grid>
 
@@ -227,7 +228,7 @@ export default function HomeClientPage({ me }) {
               title="Configurator Builder"
               subtitle="Next-gen builder — internal"
               chip="Internal"
-              onClick={() => goInternal('/builder')}
+              onClick={() => goInternal('/v2/conf-builder')}
             />
           </Grid>
 
@@ -271,6 +272,16 @@ export default function HomeClientPage({ me }) {
               subtitle="DWG/DXF → any format (CloudConvert)"
               chip="Internal"
               onClick={() => goInternal('/convert-any-panel')}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <Tile
+              icon={<SyncAltRoundedIcon fontSize="medium" />}
+              title="Digital Factory 3D Converter"
+              subtitle="Convert and process 3D files in Digital Factory"
+              chip="Internal"
+              onClick={() => goInternal('/digitalfactory/3dconverter')}
             />
           </Grid>
 
