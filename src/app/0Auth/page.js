@@ -107,12 +107,23 @@ export default function Home() {
     if (p.country_id && p.country_id[1]) parts.push(p.country_id[1]);
     return parts.join(", ") || "No address";
   };
-  // compute returnTo on client only to avoid server-side `window` reference
+  // Read returnTo from query param (not window.location.href — that would loop back to /0Auth)
   const [returnTo, setReturnTo] = useState(null);
 
   useEffect(() => {
-    if (typeof window !== "undefined") setReturnTo(window.location.href);
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const rt = params.get("returnTo");
+      setReturnTo(rt || "/");
+    }
   }, []);
+
+  // Auto-redirect when already authenticated and there is a destination
+  useEffect(() => {
+    if (status === "ok" && returnTo && returnTo !== "/0Auth") {
+      window.location.replace(returnTo);
+    }
+  }, [status, returnTo]);
   
   const loginUrl = returnTo
     ? `${BACKEND_BASE}/api/odoo/login?returnTo=${encodeURIComponent(returnTo)}`

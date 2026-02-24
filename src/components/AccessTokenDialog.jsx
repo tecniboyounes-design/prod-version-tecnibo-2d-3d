@@ -1,6 +1,5 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
 import {
   Alert,
   Button,
@@ -14,77 +13,10 @@ import {
 import LockIcon from '@mui/icons-material/Lock';
 
 /**
- * Shared hook to gate pages behind the Cloudflare access token.
- */
-export function useAccessTokenGate() {
-  const [checking, setChecking] = useState(true);
-  const [allowed, setAllowed] = useState(false);
-
-  const [token, setToken] = useState('');
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    let cancelled = false;
-
-    (async () => {
-      try {
-        const res = await fetch('/api/cloudflare/access', { method: 'GET' });
-        const data = await res.json();
-        if (cancelled) return;
-        setAllowed(Boolean(data?.ok));
-      } catch {
-        if (cancelled) return;
-        setAllowed(false);
-      } finally {
-        if (cancelled) return;
-        setChecking(false);
-      }
-    })();
-
-    return () => { cancelled = true; };
-  }, []);
-
-  const submitToken = useCallback(async () => {
-    setSubmitting(true);
-    setError('');
-
-    try {
-      const res = await fetch('/api/cloudflare/access', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok || !data?.ok) {
-        throw new Error(data?.message || 'Access denied.');
-      }
-
-      setAllowed(true);
-      setToken('');
-    } catch (e) {
-      setAllowed(false);
-      setError(e?.message || 'Access denied.');
-    } finally {
-      setSubmitting(false);
-    }
-  }, [token]);
-
-  return {
-    allowed,
-    checking,
-    token,
-    setToken,
-    submitting,
-    error,
-    submitToken,
-  };
-}
-
-/**
  * Standalone dialog UI to reuse across pages.
+ *
+ * When `connectUrl` is provided the token input is replaced with an
+ * Odoo OAuth connect button — same arrow-icon style as the /0Auth page.
  */
 export default function AccessTokenDialog({
   open,
@@ -97,6 +29,9 @@ export default function AccessTokenDialog({
   onSubmit,
   submitting,
   error,
+  // --- Odoo connect mode ---
+  connectUrl,
+  connectLabel = 'Continue with Odoo Access',
 }) {
   const disabled = !token?.trim() || submitting;
 
@@ -118,34 +53,65 @@ export default function AccessTokenDialog({
           </Alert>
         ) : null}
 
-        <TextField
-          autoFocus
-          fullWidth
-          label="Access token"
-          value={token}
-          onChange={(e) => onTokenChange?.(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && !disabled) onSubmit?.();
-          }}
-          placeholder="Paste token..."
-        />
+        {connectUrl ? null : (
+          <>
+            <TextField
+              autoFocus
+              fullWidth
+              label="Access token"
+              value={token}
+              onChange={(e) => onTokenChange?.(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !disabled) onSubmit?.();
+              }}
+              placeholder="Paste token..."
+            />
 
-        {hint ? (
-          <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
-            {hint}
-          </Typography>
-        ) : null}
+            {hint ? (
+              <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
+                {hint}
+              </Typography>
+            ) : null}
+          </>
+        )}
       </DialogContent>
 
       <DialogActions sx={{ p: 2 }}>
-        <Button
-          variant="contained"
-          onClick={onSubmit}
-          disabled={disabled}
-          sx={{ textTransform: 'none' }}
-        >
-          {submitting ? 'Verifying...' : unlockLabel}
-        </Button>
+        {connectUrl ? (
+          <Button
+            component="a"
+            href={connectUrl}
+            variant="contained"
+            fullWidth
+            startIcon={
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="15" y1="12" x2="3" y2="12" />
+                <polyline points="12 19 19 12 12 5" />
+              </svg>
+            }
+            sx={{ textTransform: 'none', fontWeight: 600 }}
+          >
+            {connectLabel}
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            onClick={onSubmit}
+            disabled={disabled}
+            sx={{ textTransform: 'none' }}
+          >
+            {submitting ? 'Verifying...' : unlockLabel}
+          </Button>
+        )}
       </DialogActions>
     </Dialog>
   );

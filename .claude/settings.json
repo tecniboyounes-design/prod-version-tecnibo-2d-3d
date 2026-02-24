@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Read(//home/yattaoui/tecnibo-2d-3d-clone/src/app/api/**)",
-      "Read(//home/yattaoui/tecnibo-2d-3d-clone/src/lib/**)"
+      "Read(//home/yattaoui/tecnibo-2d-3d-clone/src/lib/**)",
+      "Read(//home/yattaoui/tecnibo-2d-3d-clone/src/**)"
     ],
     "additionalDirectories": [
       "/home/yattaoui/tecnibo-2d-3d-clone/src/lib",
