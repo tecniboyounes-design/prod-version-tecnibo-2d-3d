@@ -1,5 +1,6 @@
 // src/app/api/versionHistory/version-detail/route.js
 import { getCorsHeaders, handleCorsPreflight } from '@/lib/cors';
+import { getCookie } from '@/lib/cookies';
 import { supabase } from '../../filesController/route';
 import { transformVersion } from '@/lib/restructureData';
 
@@ -7,7 +8,7 @@ export async function GET(req) {
   const corsHeaders = getCorsHeaders(req);
 
   try {
-    const sessionId = req.headers.get('x-session-id');
+    const sessionId = getCookie(req, 'session_id');
     if (!sessionId) {
       return new Response(
         JSON.stringify({
@@ -30,7 +31,7 @@ export async function GET(req) {
         { status: 400, headers: corsHeaders },
       );
     }
-
+   
     // 1) Fetch the version with its geometry + params
     const { data: versionRow, error: versionError } = await supabase
       .from('versions')

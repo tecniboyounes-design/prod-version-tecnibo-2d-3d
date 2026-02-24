@@ -1,0 +1,139 @@
+{
+  "id": 258507,
+  "name": "[RP Webshop] Routing produits IMOS | Odoo (DB source of truth + API + createSubSO split)",
+  "state": "01_in_progress",
+  "stage_id": [
+    2412,
+    "Brouillon BO"
+  ],
+  "project_id": [
+    3305,
+    "[260040] Gouvernance Produit - Groupe"
+  ],
+  "parent_id": [
+    257476,
+    "RP - Webshop - Backend - Communication IMOS"
+  ],
+  "child_ids": [
+    258508,
+    258509,
+    258510
+  ],
+  "user_ids": [
+    447
+  ],
+  "manager_id": [
+    231,
+    "Rachid El Ghazi"
+  ],
+  "create_date": "2026-02-21 17:53:06",
+  "write_date": "2026-02-21 19:18:58",
+  "date_start": "2026-02-21 00:00:00",
+  "date_end": "2026-02-22 00:00:00",
+  "allocated_hours": 40.0,
+  "remaining_hours": 40.0,
+  "description_text": "Objectif: mettre en place le “routing” des produits sans modifier la structure DB (table déjà créée).\nLe routing permet de décider si un article doit:\n\nêtre traité via Odoo (création Sale Order / stock / vendor),\n\n\nou être traité via IMOS (consommation web shop vers IMOS, sans création SO dans Odoo sauf besoin stock/vendor).\n\nContraintes (IMPORTANT):\n\nAucun changement de structure DB (pas de nouvelles colonnes, pas de migration).\n\n\nOmaima reçoit un accès DB uniquement pour mettre à jour les données dans les colonnes existantes.\n\n\nLa logique “configurable” est déjà définie par la table:\n\n\nproduit configurable si cfg_name n’est pas NULL (et non vide).\n\n\ncfg_name contient le nom du configurateur\n\n\n\n",
+  "children": [
+    {
+      "id": 258508,
+      "name": "RP Webshop  [DATA] Mapper routing produits IMOS | Odoo (smart-products table)",
+      "state": "01_in_progress",
+      "stage_id": [
+        2412,
+        "Brouillon BO"
+      ],
+      "project_id": [
+        3305,
+        "[260040] Gouvernance Produit - Groupe"
+      ],
+      "parent_id": [
+        258507,
+        "[RP Webshop] Routing produits IMOS | Odoo (DB source of truth + API + createSubSO split)"
+      ],
+      "child_ids": [],
+      "user_ids": [
+        350,
+        447
+      ],
+      "manager_id": [
+        231,
+        "Rachid El Ghazi"
+      ],
+      "create_date": "2026-02-21 18:13:52",
+      "write_date": "2026-02-23 12:31:25",
+      "date_start": "2026-02-21 00:00:00",
+      "date_end": "2026-02-22 00:00:00",
+      "allocated_hours": 8.0,
+      "remaining_hours": 8.0,
+      "description_text": "Objectif: alimenter la table produits utilisée par smart-products avec le routing correct, sans changer la structure DB.Travail:\n\nMettre à jour les lignes produits existantes avec le routing selon la convention du champ existant (imos / odoo).\n\n\nLes produits IMOS doivent exister dans la table même s’ils ne sont pas créés dans Odoo.\n\n\nSi besoin stock/vendor/availability, le produit doit aussi exister dans Odoo (via identifiant Odoo existant dans la table si applicable).\n\n\nConfigurable = cfg_name non null (et non vide).\n\nLivrable:\n\nListe finale validée (DB à jour) + éventuellement export Excel/CSV pour trace.\n\nAcceptance:&nbsp;jour) + éventuellement export Excel/CSV pour trace.Acceptance:\n\nRouting rempli pour la liste demandée.\n\n\nAucune modification de schéma DB\n\n",
+      "children": []
+    },
+    {
+      "id": 258509,
+      "name": "RP Webshop][BACK] Smart routing from payload: IMOS XML consume vs Odoo SubSO",
+      "state": "01_in_progress",
+      "stage_id": [
+        2412,
+        "Brouillon BO"
+      ],
+      "project_id": [
+        3305,
+        "[260040] Gouvernance Produit - Groupe"
+      ],
+      "parent_id": [
+        258507,
+        "[RP Webshop] Routing produits IMOS | Odoo (DB source of truth + API + createSubSO split)"
+      ],
+      "child_ids": [],
+      "user_ids": [
+        447
+      ],
+      "manager_id": [
+        231,
+        "Rachid El Ghazi"
+      ],
+      "create_date": "2026-02-21 18:13:52",
+      "write_date": "2026-02-21 19:06:37",
+      "date_start": "2026-02-21 00:00:00",
+      "date_end": "2026-02-22 00:00:00",
+      "allocated_hours": 24.0,
+      "remaining_hours": 24.0,
+      "description_text": "Objectif: rendre /api/createSubSO plus intelligent: à partir des produits sélectionnés côté UI (payload envoyé après sélection PM), déterminer automatiquement la route correcte par produit et exécuter l’action correspondante:\n\nODoo → création Sub SO + lignes via RPC\n\n\nIMOS → génération XML + dépôt/POST dans le consume path IMOS\n\n\nSupport mixed payload (un même “Create” peut contenir IMOS + Odoo)\n\nContrainte:\n\nAucun changement structure DB produits.\n\n\nLa source de vérité “smart product” doit être utilisée pour enrichir/valider les items du payload (routing + cfg_name + éventuel lien Odoo).\n\nInputPayload client (après sélection PM) contient au minimum:\n\nliste produits (ids / refs / qty)\n\n\ncontexte projet (project_id / relatedproject_id / whatever you use)\n\n\néventuellement infos de configuration (si cfg_name présent)\n\nBackend work (what you implement)1) Normalize + enrich payload with smart-products entry point\n\nPour chaque item reçu:\n\n\nlookup dans la table smart-products (ou endpoint interne) pour récupérer:\n\n\nrouting (imos/odoo) depuis colonne existante\n\n\ncfg_name (configurable si non null)\n\n\nidentifiant Odoo si existant (pour stock/vendor + création SO)\n\n\n\n\n\n\nRejeter immédiatement les items incomplets:\n\n\nrouting=odoo mais pas de lien Odoo → error clair\n\n\nrouting=imos sans ref valide → error clair (si requis par XML)\n\n\n\n2) Decide route per item (smart routing)\n\nSplit en deux groupes:\n\n\nodooItems\n\n\nimosItems\n\n\n\n3) Execute actionsA) Odoo path\n\ncomportement actuel: créer Sub SO + SO lines uniquement pour odooItems\n\nB) IMOS path\n\ngénérer XML pour imosItems (inclure qty, ref, cfg_name + payload config si dispo)\n\n\nécrire ou envoyer XML vers le consume path IMOS\n\n\nsoit écriture fichier (ex: folder watched by IMOS)\n\n\nsoit POST/FTP/whatever your IMOS consume expects\n\n\n\n\ncréer un “trace record” côté backend (log/DB existant) pour audit: request_id, xml_name, items\n\n4) ResponseRetourner un JSON “combined result”:\n\nodoo: { sale_order_id, lines_created, errors[] }\n\n\nimos: { xml_generated: true, consume_target, files[], errors[] }\n\n\nmeta: { trace_id, counts }\n\n5) Logging\n\nlog par item: id/ref, routing, action taken\n\n\nlog trace_id global pour debug\n\nAcceptance criteria\n\nPayload avec produits mixtes → résultat OK (Odoo + IMOS) dans un seul call.\n\n\nRouting déterminé par smart-products (pas par suppositions client).\n\n\nPour IMOS: XML généré + envoyé/écrit dans consume path.\n\n\nPour Odoo: Sub SO créé seulement pour items routés Odoo.\n\n\nZéro changement de schéma DB produits.\n\n\n\n\n",
+      "children": []
+    },
+    {
+      "id": 258510,
+      "name": "[RP Webshop][IMOS] Définir le consume path XML + permissions + règles d’intégration",
+      "state": "01_in_progress",
+      "stage_id": [
+        2412,
+        "Brouillon BO"
+      ],
+      "project_id": [
+        3305,
+        "[260040] Gouvernance Produit - Groupe"
+      ],
+      "parent_id": [
+        258507,
+        "[RP Webshop] Routing produits IMOS | Odoo (DB source of truth + API + createSubSO split)"
+      ],
+      "child_ids": [],
+      "user_ids": [
+        230,
+        447
+      ],
+      "manager_id": [
+        231,
+        "Rachid El Ghazi"
+      ],
+      "create_date": "2026-02-21 19:14:13",
+      "write_date": "2026-02-21 19:16:10",
+      "date_start": "2026-02-21 00:00:00",
+      "date_end": "2026-02-22 00:00:00",
+      "allocated_hours": 8.0,
+      "remaining_hours": 8.0,
+      "description_text": "Objectif: fournir les informations et accès nécessaires pour l’intégration IMOS basée sur fichiers XML.À fournir / valider:\n\nType d’intégration\n\n\nDépôt fichier dans un dossier (folder watch) OU endpoint API (HTTP/FTP/etc.)\n\n\n\n\nChemin exact\n\n\nSi dossier: chemin complet côté serveur + environnement (dev/test/prod)\n\n\nSi partage réseau: type (SMB/NFS), adresse, méthode de montage sur Ubuntu\n\n\n\n\nPermissions\n\n\nutilisateur/credentials\n\n\ndroits en écriture/lecture\n\n\nowner/group si nécessaire\n\n\n\n\nConvention XML\n\n\nnommage fichier requis (pattern)\n\n\nencodage (UTF-8), extension, structure minimale attendue\n\n\n\n\nFeedback / statut\n\n\nIMOS déplace-t-il les fichiers vers /done /error ?\n\n\ncomment détecter succès/échec (logs, retour, dossier)\n\n\n\n\nExemples\n\n\nfournir 1 exemple XML valide (ou spécification) + 1 exemple de dossier attendu\n\n\n\nRésultat attendu:\n\nUn chemin/endpoint IMOS validé + accès confirmés (test d’écriture).\n\n\nConvention de nommage + règles d’acceptation confirmées.\n\n\nInput minimal XML validé par IMOS.\n\nDépendance:\n\nBloquant pour finaliser la branche “IMOS XML consume” dans /api/createSubSO\n\n",
+      "children": []
+    }
+  ]
+}

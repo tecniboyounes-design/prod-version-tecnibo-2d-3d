@@ -1,5 +1,6 @@
 import { getJobPositionDetails } from "./getJobInfo";
 import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
+import { getCookie } from "@/lib/cookies";
 
 const ODOO_SESSION_URL = process.env.ODOO_URL
   ? `${process.env.ODOO_URL}/web/session/get_session_info`
@@ -18,7 +19,7 @@ if (!ODOO_SESSION_URL) throw new Error("[getEmployeeBySession] ODOO_URL env is r
 
 export async function GET(request) {
   const corsHeaders = getCorsHeaders(request);
-  const sessionId = request.headers.get("x-session-id");
+  const sessionId = getCookie(request, 'session_id');
   console.log("Session ID provided:", sessionId);
 
   if (!sessionId) {

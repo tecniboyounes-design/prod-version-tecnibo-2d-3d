@@ -22,15 +22,14 @@ const PARTNER_FIELDS = [
   "company_name",
 ];
 
+
 function jsonResponse(req, data, { status = 200, headers } = {}) {
   const responseHeaders = new Headers(headers || {});
   const corsHeaders = getCorsHeaders(req);
-
   for (const [key, value] of Object.entries(corsHeaders)) {
     if (key.toLowerCase() === "content-type") continue;
     responseHeaders.set(key, value);
   }
-
   if (!responseHeaders.has("content-type")) {
     responseHeaders.set("content-type", "application/json");
   }
@@ -46,12 +45,17 @@ function buildOdooUrl(host, pathname) {
   return `${base}${pathname.startsWith("/") ? pathname : `/${pathname}`}`;
 }
 
+
+
+
 function withOptionalDb(url) {
   if (!ODOO_DB) return url;
   const u = new URL(url);
   if (!u.searchParams.has("db")) u.searchParams.set("db", ODOO_DB);
   return u.toString();
 }
+
+
 
 function getCookie(req, name) {
   const c = req.headers.get("cookie") || "";
@@ -111,12 +115,87 @@ function summarizeUser(userinfo, fallback = {}) {
   };
 }
 
+/** Normalize raw Odoo session_info (or OAuth user) into the shape transformProjectData expects. */
+function buildSessionInfoShape(rawSessionInfo, user) {
+  const partnerRaw = rawSessionInfo?.partner_id;
+  const partnerId = Array.isArray(partnerRaw)
+    ? ensurePositiveInt(partnerRaw[0])
+    : ensurePositiveInt(partnerRaw) || user?.partner_id || null;
+
+  const companyRaw = rawSessionInfo?.company_id;
+  const companyId = Array.isArray(companyRaw)
+    ? ensurePositiveInt(companyRaw[0])
+    : ensurePositiveInt(companyRaw) || user?.company_id || null;
+
+  return {
+    uid:        ensurePositiveInt(rawSessionInfo?.uid) || user?.id || null,
+    name:       rawSessionInfo?.name       || user?.name  || null,
+    username:   rawSessionInfo?.username   || user?.email || user?.login || null,
+    partner_id: partnerId,
+    db:         rawSessionInfo?.db         || user?.db    || ODOO_DB || null,
+    user_context: {
+      current_company: rawSessionInfo?.user_context?.current_company || companyId || null,
+      tz:   rawSessionInfo?.user_context?.tz   || "Africa/Casablanca",
+      lang: rawSessionInfo?.user_context?.lang || "en_US",
+    },
+  };
+}
+
+/** Fetch job_title from hr.employee for this uid (best-effort, non-blocking). */
+async function fetchJobPosition(uid, companyId, sessionId) {
+  try {
+    const payload = {
+      jsonrpc: "2.0",
+      method: "call",
+      params: {
+        model: "hr.employee",
+        method: "search_read",
+        args: [[["user_id", "=", uid]]],
+        kwargs: {
+          fields: ["id", "job_title"],
+          limit: 1,
+          context: {
+            lang: "en_US",
+            tz: "Africa/Casablanca",
+            uid,
+            allowed_company_ids: [companyId].filter(Boolean),
+          },
+        },
+      },
+      id: Date.now(),
+    };
+
+    const res = await fetch(
+      buildOdooUrl(ODOO_BASE, "/web/dataset/call_kw/hr.employee/search_read"),
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(sessionId ? { Cookie: `session_id=${sessionId}` } : {}),
+        },
+        body: JSON.stringify(payload),
+        cache: "no-store",
+      }
+    );
+
+    const data = await res.json().catch(() => null);
+    if (!data || data.error) return null;
+    // Normalize to { result: { records: [...] } } — aligns with projects/route.js
+    // call_kw search_read returns result as a flat array; web_search_read returns { records }
+    const raw = data.result;
+    const records = Array.isArray(raw) ? raw : (raw?.records ?? []);
+    return { result: { records } };
+  } catch {
+    return null;
+  }
+}
+
 async function callUserInfo(accessToken) {
   const userinfoUrls = [
     withOptionalDb(buildOdooUrl(ODOO_BASE, "/oauth/userinfo")),
     withOptionalDb(buildOdooUrl(ODOO_BASE, "/oauth2/userinfo")),
   ];
-
+  
   let last = null;
   for (const url of userinfoUrls) {
     const res = await fetch(url, {
@@ -276,10 +355,14 @@ export async function GET(req) {
       }
     );
 
+    const job_position = await fetchJobPosition(user.id, user.company_id, sessionId);
+
     const body = {
+      uid: user.id,
       success: true,
       authenticated: true,
-      session_info: sessionInfo,
+      session_info: buildSessionInfoShape(sessionInfo, user),
+      job_position,
       user,
       auth: authMeta(req, { mode: "session", refreshed: false }),
       meta: {
@@ -287,7 +370,7 @@ export async function GET(req) {
         db: user.db,
       },
     };
-    
+
     if (includePartner) {
       const partnerResult = await fetchPartner({ sessionId, user });
       if (partnerResult.partner) body.partner = partnerResult.partner;
@@ -308,20 +391,30 @@ export async function GET(req) {
       sessionId = tk.session_id || sessionId;
 
       const secure = isHttpsRequest(req);
+      const reqOrigin = req.headers.get("origin") || "";
+      const isCrossSite = (() => {
+        if (!reqOrigin) return false;
+        try { return new URL(reqOrigin).hostname !== new URL(req.url).hostname; } catch { return false; }
+      })();
+      const sameSite = isCrossSite ? "None" : "Lax";
+      const effectiveSecure = isCrossSite ? true : secure;
       setCookie(responseHeaders, "odoo_at", tk.access_token, {
         maxAge: Math.max(300, Number(tk.expires_in || 3600) - 60),
-        secure,
+        secure: effectiveSecure,
+        sameSite,
       });
       if (tk.refresh_token) {
         setCookie(responseHeaders, "odoo_rt", tk.refresh_token, {
           maxAge: 60 * 60 * 24 * 30,
-          secure,
+          secure: effectiveSecure,
+          sameSite,
         });
       }
       if (tk.session_id) {
         setCookie(responseHeaders, "session_id", tk.session_id, {
           maxAge: 60 * 60 * 24 * 7,
-          secure,
+          secure: effectiveSecure,
+          sameSite,
         });
       }
 
@@ -351,9 +444,14 @@ export async function GET(req) {
   const userinfo = await userInfoResponse.json().catch(() => ({}));
   const user = summarizeUser(userinfo);
 
+  const job_position = await fetchJobPosition(user.id, user.company_id, sessionId);
+
   const body = {
+    uid: user.id,
     success: true,
     authenticated: true,
+    session_info: buildSessionInfoShape(null, user),
+    job_position,
     userinfo,
     user,
     auth: authMeta(req, { mode: "oauth", refreshed }),

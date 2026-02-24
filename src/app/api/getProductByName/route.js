@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { payload } from "./payload";
 import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
+import { getCookie } from "@/lib/cookies";
 
 const ODOO_URL = process.env.ODOO_URL
   ? `${process.env.ODOO_URL}/web/dataset/call_kw/product.template/web_search_read`
@@ -26,7 +27,7 @@ export async function POST(req) {
     }
     
     // Get session ID from request headers
-    const sessionId = req.headers.get("x-session-id");
+    const sessionId = getCookie(req, 'session_id');
     if (!sessionId) {
       return NextResponse.json(
         { error: "Missing sessionId" },

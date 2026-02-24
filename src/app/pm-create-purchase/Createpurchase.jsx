@@ -48,7 +48,6 @@ function makeApi(sessionId) {
   const inst = axiosBase.create({
     baseURL: API_URL,
     withCredentials: true,
-    headers: { "X-Session-Id": sessionId || "" },
   });
   return inst;
 }

@@ -1,11 +1,12 @@
 import axios from "axios";
 import { createPayload } from "./preparePhasesPayload";
 import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
+import { getCookie } from "@/lib/cookies";
 
-const ODOO_URL = process.env.ODOO_URL
-  ? `${process.env.ODOO_URL}/web/dataset/call_kw/project.phase/web_search_read`
-  : null;
-if (!ODOO_URL) throw new Error("[phasesOfProject] ODOO_URL env is required");
+const ODOO_BASE = (
+  process.env.ODOO_BASE || "https://www.tecnibo.com"
+).replace(/\/+$/, "");
+const ODOO_URL = `${ODOO_BASE}/web/dataset/call_kw/project.phase/web_search_read`;
 
   
 export async function OPTIONS(request) {
@@ -28,7 +29,7 @@ export async function POST(req) {
     console.log("Generated payload:", payload);
 
     // 🔹 Extract session from header (like getAllProducts + searchProject)
-    const sessionId = req.headers.get("x-session-id");
+    const sessionId = getCookie(req, 'session_id');
     console.log("sessionId:", sessionId);
 
     if (!sessionId) {

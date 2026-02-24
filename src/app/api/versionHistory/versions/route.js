@@ -1,12 +1,13 @@
 // src/app/api/versionHistory/versions/route.js
 import { getCorsHeaders, handleCorsPreflight } from '@/lib/cors';
+import { getCookie } from '@/lib/cookies';
 import { supabase } from '../../filesController/route';
 
 export async function GET(req) {
   const corsHeaders = getCorsHeaders(req);
 
   try {
-    const sessionId = req.headers.get('x-session-id');
+    const sessionId = getCookie(req, 'session_id');
     if (!sessionId) {
       return new Response(
         JSON.stringify({ success: false, error: 'Missing x-session-id header' }),

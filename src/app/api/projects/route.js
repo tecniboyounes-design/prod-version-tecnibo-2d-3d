@@ -317,6 +317,7 @@ export async function POST(req) {
     uid,
     createdProjectId
   );
+
   const transformedProjectData = transformProjectsData(
     [projectWithRelations],
     userData
@@ -337,6 +338,8 @@ export async function POST(req) {
     }
   );
 }
+
+
 
 export async function OPTIONS(req) {
   console.log("OPTIONS request received for projects route.");

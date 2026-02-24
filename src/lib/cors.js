@@ -12,7 +12,7 @@ const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS
 // Default CORS configuration
 const CORS_CONFIG = {
   allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-  allowHeaders: ["Content-Type", "Authorization", "x-session-id", "x-uid", "x-company-id"], 
+  allowHeaders: ["Content-Type", "Authorization", "x-uid", "x-company-id"],
   allowCredentials: true, 
   maxAge: 86400, 
 };

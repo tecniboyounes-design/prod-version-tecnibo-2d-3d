@@ -1,7 +1,8 @@
 // src/app/api/odoo/smart-products/lib/odoo.js
 import axios from "axios";
 
-const ODOO_BASE = "https://erptest.tecnibo.com";
+const ODOO_BASE = (process.env.ODOO_BASE ||  "https://www.tecnibo.com")
+  .replace(/\/+$/, "");
 
 function log(...a) {
   console.log("[/api/odoo/smart-products][odoo]", ...a);

@@ -7,6 +7,7 @@ import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
 const ODOO_BASE_RAW = process.env.ODOO_BASE;
 const CLIENT_ID = process.env.ODOO_CLIENT_ID;
 const CLIENT_SECRET = process.env.ODOO_CLIENT_SECRET;
+const REDIRECT_URI = process.env.ODOO_REDIRECT_URI; // must match what /login used
 
 const LOG_PREFIX = "[odoo/callback]";
 const log = (...args) => console.log(LOG_PREFIX, ...args);
@@ -44,6 +45,7 @@ function requestOrigin(req) {
   return `${proto}://${host}`;
 }
 
+
 function setCookie(
   headers,
   name,
@@ -57,6 +59,8 @@ function setCookie(
   if (domain) parts.push(`Domain=${domain}`);
   headers.append("Set-Cookie", parts.join("; "));
 }
+
+
 
 
 function getCookie(req, name) {
@@ -75,18 +79,31 @@ function safeReturnTo(raw, origin) {
 
   try {
     const u = new URL(raw);
-    const okHost = u.hostname === "rp.tecnibo.com" || u.hostname === "backend.tecnibo.com";
-    if (u.protocol === "https:" && okHost) return u.toString();
+    const okHost =
+      u.hostname === "rp.tecnibo.com" ||
+      u.hostname === "backend.tecnibo.com" ||
+      u.hostname === "localhost";        // ← allow localhost
+    const okProto = u.protocol === "https:" || u.protocol === "http:"; // ← allow http for local dev
+    if (okProto && okHost) return u.toString();
   } catch {}
 
   return DEFAULT;
 }
 
-function clearCookieBoth(headers, name, secure) {
+
+function isLocalhostRequest(req) {
+  const origin = req.headers.get("origin") || "";
+  const host = (req.headers.get("host") || "").split(":")[0];
+  return origin.includes("localhost") || host === "localhost";
+}
+
+function clearCookieBoth(headers, name, secure, isLocal = false) {
   // host-only delete
   setCookie(headers, name, "", { maxAge: 0, secure });
-  // cleanup old domain cookie from previous deploys
-  setCookie(headers, name, "", { maxAge: 0, secure, domain: ".tecnibo.com" });
+  // cleanup old domain cookie from previous deploys (skip on localhost)
+  if (!isLocal) {
+    setCookie(headers, name, "", { maxAge: 0, secure, domain: ".tecnibo.com" });
+  }
 }
 
 async function exchangeToken({ tokenURL, code, redirectUri, useBasicAuth, includeClientCredsInBody }) {
@@ -120,9 +137,10 @@ export async function GET(req) {
 
   const origin = requestOrigin(req);
   const secure = isHttpsRequest(req);
+  const isLocal = isLocalhostRequest(req);
 
-  // must match what /login used
-  const redirectUri = `${origin}/api/odoo/callback`;
+  // must exactly match what /login sent to Odoo (pinned from env, not derived from request)
+  const redirectUri = REDIRECT_URI || `${origin}/api/odoo/callback`;
 
   const url = new URL(req.url);
 
@@ -140,8 +158,8 @@ export async function GET(req) {
     if (oauthErrorDesc) back.searchParams.set("oauth_error_description", oauthErrorDesc);
 
     const h = new Headers();
-    clearCookieBoth(h, "odoo_oauth_state", secure);
-    clearCookieBoth(h, "odoo_return_to", secure);
+    clearCookieBoth(h, "odoo_oauth_state", secure, isLocal);
+    clearCookieBoth(h, "odoo_return_to", secure, isLocal);
     h.set("Location", back.toString());
     return responseWithCors(req, null, { status: 302, headers: h });
   }
@@ -156,6 +174,14 @@ export async function GET(req) {
 
   const returnToCookie = getCookie(req, "odoo_return_to");
   const returnTo = safeReturnTo(returnToCookie || url.searchParams.get("returnTo"), origin);
+
+  // Detect cross-site client (e.g. localhost:5173 frontend + production backend).
+  // SameSite=Lax blocks cross-site fetch with credentials — need SameSite=None; Secure.
+  const returnToHost = (() => { try { return new URL(returnTo).hostname; } catch { return null; } })();
+  const originHost = (() => { try { return new URL(origin).hostname; } catch { return null; } })();
+  const isCrossSiteClient = Boolean(returnToHost && originHost && returnToHost !== originHost);
+  const sameSite = isCrossSiteClient ? "None" : "Lax";
+  const effectiveSecure = isCrossSiteClient ? true : secure; // SameSite=None requires Secure
 
   const tokenURL = `${ODOO_BASE}/oauth/token`;
 
@@ -200,16 +226,16 @@ export async function GET(req) {
   const respHeaders = new Headers();
 
   // clean old variants
-  clearCookieBoth(respHeaders, "session_id", secure);
-  clearCookieBoth(respHeaders, "odoo_at", secure);
-  clearCookieBoth(respHeaders, "odoo_rt", secure);
-  clearCookieBoth(respHeaders, "odoo_oauth_state", secure);
-  clearCookieBoth(respHeaders, "odoo_return_to", secure);
+  clearCookieBoth(respHeaders, "session_id", secure, isLocal);
+  clearCookieBoth(respHeaders, "odoo_at", secure, isLocal);
+  clearCookieBoth(respHeaders, "odoo_rt", secure, isLocal);
+  clearCookieBoth(respHeaders, "odoo_oauth_state", secure, isLocal);
+  clearCookieBoth(respHeaders, "odoo_return_to", secure, isLocal);
 
   // set host-only cookies
-  setCookie(respHeaders, "odoo_at", accessToken, { maxAge: Math.max(300, expiresIn - 60), secure });
-  if (refreshToken) setCookie(respHeaders, "odoo_rt", refreshToken, { maxAge: 60 * 60 * 24 * 30, secure });
-  if (sessionId) setCookie(respHeaders, "session_id", sessionId, { maxAge: 60 * 60 * 24 * 7, secure });
+  setCookie(respHeaders, "odoo_at", accessToken, { maxAge: Math.max(300, expiresIn - 60), secure: effectiveSecure, sameSite });
+  if (refreshToken) setCookie(respHeaders, "odoo_rt", refreshToken, { maxAge: 60 * 60 * 24 * 30, secure: effectiveSecure, sameSite });
+  if (sessionId) setCookie(respHeaders, "session_id", sessionId, { maxAge: 60 * 60 * 24 * 7, secure: effectiveSecure, sameSite });
 
   // clear transient cookies
   setCookie(respHeaders, "odoo_oauth_state", "", { maxAge: 0, secure });

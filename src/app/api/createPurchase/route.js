@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
+import { getCookie } from "@/lib/cookies";
 
 const ODOO_BASE = process.env.ODOO_URL
   ? `${process.env.ODOO_URL}/web/dataset/call_kw`
@@ -333,10 +334,7 @@ export async function POST(req) {
     
 
     // ---- session ----
-    const headerSession = req.headers.get("x-session-id") || req.headers.get("X-Session-Id") || "";
-    const cookieHeader = req.headers.get("cookie") || "";
-    const cookieSession = (cookieHeader.match(/(?:^|;)\s*session_id=([^;]+)/) || [])[1];
-    const session_id = headerSession || cookieSession;
+    const session_id = getCookie(req, 'session_id');
     if (!session_id) {
       return NextResponse.json({ error: "Missing session_id" }, { status: 401, headers: corsHeaders });
     }

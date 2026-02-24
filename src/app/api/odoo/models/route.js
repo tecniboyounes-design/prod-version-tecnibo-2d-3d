@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
+import { getCookie } from "@/lib/cookies";
 
 const ODOO_BASE = process.env.ODOO_BASE_URL || "http://192.168.30.33:8069";
 
@@ -40,7 +41,7 @@ export async function GET(request) {
   const url = new URL(request.url);
 
   try {
-    const sessionId = request.headers.get("x-session-id");
+    const sessionId = getCookie(request, 'session_id');
     if (!sessionId) {
       return NextResponse.json(
         { success: false, error: "Missing x-session-id header" },

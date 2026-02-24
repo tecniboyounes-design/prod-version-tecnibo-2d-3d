@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//home/yattaoui/tecnibo-2d-3d-clone/src/app/api/**)",
+      "Read(//home/yattaoui/tecnibo-2d-3d-clone/src/lib/**)"
+    ],
+    "additionalDirectories": [
+      "/home/yattaoui/tecnibo-2d-3d-clone/src/lib",
+      "/home/yattaoui/tecnibo-2d-3d-clone/src/app/api"
+    ]
+  }
+}

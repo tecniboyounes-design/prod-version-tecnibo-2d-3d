@@ -2,26 +2,34 @@
 import axios from "axios";
 import { NextResponse } from "next/server";
 import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
+import { getCookie } from "@/lib/cookies";
 
-const ODOO_URL = process.env.ODOO_URL
-  ? `${process.env.ODOO_URL}/web/dataset/call_kw/res.partner/web_search_read`
-  : null;
-if (!ODOO_URL) throw new Error("Missing ODOO_URL env for searchVendors");
+const ODOO_BASE = (
+  process.env.ODOO_BASE || "https://www.tecnibo.com"
+).replace(/\/+$/, "");
+const ODOO_URL = `${ODOO_BASE}/web/dataset/call_kw/res.partner/web_search_read`;
 
 export async function OPTIONS(request) {
   return handleCorsPreflight(request);
 }
 
 function createVendorPayload({ companyId, q = "", limit = 20 }) {
-  // Domain: vendor, active, in company scope; optional name filter
-  const baseDomain = [
-    "&",
-    ["supplier_rank", ">", 0],
-    ["active", "=", true],
-    "|",
-    ["company_id", "=", false],
-    ["company_id", "parent_of", [companyId]],
-  ];
+  const companyIdNum = Number(companyId);
+  const hasCompanyId = Number.isFinite(companyIdNum) && companyIdNum > 0;
+
+  // Domain: vendor + active. Company scope is optional.
+  const baseDomain = hasCompanyId
+    ? [
+        "&",
+        "&",
+        ["supplier_rank", ">", 0],
+        ["active", "=", true],
+        "|",
+        ["company_id", "=", false],
+        ["company_id", "parent_of", [companyIdNum]],
+      ]
+    : ["&", ["supplier_rank", ">", 0], ["active", "=", true]];
+
   const domain = q
     ? ["&", ["name", "ilike", q], ...baseDomain]
     : baseDomain;
@@ -65,8 +73,8 @@ export async function POST(request) {
   const corsHeaders = getCorsHeaders(request);
 
   try {
-    // 🔹 Take session from header instead of cookie helper
-    const sessionId = request.headers.get("x-session-id");
+    // 🔹 Session from cookie helper (shared across APIs)
+    const sessionId = getCookie(request, 'session_id');
     if (!sessionId) {
       return NextResponse.json(
         { error: "Missing sessionId" },
@@ -76,12 +84,13 @@ export async function POST(request) {
 
     const body = await request.json().catch(() => ({}));
     const { q = "", limit = 20, companyId } = body || {};
+    const limitNum = Number(limit);
+    const safeLimit = Number.isFinite(limitNum) && limitNum > 0 ? Math.min(limitNum, 500) : 20;
 
     // If companyId not provided by client, Odoo ACLs still scope results via session.
-    const payload = createVendorPayload({ companyId, q, limit });
+    const payload = createVendorPayload({ companyId, q, limit: safeLimit });
 
     const { data } = await axios.post(ODOO_URL, payload, {
-      withCredentials: true,
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -102,9 +111,11 @@ export async function POST(request) {
     const result = data?.result || {};
     return NextResponse.json(result, { status: 200, headers: corsHeaders });
   } catch (e) {
+    const upstreamStatus = Number(e?.response?.status) || 500;
+    const details = e?.response?.data ?? String(e?.message || e);
     return NextResponse.json(
-      { error: "Vendor search failed", details: String(e?.message || e) },
-      { status: 500, headers: corsHeaders }
+      { error: "Vendor search failed", details },
+      { status: upstreamStatus, headers: corsHeaders }
     );
   }
 }

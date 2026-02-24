@@ -1,6 +1,7 @@
 // src/app/api/odoo/smart-products/route.js
 import { NextResponse } from "next/server";
 import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
+import { getCookie } from "@/lib/cookies";
 
 import { CATEGORY_ORDER_ID_MAP } from "./categories";
 import { fetchConndescWsRows } from "./lib/db";
@@ -280,9 +281,8 @@ export async function GET(request) {
   const tAll0 = Date.now();
 
   try {
-    const sessionId =
-      request.headers.get("x-session-id") || request.headers.get("X-Session-Id");
-
+    const sessionId = getCookie(request, 'session_id');
+    
     if (!sessionId) {
       return NextResponse.json(
         { success: false, error: "Missing X-Session-Id" },

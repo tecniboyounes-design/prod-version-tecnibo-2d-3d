@@ -2,10 +2,12 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
+import { getCookie } from "@/lib/cookies";
 
 /* ===================== CONFIG ===================== */
-const ODOO_BASE = process.env.ODOO_URL;
-if (!ODOO_BASE) throw new Error("[getAllProducts] ODOO_URL env is required");
+const ODOO_BASE = (
+  process.env.ODOO_BASE || "https://www.tecnibo.com"
+).replace(/\/+$/, "");
 const DEFAULT_MODEL = "imos.conndesc";
 const DEFAULT_FIELD = "imos_order_id";
 const DEFAULT_FLAGS = ["EQUIP_CAB", "WS_CAB"];
@@ -113,7 +115,7 @@ export async function GET(request) {
   const corsHeaders = getCorsHeaders(request);
 
   try {
-    const sessionId = request.headers.get("x-session-id");
+    const sessionId = getCookie(request, 'session_id');
     log("X-Session-Id:", sessionId);
     if (!sessionId) return NextResponse.json({ error: "Missing sessionId" }, { status: 400, headers: corsHeaders });
 
@@ -181,6 +183,5 @@ export async function GET(request) {
     return NextResponse.json({ error: err?.message || "Internal server error" }, { status: 500, headers: corsHeaders });
   }
 }
-
 
 

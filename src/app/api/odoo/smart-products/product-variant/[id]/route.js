@@ -2,10 +2,12 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
+import { getCookie } from "@/lib/cookies";
 
 export const runtime = "nodejs";
 
-const ODOO_BASE = process.env.ODOO_BASE_URL || "https://erptest.tecnibo.com";
+const ODOO_BASE = (process.env.ODOO_BASE || "https://www.tecnibo.com")
+  .replace(/\/+$/, "");
 const MODEL = "product.product";
 
 
@@ -58,6 +60,7 @@ async function rpcPost({ url, payload, sessionId }) {
   return res.data;
 }
 
+
 async function fieldsGet({ model, sessionId }) {
   const url = `${ODOO_BASE}/web/dataset/call_kw/${encodeURIComponent(model)}/fields_get`;
   const payload = {
@@ -87,8 +90,7 @@ export async function GET(request, { params }) {
   const url = new URL(request.url);
 
   try {
-    const sessionId =
-      request.headers.get("x-session-id") || request.headers.get("X-Session-Id");
+    const sessionId = getCookie(request, 'session_id');
 
     if (!sessionId) {
       return NextResponse.json(

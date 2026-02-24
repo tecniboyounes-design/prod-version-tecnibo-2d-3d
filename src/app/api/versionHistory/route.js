@@ -2,6 +2,20 @@
 import { getCorsHeaders, handleCorsPreflight } from '@/lib/cors';
 import { supabase } from '../filesController/route';
 
+function getCookie(req, name) {
+  const cookie = req.headers.get('cookie') || '';
+  const match = cookie.match(new RegExp(`(?:^|;\\s*)${name}=([^;]+)`));
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+function json(req, data, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { ...getCorsHeaders(req), 'Content-Type': 'application/json' },
+  });
+}
+
+
 // ✅ Only trust DB: users.is_super_admin
 function isSuperAdminUser(user) {
   return !!user?.is_super_admin;
@@ -31,6 +45,8 @@ async function fetchUserByOdooId(odooId) {
  * Fetch projects (light rows only) where the user is owner or manager.
  * Super admin: all projects.
  */
+
+
 async function fetchProjectsForUser(odooId) {
   const user = await fetchUserByOdooId(odooId);
   const isSuperAdmin = isSuperAdminUser(user);
@@ -180,79 +196,42 @@ function buildProjectHeader(project, authorUser) {
 }
 
 export async function GET(req) {
-  const corsHeaders = getCorsHeaders(req);
-
   try {
-    const sessionId = req.headers.get('x-session-id');
+    const sessionId = getCookie(req, 'session_id');
     if (!sessionId) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'Missing x-session-id header' }),
-        { status: 401, headers: corsHeaders },
-      );
+      return json(req, { success: false, error: 'Missing session_id cookie — send request with withCredentials: true' }, 401);
     }
 
     const { searchParams } = new URL(req.url);
     const odooIdRaw = searchParams.get('odooId');
-    const restructureParam = searchParams.get('restructure');
-    const restructure = restructureParam === 'true';
+    const restructure = searchParams.get('restructure') === 'true';
 
     if (!odooIdRaw) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'Missing odooId parameter' }),
-        { status: 400, headers: corsHeaders },
-      );
+      return json(req, { success: false, error: 'Missing odooId parameter' }, 400);
     }
 
     const odooId = Number(odooIdRaw);
     if (!Number.isInteger(odooId)) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'Invalid odooId parameter' }),
-        { status: 400, headers: corsHeaders },
-      );
+      return json(req, { success: false, error: 'Invalid odooId parameter' }, 400);
     }
 
     const { projects, user, isSuperAdmin } = await fetchProjectsForUser(odooId);
 
     if (!restructure) {
-      // Raw/debug mode
-      return new Response(
-        JSON.stringify({ projects, user, isSuperAdmin }),
-        {
-          status: 200,
-          statusText: 'OK',
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        },
-      );
+      return json(req, { projects, user, isSuperAdmin });
     }
 
-    // Restructured = LIGHT project list (no versions, no walls, no articles)
     if (!projects.length) {
-      return new Response(JSON.stringify([]), {
-        status: 200,
-        statusText: 'OK',
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
+      return json(req, []);
     }
 
     const authorsMap = await fetchAuthorsMap(projects);
-    const payload = projects.map((p) =>
-      buildProjectHeader(p, authorsMap.get(p.user_id)),
-    );
+    const payload = projects.map((p) => buildProjectHeader(p, authorsMap.get(p.user_id)));
 
-    return new Response(JSON.stringify(payload), {
-      status: 200,
-      statusText: 'OK',
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+    return json(req, payload);
   } catch (err) {
     console.error('Error in /api/versionHistory GET:', err.message);
-    return new Response(
-      JSON.stringify({
-        success: false,
-        error: `Failed to fetch project history: ${err.message}`,
-      }),
-      { status: 500, headers: corsHeaders },
-    );
+    return json(req, { success: false, error: `Failed to fetch project history: ${err.message}` }, 500);
   }
 }
 

@@ -1,4 +1,5 @@
 import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
+import { getCookie } from "@/lib/cookies";
 
 const ODOO_URL = process.env.ODOO_URL
   ? `${process.env.ODOO_URL}/web/dataset/call_kw/hr.employee/web_search_read`
@@ -75,7 +76,7 @@ export async function GET(request) {
 const corsHeaders = getCorsHeaders(request);  
 
   // Retrieve values from headers
-  const sessionId = request.headers.get("x-session-id");
+  const sessionId = getCookie(request, 'session_id');
   const uid = parseInt(request.headers.get("x-uid"), 10);
   const companyId = parseInt(request.headers.get("x-company-id"), 10);
   

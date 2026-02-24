@@ -10,7 +10,7 @@ const CLIENT_ID = process.env.ODOO_CLIENT_ID;
 const REDIRECT_URI = process.env.ODOO_REDIRECT_URI; // ✅ MUST be https://backend.tecnibo.com/api/odoo/callback
 
 // Optional: only include if your Odoo OAuth app expects it
-const ODOO_SCOPE = (process.env.ODOO_SCOPE || "").trim();
+const ODOO_SCOPE = (process.env.ODOO_SCOPES || process.env.ODOO_SCOPE || "").trim();
 
 const LOG_PREFIX = "[odoo/login]";
 const log = (...a) => console.log(LOG_PREFIX, ...a);
@@ -66,8 +66,12 @@ function safeReturnTo(raw, origin) {
 
   try {
     const u = new URL(raw);
-    const okHost = u.hostname === "rp.tecnibo.com" || u.hostname === "backend.tecnibo.com";
-    if (u.protocol === "https:" && okHost) return u.toString();
+    const okHost =
+      u.hostname === "rp.tecnibo.com" ||
+      u.hostname === "backend.tecnibo.com" ||
+      u.hostname === "localhost";
+    const okProto = u.protocol === "https:" || u.protocol === "http:";
+    if (okProto && okHost) return u.toString();
   } catch {}
 
   return DEFAULT;

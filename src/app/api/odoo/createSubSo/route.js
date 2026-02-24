@@ -2,8 +2,10 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 import { getCorsHeaders, handleCorsPreflight } from "@/lib/cors";
+import { getCookie } from "@/lib/cookies";
 
 export const runtime = "nodejs";
+
 
 /**
  * Odoo endpoint normalization:
@@ -37,9 +39,11 @@ const safe = (obj) => {
   }
 };
 
+
 function log(...a) {
   console.log("[/api/createSubSO]", ...a);
 }
+
 
 /** Simple in-memory cache for fields_get (per node process). */
 const FIELD_CACHE = (globalThis.__ODOO_FIELD_CACHE__ ??= new Map());
@@ -585,10 +589,7 @@ export async function POST(req) {
     mark("parsed_body");
 
     // session
-    const headerSession = req.headers.get("x-session-id") || req.headers.get("X-Session-Id") || "";
-    const cookieHeader = req.headers.get("cookie") || "";
-    const cookieSession = (cookieHeader.match(/(?:^|;)\s*session_id=([^;]+)/) || [])[1];
-    const session_id = headerSession || cookieSession;
+    const session_id = getCookie(req, 'session_id');
 
     if (!session_id) {
       return NextResponse.json({ success: false, error: "Missing session_id" }, { status: 401, headers: corsHeaders });

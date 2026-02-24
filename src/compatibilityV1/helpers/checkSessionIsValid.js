@@ -5,10 +5,7 @@ export async function checkSessionIsValid(sessionId) {
   try {
     const res = await fetch("/api/getEmployeeBySession", {
       method: "GET",
-      headers: {
-        "x-session-id": sessionId,
-        Accept: "application/json",
-      },
+      headers: { Accept: "application/json" },
       credentials: "include",
       cache: "no-store",
     });
@@ -20,3 +17,6 @@ export async function checkSessionIsValid(sessionId) {
     return { ok: false };
   }
 }
+
+
+
