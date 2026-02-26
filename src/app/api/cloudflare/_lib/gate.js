@@ -15,14 +15,17 @@ export function checkGate(req) {
   const sessionId =
     req.cookies?.get?.('session_id')?.value ||
     getCookieFromHeader(req, 'session_id');
-
+    
   const odooAt =
     req.cookies?.get?.('odoo_at')?.value ||
     getCookieFromHeader(req, 'odoo_at');
-
+    
   if (!sessionId && !odooAt) {
     return { ok: false, status: 401, message: 'Unauthorized. No active Odoo session.' };
   }
-
+  
   return { ok: true };
+  
 }
+
+

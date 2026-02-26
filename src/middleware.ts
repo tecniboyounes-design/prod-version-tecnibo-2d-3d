@@ -13,6 +13,7 @@ const PUBLIC_PATHS = new Set([
   "/api/odoo/logout",
 ]);
 
+
 function isPublicPath(pathname: string): boolean {
   if (pathname.startsWith("/_next/")) return true;
   if (pathname === "/0Auth" || pathname.startsWith("/0Auth/")) return true;
@@ -25,13 +26,16 @@ function isPublicPath(pathname: string): boolean {
 }
 
 function hasOdooAuth(req: NextRequest): boolean {
-  return Boolean(req.cookies.get("odoo_at")?.value) && Boolean(req.cookies.get("session_id")?.value);
+  // OR — mirrors gate.js: either token is enough (Odoo may not always return session_id)
+  return Boolean(req.cookies.get("odoo_at")?.value) || Boolean(req.cookies.get("session_id")?.value);
 }
+
 
 function isOdooWebPath(pathname: string): boolean {
   if (pathname === "/web" || pathname.startsWith("/web/")) return true;
   return /^\/[a-z]{2}_[A-Z]{2}\/web(?:\/|$)/.test(pathname);
 }
+
 
 export default function middleware(req: NextRequest) {
   const { pathname, search } = req.nextUrl;

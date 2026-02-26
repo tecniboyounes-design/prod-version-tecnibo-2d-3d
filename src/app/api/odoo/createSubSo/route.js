@@ -6,7 +6,6 @@ import { getCookie } from "@/lib/cookies";
 
 export const runtime = "nodejs";
 
-
 /**
  * Odoo endpoint normalization:
  * - If env ODOO_BASE is host only (https://erptest.tecnibo.com) -> add /web/dataset/call_kw
@@ -20,7 +19,6 @@ export const runtime = "nodejs";
  *
  * Because some endpoints (session info, mail post) are NOT under /web/dataset/call_kw.
  */
-
 
 const RAW_ODOO = (process.env.ODOO_BASE || "").replace(/\/$/, "");
 if (!RAW_ODOO) throw new Error("Missing ODOO_BASE (set to https://erptest.tecnibo.com or https://www.tecnibo.com)");
@@ -39,11 +37,9 @@ const safe = (obj) => {
   }
 };
 
-
 function log(...a) {
   console.log("[/api/createSubSO]", ...a);
 }
-
 
 /** Simple in-memory cache for fields_get (per node process). */
 const FIELD_CACHE = (globalThis.__ODOO_FIELD_CACHE__ ??= new Map());
@@ -207,13 +203,12 @@ function buildLineDescriptionFromVariables(it, opts = {}) {
 
   const lines = [`${header}:`];
   for (const [k, v] of entries.slice(0, maxPairs)) {
-    // keep it readable
     lines.push(`- ${k}: ${v}`);
   }
 
   let out = lines.join("\n");
 
-  // hard cap to avoid gigantic chatter/line text
+  // hard cap
   if (out.length > maxTotalChars) {
     out = out.slice(0, maxTotalChars - 3) + "...";
   }
@@ -311,6 +306,7 @@ async function getSessionUid(session_id) {
 
     // ✅ MUST use root host
     const url = `${ODOO_ROOT}/web/session/get_session_info`;
+    // send {} body (Cloudflare sometimes hates empty json POST)
     const { data } = await axios.post(url, {}, { headers });
 
     const uid = data?.result?.uid ?? data?.uid;
@@ -564,6 +560,30 @@ async function tryUpdatePrices(session_id, soId, ctx, warnings) {
   }
 }
 
+/** ✅ NEW: Read project core fields to derive the correct company context. */
+async function readProjectCore(session_id, project_id, ctx) {
+  const rows = await callOdoo(
+    session_id,
+    "project.project",
+    "read",
+    [[Number(project_id)], ["id", "display_name", "partner_id", "analytic_account_id", "company_id", "sale_order_id"]],
+    { context: ctx }
+  );
+  const p = rows?.[0];
+  if (!p?.id) return null;
+  return p;
+}
+
+/** ✅ NEW: Permission probe to avoid misleading 404 when it's really ACL/company context. */
+async function assertSaleOrderReadable(session_id, ctx) {
+  try {
+    await callOdoo(session_id, "sale.order", "fields_get", [["id"], ["type"]], { context: ctx });
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, message: String(e?.message || e) };
+  }
+}
+
 export async function OPTIONS(request) {
   return handleCorsPreflight(request);
 }
@@ -589,7 +609,7 @@ export async function POST(req) {
     mark("parsed_body");
 
     // session
-    const session_id = getCookie(req, 'session_id');
+    const session_id = getCookie(req, "session_id");
 
     if (!session_id) {
       return NextResponse.json({ success: false, error: "Missing session_id" }, { status: 401, headers: corsHeaders });
@@ -626,7 +646,7 @@ export async function POST(req) {
       );
     }
 
-    // light sanity check (accepts YYYY-MM-DD or YYYY-MM-DD HH:mm:ss)
+    // light sanity check
     if (!/^\d{4}-\d{2}-\d{2}/.test(commitment_date)) {
       return NextResponse.json(
         { success: false, error: "Invalid commitment_date format (expected YYYY-MM-DD)" },
@@ -638,6 +658,7 @@ export async function POST(req) {
     const uidFallback = ensureInt(body.user_id) || 447;
     const requestedCompanyId = ensureInt(body.company_id) || false;
 
+    // Base ctx (no company pinned yet)
     const ctxBase = {
       lang: "en_US",
       tz: "Africa/Casablanca",
@@ -649,22 +670,87 @@ export async function POST(req) {
       bin_size: true,
     };
 
-    // Find reference SO
+    /**
+     * ✅ FIX: Always read the project first, derive its company_id, and force that.
+     * This prevents false 404 "Parent SO not found" when you were just in the wrong company context.
+     */
+    const ctxForProjectRead = requestedCompanyId
+      ? {
+          ...ctxBase,
+          allowed_company_ids: [requestedCompanyId],
+          force_company: requestedCompanyId,
+          current_company_id: requestedCompanyId,
+          params: { ...ctxBase.params, cids: requestedCompanyId },
+        }
+      : ctxBase;
+
+    const project = await readProjectCore(session_id, project_id, ctxForProjectRead);
+    mark("project_read");
+
+    if (!project) {
+      return NextResponse.json(
+        { success: false, error: "Project not found or not accessible", meta: { project_id } },
+        { status: 404, headers: corsHeaders }
+      );
+    }
+
+    const projectCompanyId = m2oId(project.company_id);
+    if (!projectCompanyId) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Project has no company_id; cannot determine correct company context",
+          meta: { project_id, project_name: project.display_name || null },
+        },
+        { status: 400, headers: corsHeaders }
+      );
+    }
+
+    // Always work under project company context
+    const projectCtx = {
+      ...ctxBase,
+      allowed_company_ids: [projectCompanyId],
+      force_company: projectCompanyId,
+      current_company_id: projectCompanyId,
+      params: { ...ctxBase.params, cids: projectCompanyId },
+    };
+
+    // Permission probe: if user can't read sale.order in this company, return clear 403.
+    const soAccess = await assertSaleOrderReadable(session_id, projectCtx);
+    mark("sale_order_access_check");
+    if (!soAccess.ok) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "No access to sale.order for the project's company",
+          details:
+            "Your session can read the project, but cannot read sale orders under the project's company. Ask admin to grant access or switch company.",
+          meta: {
+            project_id,
+            project_name: project.display_name || null,
+            project_company_id: projectCompanyId,
+          },
+          odoo: { message: soAccess.message },
+        },
+        { status: 403, headers: corsHeaders }
+      );
+    }
+
+    // Find reference SO:
+    // - If caller sent company_id, try it first (optional).
+    // - Always fallback to projectCtx (correct).
     const requestedCompanyCtx = requestedCompanyId
       ? {
           ...ctxBase,
           allowed_company_ids: [requestedCompanyId],
           force_company: requestedCompanyId,
+          current_company_id: requestedCompanyId,
           params: { ...ctxBase.params, cids: requestedCompanyId },
         }
       : null;
 
     let ref = requestedCompanyCtx ? await findReferenceSO(session_id, project_id, requestedCompanyCtx) : null;
-
-    // If caller sent a company_id that does not own the project/SO, retry across allowed companies.
-    if (!ref) {
-      ref = await findReferenceSO(session_id, project_id, ctxBase);
-    }
+    if (!ref) ref = await findReferenceSO(session_id, project_id, projectCtx);
     mark("ref_so");
 
     if (!ref) {
@@ -672,27 +758,23 @@ export async function POST(req) {
         {
           success: false,
           error: "Parent SO not found for this project",
-          details: "No sale.order found with relatedproject_id=project_id",
-          meta: { project_id },
+          details:
+            "No sale.order found with relatedproject_id=project_id in the project's company context. This is now a data issue (not a company context issue).",
+          meta: {
+            project_id,
+            project_company_id: projectCompanyId,
+            project_name: project.display_name || null,
+          },
         },
         { status: 404, headers: corsHeaders }
       );
     }
 
     const refSO = ref.rec;
-    const companyId = m2oId(refSO.company_id) || requestedCompanyId || false;
 
-    const ctx2 = {
-      ...ctxBase,
-      ...(companyId ? { allowed_company_ids: [companyId] } : {}),
-      ...(companyId ? { force_company: companyId } : {}),
-      params: {
-        model: "sale.order",
-        view_type: "form",
-        ...(companyId ? { cids: companyId } : {}),
-      },
-      ...(companyId ? { current_company_id: companyId } : {}),
-    };
+    // ✅ enforce project company context for the entire flow
+    const companyId = projectCompanyId;
+    const ctx2 = projectCtx;
 
     // Base partners from reference
     const partner_id = m2oId(refSO.partner_id);
@@ -827,11 +909,7 @@ export async function POST(req) {
           emptyText: "Not configurable",
         });
 
-        // Keep base product name first, then config
-        // If baseName is empty, we still provide cfg (Odoo will fill product name in UI, but we store ours anyway).
         const full = baseName ? `${baseName}\n${cfg}` : cfg;
-
-        // Odoo sometimes dislikes super long "name"
         lineVals.name = full;
       }
 
@@ -849,7 +927,6 @@ export async function POST(req) {
 
       relatedproject_id: project_id,
 
-      // ✅ phase_id is OPTIONAL: write only if provided + exists
       ...(phase_id && soFields.has("phase_id") ? { phase_id } : {}),
 
       sub_so: !!sub_so,
@@ -866,7 +943,6 @@ export async function POST(req) {
     if (soFields.has("team_id")) soVals.team_id = team_id || false;
     if (soFields.has("website_id")) soVals.website_id = website_id || false;
 
-    // ✅ commitment_date comes from payload only
     if (commitment_date && soFields.has("commitment_date")) soVals.commitment_date = commitment_date;
 
     const specification = {
@@ -914,7 +990,7 @@ export async function POST(req) {
     log("SO created:", createdSoId);
     mark("created_so");
 
-    // Recompute prices (optional, can be slow)
+    // Recompute prices (optional)
     if (recompute_prices) {
       await tryUpdatePrices(session_id, createdSoId, ctx2, extraWarnings);
       mark("prices_updated");
@@ -969,7 +1045,6 @@ export async function POST(req) {
     const warnings = [...extraWarnings, ...fulfillWarnings];
     mark("done");
 
-    // Only reveal Odoo endpoint info when explicitly debugging.
     const debug = body?.debug === true;
     const sale_order_url = `${ODOO_ROOT}/web#id=${createdSoId}&model=sale.order&view_type=form`;
 
@@ -978,7 +1053,7 @@ export async function POST(req) {
         success: true,
         message: "Sub SO created",
         sale_order_id: createdSoId,
-        sale_order_url: sale_order_url,
+        sale_order_url,
         sale_order: soRead?.[0] || null,
         delivery_pickings: pickings || [],
         fulfillment,
@@ -993,6 +1068,7 @@ export async function POST(req) {
           phase_id: phase_id || null,
           reference_so_id: refSO.id,
           reference_so_name: refSO.name,
+          project_company_id: projectCompanyId,
           applied: {
             shipping_partner_id,
             commitment_date: commitment_date || null,
