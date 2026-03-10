@@ -1,0 +1,146 @@
+# IMOS Routing Split & XML Receiver — Complete Data Flow
+
+> **Branch:** `feature/imos-routing-receiver` → `de85ab2`
+> **Date:** 2026-03-02
+
+## Architecture Overview
+
+```mermaid
+flowchart TD
+    subgraph Frontend["Frontend (React)"]
+        A["User clicks 'Create Sub SO'<br/>with cart items"]
+    end
+
+    subgraph API["POST /api/odoo/createSubSo"]
+        B["route.js — Parse body + validate session"]
+        C{"Split items by<br/>item.routing"}
+        D["odooItems[]<br/>routing = 'odoo'"]
+        E["imosItems[]<br/>routing = 'imos'"]
+        F{"odooItems.length > 0?"}
+        G["IMOS-only fast path"]
+    end
+
+    subgraph OdooPath["Odoo Path"]
+        H["readProjectCore()"]
+        I["findReferenceSO()"]
+        J["Create Sub SO via Odoo RPC"]
+        K["Confirm + Delivery Picking"]
+    end
+
+    subgraph ImosPath["IMOS Path"]
+        L["handleImosItems()"]
+        M["buildImosXml()"]
+        N["Write XML to imos_output/"]
+        O["fetch POST to receiver"]
+    end
+
+    subgraph Receiver["IMOS Receiver (192.168.30.41:3500)"]
+        P["Express server.js"]
+        Q["Save to C:\imos_inbox\"]
+        R["IMOS NetShop picks up XML"]
+    end
+
+    A -->|"POST JSON"| B
+    B --> C
+    C --> D
+    C --> E
+    D --> F
+    F -->|"Yes: mixed or odoo-only"| H
+    F -->|"No: all IMOS"| G
+    G --> L
+    H --> I --> J --> K
+    E --> L
+    L --> M --> N --> O
+    O -->|"HTTP POST XML"| P
+    P --> Q --> R
+
+    K -->|"sale_order_id + imos_result"| S["200 JSON Response"]
+    G -->|"mode: imos_only"| S
+```
+
+## Data Flow Step-by-Step
+
+### Step 1 — Request arrives
+Frontend sends `POST /api/odoo/createSubSo` with JSON body containing `items[]`, each with a `routing` field (`"odoo"` or `"imos"`).
+
+### Step 2 — Session validation
+[route.js](file:///C:/Users/raymo/Tecnibo_2d_3d/src/app/api/odoo/createSubSo/route.js) reads `session_id` from cookies via [cookies.js](file:///C:/Users/raymo/Tecnibo_2d_3d/src/lib/cookies.js), validates against Odoo.
+
+### Step 3 — Routing split
+```javascript
+const odooItems = items.filter(it => routing !== "imos");  // → Odoo SO
+const imosItems = items.filter(it => routing === "imos");  // → XML
+```
+
+### Step 4a — IMOS-only fast path (lines 149-175)
+If `odooItems.length === 0`, skips all Odoo logic → goes straight to [handleImosItems()](file:///C:/Users/raymo/Tecnibo_2d_3d/src/app/api/odoo/createSubSo/lib/imosHandler.js#333-475) → returns `{ mode: "imos_only" }`.
+
+### Step 4b — Mixed path
+Both paths run: Odoo items create a Sub SO, IMOS items generate XML. Both results returned in the same response.
+
+### Step 5 — IMOS XML generation
+[imosHandler.js](file:///C:/Users/raymo/Tecnibo_2d_3d/src/app/api/odoo/createSubSo/lib/imosHandler.js) builds ListBuilder XML:
+
+```
+<XML> → <Order> → <Head> (order info, dates, client)
+                → <CONTACT_INFO> (empty for now)
+                → <BuilderList> → <Set LineNo="1"> (per item)
+                                    → Pname, Count, PVarString, prices...
+```
+
+Each item's [PVarString](file:///C:/Users/raymo/Tecnibo_2d_3d/src/app/api/odoo/createSubSo/lib/imosHandler.js#44-100) encodes all variables: `ART_NAME:=X|ART_SIZEX:=600|...`
+
+### Step 6 — XML delivery
+1. Written locally to `imos_output/IMOS-{project}-{timestamp}.xml`
+2. HTTP POST to `http://192.168.30.41:3500/imos/receive`
+
+### Step 7 — Receiver server saves file
+[server.js](file:///C:/Users/raymo/Tecnibo_2d_3d/imos-receiver/server.js) saves to `C:\imos_inbox\{orderNo}_{timestamp}.xml` → IMOS NetShop watches this folder.
+
+---
+
+## Files Modified/Created
+
+```mermaid
+graph LR
+    subgraph Modified
+        A[".gitignore"]
+        B["route.js"]
+    end
+
+    subgraph New["New Files"]
+        C["lib/imosHandler.js"]
+        D["src/lib/cookies.js"]
+        E["imos-receiver/server.js"]
+        F["imos-receiver/package.json"]
+        G["imos-receiver/install.ps1"]
+        H["test_createSubSo.ps1"]
+        I["cancel_so.ps1"]
+        J["test_imos.mjs"]
+    end
+```
+
+| File | Purpose |
+|------|---------|
+| [route.js](file:///C:/Users/raymo/Tecnibo_2d_3d/src/app/api/odoo/createSubSo/route.js) | Routing split + IMOS-only fast path |
+| [imosHandler.js](file:///C:/Users/raymo/Tecnibo_2d_3d/src/app/api/odoo/createSubSo/lib/imosHandler.js) | XML generation + HTTP POST to receiver |
+| [cookies.js](file:///C:/Users/raymo/Tecnibo_2d_3d/src/lib/cookies.js) | Cookie parser for Next.js API routes |
+| [server.js](file:///C:/Users/raymo/Tecnibo_2d_3d/imos-receiver/server.js) | Express receiver on port 3500 |
+| [install.ps1](file:///C:/Users/raymo/Tecnibo_2d_3d/imos-receiver/install.ps1) | One-click installer for 192.168.30.41 |
+| [test_createSubSo.ps1](file:///C:/Users/raymo/Tecnibo_2d_3d/src/app/api/odoo/createSubSo/test_createSubSo.ps1) | Mixed-route E2E test |
+| [cancel_so.ps1](file:///C:/Users/raymo/Tecnibo_2d_3d/src/app/api/odoo/createSubSo/cancel_so.ps1) | Silent SO cancellation |
+
+## Test Results
+
+| Test | Result |
+|------|--------|
+| Receiver local test (POST XML) | ✅ 200 — file saved to `C:\imos_inbox\` |
+| IMOS-only request (2 imos items) | ✅ 200 — XML generated, `mode: "imos_only"` |
+| Mixed request (3 odoo + 2 imos) | ✅ 200 — SO created + XML generated |
+| SO cancellation | ✅ Silent cancel via `write({state: 'cancel'})` |
+| Receiver push to 192.168.30.41 | ⏳ Pending deployment |
+
+## Next Steps
+1. **Deploy receiver** — copy `imos-receiver/` to `192.168.30.41`, run `install.ps1` as Admin
+2. **Configure IMOS** — set NetShop to watch `C:\imos_inbox\`
+3. **Test end-to-end** — trigger from frontend → verify XML arrives in inbox

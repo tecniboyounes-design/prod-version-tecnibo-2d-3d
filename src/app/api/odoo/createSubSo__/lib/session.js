@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ensureInt } from "./primitives.js";
-import { ODOO_ROOT } from "./odooRpc.js";
+import { ODOO_ROOT, callOdoo } from "./odooRpc.js";
 
 /**
  * Get the active uid from Odoo's session info endpoint.
@@ -31,4 +31,19 @@ export async function getSessionUid(session_id) {
 export async function assertSessionActive(session_id) {
     const uid = await getSessionUid(session_id);
     return { active: !!uid, uid };
+}
+
+/**
+ * Fetch the session user's full name, email, and login from res.users.
+ * Returns { name, email, login } or null on failure.
+ * Never throws.
+ */
+export async function getSessionUserName(session_id, uid) {
+    try {
+        const rows = await callOdoo(session_id, "res.users", "read",
+            [[uid], ["name", "email", "login"]], {});
+        return rows?.[0] || null;
+    } catch {
+        return null;
+    }
 }

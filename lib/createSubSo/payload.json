@@ -1,0 +1,16 @@
+{
+  "flow": "warehouse",
+  "project_id": 1993,
+  "confirm": true,
+  "auto_assign_delivery": true,
+  "auto_validate_delivery": true,
+  "commitment_date": "2026-03-01",
+  "knobs": {
+    "picking_type_id": 95,
+    "notes": "rapport de test pour la création d'un sous-ordre de vente à partir d'une commande de vente existante = new payload shape rabie test_N3"
+  },
+  "items": [
+    { "product_variant_id": 1009285, "qty": 1 },
+    { "product_variant_id": 1007866, "qty": 1 }
+  ]
+}

@@ -3,7 +3,15 @@
     "allow": [
       "Read(//home/yattaoui/tecnibo-2d-3d-clone/src/app/api/**)",
       "Read(//home/yattaoui/tecnibo-2d-3d-clone/src/lib/**)",
-      "Read(//home/yattaoui/tecnibo-2d-3d-clone/src/**)"
+      "Read(//home/yattaoui/tecnibo-2d-3d-clone/src/**)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" --max-time 10 \"https://erptest.tecnibo.com/web/session/get_session_info\" -X POST -H \"Content-Type: application/json\" -d '{}')",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" --max-time 10 \"https://erptest.tecnibo.com/web/session/get_session_info\" -X POST -H \"Content-Type: application/json\" -d '{\"\"jsonrpc\"\":\"\"2.0\"\",\"\"params\"\":{}}')",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" --max-time 10 \"https://erptest.tecnibo.com/web\")",
+      "Bash(curl -s -L --max-time 10 \"https://erptest.tecnibo.com/web\" -o /dev/null -w \"%{http_code}\\\\n%{url_effective}\")",
+      "Bash(curl -s --max-time 10 \"https://erptest.tecnibo.com/web/session/get_session_info\" -X POST -H \"Content-Type: application/json\" -d '{\"\"jsonrpc\"\":\"\"2.0\"\",\"\"params\"\":{}}')",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" --max-time 10 \"https://erptest.tecnibo.com/web/session/get_session_info\" -X POST -H \"Content-Type: application/json\" -d '{\"\"jsonrpc\"\":\"\"2.0\"\",\"\"params\"\":{\"\"db\"\":\"\"tecnibo172\"\"}}')",
+      "Bash(curl -s --max-time 10 \"https://erptest.tecnibo.com/web/database/list\" -X POST -H \"Content-Type: application/json\" -d '{\"\"jsonrpc\"\":\"\"2.0\"\",\"\"params\"\":{}}')",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" --max-time 10 \"https://www.tecnibo.com/web/session/get_session_info\" -X POST -H \"Content-Type: application/json\" -d '{\"\"jsonrpc\"\":\"\"2.0\"\",\"\"params\"\":{}}')"
     ],
     "additionalDirectories": [
       "/home/yattaoui/tecnibo-2d-3d-clone/src/lib",

@@ -1,0 +1,2 @@
+cd /home/yattaoui/tecnibo-2d-3d-clone
+PGPASSWORD='password' pg_dump -h 192.168.30.92 -p 5432 -U postgres -d imos_helper --data-only --column-inserts --table=public.conndesc_helper > conndesc_helper.sql

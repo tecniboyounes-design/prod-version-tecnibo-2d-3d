@@ -19,6 +19,7 @@ import {
     // session
     getSessionUid,
     assertSessionActive,
+    getSessionUserName,
     // products / lines
     ensureProductProductIds,
     buildLineDescriptionFromVariables,
@@ -33,11 +34,10 @@ import {
     // notes
     postSaleOrderNote,
     buildNoteHtml,
-    buildRpNoteHtml,
-    attachFileToSaleOrder,
     // phase / livraison
     getM2ORelationModel,
     checkLivraisonTask,
+    
 } from "./lib/index.js";
 import { handleImosItems } from "./lib/imosHandler.js";
 
@@ -102,14 +102,10 @@ export async function POST(req) {
             );
         }
 
-        // ── Read session user's name (for RP note attribution) ───────────────────
-        let sessionUserName = "";
-        try {
-            const userRead = await callOdoo(session_id, "res.users", "read", [[sessionCheck.uid], ["name"]], {
-                context: { lang: "en_US" },
-            });
-            sessionUserName = userRead?.[0]?.name || "";
-        } catch (_) { /* non-fatal */ }
+        // ── Resolve session user name (for employee auto-fill) ─────────────────
+        const sessionUser = await getSessionUserName(session_id, sessionCheck.uid);
+        const resolvedEmployee = body.employee || body.user_name || sessionUser?.name || "";
+        mark("session_user");
 
         // ── Input validation ────────────────────────────────────────────────────
         const project_id = ensureInt(body.project_id);
@@ -157,7 +153,64 @@ export async function POST(req) {
                 { status: 400, headers: corsHeaders }
             );
         }
-        // (IMOS-only fast path removed — all items now go through SO creation)
+        // ── IMOS-only fast path ──────────────────────────────────────────────
+        // When ALL items are IMOS, skip the Odoo SO creation but still
+        // resolve client/origin from the project context for smart XML.
+        if (odooItems.length === 0 && imosItems.length > 0) {
+            log("All items are IMOS — skipping Odoo SO creation.");
+            mark("imos_only");
+
+            // Lightweight context resolution for XML metadata
+            let resolvedClient = body.client || body.user_email || "";
+            let resolvedOrigin = body.origin || null;
+            let resolvedPartnerId = null;
+
+            const imosFastCtx = { lang: "en_US", tz: "Africa/Casablanca", uid: sessionCheck.uid };
+
+            try {
+                const imosProject = await readProjectCore(session_id, project_id, imosFastCtx);
+                mark("imos_project_read");
+
+                if (imosProject) {
+                    const pid = m2oId(imosProject.partner_id);
+                    resolvedPartnerId = pid;
+
+                    if (pid && !resolvedClient) {
+                        const partnerRows = await callOdoo(session_id, "res.partner", "read",
+                            [[pid], ["email", "name"]], { context: imosFastCtx });
+                        resolvedClient = partnerRows?.[0]?.email || partnerRows?.[0]?.name || "";
+                    }
+
+                    if (!resolvedOrigin) {
+                        const ref = await findReferenceSO(session_id, project_id, imosFastCtx);
+                        resolvedOrigin = ref?.rec?.name || `Project #${project_id}`;
+                    }
+                }
+            } catch (e) {
+                log("IMOS fast path context resolution failed (non-fatal):", e?.message);
+            }
+
+            const imos_result = await handleImosItems(imosItems, {
+                project_id,
+                phase_id,
+                commitment_date,
+                origin: resolvedOrigin || `Project #${project_id}`,
+                partner_id: resolvedPartnerId,
+                client: resolvedClient,
+                employee: resolvedEmployee,
+            });
+
+            mark("done");
+            return NextResponse.json(
+                {
+                    success: true,
+                    mode: "imos_only",
+                    imos_result,
+                    timings,
+                },
+                { status: 200, headers: corsHeaders }
+            );
+        }
 
         // ── Context setup ───────────────────────────────────────────────────────
         const uidFallback = ensureInt(body.user_id) || 447;
@@ -334,7 +387,7 @@ export async function POST(req) {
         // ── Knobs ────────────────────────────────────────────────────────────────
         const confirmRequested = body.confirm !== false;               // default true
         const sub_so = body.sub_so !== false;                // default true
-        const origin = body.origin || `Project #${project_id}${phase_id ? ` / Phase #${phase_id}` : ""}`;
+        const origin = body.origin || refSO.name || `Project #${project_id}${phase_id ? ` / Phase #${phase_id}` : ""}`;
         const recompute_prices = body.recompute_prices === true || confirmRequested === true;
 
         const notesRaw = body?.knobs?.notes ?? body?.notes ?? false;
@@ -380,32 +433,8 @@ export async function POST(req) {
 
         const canWriteLineName = solFields.has("name");
 
-        // ── Build order lines (ALL items: odoo + imos) ────────────────────────────
-        const allItems = [...odooItems, ...imosItems];
-        const order_lines = allItems.map((it, idx) => {
-            const isImos = String(it.routing || "").toLowerCase() === "imos";
-
-            if (isImos) {
-                // IMOS items → note line (no product_id needed)
-                const baseName = it.name || it.imos_name || "Article";
-                const dims = it.dimensions || {};
-                const dimStr = [dims.width, dims.depth, dims.height]
-                    .filter(Boolean)
-                    .length
-                    ? `Width: ${dims.width || 0} mm, Depth: ${dims.depth || 0} mm, Height: ${dims.height || 0} mm`
-                    : "";
-                const parts = [`[IMOS] ${baseName} — Qty: ${itemQty(it)}  |  Price: ${it.price ?? 0} €`];
-                if (dimStr) parts.push(dimStr);
-                parts.push("Routed to IMOS NetShop (not purchased via Odoo)");
-
-                return [0, 0, {
-                    sequence: (idx + 1) * 10,
-                    display_type: "line_note",
-                    name: parts.join("\n"),
-                }];
-            }
-
-            // Odoo items → regular product line
+        // ── Build order lines ────────────────────────────────────────────────────
+        const order_lines = odooItems.map((it, idx) => {
             const product_id = itemVariantId(it);
             const qty = itemQty(it);
             const lineRouteId = ensureInt(it?.route_id) || so_route_id || false;
@@ -436,6 +465,7 @@ export async function POST(req) {
                     header: "Configuration",
                     emptyText: "Not configurable",
                 });
+
                 lineVals.name = baseName ? `${baseName}\n${cfg}` : cfg;
             }
 
@@ -543,60 +573,21 @@ export async function POST(req) {
             { context: ctx2 }
         );
 
-        // ── Handle IMOS items (generate XML) ──────────────────────────────────────
-        let imos_result = null;
-        if (imosItems.length > 0) {
-            imos_result = await handleImosItems(imosItems, {
-                project_id,
-                phase_id,
-                commitment_date,
-                origin,
-                partner_id,
-                client: body.client || body.user_email || "",
-                employee: sessionUserName || body.employee || body.user_name || "",
-            });
-        }
-
-        // ── Post RP chatter note ─────────────────────────────────────────────────
+        // ── Post chatter note ────────────────────────────────────────────────────
         let notePost = null;
-        try {
-            const noteHtml = buildRpNoteHtml({
-                debug: body?.debug === true,
-                clientNotes: notes || "",
-                employee: sessionUserName || body.employee || body.user_name || "",
-                imosResult: imos_result,
-                debugCancelled: false, // updated below if auto-cancelled
-            });
-            notePost = await postSaleOrderNote(session_id, { soId: createdSoId, bodyHtml: noteHtml, ctx: ctx2 });
-        } catch (e) {
-            const c = classifyOdooError(e, { model: "sale.order", method: "mail/message/post", sale_order_id: createdSoId });
-            extraWarnings.push({
-                type: c.kind === "access_error" ? "chatter_note_permission_denied" : "chatter_note_failed",
-                error: c.error,
-                details: c.details,
-                odoo_name: e instanceof OdooError ? e.odooName : null,
-            });
-        }
-
-        // ── Attach files to SO ───────────────────────────────────────────────────
-        const attachments = {};
-        if (imos_result?.xml_content) {
-            attachments.xml = await attachFileToSaleOrder(session_id, {
-                soId: createdSoId,
-                content: imos_result.xml_content,
-                fileName: `${imos_result.order_no || "IMOS"}.xml`,
-                mimetype: "application/xml",
-                ctx: ctx2,
-            });
-        }
-        if (body?.debug === true) {
-            attachments.payload = await attachFileToSaleOrder(session_id, {
-                soId: createdSoId,
-                content: JSON.stringify(body, null, 2),
-                fileName: `createSubSo-payload.json`,
-                mimetype: "application/json",
-                ctx: ctx2,
-            });
+        if (notes) {
+            try {
+                const noteHtml = buildNoteHtml({ notes });
+                notePost = await postSaleOrderNote(session_id, { soId: createdSoId, bodyHtml: noteHtml, ctx: ctx2 });
+            } catch (e) {
+                const c = classifyOdooError(e, { model: "sale.order", method: "mail/message/post", sale_order_id: createdSoId });
+                extraWarnings.push({
+                    type: c.kind === "access_error" ? "chatter_note_permission_denied" : "chatter_note_failed",
+                    error: c.error,
+                    details: c.details,
+                    odoo_name: e instanceof OdooError ? e.odooName : null,
+                });
+            }
         }
         mark("read_and_note");
 
@@ -616,35 +607,30 @@ export async function POST(req) {
 
         const warnings = [...extraWarnings, ...fulfillWarnings];
 
-        // ── Debug auto-cancel ────────────────────────────────────────────────────
-        let debug_cancelled = false;
-        if (body?.debug === true) {
-            try {
-                // Unlock first (confirmed SOs are locked)
-                await callOdoo(session_id, "sale.order", "action_unlock", [createdSoId], {
-                    context: { ...ctx2, tracking_disable: true, mail_notrack: true, mail_create_nosubscribe: true },
-                });
-                // Silent cancel via direct write (no email, no wizard)
-                await callOdoo(session_id, "sale.order", "write", [[createdSoId], { state: "cancel" }], {
-                    context: { ...ctx2, tracking_disable: true, mail_notrack: true, mail_create_nosubscribe: true },
-                });
-                debug_cancelled = true;
-                log("Debug mode: SO auto-cancelled");
-
-                // Update the chatter note to reflect cancellation
+        // ── Handle IMOS items ────────────────────────────────────────────────────
+        let imos_result = null;
+        if (imosItems.length > 0) {
+            // Auto-resolve client from partner if not provided in payload
+            let resolvedClient = body.client || body.user_email || "";
+            if (!resolvedClient && partner_id) {
                 try {
-                    const cancelNote = buildRpNoteHtml({
-                        debug: true,
-                        clientNotes: notes || "",
-                        employee: sessionUserName || body.employee || body.user_name || "",
-                        imosResult: imos_result,
-                        debugCancelled: true,
-                    });
-                    await postSaleOrderNote(session_id, { soId: createdSoId, bodyHtml: cancelNote, ctx: ctx2 });
-                } catch (_) { /* non-fatal */ }
-            } catch (e) {
-                extraWarnings.push(`Debug auto-cancel failed: ${e?.message || e}`);
+                    const partnerRows = await callOdoo(session_id, "res.partner", "read",
+                        [[partner_id], ["email", "name"]], { context: ctx2 });
+                    resolvedClient = partnerRows?.[0]?.email || partnerRows?.[0]?.name || "";
+                } catch (e) {
+                    log("Partner read for IMOS client failed (non-fatal):", e?.message);
+                }
             }
+
+            imos_result = await handleImosItems(imosItems, {
+                project_id,
+                phase_id,
+                commitment_date,
+                origin,
+                partner_id,
+                client: resolvedClient,
+                employee: resolvedEmployee,
+            });
         }
         mark("done");
 
@@ -654,18 +640,10 @@ export async function POST(req) {
         return NextResponse.json(
             {
                 success: true,
-                message: debug_cancelled ? "Sub SO created (auto-cancelled — debug)" : "Sub SO created",
+                message: "Sub SO created",
                 sale_order_id: createdSoId,
                 sale_order_url,
-                debug_cancelled,
-                imos_result: imos_result ? {
-                    count: imos_result.count,
-                    items: imos_result.items,
-                    order_no: imos_result.order_no,
-                    pushed_to_receiver: imos_result.pushed_to_receiver,
-                    receiver_response: imos_result.receiver_response,
-                } : null,
-                attachments,
+                imos_result,
                 sale_order: soRead?.[0] || null,
                 delivery_pickings: pickings || [],
                 fulfillment,
